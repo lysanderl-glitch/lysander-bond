@@ -3,62 +3,204 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Synapse — AI Agent 团队协作运营体系 | Janus Digital">
-  <!-- Hero: Dark section -->
+  <!-- Hero: Dark -->
   <section class="bg-[var(--color-dark)] text-white">
-    <div class="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center space-y-6">
-      <p class="text-sm font-semibold tracking-widest text-[#FCAD2A] uppercase">Synapse by Janus Digital</p>
-      <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-        用 Harness Engineering<br />
-        <span class="bg-gradient-to-r from-[#FCAD2A] to-[#028CDC] bg-clip-text text-transparent">构建可靠的 AI Agent 团队</span>
-      </h1>
-      <p class="text-lg text-white/60 max-w-2xl mx-auto leading-relaxed">
-        Synapse 是经过真实企业验证的 AI 协作运营体系。<br>基于 2026 年 AI 工程新范式，帮助企业系统化管理 AI Agent 团队。
-      </p>
-      <div class="flex gap-4 justify-center pt-4">
-        <a href="/services" class="px-8 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-lg font-bold hover:opacity-90 transition-opacity text-sm">了解服务</a>
-        <a href="/blog" class="px-8 py-3 border border-white/20 rounded-lg font-semibold hover:bg-white/5 transition-colors text-sm">阅读博客</a>
+    <div class="max-w-5xl mx-auto px-6 pt-20 pb-16">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <p class="text-sm font-semibold tracking-widest text-[#FCAD2A] uppercase">Synapse by Janus Digital</p>
+          <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">
+            用 Harness Engineering<br>
+            <span class="bg-gradient-to-r from-[#FCAD2A] to-[#028CDC] bg-clip-text text-transparent">构建可靠的 AI 团队</span>
+          </h1>
+          <p class="text-white/60 leading-relaxed">经过真实企业验证的 AI 协作运营体系。10 个专业团队、49 个 Agent、全天候自动运转 — 不是概念，是正在运行的生产系统。</p>
+          <div class="flex gap-4 pt-2">
+            <a href="/services" class="px-7 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-lg font-bold hover:opacity-90 transition-opacity text-sm">了解服务</a>
+            <a href="/blog" class="px-7 py-3 border border-white/20 rounded-lg font-semibold hover:bg-white/5 transition-colors text-sm">阅读博客</a>
+          </div>
+        </div>
+        <!-- Architecture diagram SVG -->
+        <div class="bg-[#111D33] border border-white/5 rounded-2xl p-6">
+          <p class="text-xs font-semibold text-[#FCAD2A] tracking-wider mb-4 uppercase">Synapse Architecture</p>
+          <div class="space-y-3 text-sm">
+            <div class="flex items-center gap-3 p-3 bg-white/3 rounded-lg border border-white/5">
+              <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#FCAD2A] shrink-0" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <div><span class="text-white font-semibold">记忆层</span><span class="text-white/40 ml-2">Obsidian 第二大脑</span></div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-white/3 rounded-lg border border-white/5">
+              <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#028CDC] shrink-0" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <div><span class="text-white font-semibold">控制层</span><span class="text-white/40 ml-2">Harness Engineering</span></div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-white/3 rounded-lg border border-white/5">
+              <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#028CDC] shrink-0" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <div><span class="text-white font-semibold">执行层</span><span class="text-white/40 ml-2">10 团队 · 49 Agent</span></div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-white/3 rounded-lg border border-white/5">
+              <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#FCAD2A] shrink-0" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <div><span class="text-white font-semibold">进化层</span><span class="text-white/40 ml-2">情报闭环 · 自动学习</span></div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-white/3 rounded-lg border border-white/5">
+              <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#028CDC] shrink-0" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <div><span class="text-white font-semibold">决策层</span><span class="text-white/40 ml-2">L1自动 → L4总裁</span></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Formula: Light section -->
-  <section class="max-w-5xl mx-auto px-6 py-14">
-    <div class="bg-[#F7F8FA] border border-[var(--color-border)] rounded-2xl p-8 text-center">
-      <p class="text-[var(--color-muted)] text-sm mb-2">Harness Engineering 核心公式</p>
-      <p class="text-3xl font-bold text-[var(--color-text)]">Agent = Model + <span class="text-[#FCAD2A]">Harness</span></p>
-      <p class="text-[var(--color-text-light)] mt-3 text-sm">模型人人可用。<strong class="text-[#013A7D]">Harness</strong>（环境、约束、反馈、组织）才是竞争壁垒。</p>
-    </div>
-  </section>
-
-  <!-- Services: White with cards -->
-  <section class="max-w-5xl mx-auto px-6 py-12">
-    <h2 class="text-2xl font-bold text-[var(--color-text)] mb-8 text-center">我们提供什么</h2>
-    <div class="grid md:grid-cols-3 gap-6">
-      <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] hover:border-[#FCAD2A]/40 hover:shadow-lg transition-all">
-        <div class="text-3xl font-black text-[#FCAD2A] opacity-30 mb-2">01</div>
-        <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Synapse Assessment</h3>
-        <p class="text-[var(--color-text-light)] text-sm leading-relaxed">2天诊断评估，对标 Harness Engineering 行业标准，输出定制化落地路线图。</p>
-      </div>
-      <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] hover:border-[#FCAD2A]/40 hover:shadow-lg transition-all">
-        <div class="text-3xl font-black text-[#FCAD2A] opacity-30 mb-2">02</div>
-        <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Synapse Implementation</h3>
-        <p class="text-[var(--color-text-light)] text-sm leading-relaxed">2-4周体系落地，包含执行链、决策体系、Agent团队、情报系统、HR审计全套交付。</p>
-      </div>
-      <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] hover:border-[#FCAD2A]/40 hover:shadow-lg transition-all">
-        <div class="text-3xl font-black text-[#FCAD2A] opacity-30 mb-2">03</div>
-        <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">SCP 培训认证</h3>
-        <p class="text-[var(--color-text-light)] text-sm leading-relaxed">Synapse Certified Practitioner — 8小时理论+实操，学员带走一套可运行的体系。</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats -->
+  <!-- Core Formula: Light -->
   <section class="bg-[#F7F8FA] py-14">
-    <div class="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6">
-      <div class="text-center"><div class="text-4xl font-black text-[#013A7D]">10</div><div class="text-sm text-[var(--color-muted)] mt-1">专业团队</div></div>
-      <div class="text-center"><div class="text-4xl font-black text-[#013A7D]">49</div><div class="text-sm text-[var(--color-muted)] mt-1">AI Agent</div></div>
-      <div class="text-center"><div class="text-4xl font-black text-[#FCAD2A]">93.8</div><div class="text-sm text-[var(--color-muted)] mt-1">审计均分</div></div>
-      <div class="text-center"><div class="text-4xl font-black text-[#028CDC]">24/7</div><div class="text-sm text-[var(--color-muted)] mt-1">自动运转</div></div>
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <p class="text-[var(--color-muted)] text-sm mb-3">2026 AI 工程新范式 · Martin Fowler / Red Hat / Anthropic 共同确认</p>
+      <p class="text-3xl md:text-4xl font-bold text-[var(--color-text)]">Agent = Model + <span class="text-[#FCAD2A]">Harness</span></p>
+      <p class="text-[var(--color-text-light)] mt-4 max-w-xl mx-auto">模型人人可用。<strong class="text-[#013A7D]">Harness</strong>（环境、约束、反馈、组织）才是让 AI 可靠工作的关键 — 也是真正的竞争壁垒。</p>
+    </div>
+  </section>
+
+  <!-- Harness Explained: Two columns -->
+  <section class="max-w-5xl mx-auto px-6 py-14">
+    <h2 class="text-2xl font-bold text-[var(--color-text)] mb-8 text-center">Harness 如何让 AI Agent 可靠运转</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] hover:shadow-lg transition-shadow">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg bg-[#013A7D]/10 flex items-center justify-center">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#013A7D]" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-[var(--color-text)]">Guides — 前馈控制</h3>
+        </div>
+        <p class="text-[var(--color-text-light)] text-sm leading-relaxed mb-3">在 AI 行动之前，引导它做正确的事。</p>
+        <div class="space-y-2 text-sm">
+          <div class="flex gap-2 items-center text-[var(--color-text-light)]"><span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] shrink-0"></span>CLAUDE.md — 角色、规则、流程配置</div>
+          <div class="flex gap-2 items-center text-[var(--color-text-light)]"><span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] shrink-0"></span>决策规则 — 四级决策约束体系</div>
+          <div class="flex gap-2 items-center text-[var(--color-text-light)]"><span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] shrink-0"></span>能力档案 — Agent 专业领域定义</div>
+        </div>
+      </div>
+      <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] hover:shadow-lg transition-shadow">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-lg bg-[#028CDC]/10 flex items-center justify-center">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#028CDC]" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h3 class="text-lg font-bold text-[var(--color-text)]">Sensors — 反馈控制</h3>
+        </div>
+        <p class="text-[var(--color-text-light)] text-sm leading-relaxed mb-3">在 AI 行动之后，检查它是否做对了。</p>
+        <div class="space-y-2 text-sm">
+          <div class="flex gap-2 items-center text-[var(--color-text-light)]"><span class="w-1.5 h-1.5 rounded-full bg-[#028CDC] shrink-0"></span>QA 自动评分 — 质量门禁检查</div>
+          <div class="flex gap-2 items-center text-[var(--color-text-light)]"><span class="w-1.5 h-1.5 rounded-full bg-[#028CDC] shrink-0"></span>执行链审计 — 流程完整性检查</div>
+          <div class="flex gap-2 items-center text-[var(--color-text-light)]"><span class="w-1.5 h-1.5 rounded-full bg-[#028CDC] shrink-0"></span>专家评审团 — 多维度评分审查</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services: White with icons -->
+  <section class="bg-[#F7F8FA] py-14">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-2xl font-bold text-[var(--color-text)] mb-2 text-center">我们提供什么</h2>
+      <p class="text-[var(--color-muted)] text-center mb-8">从诊断到落地到持续进化</p>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] hover:shadow-lg hover:border-[#FCAD2A]/30 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-[#FCAD2A]/10 flex items-center justify-center mb-4">
+            <svg viewBox="0 0 24 24" class="w-6 h-6 text-[#FCAD2A]" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <div class="text-xs font-bold text-[#FCAD2A] mb-2">$5K-$10K · 2天</div>
+          <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Synapse Assessment</h3>
+          <p class="text-[var(--color-text-light)] text-sm leading-relaxed">AI 成熟度诊断，对标 Harness Engineering 行业标准，输出定制化落地路线图。</p>
+        </div>
+        <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] hover:shadow-lg hover:border-[#028CDC]/30 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-[#028CDC]/10 flex items-center justify-center mb-4">
+            <svg viewBox="0 0 24 24" class="w-6 h-6 text-[#028CDC]" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="text-xs font-bold text-[#028CDC] mb-2">$30K-$80K · 2-4周</div>
+          <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Synapse Implementation</h3>
+          <p class="text-[var(--color-text-light)] text-sm leading-relaxed">完整体系落地：执行链、决策体系、Agent 团队、情报系统、HR 审计全套交付。</p>
+        </div>
+        <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] hover:shadow-lg hover:border-[#013A7D]/30 transition-all">
+          <div class="w-12 h-12 rounded-xl bg-[#013A7D]/10 flex items-center justify-center mb-4">
+            <svg viewBox="0 0 24 24" class="w-6 h-6 text-[#013A7D]" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="text-xs font-bold text-[#013A7D] mb-2">$500-$15K</div>
+          <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">SCP 培训认证</h3>
+          <p class="text-[var(--color-text-light)] text-sm leading-relaxed">8小时理论+实操，学员带走一套可运行的 AI Agent 运营体系。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Signals -->
+  <section class="max-w-5xl mx-auto px-6 py-14">
+    <h2 class="text-2xl font-bold text-[var(--color-text)] mb-2 text-center">真实数据，不是概念</h2>
+    <p class="text-[var(--color-muted)] text-center mb-10">以下数据来自 Synapse 在 Janus Digital 的真实运行环境</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="text-center p-6 bg-white rounded-xl border border-[var(--color-border)]">
+        <div class="text-4xl font-black text-[#013A7D]">10</div>
+        <div class="text-sm text-[var(--color-muted)] mt-1">专业团队</div>
+        <div class="w-full bg-[#F7F8FA] rounded-full h-1.5 mt-3"><div class="bg-[#013A7D] h-1.5 rounded-full" style="width:100%"></div></div>
+      </div>
+      <div class="text-center p-6 bg-white rounded-xl border border-[var(--color-border)]">
+        <div class="text-4xl font-black text-[#028CDC]">49</div>
+        <div class="text-sm text-[var(--color-muted)] mt-1">AI Agent</div>
+        <div class="w-full bg-[#F7F8FA] rounded-full h-1.5 mt-3"><div class="bg-[#028CDC] h-1.5 rounded-full" style="width:100%"></div></div>
+      </div>
+      <div class="text-center p-6 bg-white rounded-xl border border-[var(--color-border)]">
+        <div class="text-4xl font-black text-[#FCAD2A]">93.8</div>
+        <div class="text-sm text-[var(--color-muted)] mt-1">全员审计均分</div>
+        <div class="w-full bg-[#F7F8FA] rounded-full h-1.5 mt-3"><div class="bg-[#FCAD2A] h-1.5 rounded-full" style="width:93.8%"></div></div>
+      </div>
+      <div class="text-center p-6 bg-white rounded-xl border border-[var(--color-border)]">
+        <div class="text-4xl font-black text-[#013A7D]">5</div>
+        <div class="text-sm text-[var(--color-muted)] mt-1">自动化管线 · 24/7</div>
+        <div class="w-full bg-[#F7F8FA] rounded-full h-1.5 mt-3"><div class="bg-[#013A7D] h-1.5 rounded-full" style="width:100%"></div></div>
+      </div>
+    </div>
+    <!-- Key insight quote -->
+    <div class="mt-10 bg-[#F7F8FA] border-l-4 border-[#FCAD2A] rounded-r-xl p-6">
+      <p class="text-[var(--color-text)] text-lg italic leading-relaxed">
+        "从全员 64.1 分到 93.8 分，不合格人数从 11 降到 0 — 不是换了更好的模型，而是建立了 Harness 管理体系。"
+      </p>
+      <p class="text-[var(--color-muted)] text-sm mt-2">— Synapse 在 Janus Digital 的实践数据</p>
+    </div>
+  </section>
+
+  <!-- Daily Pipeline: Visual flow -->
+  <section class="bg-[#F7F8FA] py-14">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-2xl font-bold text-[var(--color-text)] mb-2 text-center">每天自动运转，无需人工启动</h2>
+      <p class="text-[var(--color-muted)] text-center mb-8">总裁只在 Slack 上收到最终结果通知</p>
+      <div class="grid md:grid-cols-4 gap-4">
+        <div class="relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center">
+          <div class="w-10 h-10 rounded-full bg-[#FCAD2A]/10 flex items-center justify-center mx-auto mb-3">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#FCAD2A]" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="text-xs font-bold text-[#FCAD2A]">6:00 AM</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm mt-1">任务恢复</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-1">检查未完成工作<br>自动续接执行</p>
+        </div>
+        <div class="relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center">
+          <div class="w-10 h-10 rounded-full bg-[#028CDC]/10 flex items-center justify-center mx-auto mb-3">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#028CDC]" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="text-xs font-bold text-[#028CDC]">8:00 AM</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm mt-1">情报日报</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-1">搜索AI前沿<br>筛选3-5条精华</p>
+        </div>
+        <div class="relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center">
+          <div class="w-10 h-10 rounded-full bg-[#013A7D]/10 flex items-center justify-center mx-auto mb-3">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#013A7D]" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="text-xs font-bold text-[#013A7D]">10:00 AM</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm mt-1">行动管线</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-1">评估→评审→执行<br>4专家评分制</p>
+        </div>
+        <div class="relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center">
+          <div class="w-10 h-10 rounded-full bg-[#FCAD2A]/10 flex items-center justify-center mx-auto mb-3">
+            <svg viewBox="0 0 24 24" class="w-5 h-5 text-[#FCAD2A]" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div class="text-xs font-bold text-[#FCAD2A]">每周一</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm mt-1">HR 审计</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-1">全员质量评分<br>自动修复</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -66,8 +208,8 @@ import Layout from '../layouts/Layout.astro';
   <section class="max-w-5xl mx-auto px-6 py-16">
     <div class="bg-[var(--color-dark)] rounded-2xl p-10 text-center">
       <h2 class="text-2xl font-bold text-white mb-3">准备好构建你的 AI 团队了吗？</h2>
-      <p class="text-white/50 mb-6 text-sm">从评估诊断开始，2天了解你的 AI 管理现状和改进路径。</p>
-      <a href="mailto:lysanderl@janusd.io?subject=Synapse%20咨询预约" class="inline-block px-8 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-lg font-bold hover:opacity-90 transition-opacity text-sm">预约咨询</a>
+      <p class="text-white/50 mb-6 text-sm max-w-lg mx-auto">从 2 天评估诊断开始，了解你的 AI 管理现状，获得定制化的 Synapse 落地路线图。</p>
+      <a href="mailto:lysanderl@janusd.io?subject=Synapse%20咨询预约" class="inline-block px-8 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-lg font-bold hover:opacity-90 transition-opacity text-sm">预约免费咨询</a>
     </div>
   </section>
 </Layout>
