@@ -2,31 +2,48 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="关于 - Lysander" description="关于 Lysander">
-  <section class="max-w-4xl mx-auto px-6 py-16">
-    <h1 class="text-4xl font-bold text-white mb-8">关于我</h1>
+<Layout title="关于 Synapse | Janus Digital">
+  <section class="max-w-4xl mx-auto px-6 py-20">
+    <p class="text-sm font-semibold tracking-widest text-[var(--color-accent)] uppercase mb-4">关于我们</p>
+    <h1 class="text-4xl font-extrabold text-white mb-6">Janus Digital &times; Synapse</h1>
 
-    <div class="space-y-6 text-white/80 leading-relaxed">
-      <p>
-        你好！我是 Lysander，目前在迪拜工作和生活。
-      </p>
-      <p>
-        我热衷于探索 AI 工具，特别是 Claude Code 如何改变我们的工作方式。
-        这个网站是我记录学习心得、分享经验的个人空间。
-      </p>
-      <p>
-        如果你有任何问题或想法，欢迎交流！
-      </p>
-    </div>
+    <div class="space-y-12">
+      <!-- Company -->
+      <div>
+        <h2 class="text-xl font-bold text-[var(--color-accent)] mb-4 border-b border-[var(--color-accent)]/20 pb-2">Janus Digital</h2>
+        <p class="text-[var(--color-text)] leading-relaxed">
+          Janus Digital 是一家建筑数字化资产运营管理公司，为业主提供建筑全生命周期数字化服务。我们运用 AI 技术构建建筑数字孪生，实现资产管理智能化、能源优化自动化、运营决策数据化。
+        </p>
+      </div>
 
-    <div class="mt-12 p-6 bg-white/5 rounded-xl border border-white/10">
-      <h2 class="text-xl font-semibold text-white mb-4">技术栈</h2>
-      <div class="flex flex-wrap gap-2">
-        <span class="px-3 py-1 bg-sky-500/20 text-sky-400 rounded-full text-sm">Claude Code</span>
-        <span class="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-sm">Astro</span>
-        <span class="px-3 py-1 bg-teal-500/20 text-teal-400 rounded-full text-sm">Tailwind CSS</span>
-        <span class="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full text-sm">n8n</span>
-        <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-sm">Asana</span>
+      <!-- Synapse -->
+      <div>
+        <h2 class="text-xl font-bold text-[var(--color-accent)] mb-4 border-b border-[var(--color-accent)]/20 pb-2">Synapse 体系</h2>
+        <p class="text-[var(--color-text)] leading-relaxed mb-6">
+          <strong class="text-white">Synapse</strong>（突触）是我们构建的 AI 协作运营体系 — 知识、决策、执行之间的信息流转枢纽。基于 Harness Engineering 方法论，它让 AI Agent 团队可靠、可控、可进化地运行。
+        </p>
+        <div class="bg-[var(--color-card)] border border-white/5 rounded-xl p-6 font-mono text-sm leading-loose text-[var(--color-text)]">
+          <p class="text-[var(--color-accent)] font-bold mb-2">Synapse 体系架构</p>
+          <p>├── <span class="text-[var(--color-primary)]">记忆层</span> ── Obsidian 第二大脑 (OBS)</p>
+          <p>├── <span class="text-[var(--color-primary)]">控制层</span> ── Harness Engineering (Guides + Sensors)</p>
+          <p>├── <span class="text-[var(--color-primary)]">执行层</span> ── 10 个团队 49 个 AI Agent</p>
+          <p>├── <span class="text-[var(--color-primary)]">进化层</span> ── 情报闭环 (日报→评估→执行→报告)</p>
+          <p>└── <span class="text-[var(--color-primary)]">决策层</span> ── L1自动 → L2专家 → L3 CEO → L4总裁</p>
+        </div>
+      </div>
+
+      <!-- Founder -->
+      <div>
+        <h2 class="text-xl font-bold text-[var(--color-accent)] mb-4 border-b border-[var(--color-accent)]/20 pb-2">刘子杨</h2>
+        <p class="text-[var(--color-text)] leading-relaxed">
+          Janus Digital 创始人/总裁，Synapse 体系设计者。专注于建筑数字化与 AI 团队管理的交叉领域，是 Harness Engineering 方法论的早期实践者。
+        </p>
+        <p class="text-[var(--color-text)] leading-relaxed mt-3">
+          在 AI Agent 管理上的核心理念：<span class="text-[var(--color-accent)]">模型人人可用，Harness 才是壁垒。</span> 总裁只需提出目标和验收结果，过程由 AI 团队全权负责。
+        </p>
+        <div class="mt-4">
+          <a href="mailto:lysanderl@janusd.io" class="text-[var(--color-primary)] hover:text-[var(--color-accent)] text-sm">lysanderl@janusd.io</a>
+        </div>
       </div>
     </div>
   </section>

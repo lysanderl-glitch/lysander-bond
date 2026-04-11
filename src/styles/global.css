@@ -1,11 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0ea5e9;
-  --color-secondary: #8b5cf6;
-  --color-accent: #06b6d4;
-  --color-dark: #0f172a;
-  --color-light: #f8fafc;
+  --color-primary: #028CDC;
+  --color-secondary: #013A7D;
+  --color-accent: #FCAD2A;
+  --color-dark: #0A1628;
+  --color-card: #111D33;
+  --color-light: #F7F8FA;
+  --color-text: #CBD5E1;
+  --color-muted: #8E95A7;
 }
 
 html {
@@ -13,15 +16,15 @@ html {
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  font-family: 'Inter', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background: linear-gradient(135deg, #0A1628 0%, #0F1D32 100%);
   min-height: 100vh;
   color: var(--color-light);
 }
 
 ::selection {
-  background: var(--color-primary);
-  color: white;
+  background: var(--color-accent);
+  color: var(--color-dark);
 }
 
 a {
@@ -29,5 +32,5 @@ a {
 }
 
 a:hover {
-  opacity: 0.8;
+  opacity: 0.85;
 }
