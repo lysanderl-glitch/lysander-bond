@@ -22,8 +22,9 @@ const {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   </head>
-  <body class="min-h-screen flex flex-col">
-    <header class="border-b border-white/10 backdrop-blur-sm bg-[var(--color-dark)]/80 sticky top-0 z-50">
+  <body class="min-h-screen flex flex-col bg-white">
+    <!-- Dark header -->
+    <header class="bg-[var(--color-dark)] sticky top-0 z-50">
       <nav class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
         <a href="/" class="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 44" width="22" height="28">
@@ -32,23 +33,25 @@ const {
             <path d="M31.87 7.93L28.1 7.52v28.57l3.77-.38V7.93Z" fill="#013A7D"/>
             <path d="M33.13 8.05v27.52c.98-.21 1.68-.77 1.68-1.51V9.55c0-.73-.7-1.29-1.68-1.5Z" fill="#028CDC"/>
           </svg>
-          <span class="text-lg font-bold text-[var(--color-accent)]">Synapse</span>
+          <span class="text-lg font-bold text-[#FCAD2A]">Synapse</span>
         </a>
         <div class="hidden md:flex gap-5 text-sm font-medium">
-          <a href="/services" class="text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">服务</a>
-          <a href="/training" class="text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">培训</a>
-          <a href="/blog" class="text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">博客</a>
-          <a href="/intelligence" class="text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">情报</a>
-          <a href="/about" class="text-[var(--color-text)] hover:text-[var(--color-accent)] transition-colors">关于</a>
+          <a href="/services" class="text-white/70 hover:text-[#FCAD2A] transition-colors">服务</a>
+          <a href="/training" class="text-white/70 hover:text-[#FCAD2A] transition-colors">培训</a>
+          <a href="/blog" class="text-white/70 hover:text-[#FCAD2A] transition-colors">博客</a>
+          <a href="/intelligence" class="text-white/70 hover:text-[#FCAD2A] transition-colors">情报</a>
+          <a href="/about" class="text-white/70 hover:text-[#FCAD2A] transition-colors">关于</a>
         </div>
       </nav>
     </header>
 
-    <main class="flex-1">
+    <!-- White main content area -->
+    <main class="flex-1 bg-white">
       <slot />
     </main>
 
-    <footer class="border-t border-white/10 bg-[var(--color-dark)]">
+    <!-- Dark footer -->
+    <footer class="bg-[var(--color-dark)]">
       <div class="max-w-5xl mx-auto px-6 py-10">
         <div class="flex flex-col md:flex-row justify-between items-start gap-8">
           <div>
@@ -59,31 +62,31 @@ const {
                 <path d="M31.87 7.93L28.1 7.52v28.57l3.77-.38V7.93Z" fill="#013A7D"/>
                 <path d="M33.13 8.05v27.52c.98-.21 1.68-.77 1.68-1.51V9.55c0-.73-.7-1.29-1.68-1.5Z" fill="#028CDC"/>
               </svg>
-              <span class="font-bold text-[var(--color-accent)]">Synapse</span>
-              <span class="text-[var(--color-muted)] text-sm">by Janus Digital</span>
+              <span class="font-bold text-[#FCAD2A]">Synapse</span>
+              <span class="text-white/40 text-sm">by Janus Digital</span>
             </div>
-            <p class="text-[var(--color-muted)] text-sm max-w-xs">AI Agent 团队协作运营体系<br>Harness Engineering 实践者</p>
+            <p class="text-white/40 text-sm max-w-xs">AI Agent 团队协作运营体系<br>Harness Engineering 实践者</p>
           </div>
           <div class="flex gap-12 text-sm">
             <div>
               <h4 class="font-semibold text-white mb-3">服务</h4>
-              <div class="flex flex-col gap-2 text-[var(--color-muted)]">
-                <a href="/services" class="hover:text-[var(--color-accent)]">Synapse Assessment</a>
-                <a href="/services" class="hover:text-[var(--color-accent)]">Synapse Implementation</a>
-                <a href="/training" class="hover:text-[var(--color-accent)]">SCP 培训认证</a>
+              <div class="flex flex-col gap-2 text-white/40">
+                <a href="/services" class="hover:text-[#FCAD2A]">Synapse Assessment</a>
+                <a href="/services" class="hover:text-[#FCAD2A]">Synapse Implementation</a>
+                <a href="/training" class="hover:text-[#FCAD2A]">SCP 培训认证</a>
               </div>
             </div>
             <div>
               <h4 class="font-semibold text-white mb-3">资源</h4>
-              <div class="flex flex-col gap-2 text-[var(--color-muted)]">
-                <a href="/blog" class="hover:text-[var(--color-accent)]">博客</a>
-                <a href="/intelligence" class="hover:text-[var(--color-accent)]">AI 情报日报</a>
-                <a href="/about" class="hover:text-[var(--color-accent)]">关于我们</a>
+              <div class="flex flex-col gap-2 text-white/40">
+                <a href="/blog" class="hover:text-[#FCAD2A]">博客</a>
+                <a href="/intelligence" class="hover:text-[#FCAD2A]">AI 情报日报</a>
+                <a href="/about" class="hover:text-[#FCAD2A]">关于我们</a>
               </div>
             </div>
           </div>
         </div>
-        <div class="border-t border-white/5 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-[var(--color-muted)] gap-2">
+        <div class="border-t border-white/5 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-white/30 gap-2">
           <p>&copy; 2026 Janus Digital. Powered by Synapse.</p>
           <p>lysanderl@janusd.io</p>
         </div>

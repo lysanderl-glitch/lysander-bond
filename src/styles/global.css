@@ -5,10 +5,13 @@
   --color-secondary: #013A7D;
   --color-accent: #FCAD2A;
   --color-dark: #0A1628;
-  --color-card: #111D33;
-  --color-light: #F7F8FA;
-  --color-text: #CBD5E1;
-  --color-muted: #8E95A7;
+  --color-card: #F7F8FA;
+  --color-light: #FFFFFF;
+  --color-text: #334155;
+  --color-text-light: #64748B;
+  --color-muted: #94A3B8;
+  --color-border: #E2E8F0;
+  --color-hero-bg: #0A1628;
 }
 
 html {
@@ -17,9 +20,9 @@ html {
 
 body {
   font-family: 'Inter', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  background: linear-gradient(135deg, #0A1628 0%, #0F1D32 100%);
+  background: var(--color-light);
   min-height: 100vh;
-  color: var(--color-light);
+  color: var(--color-text);
 }
 
 ::selection {
