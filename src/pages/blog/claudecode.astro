@@ -1,0 +1,282 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title='从"人工排查"到"AI驱动"：Claude Code 错误自愈系统最佳实践 - Lysander' description='深入理解 Harness Engineering 在 Claude Code 中的错误自愈实践'>
+  <article class="max-w-4xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <time class="text-white/40 text-sm">2026-04-07</time>
+        <div class="flex gap-2">
+                    <span class="px-2 py-0.5 bg-sky-500/20 text-sky-400 rounded text-xs">AI Engineering / Claude Code / DevOps / Self-Healing</span>
+        </div>
+      </div>
+      <h1 class="text-4xl font-bold text-white">从"人工排查"到"AI驱动"：Claude Code 错误自愈系统最佳实践</h1>
+    </header>
+
+    <div class="prose prose-invert max-w-none space-y-8 text-white/80 leading-relaxed">
+
+      <p class="text-xl text-white/60">
+        在使用 Claude Code 进行日常开发时，你是否遇到过这样的场景：
+      </p>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">npm ERR! code ENOENT
+npm ERR! syscall open /app/package.json</code></pre>
+
+      <p>于是开始：查日志、搜 Google、问同事… 20分钟过去了，问题还在。</p>
+
+      <p><strong>如果 AI 能自动分析错误并给出修复建议，甚至自动执行修复，会怎样？</strong></p>
+
+      <p>这就是 Harness Engineering 要解决的问题。</p>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">一、问题：为什么需要错误自愈系统？</h2>
+
+      <h3 class="text-xl font-semibold text-white mt-8">1.1 传统错误处理流程</h3>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">遇到错误 → 人工排查 → 搜索引擎 → 尝试修复 → 失败 → 重复
+     ↓
+   时间浪费 + 效率低下 + 知识不积累</code></pre>
+
+      <h3 class="text-xl font-semibold text-white mt-8">1.2 我们的核心诉求</h3>
+
+      <ol class="list-decimal list-inside space-y-2">
+        <li><strong>快速定位</strong>：错误发生时，快速获得专业级分析</li>
+        <li><strong>具体建议</strong>：不是泛泛的"检查一下"，而是可以直接执行的步骤</li>
+        <li><strong>自动积累</strong>：同类错误下次出现时，AI 已经"学会"了</li>
+        <li><strong>按置信度行动</strong>：高置信度自动执行，低置信度通知人工</li>
+      </ol>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">二、解决方案：Harness Self-Healing Architecture</h2>
+
+      <h3 class="text-xl font-semibold text-white mt-8">2.1 整体架构</h3>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">用户/系统  →  Webhook  →  n8n Workflow  →  Python 分析服务器  →  Claude API
+                              ↓                                        ↓
+                         Slack 通知  ←  结构化分析结果  ←  AI 决策引擎
+                              ↓
+                        知识库积累
+                              ↓
+                      置信度校准循环</code></pre>
+
+      <h3 class="text-xl font-semibold text-white mt-8">2.2 核心组件</h3>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left py-2 text-white/60">组件</th>
+              <th class="text-left py-2 text-white/60">技术选型</th>
+              <th class="text-left py-2 text-white/60">作用</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">分析引擎</td>
+              <td class="py-2">Python HTTP Server</td>
+              <td class="py-2">调用 Claude API，提供结构化分析</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">工作流</td>
+              <td class="py-2">n8n</td>
+              <td class="py-2">Webhook 路由、Slack 通知、定时任务</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">AI Provider</td>
+              <td class="py-2">Claude API (MiniMax)</td>
+              <td class="py-2">错误分析和决策</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">CLI 工具</td>
+              <td class="py-2"><code>/analyze-error</code></td>
+              <td class="py-2">Claude Code 内直接使用</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-xl font-semibold text-white mt-8">2.3 关键创新</h3>
+
+      <p><strong>1. AI 输出结构化</strong></p>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">&#123;
+  "analysis": "npm ENOENT 表示找不到 package.json",
+  "suggested_fix": "1. 确认 package.json 存在\n2. 检查 COPY 指令顺序",
+  "confidence": 0.95,
+  "auto_action": &#123;
+    "can_auto_execute": true,
+    "action_type": "cleanup"
+  &#125;
+&#125;</code></pre>
+
+      <p><strong>2. 置信度驱动决策</strong></p>
+      <ul class="list-disc list-inside space-y-2">
+        <li>≥90%：自动执行</li>
+        <li>70-89%：执行 + 监控</li>
+        <li>&lt;50%：通知人工</li>
+      </ul>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">三、技术实现细节</h2>
+
+      <h3 class="text-xl font-semibold text-white mt-8">3.1 为什么用 Python 作为中间层？</h3>
+
+      <p><strong>问题：</strong> n8n 在 Docker 环境中运行，无法直接调用 Claude API，且文件系统操作受限。</p>
+
+      <p><strong>解决：</strong> Python 服务器作为独立进程，处理所有 AI 调用和文件 IO。</p>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm"># 关键代码：禁用 thinking 模式
+api_payload = &#123;
+    "model": "claude-3-5-sonnet-20241022",
+    "max_tokens": 500,
+    "thinking": &#123;"type": "disabled"&#125;,  # 关键！
+    "messages": [&#123;"role": "user", "content": prompt&#125;]
+&#125;</code></pre>
+
+      <h3 class="text-xl font-semibold text-white mt-8">3.2 置信度如何计算？</h3>
+
+      <p>基于三个维度：</p>
+      <ol class="list-decimal list-inside space-y-2">
+        <li><strong>错误明确性</strong>：错误信息是否包含具体的错误码和上下文</li>
+        <li><strong>修复确定性</strong>：同类问题的历史成功率</li>
+        <li><strong>执行风险</strong>：操作是否可逆（删除/回滚 = 高风险，必须人工）</li>
+      </ol>
+
+      <h3 class="text-xl font-semibold text-white mt-8">3.3 知识积累机制</h3>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">每日定时扫描会话日志
+        ↓
+提取错误模式 + AI 分析结果
+        ↓
+写入月度错误日志（Markdown）
+        ↓
+用于：置信度校准 + 提示词优化</code></pre>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">四、使用示例</h2>
+
+      <h3 class="text-xl font-semibold text-white mt-8">4.1 CLI 使用（推荐）</h3>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm"># 在 Claude Code 中直接分析错误
+/analyze-error "npm ERR! code ENOENT"</code></pre>
+
+      <p><strong>输出：</strong></p>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 Harness Error Analysis
+
+📋 Error: npm ERR! code ENOENT
+
+📊 Analysis: ✅ (95% confidence)
+   npm 无法找到 package.json，通常是因为文件未复制到 Docker 镜像
+
+🔧 Suggested Fix:
+   1. 确认 package.json 存在于构建上下文
+   2. 检查 Dockerfile 的 COPY 指令顺序
+
+📁 Category: file
+🎯 Action: 🤖 Auto-executable (cleanup)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</code></pre>
+
+      <h3 class="text-xl font-semibold text-white mt-8">4.2 Webhook 调用</h3>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">curl -X POST https://your-n8n.com/webhook/harness-analyze \
+  -H "Content-Type: application/json" \
+  -d '&#123;
+    "error_message": "npm ERR! code EINTEGRITY",
+    "context": "CI pipeline",
+    "source": "github-actions"
+  &#125;'</code></pre>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">五、关键经验总结</h2>
+
+      <h3 class="text-xl font-semibold text-white mt-8">5.1 避坑指南</h3>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left py-2 text-white/60">问题</th>
+              <th class="text-left py-2 text-white/60">原因</th>
+              <th class="text-left py-2 text-white/60">解决方案</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">API 返回空 analysis</td>
+              <td class="py-2">MiniMax thinking 模式</td>
+              <td class="py-2">添加 <code>"thinking": &#123;"type": "disabled"&#125;</code></td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">JSON 被截断</td>
+              <td class="py-2">max_tokens 不足</td>
+              <td class="py-2">设置 500+</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">端口占用</td>
+              <td class="py-2">TIME_WAIT 状态</td>
+              <td class="py-2"><code>allow_reuse_address = True</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-xl font-semibold text-white mt-8">5.2 为什么选择 Claude API？</h3>
+
+      <ol class="list-decimal list-inside space-y-2">
+        <li><strong>中文理解能力强</strong>：对中文错误信息也能准确分析</li>
+        <li><strong>结构化输出稳定</strong>：JSON 格式一致性好</li>
+        <li><strong>成本可控</strong>：MiniMax 代理性价比高</li>
+      </ol>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">六、扩展性思考</h2>
+
+      <h3 class="text-xl font-semibold text-white mt-8">6.1 从错误分析到自动修复</h3>
+
+      <p>当前系统处于 <strong>Phase 1</strong>（分析 + 建议），<strong>Phase 2</strong> 将实现：</p>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">置信度 ≥ 90% + auto_action 可执行 → 自动执行
+                                              ↓
+                                        验证结果 → 记录学习</code></pre>
+
+      <h3 class="text-xl font-semibold text-white mt-8">6.2 可移植性</h3>
+
+      <p>核心组件（Python 服务器 + n8n Workflow）均可独立部署：</p>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm"># 一键安装
+curl -fsSL https://example.com/harness/install.sh | bash</code></pre>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">七、结论</h2>
+
+      <p>Harness Engineering 不是要"替代人工"，而是要"放大人工"：</p>
+
+      <ul class="list-disc list-inside space-y-2">
+        <li><strong>AI 做</strong>：重复性分析、日志解读、方案推荐</li>
+        <li><strong>人做</strong>：创造性任务、复杂决策、风险把控</li>
+      </ul>
+
+      <div class="bg-gradient-to-r from-sky-500/20 to-purple-500/20 p-6 rounded-lg mt-8">
+        <p class="text-lg text-white/90"><strong>核心价值公式：</strong></p>
+        <pre class="mt-2"><code class="text-sm">效率提升 = AI 处理 80% 的常见错误
+         + 人聚焦 20% 的复杂问题
+         + 知识自动积累</code></pre>
+      </div>
+
+    </div>
+
+    <footer class="mt-16 pt-8 border-t border-white/10">
+      <a href="/blog" class="text-sky-400 hover:text-sky-300">&larr; 返回博客</a>
+    </footer>
+  </article>
+</Layout>

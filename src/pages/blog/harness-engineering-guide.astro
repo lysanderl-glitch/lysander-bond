@@ -1,0 +1,152 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Harness Engineering 入门：AI 代理的控制框架 - Lysander" description="深入理解 Harness Engineering——让 AI 代理不再犯同一个错误的工程化方法">
+  <article class="max-w-4xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <time class="text-white/40 text-sm">2026-04-06</time>
+        <div class="flex gap-2">
+          <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">AI</span>
+          <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs">Harness Engineering</span>
+          <span class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 rounded text-xs">代理</span>
+        </div>
+      </div>
+      <h1 class="text-4xl font-bold text-white">Harness Engineering 入门：AI 代理的控制框架</h1>
+    </header>
+
+    <div class="prose prose-invert max-w-none space-y-8 text-white/80 leading-relaxed">
+
+      <p class="text-xl text-white/60">
+        Mitchell Hashimoto 在 2026 年 2 月提出了一个概念，让 AI 开发者终于有了名字来形容我们一直在做的事——<strong>Harness Engineering</strong>（控制框架工程）。
+      </p>
+
+      <blockquote class="border-l-4 border-sky-500 pl-6 italic text-white/60">
+        每当代理（Agent）犯错误时，不要只是希望它下次做得更好，而是花时间设计一个解决方案，确保它永远不再犯同样的错误。
+        <footer class="mt-2 text-sm not-italic text-white/40">— Mitchell Hashimoto</footer>
+      </blockquote>
+
+      <h2 class="text-2xl font-bold text-white mt-12">为什么需要 Harness Engineering？</h2>
+
+      <p>当 AI 编码代理承担越来越多软件生命周期的任务时，如何确保它们可靠、可预测、不会反复犯同样的错误？</p>
+
+      <p>传统的做法是反复提示（"再试一次"、"注意这个错误"），但这效率低下且不可扩展。Harness Engineering 提供了一种系统化的工程方法：</p>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="bg-white/5 p-4 rounded-lg">
+          <h3 class="font-semibold text-sky-400 mb-2">前馈（Feedforward）</h3>
+          <p class="text-sm text-white/60">行动前的引导和控制，提高首次成功率</p>
+        </div>
+        <div class="bg-white/5 p-4 rounded-lg">
+          <h3 class="font-semibold text-green-400 mb-2">反馈（Feedback）</h3>
+          <p class="text-sm text-white/60">行动后的观察和修正，支持自我纠错</p>
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-bold text-white mt-12">两大控制机制</h2>
+
+      <h3 class="text-xl font-semibold text-white mt-8">前馈：让代理第一次就做对</h3>
+
+      <p>前馈控制是在代理行动之前就给予指导，增加首次成功的概率：</p>
+
+      <ul class="list-disc list-inside space-y-2">
+        <li><strong>AGENTS.md</strong>：项目级文档，告诉代理编码规范、架构决策</li>
+        <li><strong>项目引导（Bootstrap Skills）</strong>：标准化的项目初始化流程</li>
+        <li><strong>代码规范（Code Mods）</strong>：自动化的代码转换规则</li>
+      </ul>
+
+      <div class="bg-white/5 p-4 rounded-lg mt-4">
+        <p class="text-sm text-white/60">
+          <strong class="text-sky-400">案例：</strong>Ghostty 终端项目通过 AGENTS.md，几乎完全消除了代理的不良行为。
+        </p>
+      </div>
+
+      <h3 class="text-xl font-semibold text-white mt-8">反馈：快速修正错误</h3>
+
+      <p>反馈控制是在代理行动后立即观察结果，支持自动修正：</p>
+
+      <ul class="list-disc list-inside space-y-2">
+        <li><strong>自定义 Linter</strong>：针对项目特定规则的检查</li>
+        <li><strong>定向测试</strong>：筛选特定场景的测试用例</li>
+        <li><strong>截图校验</strong>：视觉回归测试</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold text-white mt-12">两种执行类型</h2>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left py-2 text-white/60">类型</th>
+              <th class="text-left py-2 text-white/60">特点</th>
+              <th class="text-left py-2 text-white/60">示例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">计算型</td>
+              <td class="py-2">确定性、毫秒级</td>
+              <td class="py-2">测试、Linter、类型检查</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-green-400">推理型</td>
+              <td class="py-2">非确定性、语义分析</td>
+              <td class="py-2">AI 代码审查、架构检查</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-2xl font-bold text-white mt-12">三层调节架构</h2>
+
+      <div class="space-y-4">
+        <div class="bg-white/5 p-4 rounded-lg">
+          <h3 class="font-semibold text-sky-400 mb-2">1. 可维护性调节（Maintainability Harness）</h3>
+          <p class="text-sm text-white/60">结构性检查：重复代码、圈复杂度、风格违规。使用现有工具（ESLint、Prettier）</p>
+        </div>
+
+        <div class="bg-white/5 p-4 rounded-lg">
+          <h3 class="font-semibold text-green-400 mb-2">2. 架构适应性调节（Architecture Fitness Harness）</h3>
+          <p class="text-sm text-white/60">定义和检查架构特征的 Fitness Functions，确保代码结构符合预期</p>
+        </div>
+
+        <div class="bg-white/5 p-4 rounded-lg">
+          <h3 class="font-semibold text-purple-400 mb-2">3. 行为正确性调节（Behavior Harness）</h3>
+          <p class="text-sm text-white/60">功能规范作为前馈，AI 生成测试套件作为反馈（仍在成熟中）</p>
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-bold text-white mt-12">实战建议</h2>
+
+      <ol class="list-decimal list-inside space-y-2">
+        <li><strong>迭代 Harness</strong>：每次问题重复出现时，改进前馈/反馈控制</li>
+        <li><strong>质量左移</strong>：快速检查放在集成前，昂贵的传感器放在 CI 管道后期</li>
+        <li><strong>持续监控</strong>：死代码检测、测试覆盖率、运行时 SLO</li>
+        <li><strong>用 AI 构建 Harness</strong>：代理可以编写结构性测试、生成规则草稿</li>
+      </ol>
+
+      <h2 class="text-2xl font-bold text-white mt-12">与 Context Engineering 的关系</h2>
+
+      <p>Martin Fowler 指出：Harness Engineering 是 Context Engineering 在编码代理领域的具体形式。</p>
+
+      <p>Context Engineering 提供了让指南和传感器对代理可用的手段，而 Harness Engineering 则是针对编码代理的特定实现。</p>
+
+      <h2 class="text-2xl font-bold text-white mt-12">核心要点</h2>
+
+      <div class="bg-gradient-to-r from-sky-500/20 to-purple-500/20 p-6 rounded-lg">
+        <ul class="space-y-2 text-white/80">
+          <li>不要只是"再试一次"——要工程化解决方案</li>
+          <li>好的 Harness 将人类输入引导到最重要的地方</li>
+          <li>前馈 + 反馈 = 快速、高质量的结果</li>
+          <li>用 AI 代理来构建和维护 Harness 本身</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <footer class="mt-16 pt-8 border-t border-white/10">
+      <a href="/blog" class="text-sky-400 hover:text-sky-300">&larr; 返回博客</a>
+    </footer>
+  </article>
+</Layout>

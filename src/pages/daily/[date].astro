@@ -1,0 +1,81 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import fs from 'node:fs';
+
+export function getStaticPaths() {
+  return [
+    { params: { date: '2026-04-06' } },
+    { params: { date: '2026-04-05' } },
+    { params: { date: '2026-04-04' } },
+    { params: { date: '2026-04-03' } },
+  ];
+}
+
+const { date } = Astro.params;
+
+const filePath = `/home/ubuntu/knowledge-base/daily/${date}.html`;
+let content = '';
+let entries: { time: string; type: string; text: string; images: string[] }[] = [];
+
+try {
+  content = fs.readFileSync(filePath, 'utf-8');
+
+  const entryRegex = /<div class="entry[^"]*">([\s\S]*?)<\/div>\s*<\/div>/g;
+  let match;
+
+  while ((match = entryRegex.exec(content)) !== null) {
+    const entryHtml = match[1];
+    const timeMatch = entryHtml.match(/<div class="time">(\d{2}:\d{2})<\/div>/);
+    const textMatch = entryHtml.match(/<div class="text">(.*?)<\/div>/s);
+    const imgMatches = [...entryHtml.matchAll(/<img src="([^"]+)"/g)];
+
+    const time = timeMatch ? timeMatch[1] : '';
+    const text = textMatch ? textMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+    const images = imgMatches.map(m => m[1]);
+
+    const type = images.length > 0 && !text ? 'image' : text ? 'text' : '';
+
+    entries.push({ time, type, text, images });
+  }
+} catch {
+  content = '';
+}
+
+const dayNames: Record<string, string> = {
+  '01': '星期一', '02': '星期二', '03': '星期三', '04': '星期四',
+  '05': '星期五', '06': '星期六', '07': '星期日'
+};
+
+const dateParts = date!.split('-');
+const dayName = dayNames[dateParts[2]] || '';
+---
+
+<Layout title={`${date} 日记 - Lysander`} description={`${date} 的日常记录`}>
+  <article class="max-w-4xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <a href="/daily" class="text-cyan-400 hover:text-cyan-300 text-sm mb-4 inline-block">← 返回日记</a>
+      <h1 class="text-4xl font-bold text-white mt-4">{date}</h1>
+      <p class="text-white/50 mt-2">{dayName} | {entries.length} 条记录</p>
+    </header>
+
+    <div class="space-y-8">
+      {entries.map((entry) => (
+        <div class={`p-6 bg-white/5 rounded-xl border border-white/10 ${entry.type === 'image' ? 'image-only' : ''}`}>
+          {entry.time && <div class="text-white/30 text-sm mb-3">{entry.time}</div>}
+          {entry.text && <p class="text-white/80 leading-relaxed whitespace-pre-wrap">{entry.text}</p>}
+          {entry.images.length > 0 && (
+            <div class={`mt-4 ${entry.images.length > 1 ? 'grid grid-cols-2 gap-4' : ''}`}>
+              {entry.images.map((img) => (
+                <img
+                  src={`https://daily.lysander.bond/${img}`}
+                  class="rounded-lg w-full"
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </article>
+</Layout>

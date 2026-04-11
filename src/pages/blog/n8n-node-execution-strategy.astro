@@ -1,0 +1,99 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="n8n 节点执行策略 - Lysander" description="深入理解 n8n 的 executeOnce 配置">
+  <article class="max-w-4xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <time class="text-white/40 text-sm">2026-04-04</time>
+        <div class="flex gap-2">
+          <span class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 rounded text-xs">n8n</span>
+          <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">工作流</span>
+        </div>
+      </div>
+      <h1 class="text-4xl font-bold text-white">n8n 节点执行策略：executeOnce 与数据流</h1>
+    </header>
+
+    <div class="prose prose-invert max-w-none space-y-8 text-white/80 leading-relaxed">
+
+      <p class="text-xl text-white/60">
+        n8n 的节点执行逻辑和传统编程不同。理解 <code>executeOnce</code> 是掌握 n8n 工作流开发的关键。
+      </p>
+
+      <h2 class="text-2xl font-bold text-white mt-12">核心概念：节点执行次数</h2>
+      <p>
+        n8n 的数据在节点间传递时以 <strong>items</strong> 为单位。当上游节点输出多个 items 时，
+       下游节点默认会对每个 item 执行一次。
+      </p>
+
+      <div class="bg-white/5 p-4 rounded-lg">
+        <p class="font-semibold text-sky-400 mb-2">示例</p>
+        <p>"Get All Users" 节点返回 10 个用户 → 下游的 "Create Task" 节点会执行 10 次</p>
+      </div>
+
+      <h2 class="text-2xl font-bold text-white mt-12">executeOnce 的作用</h2>
+      <p>
+        当你设置 <code>executeOnce: true</code> 时，节点只执行一次，不管上游传来多少 items。
+        这在你只需要"第一个"或"汇总"数据时非常有用。
+      </p>
+
+      <div class="bg-white/5 p-4 rounded-lg">
+        <p class="font-semibold text-sky-400 mb-2">配置示例</p>
+        <p class="text-sm">在节点设置中勾选 "Execute Once" 选项即可</p>
+      </div>
+
+      <h2 class="text-2xl font-bold text-white mt-12">数据引用语法</h2>
+      <p>在 n8n 表达式中引用上游节点数据：</p>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left py-2">语法</th>
+              <th class="text-left py-2">含义</th>
+            </tr>
+          </thead>
+          <tbody class="text-white/60">
+            <tr class="border-b border-white/5">
+              <td class="py-2 font-mono">$('NodeName').first().json.field</td>
+              <td class="py-2">取第一个 item 的字段</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 font-mono">$('NodeName').item.json.field</td>
+              <td class="py-2">取当前 item 的字段</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 font-mono">$('NodeName').all()</td>
+              <td class="py-2">获取所有 items</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 class="text-2xl font-bold text-white mt-12">链式连接</h2>
+      <p>使用 <code>.to()</code> 方法链式连接节点，让代码更简洁。</p>
+
+      <h2 class="text-2xl font-bold text-white mt-12">实际工作流示例</h2>
+      <p>创建一个 Asana 任务并通知 Slack：</p>
+      <ol class="list-decimal list-inside space-y-2">
+        <li>Get All Users (executeOnce: false) → 返回所有用户</li>
+        <li>Extract Lysander ID (executeOnce: true) → 只取 Lysander</li>
+        <li>Create Asana Task → 使用提取的 User ID 创建任务</li>
+        <li>Send Slack Notification → 发送完成通知</li>
+      </ol>
+
+      <h2 class="text-2xl font-bold text-white mt-12">调试技巧</h2>
+      <ul class="list-disc list-inside space-y-2">
+        <li>双击节点查看输入/输出数据</li>
+        <li>使用 <code>Code</code> 节点打印中间变量</li>
+        <li>开启 "Test workflow" 逐步执行，观察每个节点的数据变化</li>
+      </ul>
+
+    </div>
+
+    <footer class="mt-16 pt-8 border-t border-white/10">
+      <a href="/blog" class="text-sky-400 hover:text-sky-300">&larr; 返回博客</a>
+    </footer>
+  </article>
+</Layout>

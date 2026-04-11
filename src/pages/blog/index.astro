@@ -1,0 +1,95 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const posts = [
+  {
+    slug: 'aiobsidian',
+    title: '构建AI团队协作体系：让Obsidian成为第二大脑',
+    date: '2026-04-09',
+    description: '分享如何用Obsidian构建AI团队协作体系，实现HR知识库自动化、决策体系代码级强制执行、Harness Engineering错误自愈。附完整开源体系和实施指南。',
+    tags: ['AI', '团队协作', 'Obsidian', '自动化']
+  },
+  {
+    slug: 'ai',
+    title: '从原则失效到自动化决策：AI决策体系的构建之路',
+    date: '2026-04-09',
+    description: "如何通过代码级强制机制解决团队协作中'原则建立却频繁失效'的问题，建立起Lysander+智囊团的自动化决策体系。",
+    tags: ['AI', '决策系统', '自动化', '产品笔记']
+  },
+  {
+    slug: 'claude-code-knowledge-extraction',
+    title: '如何用AI打造"第二大脑"：Claude Code对话知识提取实战',
+    date: '2026-04-08',
+    description: '分享如何基于Claude Code构建对话知识提取系统，实现AI辅助的个人知识管理',
+    tags: ['AI', '知识管理', 'Claude', '第二大脑', 'Software 2.0']
+  },
+  {
+    slug: 'claudecode',
+    title: 'Claude-Code-错误自愈系统-最佳实践',
+    date: '2026-04-07',
+    description: 'Claude-Code-错误自愈系统-最佳实践',
+    tags: ['AI']
+  },
+  {
+    slug: 'harness-engineering-guide',
+    title: 'Harness Engineering 入门：AI 代理的控制框架',
+    date: '2026-04-06',
+    description: '深入理解 Harness Engineering——让 AI 代理不再犯同一个错误的工程化方法',
+    tags: ['AI', 'Harness Engineering', '代理']
+  },
+  {
+    slug: 'claude-code-wechat-integration',
+    title: 'Claude Code + 微信接入：AI 对话新姿势',
+    date: '2026-04-06',
+    description: '通过 cc-connect 将 Claude Code 接入微信，实现随时随地的 AI 对话体验',
+    tags: ['Claude Code', '微信', 'cc-connect']
+  },
+  {
+    slug: 'claude-code-mcp-setup',
+    title: 'Claude Code MCP 扩展配置指南',
+    date: '2026-04-05',
+    description: '通过 MCP 协议扩展 Claude Code 能力，接入 Notion 等工具',
+    tags: ['Claude Code', 'MCP', 'Notion']
+  },
+  {
+    slug: 'n8n-node-execution-strategy',
+    title: 'n8n 节点执行策略：executeOnce 与数据流',
+    date: '2026-04-04',
+    description: '深入理解 n8n 的 executeOnce 配置，掌握工作流数据处理核心概念',
+    tags: ['n8n', '工作流', '自动化']
+  },
+  {
+    slug: 'asana-slack-n8n-automation',
+    title: 'Asana + Slack + n8n 自动化：完整实战',
+    date: '2026-04-03',
+    description: '从项目启动到工序创建，实现完整的项目管理自动化方案',
+    tags: ['Asana', 'Slack', 'n8n', '自动化']
+  }
+];
+---
+
+<Layout title="博客 - Lysander" description="AI 应用与 Claude Code 经验分享">
+  <section class="max-w-4xl mx-auto px-6 py-16">
+    <h1 class="text-4xl font-bold text-white mb-4">博客</h1>
+    <p class="text-white/60 mb-12">关于 AI 工具、Claude Code 使用心得、技术探索</p>
+
+    <div class="space-y-6">
+      {posts.map((post) => (
+        <a href={`/blog/${post.slug}`} class="group block p-6 bg-white/5 rounded-xl border border-white/10 hover:border-sky-500/50 transition-colors">
+          <div class="flex items-center gap-3 mb-3">
+            <time class="text-white/40 text-sm">{post.date}</time>
+            <div class="flex gap-2">
+              {post.tags.map((tag) => (
+                <span class="px-2 py-0.5 bg-sky-500/20 text-sky-400 rounded text-xs">{tag}</span>
+              ))}
+            </div>
+          </div>
+          <h2 class="text-xl font-semibold text-white group-hover:text-sky-400 transition-colors">
+            {post.title}
+          </h2>
+          <p class="text-white/50 mt-2">{post.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

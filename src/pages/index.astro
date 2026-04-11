@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Lysander - AI 应用与 Claude Code 经验分享">
+  <section class="max-w-4xl mx-auto px-6 py-20">
+    <div class="text-center space-y-6">
+      <h1 class="text-5xl md:text-6xl font-bold">
+        <span class="bg-gradient-to-r from-sky-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
+          探索 AI
+        </span>
+        <br />
+        <span class="text-white">每一次交互都是成长</span>
+      </h1>
+      <p class="text-xl text-white/70 max-w-2xl mx-auto leading-relaxed">
+        记录使用 Claude Code 和各类 AI 工具的实践心得，
+        分享在迪拜的日常生活与思考。
+      </p>
+      <div class="flex gap-4 justify-center pt-4">
+        <a
+          href="/blog"
+          class="px-8 py-3 bg-gradient-to-r from-sky-500 to-cyan-500 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+        >
+          阅读博客
+        </a>
+        <a
+          href="/about"
+          class="px-8 py-3 border border-white/20 rounded-lg font-semibold hover:bg-white/5 transition-colors"
+        >
+          关于我
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-4xl mx-auto px-6 py-16">
+    <h2 class="text-2xl font-bold text-white mb-8">最新文章</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+      <a href="/blog" class="group p-6 bg-white/5 rounded-xl border border-white/10 hover:border-sky-500/50 transition-colors">
+        <h3 class="text-lg font-semibold text-white group-hover:text-sky-400 transition-colors">
+          博客文章
+        </h3>
+        <p class="text-white/50 text-sm mt-2">
+          AI 工具使用心得、效率提升技巧、技术探索...
+        </p>
+      </a>
+      <a href="/daily" class="group p-6 bg-white/5 rounded-xl border border-white/10 hover:border-cyan-500/50 transition-colors">
+        <h3 class="text-lg font-semibold text-white group-hover:text-cyan-400 transition-colors">
+          日常记录
+        </h3>
+        <p class="text-white/50 text-sm mt-2">
+          生活随笔、工作记录、有趣的瞬间...
+        </p>
+      </a>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,250 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title='如何用AI打造"第二大脑"：Claude Code对话知识提取实战 - Lysander' description='分享如何基于Claude Code构建对话知识提取系统，实现AI辅助的个人知识管理'>
+  <article class="max-w-4xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <time class="text-white/40 text-sm">2026-04-08</time>
+        <div class="flex gap-2">
+          <span class="px-2 py-0.5 bg-sky-500/20 text-sky-400 rounded text-xs">AI / 知识管理 / Claude / 第二大脑 / Software 2.0</span>
+        </div>
+      </div>
+      <h1 class="text-4xl font-bold text-white">如何用AI打造"第二大脑"：Claude Code对话知识提取实战</h1>
+    </header>
+
+    <div class="prose prose-invert max-w-none space-y-8 text-white/80 leading-relaxed">
+
+      <p class="text-xl text-white/60">
+        每天与Claude Code的对话中，蕴含着大量有价值的知识：决策过程、问题解决方案，学习心得、项目经验。然而这些知识往往随着对话结束而流失。
+      </p>
+
+      <p>本文分享如何构建一套基于AI的对话知识提取系统，让每一次对话都成为"第二大脑"的养料。</p>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">一、背景与问题</h2>
+
+      <h3 class="text-xl font-semibold text-white mt-8">1.1 核心问题</h3>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">每天对话 → 知识流失 ❌
+     ↓
+我们需要：自动提取 → 分类存储 → 持续学习</code></pre>
+
+      <h3 class="text-xl font-semibold text-white mt-8">1.2 Software 2.0 理念</h3>
+
+      <p>传统知识管理（Software 1.0）依赖人工标注和分类，而Software 2.0让AI从对话数据中自动学习隐式规则：</p>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left py-2 text-white/60">维度</th>
+              <th class="text-left py-2 text-white/60">Software 1.0</th>
+              <th class="text-left py-2 text-white/60">Software 2.0</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">标签管理</td>
+              <td class="py-2">人工定义</td>
+              <td class="py-2">AI从使用模式学习</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">知识关联</td>
+              <td class="py-2">手动建立</td>
+              <td class="py-2">AI自动发现关联</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">检索方式</td>
+              <td class="py-2">关键词匹配</td>
+              <td class="py-2">语义理解</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">二、技术方案</h2>
+
+      <h3 class="text-xl font-semibold text-white mt-8">2.1 架构设计</h3>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">┌─────────────────────────────────────────────┐
+│        Claude Code 对话知识提取系统           │
+├─────────────────────────────────────────────┤
+│                                             │
+│   对话数据 ──→ 知识提取 ──→ 自动分类 ──→ 存储 │
+│      ↑                                       │
+│      └─────────── AI持续学习 ←─────────────┘ │
+│                                             │
+│   每天23:00自动执行，数据闭环运转              │
+└─────────────────────────────────────────────┘</code></pre>
+
+      <h3 class="text-xl font-semibold text-white mt-8">2.2 关键实现</h3>
+
+      <p><strong>1. 全量对话提取</strong></p>
+      <p>从Claude Code的.jsonl对话文件中提取完整对话记录，覆盖率达100%（vs 传统daily-record方案的0.2%）。</p>
+
+      <p><strong>2. 智能噪音过滤</strong></p>
+      <p>过滤系统级噪音，保留用户真实意图：</p>
+      <ul class="list-disc list-inside space-y-2">
+        <li>移除system-reminder、tool result等</li>
+        <li>保留用户原始文本和真实需求</li>
+      </ul>
+
+      <p><strong>3. 意图分类</strong></p>
+      <p>从对话中自动识别5类高价值知识：</p>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left py-2 text-white/60">类型</th>
+              <th class="text-left py-2 text-white/60">描述</th>
+              <th class="text-left py-2 text-white/60">识别关键词</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">决策</td>
+              <td class="py-2">批准、方案确定</td>
+              <td class="py-2">同意、开始执行</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">概念</td>
+              <td class="py-2">新知识、新方法</td>
+              <td class="py-2">Software 2.0、Graphify</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">问题</td>
+              <td class="py-2">遇到的问题及解决</td>
+              <td class="py-2">错误、修复、排查</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">学习</td>
+              <td class="py-2">新学到的东西</td>
+              <td class="py-2">理解、掌握、关键</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2 text-sky-400">项目</td>
+              <td class="py-2">项目相关事项</td>
+              <td class="py-2">Butler、lysander</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">三、实施效果</h2>
+
+      <h3 class="text-xl font-semibold text-white mt-8">3.1 知识沉淀统计</h3>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-white/10">
+              <th class="text-left py-2 text-white/60">日期</th>
+              <th class="text-left py-2 text-white/60">对话消息</th>
+              <th class="text-left py-2 text-white/60">高价值知识</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-white/5">
+              <td class="py-2">04-05</td>
+              <td class="py-2">10</td>
+              <td class="py-2">4</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2">04-06</td>
+              <td class="py-2">110</td>
+              <td class="py-2">41</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2">04-07</td>
+              <td class="py-2">101</td>
+              <td class="py-2">44</td>
+            </tr>
+            <tr class="border-b border-white/5">
+              <td class="py-2">04-08</td>
+              <td class="py-2">63</td>
+              <td class="py-2">36</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="text-xl font-semibold text-white mt-8">3.2 知识分类示例</h3>
+
+      <p><strong>决策类：</strong></p>
+      <ul class="list-disc list-inside space-y-2">
+        <li>lysander领导OBS知识团队制定实施方案</li>
+        <li>决定构建多agent协作体系</li>
+      </ul>
+
+      <p><strong>概念类：</strong></p>
+      <ul class="list-disc list-inside space-y-2">
+        <li>Agent管家+集群+决策系统设计</li>
+        <li>Software 2.0与Graphify策略</li>
+      </ul>
+
+      <p><strong>问题类：</strong></p>
+      <ul class="list-disc list-inside space-y-2">
+        <li>n8n webhook错误处理</li>
+        <li>微信公众号样式适配</li>
+      </ul>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">四、自动化闭环</h2>
+
+      <pre class="bg-white/5 p-4 rounded-lg overflow-x-auto"><code class="text-sm">┌─────────────────────────────────────┐
+│         每日23:00自动触发            │
+├─────────────────────────────────────┤
+│                                     │
+│  1. 扫描全量对话.jsonl文件          │
+│  2. 提取用户意图和知识               │
+│  3. 分类存储到OBS知识库              │
+│  4. AI持续学习用户偏好              │
+│                                     │
+└─────────────────────────────────────┘</code></pre>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">五、工具链</h2>
+
+      <ul class="list-disc list-inside space-y-2">
+        <li><strong>Claude Code</strong>：对话主体</li>
+        <li><strong>Python脚本</strong>：对话解析与知识提取</li>
+        <li><strong>Obsidian</strong>：知识库存储</li>
+        <li><strong>n8n</strong>：自动化工作流</li>
+        <li><strong>Lysander</strong>：AI管理层（CEO角色）</li>
+      </ul>
+
+      <hr />
+
+      <h2 class="text-2xl font-bold text-white mt-12">六、总结</h2>
+
+      <p>通过这套系统，我们实现了：</p>
+
+      <ol class="list-decimal list-inside space-y-2">
+        <li><strong>100%对话覆盖</strong>：不再遗漏任何有价值的对话</li>
+        <li><strong>自动知识沉淀</strong>：从被动记录到主动提取</li>
+        <li><strong>Software 2.0闭环</strong>：AI从数据中学习，持续优化</li>
+      </ol>
+
+      <div class="bg-gradient-to-r from-sky-500/20 to-purple-500/20 p-6 rounded-lg mt-8">
+        <p class="text-lg text-white/90"><strong>核心价值：</strong></p>
+        <pre class="mt-2"><code class="text-sm">每一次对话都是一次学习
+每一天都在让"第二大脑"更加聪明</code></pre>
+      </div>
+
+    </div>
+
+    <footer class="mt-16 pt-8 border-t border-white/10">
+      <a href="/blog" class="text-sky-400 hover:text-sky-300">&larr; 返回博客</a>
+    </footer>
+  </article>
+</Layout>
