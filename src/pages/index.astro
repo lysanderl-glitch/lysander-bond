@@ -6,10 +6,10 @@ import Layout from '../layouts/Layout.astro';
 
   <!-- ════ Hero: Dark with background image ════ -->
   <section class="text-white relative overflow-hidden" style="min-height:520px;">
-    <!-- Background image with overlay -->
+    <!-- Custom SVG illustration background -->
     <div class="absolute inset-0">
-      <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=1920&q=80&auto=format" alt="" class="w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-gradient-to-r from-[#0A1628]/95 via-[#0A1628]/85 to-[#0A1628]/70"></div>
+      <img src="/illustrations/hero-team.svg" alt="Synapse Team Structure" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-[#0A1628]/80 via-[#0A1628]/50 to-transparent"></div>
     </div>
 
     <div class="max-w-5xl mx-auto px-6 pt-20 pb-16 relative z-10">
@@ -68,11 +68,9 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
-  <!-- ════ Guides + Sensors with background image ════ -->
+  <!-- ════ Guides + Sensors ════ -->
   <section class="relative py-14 overflow-hidden">
-    <div class="absolute inset-0">
-      <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80&auto=format" alt="" class="w-full h-full object-cover opacity-[0.03]" />
-    </div>
+    <div class="synapse-bg"></div>
     <div class="max-w-5xl mx-auto px-6 relative z-10">
       <h2 class="text-2xl font-bold text-[var(--color-text)] mb-8 text-center">Harness 如何让 AI Agent 可靠运转</h2>
       <div class="grid md:grid-cols-2 gap-6">
@@ -113,10 +111,7 @@ import Layout from '../layouts/Layout.astro';
   <div class="glow-line max-w-5xl mx-auto"></div>
 
   <!-- ════ Services ════ -->
-  <section class="py-14 relative overflow-hidden">
-    <div class="absolute inset-0">
-      <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80&auto=format" alt="" class="w-full h-full object-cover opacity-[0.03]" />
-    </div>
+  <section class="bg-[#F7F8FA] py-14 relative texture-light">
     <div class="max-w-5xl mx-auto px-6 relative z-10">
       <h2 class="text-2xl font-bold text-[var(--color-text)] mb-2 text-center">我们提供什么</h2>
       <p class="text-[var(--color-muted)] text-center mb-8">从诊断到落地到持续进化</p>
@@ -176,7 +171,12 @@ import Layout from '../layouts/Layout.astro';
           <div class="w-full bg-[#F7F8FA] rounded-full h-1.5 mt-3"><div class="bg-[#013A7D] h-1.5 rounded-full" style="width:100%"></div></div>
         </div>
       </div>
-      <div class="mt-10 bg-white border-l-4 border-[#FCAD2A] rounded-r-xl p-6 card-glow">
+      <!-- Expert review illustration -->
+      <div class="mt-10 bg-white rounded-xl border border-[var(--color-border)] p-4 card-glow">
+        <img src="/illustrations/expert-review.svg" alt="Synapse Expert Review Panel" class="w-full rounded-lg" style="max-height:300px; object-fit:contain;" />
+      </div>
+
+      <div class="mt-6 bg-white border-l-4 border-[#FCAD2A] rounded-r-xl p-6 card-glow">
         <p class="text-[var(--color-text)] text-lg italic leading-relaxed">
           "从全员 64.1 分到 93.8 分，不合格人数从 11 降到 0 — 不是换了更好的模型，而是建立了 Harness 管理体系。"
         </p>
@@ -187,11 +187,8 @@ import Layout from '../layouts/Layout.astro';
 
   <div class="glow-line max-w-5xl mx-auto"></div>
 
-  <!-- ════ Daily Pipeline with background ════ -->
-  <section class="py-14 relative overflow-hidden">
-    <div class="absolute inset-0">
-      <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=80&auto=format" alt="" class="w-full h-full object-cover opacity-[0.02]" />
-    </div>
+  <!-- ════ Daily Pipeline ════ -->
+  <section class="py-14 relative">
     <div class="max-w-5xl mx-auto px-6 relative z-10">
       <h2 class="text-2xl font-bold text-[var(--color-text)] mb-2 text-center">每天自动运转，无需人工启动</h2>
       <p class="text-[var(--color-muted)] text-center mb-8">总裁只在 Slack 上收到最终结果通知</p>
@@ -244,9 +241,8 @@ import Layout from '../layouts/Layout.astro';
   <!-- ════ CTA ════ -->
   <section class="py-16">
     <div class="max-w-5xl mx-auto px-6">
-      <div class="relative rounded-2xl overflow-hidden" style="min-height:200px;">
-        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80&auto=format" alt="" class="absolute inset-0 w-full h-full object-cover" />
-        <div class="absolute inset-0 bg-gradient-to-r from-[#0A1628]/90 to-[#013A7D]/85"></div>
+      <div class="relative rounded-2xl overflow-hidden bg-[var(--color-dark)]">
+        <div class="glow-gold" style="top:-150px;left:50%;transform:translateX(-50%);opacity:0.4;"></div>
         <div class="relative z-10 p-10 text-center">
           <h2 class="text-2xl font-bold text-white mb-3">准备好构建你的 AI 团队了吗？</h2>
           <p class="text-white/50 mb-6 text-sm max-w-lg mx-auto">从 2 天评估诊断开始，了解你的 AI 管理现状，获得定制化的 Synapse 落地路线图。</p>
