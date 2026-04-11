@@ -5,6 +5,7 @@
   --color-secondary: #013A7D;
   --color-accent: #FCAD2A;
   --color-dark: #0A1628;
+  --color-dark2: #0d1f3c;
   --color-card: #F7F8FA;
   --color-light: #FFFFFF;
   --color-text: #334155;
@@ -13,9 +14,7 @@
   --color-border: #E2E8F0;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Inter', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -24,72 +23,111 @@ body {
   color: var(--color-text);
 }
 
-::selection {
-  background: var(--color-accent);
-  color: var(--color-dark);
-}
-
+::selection { background: var(--color-accent); color: var(--color-dark); }
 a { transition: all 0.2s ease; }
 a:hover { opacity: 0.85; }
 
-/* ── Decorative Elements ── */
+/* ══ Borrowed from operation.html — Enhanced visual effects ══ */
 
-/* Glow orb: brand-colored blur behind hero */
+/* Scanline overlay for dark sections */
+.scanlines::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(2,140,220,0.02) 3px, rgba(2,140,220,0.02) 4px);
+  pointer-events: none; z-index: 1;
+}
+
+/* Glow orbs - VISIBLE (opacity from operation.html reference) */
 .glow-gold {
   position: absolute;
   width: 500px; height: 500px;
   background: radial-gradient(circle, rgba(252,173,42,0.25) 0%, rgba(252,173,42,0.08) 40%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
+  border-radius: 50%; pointer-events: none;
   filter: blur(60px);
 }
 .glow-cyan {
   position: absolute;
   width: 450px; height: 450px;
   background: radial-gradient(circle, rgba(2,141,220,0.2) 0%, rgba(2,141,220,0.06) 40%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
+  border-radius: 50%; pointer-events: none;
   filter: blur(60px);
 }
 
-/* Grid dot pattern (Linear-style) — visible */
+/* Grid dots - inspired by Linear, tuned for visibility */
 .grid-dots {
   position: absolute; inset: 0;
-  background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
   background-size: 28px 28px;
   pointer-events: none;
 }
 
-/* Noise texture for sections — visible */
-.texture-noise {
-  position: relative;
-}
-.texture-noise::before {
-  content: "";
-  position: absolute; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Gradient divider between sections */
-.gradient-divider {
+/* Glowing divider - from operation.html */
+.glow-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--color-border) 20%, var(--color-border) 80%, transparent 100%);
+  background: linear-gradient(90deg, transparent, var(--color-primary), var(--color-accent), transparent);
+  opacity: 0.4;
 }
 
-/* Synapse node connection lines (brand metaphor) */
+/* Card glow border on hover - from operation.html expert-card */
+.card-glow {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(2,140,220,0.12);
+}
+
+/* Accent top border on cards - from operation.html expert-card::before */
+.accent-top-gold { border-top: 3px solid var(--color-accent); }
+.accent-top-cyan { border-top: 3px solid var(--color-primary); }
+.accent-top-blue { border-top: 3px solid var(--color-secondary); }
+
+/* Score pill badges - from operation.html */
+.score-pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 3px 12px; border-radius: 99px;
+  font-weight: 700; font-size: 12px;
+  font-family: 'Inter', monospace;
+}
+.pill-gold { background: rgba(252,173,42,0.12); color: var(--color-accent); border: 1px solid rgba(252,173,42,0.25); }
+.pill-cyan { background: rgba(2,140,220,0.12); color: var(--color-primary); border: 1px solid rgba(2,140,220,0.25); }
+.pill-blue { background: rgba(1,58,125,0.12); color: var(--color-secondary); border: 1px solid rgba(1,58,125,0.25); }
+
+/* Pulse animation for hero elements - from operation.html tl-dot */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(252,173,42,0.3); }
+  50% { box-shadow: 0 0 35px rgba(252,173,42,0.6); }
+}
+.pulse { animation: pulse-glow 3s ease infinite; }
+
+/* Fade in up animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate { animation: fadeInUp 0.6s ease both; }
+
+/* Synapse background gradient for white sections */
 .synapse-bg {
   position: absolute; inset: 0; overflow: hidden; pointer-events: none;
 }
 .synapse-bg::before {
   content: "";
-  position: absolute;
-  top: 5%; left: 5%;
-  width: 90%; height: 90%;
+  position: absolute; top: 5%; left: 5%; width: 90%; height: 90%;
   background:
-    radial-gradient(circle at 15% 25%, rgba(252,173,42,0.1) 0%, transparent 45%),
-    radial-gradient(circle at 85% 75%, rgba(2,141,220,0.1) 0%, transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(1,58,125,0.06) 0%, transparent 55%);
+    radial-gradient(circle at 15% 25%, rgba(252,173,42,0.06) 0%, transparent 45%),
+    radial-gradient(circle at 85% 75%, rgba(2,141,220,0.06) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(1,58,125,0.04) 0%, transparent 55%);
   pointer-events: none;
+}
+
+/* Light texture for gray sections */
+.texture-light {
+  position: relative;
+}
+.texture-light::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
 }

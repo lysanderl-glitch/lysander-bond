@@ -4,8 +4,8 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout title="Synapse — AI Agent 团队协作运营体系 | Janus Digital">
 
-  <!-- ════ Hero: Dark + Glow + Grid ════ -->
-  <section class="bg-[var(--color-dark)] text-white relative overflow-hidden">
+  <!-- ════ Hero: Dark + Scanlines + Glow + Grid ════ -->
+  <section class="bg-[var(--color-dark)] text-white relative overflow-hidden scanlines">
     <!-- Decorative layers -->
     <div class="grid-dots"></div>
     <div class="glow-gold" style="top:-100px;right:-50px;"></div>
@@ -107,7 +107,7 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
-  <div class="gradient-divider max-w-5xl mx-auto"></div>
+  <div class="glow-line max-w-5xl mx-auto"></div>
 
   <!-- ════ Services ════ -->
   <section class="bg-[#F7F8FA] py-14 texture-noise relative">
@@ -115,27 +115,27 @@ import Layout from '../layouts/Layout.astro';
       <h2 class="text-2xl font-bold text-[var(--color-text)] mb-2 text-center">我们提供什么</h2>
       <p class="text-[var(--color-muted)] text-center mb-8">从诊断到落地到持续进化</p>
       <div class="grid md:grid-cols-3 gap-6">
-        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] shadow-sm hover:shadow-lg hover:border-[#FCAD2A]/30 transition-all">
+        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow accent-top-gold">
           <div class="w-12 h-12 rounded-xl bg-[#FCAD2A]/10 flex items-center justify-center mb-4 group-hover:bg-[#FCAD2A]/20 transition-colors">
             <svg viewBox="0 0 24 24" class="w-6 h-6 text-[#FCAD2A]" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </div>
-          <div class="text-xs font-bold text-[#FCAD2A] mb-2">$5K-$10K · 2天</div>
+          <div class="mb-2"><span class="pill-gold">$5K-$10K · 2天</span></div>
           <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Synapse Assessment</h3>
           <p class="text-[var(--color-text-light)] text-sm leading-relaxed">AI 成熟度诊断，对标 Harness Engineering 行业标准，输出定制化落地路线图。</p>
         </div>
-        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] shadow-sm hover:shadow-lg hover:border-[#028CDC]/30 transition-all">
+        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow accent-top-cyan">
           <div class="w-12 h-12 rounded-xl bg-[#028CDC]/10 flex items-center justify-center mb-4 group-hover:bg-[#028CDC]/20 transition-colors">
             <svg viewBox="0 0 24 24" class="w-6 h-6 text-[#028CDC]" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
           </div>
-          <div class="text-xs font-bold text-[#028CDC] mb-2">$30K-$80K · 2-4周</div>
+          <div class="mb-2"><span class="pill-cyan">$30K-$80K · 2-4周</span></div>
           <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Synapse Implementation</h3>
           <p class="text-[var(--color-text-light)] text-sm leading-relaxed">完整体系落地：执行链、决策体系、Agent 团队、情报系统、HR 审计全套交付。</p>
         </div>
-        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] shadow-sm hover:shadow-lg hover:border-[#013A7D]/30 transition-all">
+        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow accent-top-blue">
           <div class="w-12 h-12 rounded-xl bg-[#013A7D]/10 flex items-center justify-center mb-4 group-hover:bg-[#013A7D]/20 transition-colors">
             <svg viewBox="0 0 24 24" class="w-6 h-6 text-[#013A7D]" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           </div>
-          <div class="text-xs font-bold text-[#013A7D] mb-2">$500-$15K</div>
+          <div class="mb-2"><span class="pill-blue">$500-$15K</span></div>
           <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">SCP 培训认证</h3>
           <p class="text-[var(--color-text-light)] text-sm leading-relaxed">8小时理论+实操，学员带走一套可运行的 AI Agent 运营体系。</p>
         </div>
@@ -181,7 +181,7 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 
-  <div class="gradient-divider max-w-5xl mx-auto"></div>
+  <div class="glow-line max-w-5xl mx-auto"></div>
 
   <!-- ════ Daily Pipeline: Visual flow with glow ════ -->
   <section class="bg-[#F7F8FA] py-14 relative texture-noise">
@@ -238,7 +238,7 @@ import Layout from '../layouts/Layout.astro';
   <!-- ════ CTA: Dark with glow ════ -->
   <section class="py-16">
     <div class="max-w-5xl mx-auto px-6">
-      <div class="bg-[var(--color-dark)] rounded-2xl p-10 text-center relative overflow-hidden">
+      <div class="bg-[var(--color-dark)] rounded-2xl p-10 text-center relative overflow-hidden scanlines">
         <div class="glow-gold" style="top:-150px;left:50%;transform:translateX(-50%);opacity:0.5;"></div>
         <div class="relative z-10">
           <h2 class="text-2xl font-bold text-white mb-3">准备好构建你的 AI 团队了吗？</h2>
