@@ -6,10 +6,10 @@ import Layout from '../layouts/Layout.astro';
 
   <!-- ════ Hero: Dark with background image ════ -->
   <section class="text-white relative overflow-hidden" style="min-height:520px;">
-    <!-- Custom SVG illustration background -->
+    <!-- Imagen 4.0 illustration background -->
     <div class="absolute inset-0">
-      <img src="/illustrations/hero-team.svg" alt="Synapse Team Structure" class="w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-gradient-to-r from-[#0A1628]/80 via-[#0A1628]/50 to-transparent"></div>
+      <img src="/illustrations/scene-1-team.png" alt="Synapse AI Team" class="w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-[#0A1628]/85 via-[#0A1628]/60 to-[#0A1628]/40"></div>
     </div>
 
     <div class="max-w-5xl mx-auto px-6 pt-20 pb-16 relative z-10">
@@ -72,7 +72,10 @@ import Layout from '../layouts/Layout.astro';
   <section class="relative py-14 overflow-hidden">
     <div class="synapse-bg"></div>
     <div class="max-w-5xl mx-auto px-6 relative z-10">
-      <h2 class="text-2xl font-bold text-[var(--color-text)] mb-8 text-center">Harness 如何让 AI Agent 可靠运转</h2>
+      <h2 class="text-2xl font-bold text-[var(--color-text)] mb-3 text-center">Harness 如何让 AI Agent 可靠运转</h2>
+      <div class="mb-8 rounded-xl overflow-hidden border border-[var(--color-border)]">
+        <img src="/illustrations/scene-6-harness.png" alt="Harness Engineering Framework" class="w-full" style="max-height:280px; object-fit:cover;" />
+      </div>
       <div class="grid md:grid-cols-2 gap-6">
         <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow accent-top-gold">
           <div class="flex items-center gap-3 mb-4">
@@ -172,8 +175,8 @@ import Layout from '../layouts/Layout.astro';
         </div>
       </div>
       <!-- Expert review illustration -->
-      <div class="mt-10 bg-white rounded-xl border border-[var(--color-border)] p-4 card-glow">
-        <img src="/illustrations/expert-review.svg" alt="Synapse Expert Review Panel" class="w-full rounded-lg" style="max-height:300px; object-fit:contain;" />
+      <div class="mt-10 bg-white rounded-xl border border-[var(--color-border)] p-4 card-glow overflow-hidden">
+        <img src="/illustrations/scene-2-review.png" alt="Synapse Expert Review Panel" class="w-full rounded-lg" style="max-height:360px; object-fit:cover;" />
       </div>
 
       <div class="mt-6 bg-white border-l-4 border-[#FCAD2A] rounded-r-xl p-6 card-glow">
@@ -191,7 +194,10 @@ import Layout from '../layouts/Layout.astro';
   <section class="py-14 relative">
     <div class="max-w-5xl mx-auto px-6 relative z-10">
       <h2 class="text-2xl font-bold text-[var(--color-text)] mb-2 text-center">每天自动运转，无需人工启动</h2>
-      <p class="text-[var(--color-muted)] text-center mb-8">总裁只在 Slack 上收到最终结果通知</p>
+      <p class="text-[var(--color-muted)] text-center mb-4">总裁只在 Slack 上收到最终结果通知</p>
+      <div class="mb-8 rounded-xl overflow-hidden border border-[var(--color-border)]">
+        <img src="/illustrations/scene-4-pipeline.png" alt="Daily Automation Pipeline" class="w-full" style="max-height:260px; object-fit:cover;" />
+      </div>
       <div class="grid md:grid-cols-4 gap-4">
         <div class="group relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center card-glow">
           <div class="w-10 h-10 rounded-full bg-[#FCAD2A]/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-[#FCAD2A]/20 transition-colors">
@@ -241,8 +247,9 @@ import Layout from '../layouts/Layout.astro';
   <!-- ════ CTA ════ -->
   <section class="py-16">
     <div class="max-w-5xl mx-auto px-6">
-      <div class="relative rounded-2xl overflow-hidden bg-[var(--color-dark)]">
-        <div class="glow-gold" style="top:-150px;left:50%;transform:translateX(-50%);opacity:0.4;"></div>
+      <div class="relative rounded-2xl overflow-hidden">
+        <img src="/illustrations/scene-7-cta.png" alt="Partnership" class="absolute inset-0 w-full h-full object-cover" />
+        <div class="absolute inset-0 bg-gradient-to-r from-[#0A1628]/85 to-[#013A7D]/80"></div>
         <div class="relative z-10 p-10 text-center">
           <h2 class="text-2xl font-bold text-white mb-3">准备好构建你的 AI 团队了吗？</h2>
           <p class="text-white/50 mb-6 text-sm max-w-lg mx-auto">从 2 天评估诊断开始，了解你的 AI 管理现状，获得定制化的 Synapse 落地路线图。</p>
