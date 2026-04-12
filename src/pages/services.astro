@@ -6,7 +6,25 @@ import Layout from '../layouts/Layout.astro';
   <section class="max-w-4xl mx-auto px-6 py-20">
     <p class="text-sm font-semibold tracking-widest text-[#FCAD2A] uppercase mb-4">SERVICES</p>
     <h1 class="text-4xl font-extrabold text-[var(--color-text)] mb-4">让你的 AI 团队真正可靠地运转</h1>
-    <p class="text-[var(--color-text-light)] text-lg mb-12">基于 Harness Engineering 方法论，我们帮你从零搭建或优化现有的 AI Agent 管理体系。</p>
+    <p class="text-[var(--color-text-light)] text-lg mb-6">基于 Harness Engineering 方法论，帮你从零搭建或优化 AI Agent 管理体系。</p>
+
+    <!-- Product preview: browser mockup -->
+    <div class="mb-12 rounded-xl overflow-hidden border border-[var(--color-border)] shadow-md">
+      <div class="bg-[#f0f0f0] px-4 py-2 flex items-center gap-2 border-b border-[#e0e0e0]">
+        <div class="flex gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-[#ff5f57]"></div><div class="w-2.5 h-2.5 rounded-full bg-[#febc2e]"></div><div class="w-2.5 h-2.5 rounded-full bg-[#28c840]"></div></div>
+        <div class="flex-1 mx-3"><div class="bg-white rounded px-3 py-0.5 text-[10px] text-[#999] text-center">synapse — implementation pipeline</div></div>
+      </div>
+      <div class="bg-[#0A1628] p-5 text-xs font-mono text-white/60 leading-relaxed">
+        <p class="text-[#FCAD2A] mb-2">$ synapse assess --team-audit</p>
+        <p>Scanning 10 teams, 50 agents...</p>
+        <p>├── Graphify Think Tank: <span class="text-[#28c840]">96.0/100 ✓</span></p>
+        <p>├── Harness Ops:        <span class="text-[#28c840]">95.5/100 ✓</span></p>
+        <p>├── HR Management:      <span class="text-[#28c840]">94.5/100 ✓</span></p>
+        <p>├── RD Team:            <span class="text-[#28c840]">92.8/100 ✓</span></p>
+        <p>└── All teams:          <span class="text-[#FCAD2A] font-bold">93.8/100 PASS</span></p>
+        <p class="mt-2 text-[#028CDC]">Assessment complete. 0 agents below threshold.</p>
+      </div>
+    </div>
 
     <div class="space-y-8">
       <div class="bg-white rounded-xl border border-[var(--color-border)] p-8 hover:shadow-lg transition-shadow">

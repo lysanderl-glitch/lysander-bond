@@ -6,7 +6,24 @@ import Layout from '../layouts/Layout.astro';
   <section class="max-w-4xl mx-auto px-6 py-20">
     <p class="text-sm font-semibold tracking-widest text-[#FCAD2A] uppercase mb-4">DAILY INTELLIGENCE</p>
     <h1 class="text-4xl font-extrabold text-[var(--color-text)] mb-4">AI 技术情报日报</h1>
-    <p class="text-[var(--color-text-light)] text-lg mb-8">每天由 Synapse AI 团队自动生成 — 从海量 AI 动态中筛选出对企业管理者有实践价值的内容。</p>
+    <p class="text-[var(--color-text-light)] text-lg mb-6">每天由 Synapse AI 团队自动生成 — 从海量 AI 动态中筛选出对企业管理者有实践价值的内容。</p>
+
+    <!-- Intelligence report preview -->
+    <div class="mb-10 rounded-xl overflow-hidden border border-[var(--color-border)] shadow-md">
+      <div class="bg-[#f0f0f0] px-4 py-2 flex items-center gap-2 border-b border-[#e0e0e0]">
+        <div class="flex gap-1.5"><div class="w-2.5 h-2.5 rounded-full bg-[#ff5f57]"></div><div class="w-2.5 h-2.5 rounded-full bg-[#febc2e]"></div><div class="w-2.5 h-2.5 rounded-full bg-[#28c840]"></div></div>
+        <div class="flex-1 mx-3"><div class="bg-white rounded px-3 py-0.5 text-[10px] text-[#999] text-center">synapse — daily AI intelligence report</div></div>
+      </div>
+      <div class="bg-[#0A1628] p-5">
+        <div class="text-xs text-[#FCAD2A] font-mono mb-3">SYNAPSE DAILY INTELLIGENCE · 2026-04-12</div>
+        <div class="space-y-2">
+          <div class="flex gap-2 items-start"><span class="shrink-0 text-[10px] font-bold text-[#0A1628] bg-[#FCAD2A] px-1.5 py-0.5 rounded">HIGH</span><span class="text-xs text-white/60">Harness Engineering 正式成为 2026 AI 工程新范式</span></div>
+          <div class="flex gap-2 items-start"><span class="shrink-0 text-[10px] font-bold text-white bg-[#028CDC] px-1.5 py-0.5 rounded">MED</span><span class="text-xs text-white/60">Multi-Agent 系统企业采用量增长 327%</span></div>
+          <div class="flex gap-2 items-start"><span class="shrink-0 text-[10px] font-bold text-[#0A1628] bg-[#FCAD2A] px-1.5 py-0.5 rounded">HIGH</span><span class="text-xs text-white/60">Claude Code Scheduled Tasks 全面可用</span></div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-white/5 text-[10px] text-white/30 font-mono">Reviewed by Graphify Think Tank · 3 findings · 2 high priority</div>
+      </div>
+    </div>
 
     <div class="bg-[#F7F8FA] border border-[var(--color-border)] rounded-xl p-6 mb-10">
       <h2 class="text-lg font-bold text-[var(--color-text)] mb-4">情报是怎么生成的？</h2>
