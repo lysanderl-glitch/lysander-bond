@@ -2,11 +2,13 @@
 interface Props {
   title?: string;
   description?: string;
+  darkContent?: boolean;
 }
 
 const {
   title = 'Synapse by Janus Digital',
-  description = 'Synapse — AI Agent 团队协作运营体系 | Harness Engineering 实践 | Janus Digital'
+  description = 'Synapse — AI Agent 团队协作运营体系 | Harness Engineering 实践 | Janus Digital',
+  darkContent = false,
 } = Astro.props;
 ---
 
@@ -45,8 +47,8 @@ const {
       </nav>
     </header>
 
-    <!-- White main content area -->
-    <main class="flex-1 bg-white">
+    <!-- Main content area -->
+    <main class:list={["flex-1", darkContent ? "bg-[var(--color-dark)]" : "bg-white"]}>
       <slot />
     </main>
 
