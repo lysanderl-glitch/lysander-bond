@@ -54,8 +54,62 @@ import Layout from '../../layouts/Layout.astro';
     <!-- 3 steps detail -->
     <h2 class="text-xl font-bold text-[var(--color-text)] mb-6">详细步骤</h2>
 
-    <div class="space-y-4 mb-14">
+    <!-- Before You Start -->
+    <div class="mb-12 rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-6">
+      <h3 class="mb-4 text-lg font-semibold text-yellow-400">Before You Start</h3>
+      <p class="mb-5 text-sm text-gray-400">Synapse runs inside Claude Code on your local machine. Make sure you have the following before continuing.</p>
+      <div class="space-y-3">
+        <!-- Claude Account -->
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 text-green-400 text-sm">✓</span>
+          <div class="flex-1">
+            <span class="text-sm font-medium text-white">Claude Account</span>
+            <span class="ml-2 text-sm text-gray-400">Pro / Max plan or API Key</span>
+            <a href="https://claude.ai" target="_blank" class="ml-2 text-xs text-blue-400 hover:text-blue-300">Get Claude →</a>
+          </div>
+        </div>
+        <!-- Node.js -->
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 text-green-400 text-sm">✓</span>
+          <div class="flex-1">
+            <span class="text-sm font-medium text-white">Node.js ≥ 18</span>
+            <code class="ml-2 rounded bg-gray-800 px-1.5 py-0.5 text-xs text-gray-300">node --version</code>
+            <a href="https://nodejs.org" target="_blank" class="ml-2 text-xs text-blue-400 hover:text-blue-300">Install →</a>
+          </div>
+        </div>
+        <!-- Claude Code -->
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 text-green-400 text-sm">✓</span>
+          <div class="flex-1">
+            <span class="text-sm font-medium text-white">Claude Code</span>
+            <code class="ml-2 rounded bg-gray-800 px-1.5 py-0.5 text-xs text-gray-300">npm install -g @anthropic-ai/claude-code</code>
+            <a href="https://docs.anthropic.com/claude-code" target="_blank" class="ml-2 text-xs text-blue-400 hover:text-blue-300">Docs →</a>
+          </div>
+        </div>
+        <!-- Git -->
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 text-green-400 text-sm">✓</span>
+          <div class="flex-1">
+            <span class="text-sm font-medium text-white">Git</span>
+            <code class="ml-2 rounded bg-gray-800 px-1.5 py-0.5 text-xs text-gray-300">git --version</code>
+            <a href="https://git-scm.com" target="_blank" class="ml-2 text-xs text-blue-400 hover:text-blue-300">Install →</a>
+          </div>
+        </div>
+        <!-- OS -->
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 text-green-400 text-sm">✓</span>
+          <div class="flex-1">
+            <span class="text-sm font-medium text-white">macOS / Linux / Windows WSL</span>
+            <a href="https://learn.microsoft.com/en-us/windows/wsl/install" target="_blank" class="ml-2 text-xs text-blue-400 hover:text-blue-300">Install WSL →</a>
+          </div>
+        </div>
+      </div>
+      <p class="mt-5 text-xs text-gray-500">Already set up? <a href="#quickstart" class="text-blue-400 hover:text-blue-300">Skip to Step 1 ↓</a></p>
+    </div>
+
+    <div id="quickstart" class="space-y-4 mb-14">
       <!-- Step 1 -->
+
       <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl hover:shadow-sm transition-shadow">
         <div class="shrink-0 w-10 h-10 rounded-full bg-[#FCAD2A]/10 border-2 border-[#FCAD2A] flex items-center justify-center font-extrabold text-[#FCAD2A]">1</div>
         <div class="flex-1">
@@ -116,6 +170,19 @@ import Layout from '../../layouts/Layout.astro';
             <p class="text-[#013A7D] font-semibold">"[你的名字]您好，我是 [CEO名称]，Multi-Agents 团队为您服务！"</p>
           </div>
           <p class="text-xs text-[var(--color-muted)] mt-2">⚠️ 如果没有出现问候语：确认 Claude Code 打开的是含 CLAUDE.md 的根目录</p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl hover:shadow-sm transition-shadow">
+        <div class="shrink-0 w-10 h-10 rounded-full bg-[#FCAD2A]/10 border-2 border-[#FCAD2A] flex items-center justify-center font-extrabold text-[#FCAD2A]">4</div>
+        <div class="flex-1">
+          <h3 class="font-bold text-[var(--color-text)] mb-2">Step 4 · Meet Your Team</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">Once Claude Code loads your Synapse folder, send this message to experience the full system — team structure, execution chain, and decision system in one go:</p>
+          <div class="bg-[#0d1117] rounded-lg px-4 py-3 font-mono text-xs text-[#79c0ff] overflow-x-auto mb-3">
+            你好，请介绍：1) 当前团队架构与各团队职责；2) 执行链是如何运转的（从我提出目标到最终交付）；3) 四级决策体系如何判断何时上报总裁？
+          </div>
+          <p class="text-xs text-[var(--color-muted)]">This single prompt activates Lysander, surfaces all 44 agents across 7 teams, walks through the 6-step execution chain, and explains when decisions escalate to you.</p>
         </div>
       </div>
     </div>
