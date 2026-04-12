@@ -1,0 +1,186 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  title="Harness Engineering 方法论 — Synapse 学院"
+  description="为什么 Agent = Model + Harness？5项核心原则，从根本上解决AI Agent不可控的问题。"
+>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #0A1628 0%, #0d1f3c 100%); padding: 72px 0 56px;">
+    <div class="grid-dots"></div>
+    <div class="glow-gold" style="top:-80px; right:10%; opacity:0.4;"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6">
+      <a href="/academy" class="inline-flex items-center gap-1.5 text-white/40 text-sm hover:text-white/70 transition-colors mb-6">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        学院首页
+      </a>
+      <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-3">METHODOLOGY</p>
+      <h1 class="text-4xl font-extrabold text-white mb-4">Harness Engineering</h1>
+      <p class="text-white/60 text-lg max-w-2xl">为什么写了规则但AI不遵守？为什么同一个Prompt每次结果不一样？<br>Harness Engineering 从根本上解决这个问题。</p>
+    </div>
+  </section>
+
+  <div class="glow-line"></div>
+
+  <div class="max-w-4xl mx-auto px-6 py-16">
+
+    <!-- Core formula -->
+    <div class="text-center mb-16">
+      <p class="text-sm font-semibold text-[var(--color-muted)] uppercase tracking-widest mb-4">核心公式</p>
+      <div class="inline-flex items-center gap-4 px-8 py-5 bg-[#0A1628] rounded-2xl">
+        <span class="text-2xl font-bold text-white">Agent</span>
+        <span class="text-[#FCAD2A] text-2xl">=</span>
+        <span class="text-2xl font-bold text-[#028CDC]">Model</span>
+        <span class="text-[#FCAD2A] text-2xl">+</span>
+        <span class="text-2xl font-bold text-[#FCAD2A]">Harness</span>
+      </div>
+      <p class="text-[var(--color-text-light)] text-sm mt-4 max-w-lg mx-auto">Model 是能力上限，Harness 是一致性保障。<br>没有 Harness 的 Agent，能力强也不可控；有了 Harness，普通 Model 也能稳定交付。</p>
+    </div>
+
+    <!-- Problem -->
+    <div class="mb-14">
+      <h2 class="text-xl font-bold text-[var(--color-text)] mb-6">为什么需要 Harness Engineering？</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="p-5 bg-red-50 border border-red-100 rounded-xl">
+          <h3 class="font-semibold text-red-700 mb-3 flex items-center gap-2">
+            <span>❌</span> 没有 Harness 时
+          </h3>
+          <ul class="space-y-2 text-sm text-red-600">
+            <li>· 规则写在Prompt里，AI忽略或遗忘</li>
+            <li>· CEO直接帮你搜索、写代码、做分析</li>
+            <li>· 每次对话结果不一致，无法预期</li>
+            <li>· Agent越来越多，越来越混乱</li>
+            <li>· 换模型就全部重来</li>
+          </ul>
+        </div>
+        <div class="p-5 bg-green-50 border border-green-100 rounded-xl">
+          <h3 class="font-semibold text-green-700 mb-3 flex items-center gap-2">
+            <span>✅</span> 有 Harness 之后
+          </h3>
+          <ul class="space-y-2 text-sm text-green-700">
+            <li>· 执行链有强制检查点，不可绕过</li>
+            <li>· CEO只做调度，专家做执行</li>
+            <li>· 结构化流程保证可重复结果</li>
+            <li>· 团队可扩展，质量有审计</li>
+            <li>· Harness可迁移，能力持续积累</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 principles -->
+    <h2 class="text-xl font-bold text-[var(--color-text)] mb-6">Harness Engineering 5项核心原则</h2>
+    <div class="space-y-4 mb-14">
+
+      <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl">
+        <div class="shrink-0 w-10 h-10 rounded-lg bg-[#FCAD2A]/10 flex items-center justify-center font-extrabold text-[#FCAD2A] text-lg">1</div>
+        <div>
+          <h3 class="font-bold text-[var(--color-text)] mb-2">Guides + Sensors 双保险</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">前馈控制（Guides）告诉Agent"要做什么"，反馈控制（Sensors）检测"做得怎么样"。只靠Guides会漂移，只靠Sensors会延迟，两者组合才能稳定。</p>
+          <div class="text-xs font-mono bg-[#F7F8FA] border border-[var(--color-border)] rounded px-3 py-2 text-[var(--color-muted)]">
+            Guide: "每次回复前必须先输出派单表" → Sensor: "检查是否有派单记录" → 违规记录
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl">
+        <div class="shrink-0 w-10 h-10 rounded-lg bg-[#028CDC]/10 flex items-center justify-center font-extrabold text-[#028CDC] text-lg">2</div>
+        <div>
+          <h3 class="font-bold text-[var(--color-text)] mb-2">执行链不可绕过</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">每个任务必须经历固定步骤：目标接收 → 分级 → 方案 → 派单 → 执行 → QA → 交付。任何一步跳过都是执行链断裂。Harness定义检查点，不允许跳步。</p>
+          <div class="text-xs font-mono bg-[#F7F8FA] border border-[var(--color-border)] rounded px-3 py-2 text-[var(--color-muted)]">
+            【①分级】→【②派单（强制）】→【③执行】→【④QA（强制）】→【⑤交付】
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl">
+        <div class="shrink-0 w-10 h-10 rounded-lg bg-[#013A7D]/10 flex items-center justify-center font-extrabold text-[#013A7D] text-lg">3</div>
+        <div>
+          <h3 class="font-bold text-[var(--color-text)] mb-2">角色分离与专家路由</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">管理角色（CEO）绝对不做执行。执行角色（专家）绝对不做决策。路由规则将任务匹配到最匹配的专家，而不是最方便的角色。</p>
+          <div class="text-xs font-mono bg-[#F7F8FA] border border-[var(--color-border)] rounded px-3 py-2 text-[var(--color-muted)]">
+            代码 → harness_engineer / ai_systems_dev &nbsp;|&nbsp; 策略 → strategist / decision_advisor
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl">
+        <div class="shrink-0 w-10 h-10 rounded-lg bg-[#FCAD2A]/10 flex items-center justify-center font-extrabold text-[#FCAD2A] text-lg">4</div>
+        <div>
+          <h3 class="font-bold text-[var(--color-text)] mb-2">四级决策体系</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">L1自动执行 → L2专家评审 → L3CEO决策 → L4高管决策。专业问题先过专家，不上报让管理层猜。95%的决策在L3以下自动处理。</p>
+          <div class="text-xs font-mono bg-[#F7F8FA] border border-[var(--color-border)] rounded px-3 py-2 text-[var(--color-muted)]">
+            L4触发条件：外部合同 / 预算&gt;100万 / 公司存续 / 明确指定上报
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl">
+        <div class="shrink-0 w-10 h-10 rounded-lg bg-[#028CDC]/10 flex items-center justify-center font-extrabold text-[#028CDC] text-lg">5</div>
+        <div>
+          <h3 class="font-bold text-[var(--color-text)] mb-2">Agent 能力可审计</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">每位Agent有明确的能力描述（B级及以上：具体到方法论），自动评分（合格线90分），不合格触发能力升级。团队能力透明可量化。</p>
+          <div class="text-xs font-mono bg-[#F7F8FA] border border-[var(--color-border)] rounded px-3 py-2 text-[var(--color-muted)]">
+            A级: "基于pytest+Playwright的E2E测试框架" · C级(不合格): "测试" / "质量管理"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Synapse as implementation -->
+    <div class="bg-gradient-to-r from-[#0A1628] to-[#011f5c] rounded-xl p-7 text-white relative overflow-hidden mb-10">
+      <div class="grid-dots" style="opacity:0.3;"></div>
+      <div class="relative z-10">
+        <h3 class="font-bold text-[#FCAD2A] mb-2">Synapse 是 Harness Engineering 的完整实现</h3>
+        <p class="text-white/60 text-sm mb-4">Synapse 不是一个规则文件，而是5项原则在真实 AI 团队中的完整落地：</p>
+        <div class="grid md:grid-cols-2 gap-3 text-sm">
+          {[
+            "CLAUDE.md = Harness Configuration（Guides + Sensors + Constraints）",
+            "organization.yaml = 角色定义与路由规则",
+            "hr_base.py = 能力审计引擎（≥90分合格）",
+            "decision_rules.yaml = 四级决策体系配置",
+            "14个 Skills = 执行链强制检查点实现",
+            "evolution_engine = 持续自进化闭环",
+          ].map(item => (
+            <div class="flex items-start gap-2">
+              <svg width="14" height="14" fill="none" stroke="#FCAD2A" stroke-width="2.5" viewBox="0 0 24 24" class="shrink-0 mt-0.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span class="text-white/70">{item}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Deep dive links -->
+    <div class="space-y-3 mb-12">
+      <h2 class="text-lg font-bold text-[var(--color-text)] mb-4">深入学习</h2>
+      <a href="/blog/harness-engineering-guide" class="flex items-center justify-between p-4 bg-white border border-[var(--color-border)] rounded-xl hover:shadow-sm transition-shadow group">
+        <div>
+          <p class="font-semibold text-[var(--color-text)] text-sm">Harness Engineering 完整指南</p>
+          <p class="text-xs text-[var(--color-muted)] mt-0.5">博客文章 · 深度解析5项原则 + 实施案例</p>
+        </div>
+        <svg width="16" height="16" fill="none" stroke="#028CDC" stroke-width="2" viewBox="0 0 24 24" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="/training" class="flex items-center justify-between p-4 bg-white border border-[var(--color-border)] rounded-xl hover:shadow-sm transition-shadow group">
+        <div>
+          <p class="font-semibold text-[var(--color-text)] text-sm">SCP 认证课程</p>
+          <p class="text-xs text-[var(--color-muted)] mt-0.5">培训 · 8小时 · 4个实操Lab · 认证证书</p>
+        </div>
+        <svg width="16" height="16" fill="none" stroke="#028CDC" stroke-width="2" viewBox="0 0 24 24" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="flex flex-wrap gap-4 justify-between pt-6 border-t border-[var(--color-border)]">
+      <a href="/academy" class="text-sm text-[var(--color-text-light)] hover:text-[#028CDC] flex items-center gap-1.5">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        返回学院首页
+      </a>
+      <a href="/academy/get-synapse" class="text-sm text-[#FCAD2A] hover:opacity-80 font-semibold">立即获取 Synapse →</a>
+    </div>
+  </div>
+
+</Layout>

@@ -1,0 +1,196 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const teams = [
+  {
+    id: "graphify",
+    name: "Graphify 智囊团",
+    role: "战略分析 · 决策支持",
+    color: "#FCAD2A",
+    accent: "gold",
+    count: 6,
+    agents: [
+      { id: "strategist", name: "战略分析师", score: 96, desc: "SWOT/PEST/波特五力模型深度分析，战略规划，竞争格局研判" },
+      { id: "decision_advisor", name: "决策顾问", score: 94, desc: "多方案风险收益评估，L3决策综合建议，不确定性量化" },
+      { id: "ai_tech_researcher", name: "AI技术研究员", score: 95, desc: "AI前沿追踪，技术可行性评估，每日情报筛选（实践价值优先）" },
+      { id: "evolution_engine", name: "进化引擎", score: 94, desc: "自成长闭环协调，Agent能力GAP分析，能力版本管理" },
+      { id: "execution_auditor", name: "执行审计师", score: 93, desc: "任务S/M/L分级，执行链完整性审查，跨会话状态追踪" },
+      { id: "trend_watcher", name: "趋势洞察师", score: 92, desc: "宏观趋势识别，模式发现，3-12个月预测分析" },
+    ]
+  },
+  {
+    id: "harness_ops",
+    name: "Harness Ops 团队",
+    role: "执行链工程 · 配置维护",
+    color: "#028CDC",
+    accent: "cyan",
+    count: 4,
+    agents: [
+      { id: "harness_engineer", name: "执行链工程师", score: 96, desc: "CLAUDE.md/YAML配置变更，执行链设计与优化，Harness规则编写" },
+      { id: "ai_systems_dev", name: "AI系统开发", score: 94, desc: "hr_base.py/脚本开发，Agent工具链搭建，Python自动化" },
+      { id: "knowledge_engineer", name: "知识工程师", score: 93, desc: "方法论文档创建，知识图谱构建，OBS知识库架构设计" },
+      { id: "integration_qa", name: "集成QA工程师", score: 95, desc: "qa_auto_review()评分≥3.5，YAML语法验证，端到端测试验证" },
+    ]
+  },
+  {
+    id: "rd",
+    name: "RD 研发团队",
+    role: "系统开发 · 技术实现",
+    color: "#013A7D",
+    accent: "blue",
+    count: 5,
+    agents: [
+      { id: "tech_lead", name: "技术负责人", score: 95, desc: "架构设计与技术决策，技术债评估，代码审查标准制定" },
+      { id: "backend_dev", name: "后端工程师", score: 93, desc: "REST API/数据库设计，Python/Node.js微服务，性能优化" },
+      { id: "frontend_dev", name: "前端工程师", score: 92, desc: "React/Vue组件开发，响应式设计，用户体验优化" },
+      { id: "qa_engineer", name: "QA工程师", score: 94, desc: "pytest+Playwright端到端测试，自动化回归，BDD测试用例" },
+      { id: "devops_engineer", name: "DevOps工程师", score: 91, desc: "CI/CD流水线（GitHub Actions），Docker/K8s容器化，监控告警" },
+    ]
+  },
+  {
+    id: "content_ops",
+    name: "Content Ops 团队",
+    role: "内容创作 · 品牌传播",
+    color: "#FCAD2A",
+    accent: "gold",
+    count: 6,
+    agents: [
+      { id: "content_strategist", name: "内容战略师", score: 94, desc: "内容营销战略制定，受众画像分析，内容ROI评估" },
+      { id: "content_creator", name: "内容创作师", score: 93, desc: "技术文章/博客撰写，AI工程实践案例，LinkedIn帖子" },
+      { id: "visual_designer", name: "UI/UX设计师", score: 93, desc: "Web UI/UX设计，明暗主题决策，Tailwind CSS实战" },
+      { id: "ai_visual_creator", name: "AI视觉创作师", score: 95, desc: "Midjourney/DALL-E品牌化插画，漫画叙事设计，视觉资产生产" },
+      { id: "publishing_ops", name: "发布运营师", score: 91, desc: "多平台内容发布（微信/LinkedIn/Ghost），SEO优化，数据分析" },
+      { id: "training_designer", name: "培训设计师", score: 92, desc: "SCP课程体系设计，学习路径规划，评估标准制定" },
+    ]
+  },
+  {
+    id: "growth",
+    name: "Growth 团队",
+    role: "增长策略 · GTM执行",
+    color: "#028CDC",
+    accent: "cyan",
+    count: 4,
+    agents: [
+      { id: "gtm_strategist", name: "GTM战略师", score: 94, desc: "产品上市策略，定价模型设计，渠道组合优化" },
+      { id: "customer_insights_manager", name: "用户洞察经理", score: 93, desc: "用户调研设计，NPS/CSAT分析，用户旅程优化" },
+      { id: "community_manager", name: "社区运营师", score: 91, desc: "技术社区建设，KOL关系管理，口碑增长策略" },
+      { id: "sales_enablement", name: "销售赋能专家", score: 92, desc: "销售方法论培训，Demo脚本设计，客户成功体系" },
+    ]
+  },
+  {
+    id: "obs",
+    name: "OBS 知识库团队",
+    role: "知识管理 · 第二大脑",
+    color: "#013A7D",
+    accent: "blue",
+    count: 4,
+    agents: [
+      { id: "obs_architecture_expert", name: "OBS架构专家", score: 94, desc: "Obsidian第二大脑架构设计，知识分层（01-06目录体系），跨库链接" },
+      { id: "knowledge_search_expert", name: "知识检索专家", score: 92, desc: "语义搜索优化，知识图谱查询，上下文关联发现" },
+      { id: "knowledge_quality_expert", name: "知识质量专家", score: 93, desc: "知识资产评分，过时内容清理，质量标准制定" },
+      { id: "knowledge_chandu_expert", name: "知识沉淀专家", score: 91, desc: "会话→知识库自动提取，洞察归纳，跨会话记忆增强" },
+    ]
+  },
+  {
+    id: "butler",
+    name: "Butler 交付团队",
+    role: "项目管理 · 交付执行",
+    color: "#FCAD2A",
+    accent: "gold",
+    count: 7,
+    agents: [
+      { id: "pmo_expert", name: "PMO专家", score: 93, desc: "项目组合管理，WBS分解，里程碑追踪，Gate评审" },
+      { id: "delivery_expert", name: "交付专家", score: 94, desc: "端到端交付管理，客户沟通，验收标准定义" },
+      { id: "iot_expert", name: "IoT专家", score: 92, desc: "物联网系统集成，传感器数据采集，MQTT协议配置" },
+      { id: "iot_data_expert", name: "IoT数据专家", score: 91, desc: "时序数据处理，数据质量管理，可视化看板设计" },
+      { id: "digital_modeling_expert", name: "数字建模专家", score: 93, desc: "BIM/数字孪生建模，Revit/ArchiCAD工作流，模型验收标准" },
+      { id: "uat_test_expert", name: "UAT测试专家", score: 92, desc: "用户验收测试策略，缺陷管理流程，测试报告撰写" },
+      { id: "training_expert", name: "培训专家", score: 90, desc: "用户培训体系设计，操作手册编写，上线支持" },
+    ]
+  },
+];
+
+const colorMap = { gold: "#FCAD2A", cyan: "#028CDC", blue: "#013A7D" };
+---
+
+<Layout
+  title="AI 团队名录 — Synapse 学院"
+  description="44位AI专家，7支专业团队。战略/研发/运营/内容/成长/情报/HR，全能力覆盖，每位审计评分≥90分。"
+>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #0A1628 0%, #0d1f3c 100%); padding: 72px 0 56px;">
+    <div class="grid-dots"></div>
+    <div class="glow-gold" style="bottom:-40px; left:-40px; opacity:0.3;"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-6">
+      <a href="/academy" class="inline-flex items-center gap-1.5 text-white/40 text-sm hover:text-white/70 transition-colors mb-6">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        学院首页
+      </a>
+      <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-3">AI TEAM DIRECTORY</p>
+      <h1 class="text-4xl font-extrabold text-white mb-4">AI 团队名录</h1>
+      <p class="text-white/60 text-lg mb-8">44位专家 · 7支团队 · 全部审计评分 ≥ 90分</p>
+      <div class="flex flex-wrap gap-3">
+        {teams.map(t => (
+          <a href={`#${t.id}`} class="px-3 py-1.5 rounded-full border border-white/20 bg-white/5 text-white/60 text-xs hover:bg-white/10 hover:text-white transition-colors">
+            {t.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-line"></div>
+
+  <div class="max-w-5xl mx-auto px-6 py-14 space-y-16">
+
+    {teams.map(team => (
+      <section id={team.id}>
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-1 h-8 rounded-full" style={`background: ${colorMap[team.accent]}`}></div>
+          <div>
+            <h2 class="text-xl font-bold text-[var(--color-text)]">{team.name}</h2>
+            <p class="text-sm text-[var(--color-muted)]">{team.role} · {team.count}人</p>
+          </div>
+          <span class="ml-auto score-pill pill-cyan text-xs">{team.count} Agents</span>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-3">
+          {team.agents.map(agent => (
+            <div class={`card-glow flex gap-4 p-4 bg-white border border-[var(--color-border)] rounded-xl accent-top-${team.accent}`}>
+              <div class="shrink-0">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm"
+                  style={`background: ${colorMap[team.accent]}20; color: ${colorMap[team.accent]};`}>
+                  {agent.id.charAt(0).toUpperCase()}
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="font-semibold text-[var(--color-text)] text-sm">{agent.name}</span>
+                  <span class="score-pill pill-cyan text-xs shrink-0">{agent.score}</span>
+                </div>
+                <p class="text-xs text-[var(--color-muted)] leading-relaxed">{agent.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <!-- HR system note -->
+    <div class="bg-[#F7F8FA] border border-[var(--color-border)] rounded-xl p-6 text-center">
+      <p class="text-sm text-[var(--color-text-light)] mb-2">所有Agent能力由 <strong>HR管理引擎</strong> 自动审计（合格线90分）</p>
+      <p class="text-xs text-[var(--color-muted)]">能力描述遵循 B级标准：具体到方法论/框架，不接受"项目管理"此类泛泛描述</p>
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="flex flex-wrap gap-4 justify-between pt-6 border-t border-[var(--color-border)]">
+      <a href="/academy" class="text-sm text-[var(--color-text-light)] hover:text-[#028CDC] flex items-center gap-1.5">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        返回学院首页
+      </a>
+      <a href="/academy/skills" class="text-sm text-[var(--color-text-light)] hover:text-[#028CDC]">查看 Skills 工作流 →</a>
+    </div>
+  </div>
+
+</Layout>

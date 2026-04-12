@@ -1,0 +1,213 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const skills = [
+  {
+    id: "dispatch",
+    cmd: "/dispatch",
+    name: "任务派单",
+    desc: "结构化任务分解与团队路由。输入目标，输出带执行者、交付物的派单表，确保执行链【②】不断裂。",
+    color: "#FCAD2A",
+    accent: "gold",
+    tag: "核心",
+  },
+  {
+    id: "qa-gate",
+    cmd: "/qa-gate",
+    name: "质量门禁",
+    desc: "运行 qa_auto_review()，自动评分（≥3.5通过）、YAML验证、执行链完整性检查。强制执行链【③】。",
+    color: "#028CDC",
+    accent: "cyan",
+    tag: "核心",
+  },
+  {
+    id: "graphify",
+    cmd: "/graphify",
+    name: "智囊分析",
+    desc: "召集 Graphify 智囊团（6位专家）对复杂问题进行多维分析，输出结构化决策建议和风险评估。",
+    color: "#013A7D",
+    accent: "blue",
+    tag: "决策",
+  },
+  {
+    id: "retro",
+    cmd: "/retro",
+    name: "复盘总结",
+    desc: "自动生成会话/日工作复盘，提炼亮点/问题/改进项，可生成HTML报告存入OBS知识库。",
+    color: "#FCAD2A",
+    accent: "gold",
+    tag: "知识",
+  },
+  {
+    id: "hr-audit",
+    cmd: "/hr-audit",
+    name: "HR审计",
+    desc: "运行 audit_all_agents()，批量扫描所有Agent能力描述评分，输出低于90分的待优化清单。",
+    color: "#028CDC",
+    accent: "cyan",
+    tag: "管理",
+  },
+  {
+    id: "intel",
+    cmd: "/intel",
+    name: "情报日报",
+    desc: "触发每日AI技术情报管线：搜索前沿动态 → 牛人追踪 → GAP分析 → 生成Markdown + HTML报告。",
+    color: "#013A7D",
+    accent: "blue",
+    tag: "情报",
+  },
+  {
+    id: "dev-plan",
+    cmd: "/dev-plan",
+    name: "开发计划",
+    desc: "RD团队生成技术方案：架构设计、任务分解、风险识别、工时评估。输出可执行的开发计划文档。",
+    color: "#FCAD2A",
+    accent: "gold",
+    tag: "研发",
+  },
+  {
+    id: "dev-qa",
+    cmd: "/dev-qa",
+    name: "代码QA审查",
+    desc: "QA工程师+Tech Lead对代码变更进行多维审查：功能正确性、安全性、性能、可维护性评分。",
+    color: "#028CDC",
+    accent: "cyan",
+    tag: "研发",
+  },
+  {
+    id: "dev-review",
+    cmd: "/dev-review",
+    name: "代码评审",
+    desc: "结构化代码评审流程，生成含问题列表、改进建议、严重等级分级的评审报告。",
+    color: "#013A7D",
+    accent: "blue",
+    tag: "研发",
+  },
+  {
+    id: "dev-secure",
+    cmd: "/dev-secure",
+    name: "安全审计",
+    desc: "扫描代码中的安全漏洞（OWASP Top 10）、敏感信息泄露、权限配置问题，输出安全加固建议。",
+    color: "#FCAD2A",
+    accent: "gold",
+    tag: "研发",
+  },
+  {
+    id: "dev-ship",
+    cmd: "/dev-ship",
+    name: "发布部署",
+    desc: "DevOps工程师执行标准化发布流程：构建验证 → 测试 → 灰度 → 全量发布 → 监控确认。",
+    color: "#028CDC",
+    accent: "cyan",
+    tag: "研发",
+  },
+  {
+    id: "knowledge",
+    cmd: "/knowledge",
+    name: "知识沉淀",
+    desc: "OBS团队将当前会话的洞察、决策、方法论自动提炼，写入对应的OBS知识库目录（01-06）。",
+    color: "#013A7D",
+    accent: "blue",
+    tag: "知识",
+  },
+  {
+    id: "daily-blog",
+    cmd: "/daily-blog",
+    name: "每日博客",
+    desc: "Content Ops团队基于当日工作/情报，生成可发布的技术博客文章，含SEO优化标题和摘要。",
+    color: "#FCAD2A",
+    accent: "gold",
+    tag: "内容",
+  },
+  {
+    id: "synapse",
+    cmd: "/synapse",
+    name: "体系升级",
+    desc: "Synapse Upgrade Protocol：检查远程版本 → 展示Changelog → 总裁确认 → 升级Core → QA验证 → 完成。",
+    color: "#028CDC",
+    accent: "cyan",
+    tag: "核心",
+  },
+];
+
+const tags = ["全部", "核心", "决策", "研发", "内容", "情报", "知识", "管理"];
+const colorMap = { gold: "#FCAD2A", cyan: "#028CDC", blue: "#013A7D" };
+---
+
+<Layout
+  title="Skills 工作流库 — Synapse 学院"
+  description="14个内置Skills工作流。从/dispatch派单到/qa-gate质量门禁，一句话触发结构化AI执行流程。"
+>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #0A1628 0%, #011f5c 100%); padding: 72px 0 56px;">
+    <div class="grid-dots"></div>
+    <div class="glow-cyan" style="top:-60px; right:-40px; opacity:0.4;"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-6">
+      <a href="/academy" class="inline-flex items-center gap-1.5 text-white/40 text-sm hover:text-white/70 transition-colors mb-6">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        学院首页
+      </a>
+      <p class="text-xs font-semibold tracking-widest text-[#028CDC] uppercase mb-3">SKILLS LIBRARY</p>
+      <h1 class="text-4xl font-extrabold text-white mb-4">Skills 工作流库</h1>
+      <p class="text-white/60 text-lg">14个内置工作流 · 一句话触发结构化AI执行</p>
+    </div>
+  </section>
+
+  <div class="glow-line"></div>
+
+  <div class="max-w-5xl mx-auto px-6 py-14">
+
+    <!-- How it works -->
+    <div class="bg-[#F7F8FA] border border-[var(--color-border)] rounded-xl p-6 mb-10">
+      <h2 class="font-bold text-[var(--color-text)] mb-3">Skills 是什么？</h2>
+      <p class="text-sm text-[var(--color-text-light)] mb-4">Skills 是 Synapse 内置的结构化工作流。在 Claude Code 中输入 <code class="bg-white border border-[var(--color-border)] px-1.5 py-0.5 rounded font-mono text-xs">/命令名</code>，AI CEO 会自动触发对应的完整执行流程——无需手动描述每个步骤。</p>
+      <div class="bg-[#0d1117] rounded-lg px-4 py-3 font-mono text-sm overflow-x-auto">
+        <p class="text-[#8b949e] mb-1"># 示例：触发任务派单</p>
+        <p class="text-[#FCAD2A]">你：<span class="text-white">/dispatch 帮我分析竞品并整理报告</span></p>
+        <p class="text-[#8b949e] mt-2 mb-1"># Lysander CEO 自动执行：</p>
+        <p class="text-[#28c840]">→ execution_auditor 分级（M级）</p>
+        <p class="text-[#28c840]">→ strategist + relation_discovery 分工分析</p>
+        <p class="text-[#28c840]">→ knowledge_engineer 整理报告</p>
+        <p class="text-[#28c840]">→ integration_qa 验证质量 ✓</p>
+      </div>
+    </div>
+
+    <!-- Skills grid -->
+    <div class="grid md:grid-cols-2 gap-4">
+      {skills.map(skill => (
+        <div class={`card-glow bg-white border border-[var(--color-border)] rounded-xl p-5 accent-top-${skill.accent}`}>
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <code class="px-2.5 py-1 rounded-lg text-xs font-bold font-mono"
+                style={`background: ${colorMap[skill.accent]}15; color: ${colorMap[skill.accent]};`}>
+                {skill.cmd}
+              </code>
+              <span class="font-semibold text-[var(--color-text)] text-sm">{skill.name}</span>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-[#F7F8FA] text-[var(--color-muted)] border border-[var(--color-border)] shrink-0">
+              {skill.tag}
+            </span>
+          </div>
+          <p class="text-sm text-[var(--color-text-light)] leading-relaxed">{skill.desc}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Custom skills note -->
+    <div class="mt-10 p-6 bg-gradient-to-r from-[#013A7D]/5 to-[#028CDC]/5 border border-[#028CDC]/20 rounded-xl">
+      <h3 class="font-bold text-[var(--color-text)] mb-2">创建自定义 Skill</h3>
+      <p class="text-sm text-[var(--color-text-light)]">在 <code class="bg-white border border-[var(--color-border)] px-1.5 py-0.5 rounded font-mono text-xs">.claude/skills/</code> 目录下新建文件夹，添加 <code class="bg-white border border-[var(--color-border)] px-1.5 py-0.5 rounded font-mono text-xs">SKILL.md</code>，描述触发条件和执行流程，即可创建属于你的自定义工作流。参考现有 Skills 文件格式。</p>
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="flex flex-wrap gap-4 justify-between pt-8 mt-8 border-t border-[var(--color-border)]">
+      <a href="/academy" class="text-sm text-[var(--color-text-light)] hover:text-[#028CDC] flex items-center gap-1.5">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        返回学院首页
+      </a>
+      <a href="/academy/get-synapse" class="text-sm text-[var(--color-text-light)] hover:text-[#FCAD2A]">立即获取 Synapse →</a>
+    </div>
+  </div>
+
+</Layout>
