@@ -18,7 +18,7 @@ import Layout from '../../layouts/Layout.astro';
       </a>
       <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-3">GET SYNAPSE</p>
       <h1 class="text-4xl font-extrabold text-white mb-4">获取 Synapse</h1>
-      <p class="text-white/60 text-lg">clone → 改3个名字 → 打开 Claude Code。5分钟，完全免费。</p>
+      <p class="text-white/60 text-lg">clone → 打开 Claude Code → 发一句话完成配置。3步，完全免费。</p>
     </div>
   </section>
 
@@ -37,18 +37,18 @@ import Layout from '../../layouts/Layout.astro';
         <span class="text-[#666] text-xs ml-2">PowerShell — 快速接入（Windows）</span>
       </div>
       <div class="bg-[#0d1117] p-6 font-mono text-sm leading-loose overflow-x-auto">
-        <p class="text-[#8b949e] mb-1"># Step 1: clone 仓库到本地</p>
-        <p class="text-[#79c0ff]">git clone <span class="text-[#a5d6ff]">https://github.com/lysanderl-glitch/synapse.git</span></p>
-        <p class="text-[#79c0ff] mt-1">Rename-Item <span class="text-[#a5d6ff]">synapse</span> <span class="text-[#a5d6ff]">"Claude Code\My-Synapse"</span></p>
-        <br/>
-        <p class="text-[#8b949e] mb-1"># Step 2: 打开 CLAUDE.md，全局替换（Ctrl+H）</p>
-        <p class="text-[#d2a8ff]">Lysander  <span class="text-[#8b949e]">→</span>  <span class="text-[#a8d1a0]">你的CEO名字</span></p>
-        <p class="text-[#d2a8ff]">{'{{PRESIDENT_NAME}}'}  <span class="text-[#8b949e]">→</span>  <span class="text-[#a8d1a0]">你的名字</span></p>
-        <p class="text-[#d2a8ff]">{'{{COMPANY_NAME}}'}    <span class="text-[#8b949e]">→</span>  <span class="text-[#a8d1a0]">你的公司/团队名</span></p>
-        <br/>
-        <p class="text-[#8b949e] mb-1"># Step 3: 用 Claude Code 打开文件夹</p>
-        <p class="text-[#a8d1a0]">收到问候语 → 体系生效 ✓</p>
-      </div>
+  <p class="text-[#8b949e] mb-1"># Step 1: clone 仓库到本地</p>
+  <p class="text-[#79c0ff]">git clone <span class="text-[#a5d6ff]">https://github.com/lysanderl-glitch/synapse.git</span></p>
+  <br/>
+  <p class="text-[#8b949e] mb-1"># Step 2: 用 Claude Code 打开文件夹，发送初始化提示词</p>
+  <p class="text-[#d2a8ff]">请完成 Synapse 初始化配置：</p>
+  <p class="text-[#d2a8ff]">- 我的名字：<span class="text-[#a8d1a0]">[你的名字]</span></p>
+  <p class="text-[#d2a8ff]">- AI CEO 名字：<span class="text-[#a8d1a0]">[如 Alex、Aurora]</span></p>
+  <p class="text-[#d2a8ff]">- 公司/团队名：<span class="text-[#a8d1a0]">[你的公司/团队名]</span></p>
+  <br/>
+  <p class="text-[#8b949e] mb-1"># Step 3: 收到个性化问候语 → 体系生效</p>
+  <p class="text-[#a8d1a0]">"[你的名字]您好，我是 [CEO名称]，Multi-Agents 团队为您服务！" ✓</p>
+</div>
     </div>
 
     <!-- 3 steps detail -->
@@ -126,47 +126,16 @@ import Layout from '../../layouts/Layout.astro';
       <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl hover:shadow-sm transition-shadow">
         <div class="shrink-0 w-10 h-10 rounded-full bg-[#028CDC]/10 border-2 border-[#028CDC] flex items-center justify-center font-extrabold text-[#028CDC]">2</div>
         <div class="flex-1">
-          <h3 class="font-bold text-[var(--color-text)] mb-2">个性化配置（2分钟）</h3>
-          <p class="text-sm text-[var(--color-text-light)] mb-4">打开 <code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">CLAUDE.md</code>，用编辑器全局替换（<strong>Ctrl+H</strong>）：</p>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm border border-[var(--color-border)] rounded-lg overflow-hidden">
-              <thead class="bg-[#F7F8FA]">
-                <tr>
-                  <th class="text-left px-4 py-2.5 text-[var(--color-text)] font-semibold text-xs">搜索（原值）</th>
-                  <th class="text-left px-4 py-2.5 text-[var(--color-text)] font-semibold text-xs">替换为</th>
-                  <th class="text-left px-4 py-2.5 text-[var(--color-text)] font-semibold text-xs">说明</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-[var(--color-border)]">
-                <tr class="hover:bg-[#F7F8FA]">
-                  <td class="px-4 py-2.5 font-mono text-xs text-[#013A7D] bg-[#f0f4ff]">Lysander</td>
-                  <td class="px-4 py-2.5 text-xs text-[var(--color-text-light)]">你的 AI CEO 名字</td>
-                  <td class="px-4 py-2.5 text-xs text-[var(--color-muted)]">如 "Alex"、"Aurora"</td>
-                </tr>
-                <tr class="hover:bg-[#F7F8FA]">
-                  <td class="px-4 py-2.5 font-mono text-xs text-[#013A7D] bg-[#f0f4ff]">{'{{PRESIDENT_NAME}}'}</td>
-                  <td class="px-4 py-2.5 text-xs text-[var(--color-text-light)]">你的名字</td>
-                  <td class="px-4 py-2.5 text-xs text-[var(--color-muted)]">AI 以此称呼你</td>
-                </tr>
-                <tr class="hover:bg-[#F7F8FA]">
-                  <td class="px-4 py-2.5 font-mono text-xs text-[#013A7D] bg-[#f0f4ff]">{'{{COMPANY_NAME}}'}</td>
-                  <td class="px-4 py-2.5 text-xs text-[var(--color-text-light)]">你的公司/团队名</td>
-                  <td class="px-4 py-2.5 text-xs text-[var(--color-muted)]">出现在组织描述中</td>
-                </tr>
-              </tbody>
-            </table>
+          <h3 class="font-bold text-[var(--color-text)] mb-2">打开 Claude Code，发送初始化提示词</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">打开 Claude Code → <strong>Open Folder</strong> → 选择你的 Synapse 文件夹 → 复制以下提示词，填入你的信息后发送：</p>
+          <div class="bg-[#0d1117] rounded-lg px-4 py-3 font-mono text-xs text-[#d2a8ff] overflow-x-auto mb-3 leading-relaxed">
+            <p>请完成 Synapse 初始化配置：</p>
+            <p>- 我的名字：<span class="text-[#a8d1a0]">[填入你的名字，如：张三]</span></p>
+            <p>- AI CEO 名字：<span class="text-[#a8d1a0]">[填入CEO名字，如：Alex、Aurora、Aria]</span></p>
+            <p>- 公司/团队名：<span class="text-[#a8d1a0]">[填入你的公司或团队名]</span></p>
           </div>
-        </div>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl hover:shadow-sm transition-shadow">
-        <div class="shrink-0 w-10 h-10 rounded-full bg-[#013A7D]/10 border-2 border-[#013A7D] flex items-center justify-center font-extrabold text-[#013A7D]">3</div>
-        <div class="flex-1">
-          <h3 class="font-bold text-[var(--color-text)] mb-2">用 Claude Code 打开，发送任意消息</h3>
-          <p class="text-sm text-[var(--color-text-light)] mb-3">打开 Claude Code → <strong>Open Folder</strong> → 选择你的 Synapse 文件夹 → 发送任意内容</p>
           <div class="bg-[#F7F8FA] border border-[var(--color-border)] rounded-lg px-4 py-3 text-sm">
-            <p class="text-[var(--color-muted)] text-xs mb-1">预期收到的问候语：</p>
+            <p class="text-[var(--color-muted)] text-xs mb-1">配置完成后，重启会话收到个性化问候语：</p>
             <p class="text-[#013A7D] font-semibold">"[你的名字]您好，我是 [CEO名称]，Multi-Agents 团队为您服务！"</p>
           </div>
           <p class="text-xs text-[var(--color-muted)] mt-2">⚠️ 如果没有出现问候语：确认 Claude Code 打开的是含 CLAUDE.md 的根目录</p>
@@ -175,14 +144,14 @@ import Layout from '../../layouts/Layout.astro';
 
       <!-- Step 4 -->
       <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl hover:shadow-sm transition-shadow">
-        <div class="shrink-0 w-10 h-10 rounded-full bg-[#FCAD2A]/10 border-2 border-[#FCAD2A] flex items-center justify-center font-extrabold text-[#FCAD2A]">4</div>
+        <div class="shrink-0 w-10 h-10 rounded-full bg-[#FCAD2A]/10 border-2 border-[#FCAD2A] flex items-center justify-center font-extrabold text-[#FCAD2A]">3</div>
         <div class="flex-1">
-          <h3 class="font-bold text-[var(--color-text)] mb-2">Step 4 · Meet Your Team</h3>
+          <h3 class="font-bold text-[var(--color-text)] mb-2">Step 3 · Meet Your Team</h3>
           <p class="text-sm text-[var(--color-text-light)] mb-3">Once Claude Code loads your Synapse folder, send this message to experience the full system — team structure, execution chain, and decision system in one go:</p>
           <div class="bg-[#0d1117] rounded-lg px-4 py-3 font-mono text-xs text-[#79c0ff] overflow-x-auto mb-3">
             你好，请介绍：1) 当前团队架构与各团队职责；2) 执行链是如何运转的（从我提出目标到最终交付）；3) 四级决策体系如何判断何时上报总裁？
           </div>
-          <p class="text-xs text-[var(--color-muted)]">This single prompt activates Lysander, surfaces all 44 agents across 7 teams, walks through the 6-step execution chain, and explains when decisions escalate to you.</p>
+          <p class="text-xs text-[var(--color-muted)]">This single prompt activates your AI CEO, surfaces all 44 agents across 7 teams, walks through the 6-step execution chain, and explains when decisions escalate to you.</p>
         </div>
       </div>
     </div>
