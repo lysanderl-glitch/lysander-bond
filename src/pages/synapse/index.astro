@@ -1,0 +1,316 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  darkContent={true}
+  title="Synapse Forge — AI Team Management OS"
+  description="从 Janus Digital 44 个 AI Agent 的实战经验中提炼，让任何团队都能锻造自己的 AI 团队。基于 Harness Engineering 的 AI 团队管理操作系统。"
+>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#FCAD2A]/5 via-transparent to-sky-900/10 pointer-events-none"></div>
+    <div class="max-w-5xl mx-auto px-6 py-24 text-center relative">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FCAD2A]/10 border border-[#FCAD2A]/30 rounded-full text-[#FCAD2A] text-xs font-semibold mb-8 tracking-wider uppercase">
+        Open Source · Production Proven · 44 Agents
+      </div>
+      <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6">
+        Synapse Forge
+        <span class="block text-[#FCAD2A] mt-1">AI Team Management OS</span>
+      </h1>
+      <p class="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed mb-4">
+        从 <strong class="text-white">Janus Digital</strong> 44 个 AI Agent 的实战经验中提炼——
+      </p>
+      <p class="text-lg text-white/50 max-w-2xl mx-auto leading-relaxed mb-12">
+        让任何团队都能"锻造"自己的 AI 团队。<br class="hidden md:block"/>
+        不是 Prompt 调参，是工程化的 <strong class="text-sky-400">Harness Engineering</strong>。
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="https://github.com/lysanderl-glitch/synapse"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-[#FCAD2A] text-gray-900 font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all shadow-lg shadow-[#FCAD2A]/20 text-base"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          View on GitHub
+        </a>
+        <a
+          href="mailto:lysanderl@janusd.io"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-white/5 text-white font-semibold rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-base"
+        >
+          了解更多 — 联系 Janus Digital
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proof Numbers -->
+  <section class="border-y border-white/5 bg-white/2">
+    <div class="max-w-5xl mx-auto px-6 py-12">
+      <div class="grid grid-cols-3 gap-8 text-center">
+        <div>
+          <div class="text-4xl font-extrabold text-[#FCAD2A] mb-2">44</div>
+          <div class="text-white/50 text-sm">生产级 AI Agents<br/><span class="text-white/30 text-xs">Production AI Agents</span></div>
+        </div>
+        <div>
+          <div class="text-4xl font-extrabold text-sky-400 mb-2">11</div>
+          <div class="text-white/50 text-sm">功能模块<br/><span class="text-white/30 text-xs">Functional Modules</span></div>
+        </div>
+        <div>
+          <div class="text-4xl font-extrabold text-purple-400 mb-2">5</div>
+          <div class="text-white/50 text-sm">预设模板，5分钟激活<br/><span class="text-white/30 text-xs">Templates, Live in 5 min</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Core Pillars -->
+  <section class="max-w-5xl mx-auto px-6 py-20">
+    <div class="text-center mb-14">
+      <h2 class="text-3xl font-bold text-white mb-3">三大核心能力</h2>
+      <p class="text-white/40 text-sm">Three Core Pillars</p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+      <!-- Pillar 1: Harness Engineering -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#FCAD2A]/30 transition-colors group">
+        <div class="w-10 h-10 rounded-xl bg-[#FCAD2A]/10 flex items-center justify-center mb-5 group-hover:bg-[#FCAD2A]/20 transition-colors">
+          <svg class="w-5 h-5 text-[#FCAD2A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Harness Engineering</h3>
+        <p class="text-xs text-[#FCAD2A]/80 font-mono mb-4">Agent = Model + Harness</p>
+        <p class="text-white/50 text-sm leading-relaxed">
+          三层治理架构：Guides（前馈控制）× Workflow（结构化流程）× Constraints（约束系统）。
+          让每个 Agent 不再反复犯同样的错误。
+        </p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="px-2 py-1 bg-[#FCAD2A]/10 text-[#FCAD2A]/80 rounded text-xs">前馈控制</span>
+          <span class="px-2 py-1 bg-[#FCAD2A]/10 text-[#FCAD2A]/80 rounded text-xs">反馈传感器</span>
+          <span class="px-2 py-1 bg-[#FCAD2A]/10 text-[#FCAD2A]/80 rounded text-xs">三层架构</span>
+        </div>
+      </div>
+
+      <!-- Pillar 2: CEO Guard -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-sky-500/30 transition-colors group">
+        <div class="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center mb-5 group-hover:bg-sky-500/20 transition-colors">
+          <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">CEO Guard 执行链</h3>
+        <p class="text-xs text-sky-400/80 font-mono mb-4">L1 → L2 → L3 → L4 Decision</p>
+        <p class="text-white/50 text-sm leading-relaxed">
+          四级决策体系（L1 自动 → L4 总裁），每次工具调用全程可审计。
+          PreToolUse hook 实时拦截越权执行，执行链断裂零容忍。
+        </p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="px-2 py-1 bg-sky-500/10 text-sky-400/80 rounded text-xs">四级决策</span>
+          <span class="px-2 py-1 bg-sky-500/10 text-sky-400/80 rounded text-xs">全程可审计</span>
+          <span class="px-2 py-1 bg-sky-500/10 text-sky-400/80 rounded text-xs">实时拦截</span>
+        </div>
+      </div>
+
+      <!-- Pillar 3: Zero Code Start -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-purple-500/30 transition-colors group">
+        <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center mb-5 group-hover:bg-purple-500/20 transition-colors">
+          <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">零代码启动</h3>
+        <p class="text-xs text-purple-400/80 font-mono mb-4">Template → Configure → Launch</p>
+        <p class="text-white/50 text-sm leading-relaxed">
+          5 套预设模板覆盖主流场景，模板选配后替换 3 个字段，
+          5 分钟内激活完整的 AI 团队管理体系。
+        </p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <span class="px-2 py-1 bg-purple-500/10 text-purple-400/80 rounded text-xs">5 套模板</span>
+          <span class="px-2 py-1 bg-purple-500/10 text-purple-400/80 rounded text-xs">5 分钟激活</span>
+          <span class="px-2 py-1 bg-purple-500/10 text-purple-400/80 rounded text-xs">开箱即用</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="border-y border-white/5 bg-white/2">
+    <div class="max-w-5xl mx-auto px-6 py-20">
+      <div class="text-center mb-14">
+        <h2 class="text-3xl font-bold text-white mb-3">它是如何工作的</h2>
+        <p class="text-white/40 text-sm">How Synapse Forge Works</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div class="space-y-6">
+          <div class="flex gap-4">
+            <div class="w-8 h-8 rounded-full bg-[#FCAD2A]/20 flex-shrink-0 flex items-center justify-center text-[#FCAD2A] font-bold text-sm">1</div>
+            <div>
+              <h4 class="font-semibold text-white mb-1">选择模板</h4>
+              <p class="text-white/50 text-sm">从 5 套预设模板中选择最匹配你场景的配置起点（内容团队 / 研发团队 / 运营团队…）</p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="w-8 h-8 rounded-full bg-sky-500/20 flex-shrink-0 flex items-center justify-center text-sky-400 font-bold text-sm">2</div>
+            <div>
+              <h4 class="font-semibold text-white mb-1">个人化配置</h4>
+              <p class="text-white/50 text-sm">替换 CEO 名称、公司名、总裁名称，3 个字段，Ctrl+H 全局替换，3 分钟完成。</p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="w-8 h-8 rounded-full bg-purple-500/20 flex-shrink-0 flex items-center justify-center text-purple-400 font-bold text-sm">3</div>
+            <div>
+              <h4 class="font-semibold text-white mb-1">激活体系</h4>
+              <p class="text-white/50 text-sm">重新打开 Claude Code 会话，Harness 立即生效。CEO Guard、执行链、决策体系全部就绪。</p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="w-8 h-8 rounded-full bg-green-500/20 flex-shrink-0 flex items-center justify-center text-green-400 font-bold text-sm">4</div>
+            <div>
+              <h4 class="font-semibold text-white mb-1">持续进化</h4>
+              <p class="text-white/50 text-sm">直接对 CEO 说"升级 Synapse"，一句话同步最新版本。你的定制化配置不会被覆盖。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gray-900 rounded-2xl border border-white/10 p-6 font-mono text-sm">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+            <span class="text-white/30 text-xs ml-2">CLAUDE.md — Harness Config</span>
+          </div>
+          <div class="space-y-2 text-xs leading-relaxed">
+            <div class="text-white/30"># 替换 3 个字段，3 分钟完成</div>
+            <div><span class="text-purple-400">CEO</span> <span class="text-white/50">=</span> <span class="text-green-400">"Lysander"</span> <span class="text-white/30">← 你的AI CEO名</span></div>
+            <div><span class="text-purple-400">PRESIDENT</span> <span class="text-white/50">=</span> <span class="text-green-400">"刘子杨"</span> <span class="text-white/30">← 你的名字</span></div>
+            <div><span class="text-purple-400">COMPANY</span> <span class="text-white/50">=</span> <span class="text-green-400">"Synapse-PJ"</span> <span class="text-white/30">← 公司名</span></div>
+            <div class="mt-4 text-white/30"># 保存 → 重开会话 → 体系激活</div>
+            <div class="mt-2 text-[#FCAD2A]">✓ CEO Guard 已就绪</div>
+            <div class="text-[#FCAD2A]">✓ 执行链 v2.0 已就绪</div>
+            <div class="text-[#FCAD2A]">✓ 四级决策体系已就绪</div>
+            <div class="text-[#FCAD2A]">✓ 44-Agent 团队已就绪</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Production Proof -->
+  <section class="max-w-5xl mx-auto px-6 py-20">
+    <div class="text-center mb-14">
+      <h2 class="text-3xl font-bold text-white mb-3">实战验证</h2>
+      <p class="text-white/40 text-sm">Production Proof from Janus Digital</p>
+    </div>
+
+    <div class="bg-gradient-to-r from-[#FCAD2A]/10 via-sky-500/5 to-purple-500/10 border border-white/10 rounded-2xl p-8">
+      <div class="grid md:grid-cols-2 gap-8">
+        <div>
+          <p class="text-white/70 leading-relaxed mb-6">
+            Synapse Forge 不是理论产物。它是 <strong class="text-white">Janus Digital</strong> 在生产环境中运行 44 个 AI Agent 后，
+            从失败、迭代、修正中提炼出来的工程化方法论。
+          </p>
+          <p class="text-white/50 text-sm leading-relaxed">
+            每一条规则背后都有一个真实的"为什么"——CEO 越权执行导致的系统混乱、
+            执行链断裂导致的任务失控、缺乏审计导致的决策黑箱……
+            这些问题驱动了 Harness Engineering 的每一次迭代。
+          </p>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-start gap-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] mt-2 flex-shrink-0"></div>
+            <p class="text-white/60 text-sm">情报管线每日自动运行：搜索 → 筛选 → 日报 → 行动 → 通知</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-sky-400 mt-2 flex-shrink-0"></div>
+            <p class="text-white/60 text-sm">CEO Guard 实时拦截每一次工具越权调用，全程可审计</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-purple-400 mt-2 flex-shrink-0"></div>
+            <p class="text-white/60 text-sm">跨会话状态恢复：新会话读取 active_tasks.yaml，任务不丢失</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 flex-shrink-0"></div>
+            <p class="text-white/60 text-sm">11 个功能模块按需加载，Harness 文件保持精简可控</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Reference -->
+  <section class="border-t border-white/5">
+    <div class="max-w-5xl mx-auto px-6 py-16">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-bold text-white mb-2">深入了解</h2>
+        <p class="text-white/40 text-sm">Learn More</p>
+      </div>
+      <div class="max-w-xl mx-auto">
+        <a
+          href="/blog/harness-engineering-guide"
+          class="group block p-6 bg-white/5 rounded-xl border border-white/10 hover:border-sky-500/50 transition-colors"
+        >
+          <div class="flex items-center gap-3 mb-3">
+            <time class="text-white/40 text-sm">2026-04-06</time>
+            <div class="flex gap-2">
+              <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">AI</span>
+              <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs">Harness Engineering</span>
+            </div>
+          </div>
+          <h3 class="text-lg font-semibold text-white group-hover:text-sky-400 transition-colors">
+            Harness Engineering 入门：AI 代理的控制框架
+          </h3>
+          <p class="text-white/50 mt-2 text-sm">深入理解 Harness Engineering——让 AI 代理不再犯同一个错误的工程化方法</p>
+          <div class="flex items-center gap-1 mt-4 text-sky-400 text-sm font-medium">
+            阅读文章
+            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="border-t border-white/5 bg-gradient-to-b from-transparent to-[#FCAD2A]/5">
+    <div class="max-w-5xl mx-auto px-6 py-20 text-center">
+      <h2 class="text-3xl font-bold text-white mb-4">准备锻造你的 AI 团队？</h2>
+      <p class="text-white/50 mb-10 max-w-lg mx-auto">
+        开源免费。Star 一下，5 分钟后你的 AI 团队就能上岗。
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="https://github.com/lysanderl-glitch/synapse"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-[#FCAD2A] text-gray-900 font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all shadow-lg shadow-[#FCAD2A]/20 text-base"
+        >
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          Star on GitHub — 免费获取
+        </a>
+        <a
+          href="/about"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-white/5 text-white font-semibold rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-base"
+        >
+          了解 Janus Digital
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>
