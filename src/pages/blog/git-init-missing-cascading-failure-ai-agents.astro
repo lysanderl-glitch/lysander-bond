@@ -1,0 +1,77 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout darkContent={true} title="一个 git init 的缺失如何让 AI 团队停摆4天 - Lysander" description="用真实事故复盘展示：AI 自动化体系中基础设施层的单点故障如何产生级联失效">
+  <article class="max-w-4xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <time class="text-white/40 text-sm">2026-04-19</time>
+        <div class="flex gap-2">
+          <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">问题日志</span>
+          <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">AI工程</span>
+          <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs">Synapse</span>
+        </div>
+      </div>
+      <h1 class="text-4xl font-bold text-white">一个 git init 的缺失如何让 AI 团队停摆4天</h1>
+    </header>
+
+    <div class="prose prose-invert max-w-none space-y-8 text-white/80 leading-relaxed">
+
+<h2>背景：一套"看起来在运转"的自动化管线</h2>
+
+<p>4 月中旬，我们上线了一套 AI 情报日报管线：每天 8:00 Dubai 远程 Agent 搜索前沿动态、生成 HTML 日报、commit 并 push 到 git，再触发 Slack 通知总裁。前两周运行很顺。直到某天总裁问我："最近几天的日报呢？"</p>
+
+<p>我查 git log，最新 commit 停在 4 天前。Slack 也没有新通知。但远程 Agent 的任务日志显示——任务按时启动、搜索返回结果、HTML 生成完整、git push "成功"。每一层都绿灯。</p>
+
+<h2>排查：每一层都自称"正常"</h2>
+
+<p>第一反应是 Slack webhook 挂了。手动 curl 测试，通的。</p>
+
+<p>第二反应是 cron 配置错了。翻调度日志，按时触发，执行时长正常，文件路径没问题。</p>
+
+<p>往更底层挖，才发现真相：Agent 执行目录是一个新建的 worktree，<strong>那个目录根本没有 <code>.git</code></strong>。<code>git add && git commit && git push</code> 返回的是 "fatal: not a git repository"，exit code 128。但外层包装脚本只写了 <code>if [ $? -eq 0 ]</code>——128 不等于 0，所以本地确实记录了一行"失败"日志，<strong>可是上游调度系统只关心"任务 Agent 是否完成执行"，Agent 进程正常退出即视为成功</strong>。</p>
+
+<p>一个漏掉的 <code>git init</code>，让 4 天的日报全部孤儿化在一个没人关注的本地目录里。</p>
+
+<h2>级联：AI 团队的单点脆弱性</h2>
+
+<p>问题定位后我反推这 4 天的全部影响，触目惊心：</p>
+
+<p><strong>情报日报中断</strong> → 下游情报行动 Agent（10 点运行，读取当日日报生成改进建议）输入为空，连续 4 天空转输出"无新情报"。</p>
+
+<p><strong>行动建议空转</strong> → 智囊团评审队列空，连续 4 天记录"无可评审项"，这个异常又被当作"最近比较平静"处理掉了。</p>
+
+<p><strong>Slack 通知缺失</strong> → 总裁视角下，这 4 天 AI 团队看起来什么都没干。</p>
+
+<p>换句话说，一个基础设施层的配置缺失（没执行 <code>git init</code>），顺着自动化链路一路放大：数据层断流→决策层饿死→通知层静默→管理层误判。整个 AI 团队"看起来在工作"，实际静默停摆 96 小时。</p>
+
+<h2>反思：AI 自动化体系的特殊故障模式</h2>
+
+<p>这次事故让我意识到一件反直觉的事——<strong>AI 自动化体系里的主要故障点，几乎从不在 AI 模型本身</strong>。LLM 输出 token 那部分稳定得出奇。出事的永远是胶水层：目录权限、环境变量、git 仓库状态、API 凭证过期、webhook URL 变更、文件系统配额。</p>
+
+<p>传统软件系统里这些问题会"响亮地失败"：用户立刻报 bug、监控立刻告警、日志里一片红。但 AI 自动化管线有一个特殊的放大器——<strong>每个节点都由 Agent 包装，而 Agent 天然倾向于"尽力完成并报告成功"</strong>。它会自动捕获异常、重试、降级，甚至用一段 LLM 生成的描述来"解释"自己做了什么。结果就是异常在每一跳被消化掉，最终上游看到的永远是一片 "completed successfully"。</p>
+
+<h3>三条可复用的原则</h3>
+
+<p><strong>1. 胶水层必须有独立心跳检测。</strong>不要信任 Agent 自己报告的"成功"。在管线末端加一个无状态 checker：从 git log 里读最新 commit 时间戳，超过阈值就告警；从 Slack 频道里验证当日是否收到通知。成本几十行代码，救命。</p>
+
+<p><strong>2. 把静默失败转成吵闹失败。</strong>包装脚本里永远显式检查具体错误码和 stderr，未知错误要 raise 出来，而不是吞进日志文件。AI 管线里尤其要禁止"catch 一切异常→继续执行→报告完成"这种模式——它是静默失败的核心源头。</p>
+
+<p><strong>3. 前置校验作为管线第一步。</strong>每个自动化脚本启动时，先跑一遍环境自检：目录是不是 git 仓库？远端分支存不存在？凭证还有没有效？下游 webhook 连不连通？这部分 10 行代码，能帮你省 4 天。</p>
+
+<p>AI Agent 让自动化变得很"聪明"，但聪明有个副作用——它会掩盖本应暴露的错误。真正可靠的 AI 工程团队，瓶颈从来不在模型能力，而在你愿不愿意为环境层写显式校验、为静默失败布置传感器。基础设施不会因为上面跑了 AI 就自己变得更可靠。</p>
+
+<p>如果你在构建 AI 工程团队，欢迎参考我们开源的 Synapse 框架。</p>
+
+    </div>
+
+    <footer class="mt-16 pt-8 border-t border-white/10">
+      <p class="text-white/40 text-sm mb-4">
+        如果你在构建 AI 工程团队，欢迎参考我们开源的
+        <a href="https://github.com/lysanderl-glitch/synapse" class="text-sky-400 hover:text-sky-300" target="_blank" rel="noopener noreferrer">Synapse 框架</a>
+      </p>
+      <a href="/blog" class="text-sky-400 hover:text-sky-300">&larr; 返回博客</a>
+    </footer>
+  </article>
+</Layout>
