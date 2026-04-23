@@ -1,0 +1,48 @@
+---
+interface Props {
+  title: string;
+  body: string;
+  accent?: 'amber' | 'sky' | 'purple';
+  icon?: string;
+  href?: string;
+}
+const { title, body, accent = 'amber', icon, href } = Astro.props;
+
+const accentClass = {
+  amber: 'forge-card-amber',
+  sky: 'forge-card-sky',
+  purple: 'forge-card-purple',
+}[accent];
+
+const badgeClass = {
+  amber: 'bg-[#FCAD2A]/10 text-[#FCAD2A]',
+  sky: 'bg-sky-500/10 text-sky-400',
+  purple: 'bg-purple-500/10 text-purple-400',
+}[accent];
+
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag
+  href={href}
+  class:list={[
+    'block bg-gray-900/60 border border-white/10 rounded-2xl p-6 transition-colors group',
+    accentClass,
+  ]}
+>
+  {icon && (
+    <div class:list={['w-10 h-10 rounded-xl flex items-center justify-center mb-4', badgeClass]}>
+      <span class="text-lg font-bold">{icon}</span>
+    </div>
+  )}
+  <h3 class="text-lg font-bold text-white mb-2">{title}</h3>
+  <p class="text-white/60 text-sm leading-relaxed">{body}</p>
+  {href && (
+    <div class="mt-4 flex items-center gap-1 text-[#FCAD2A] text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+      Learn more
+      <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+      </svg>
+    </div>
+  )}
+</Tag>

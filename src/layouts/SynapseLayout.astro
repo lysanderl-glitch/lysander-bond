@@ -1,0 +1,23 @@
+---
+import Layout from './Layout.astro';
+import SynapseSubNav from '../components/synapse/SynapseSubNav.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  subNavActive?: string;
+}
+
+const { title, description, ogImage, subNavActive = '' } = Astro.props;
+const fullTitle = `${title} | Synapse Forge`;
+---
+
+<Layout title={fullTitle} description={description} darkContent={true}>
+  <SynapseSubNav active={subNavActive} />
+  <slot />
+</Layout>
+
+<style is:global>
+  @import '../styles/synapse.css';
+</style>

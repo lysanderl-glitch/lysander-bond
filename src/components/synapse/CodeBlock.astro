@@ -1,0 +1,20 @@
+---
+interface Props {
+  lang?: string;
+  code: string;
+  filename?: string;
+}
+const { lang = 'text', code, filename } = Astro.props;
+---
+
+<div class="forge-code-window">
+  <div class="forge-code-head">
+    <span class="forge-code-dot" style="background:#ef4444;"></span>
+    <span class="forge-code-dot" style="background:#eab308;"></span>
+    <span class="forge-code-dot" style="background:#22c55e;"></span>
+    <span class="text-white/40 text-xs ml-2">
+      {filename || lang}
+    </span>
+  </div>
+  <pre><code>{code}</code></pre>
+</div>

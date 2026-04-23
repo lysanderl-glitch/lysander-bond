@@ -1,0 +1,45 @@
+---
+interface StatItem {
+  value: string | number;
+  label: string;
+  sublabel?: string;
+  accent?: 'amber' | 'sky' | 'purple' | 'green';
+}
+interface Props {
+  items: StatItem[];
+}
+const { items } = Astro.props;
+
+const accentMap = {
+  amber: 'text-[#FCAD2A]',
+  sky: 'text-sky-400',
+  purple: 'text-purple-400',
+  green: 'text-green-400',
+};
+---
+
+<section class="border-y border-white/5 bg-white/2">
+  <div class="max-w-5xl mx-auto px-6 py-12">
+    <div class:list={[
+      'grid gap-8 text-center',
+      `grid-cols-${Math.min(items.length, 2)} md:grid-cols-${items.length}`,
+    ]}>
+      {items.map((item) => (
+        <div>
+          <div class:list={[
+            'text-4xl md:text-5xl font-extrabold mb-2',
+            accentMap[item.accent || 'amber'],
+          ]}>
+            {item.value}
+          </div>
+          <div class="text-white/60 text-sm">
+            {item.label}
+            {item.sublabel && (
+              <><br/><span class="text-white/30 text-xs">{item.sublabel}</span></>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -24,7 +24,7 @@ import Layout from '../../layouts/Layout.astro';
 
 <h2>第一个坑：把 Environment Variables 当 Credentials 用</h2>
 
-<p>刚开始搭 n8n 的时候，我的习惯是所有 API Key 塞进 <code>.env</code> 文件，然后用 <code>{{ $env.NOTION_API_KEY }}</code> 这样的表达式直接引用。这在开发环境跑得很顺，直到我把 workflow 导出分享给另一个同事，他跑起来什么都是空的。原因很简单：n8n 导出的 JSON 不包含环境变量的值，接收方需要自己配同名变量。这不是 bug，是设计，但没人告诉你这件事。</p>
+<p>刚开始搭 n8n 的时候，我的习惯是所有 API Key 塞进 <code>.env</code> 文件，然后用 <code>&#123;&#123; $env.NOTION_API_KEY &#125;&#125;</code> 这样的表达式直接引用。这在开发环境跑得很顺，直到我把 workflow 导出分享给另一个同事，他跑起来什么都是空的。原因很简单：n8n 导出的 JSON 不包含环境变量的值，接收方需要自己配同名变量。这不是 bug，是设计，但没人告诉你这件事。</p>
 
 <p>更深的问题来了：我在 Synapse 体系里有将近十几条 workflow，分别用了不同风格的凭证管理。有的用 env，有的用 n8n 内置的 Credentials 节点，有的干脆把 key 硬编码在 HTTP Request 节点里（是的，我知道，别说了）。这导致每次 workflow 出问题，排查第一步都是"这个节点的认证是哪种方式"。最终我做了一个统一化决策：所有外部服务凭证一律迁移到 n8n 的 Credentials 管理系统，env 只存非敏感的配置项，比如环境标识、超时时间。这个决策让我重写了大概 60% 的节点配置，但之后的维护成本下降明显。</p>
 

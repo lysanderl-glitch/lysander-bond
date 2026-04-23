@@ -38,7 +38,7 @@ import Layout from '../../layouts/Layout.astro';
 
 <h3>二、根因:创建路径和查询路径用了两套过滤逻辑</h3>
 
-<p>花了大半天时间定位,终于在代码里抓到元凶。Sync 模块创建任务时,调用的是 <code>projects/{gid}/tasks</code> 接口,直接把任务挂到项目下,<strong>不带 section 参数</strong>——意思是「先扔进项目,后续再分配 section」。而 Gate 模块回查时,为了「精确」,用的是 <code>sections/{gid}/tasks</code> 接口,只查已分配 section 的任务。</p>
+<p>花了大半天时间定位,终于在代码里抓到元凶。Sync 模块创建任务时,调用的是 <code>projects/&#123;gid&#125;/tasks</code> 接口,直接把任务挂到项目下,<strong>不带 section 参数</strong>——意思是「先扔进项目,后续再分配 section」。而 Gate 模块回查时,为了「精确」,用的是 <code>sections/&#123;gid&#125;/tasks</code> 接口,只查已分配 section 的任务。</p>
 
 <p>于是事情就是这样:111 条任务全部成功创建,其中 19 条因为带了默认 section 被查到,另外 92 条因为还没分配 section,对 Gate 的视角来说压根不存在。它们不是没写进去,是「写进去了但查询维度不覆盖」。数据库里该有的都有,但两段代码看待同一批数据的 WHERE 子句不一样。</p>
 
@@ -56,7 +56,7 @@ import Layout from '../../layouts/Layout.astro';
 
 <p><strong>1. 写入和查询必须共用同一个「数据视图定义」。</strong>把「什么叫一条有效任务」抽成单一的常量或函数,Sync 和 Gate 都从同一个地方引用。不要让两段代码各自写 filter 条件。</p>
 
-<p><strong>2. 门禁的第一性校验应该用「最宽口径」,而不是「最精确口径」。</strong>Gate 的工作是确认数据已落地,不是确认数据已经到位于终态。校验应当用 <code>projects/{gid}/tasks</code> 拉全量,然后在内存里做细分判断,而不是直接向 API 要一个过滤视图。</p>
+<p><strong>2. 门禁的第一性校验应该用「最宽口径」,而不是「最精确口径」。</strong>Gate 的工作是确认数据已落地,不是确认数据已经到位于终态。校验应当用 <code>projects/&#123;gid&#125;/tasks</code> 拉全量,然后在内存里做细分判断,而不是直接向 API 要一个过滤视图。</p>
 
 <p><strong>3. 每条自动化流水线都要有一个「守恒律断言」。</strong>写入 N 条,下游可见必须等于 N 条,不等就立刻报错并打印两边各自的 ID 集合差集。这一行代码本来 10 分钟能写,能帮你省下一整天的排查。</p>
 

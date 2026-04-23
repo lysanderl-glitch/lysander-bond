@@ -1,0 +1,117 @@
+---
+import SynapseLayout from '../../layouts/SynapseLayout.astro';
+import Hero from '../../components/synapse/Hero.astro';
+import PillarSection from '../../components/synapse/PillarSection.astro';
+import TimelineItem from '../../components/synapse/TimelineItem.astro';
+import CTABanner from '../../components/synapse/CTABanner.astro';
+
+const pipeline = [
+  {
+    step: 1,
+    title: '6:00am Dubai — Task recovery.',
+    body: 'Reads active_tasks.yaml. Picks up anything left unblocked.',
+  },
+  {
+    step: 2,
+    title: '8:00am Dubai — Intelligence scan.',
+    body: 'AI and market signals collected, filtered for practical relevance, rendered as HTML, committed to git.',
+  },
+  {
+    step: 3,
+    title: '10:00am Dubai — Action evaluation.',
+    body: 'Report recommendations pass a four-expert panel. Approved items dispatch to Harness Ops for execution.',
+  },
+  {
+    step: 4,
+    title: 'Completion — Slack notification.',
+    body: 'The president gets one line: done, blocked, or awaiting review.',
+  },
+];
+---
+
+<SynapseLayout
+  title="Intelligence"
+  description="Every morning, your AI team reports for work. A closed daily pipeline: scan, filter, decide, act, report."
+  subNavActive="intelligence"
+>
+  <Hero
+    eyebrow="Intelligence"
+    title="Every morning, your AI team reports for work."
+    subtitle="Synapse runs a daily intelligence pipeline: scan the AI frontier, filter for signal, evaluate for action, ship the report. No human in the loop. The output is public — and the pipeline itself is part of the product."
+    primaryCta={{ label: 'View the Daily Dispatch', href: '/intelligence' }}
+    secondaryCta={{ label: 'See How It Works', href: '/synapse/how-it-works' }}
+  />
+
+  <PillarSection
+    eyebrow="The Daily Pipeline"
+    title="Four steps. Before most teams start the day."
+    bordered={true}
+  >
+    <div class="max-w-3xl mx-auto space-y-8">
+      {pipeline.map((s) => (
+        <TimelineItem step={s.step} title={s.title} body={s.body} />
+      ))}
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="What makes it different"
+    title="A closed intelligence loop — not a newsletter"
+  >
+    <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
+      <p>
+        This is not a daily newsletter. It is a closed intelligence loop. Signals come in, decisions come out, actions happen, results return.
+      </p>
+      <p>
+        Every daily report is archived with an outcome — what we learned, what we changed, what we didn't act on and why. Over months, the archive becomes a compounding record of how an organization actually keeps up with AI.
+      </p>
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="Today's report"
+    title="Subscribe to the morning dispatch"
+    subtitle="Archive coming soon. In the meantime, get the morning dispatch delivered."
+    bordered={true}
+  >
+    <div class="max-w-xl mx-auto">
+      <form
+        action="mailto:lysanderl@janusd.io"
+        method="GET"
+        enctype="text/plain"
+        class="bg-gray-900/60 border border-white/10 rounded-2xl p-6"
+      >
+        <input type="hidden" name="subject" value="Synapse Intelligence Subscription" />
+        <label for="email" class="block text-white/70 text-sm font-medium mb-2">
+          Email address
+        </label>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input
+            id="email"
+            name="body"
+            type="email"
+            required
+            placeholder="you@company.com"
+            class="flex-1 px-4 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-[#FCAD2A]/50"
+          />
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center px-6 py-3 bg-[#FCAD2A] text-gray-900 font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all whitespace-nowrap"
+          >
+            Subscribe to the morning dispatch
+          </button>
+        </div>
+        <p class="text-white/40 text-xs mt-3">
+          We will follow up personally. Unsubscribe any time.
+        </p>
+      </form>
+    </div>
+  </PillarSection>
+
+  <CTABanner
+    heading="Run your own intelligence loop."
+    body="Synapse ships with the daily pipeline included. Yours starts the first morning you open Claude Code."
+    primaryCta={{ label: 'Get Started', href: '/synapse/get-started' }}
+    secondaryCta={{ label: 'View Pricing', href: '/synapse/pricing' }}
+  />
+</SynapseLayout>

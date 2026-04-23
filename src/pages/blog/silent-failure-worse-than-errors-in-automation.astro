@@ -50,7 +50,7 @@ import Layout from '../../layouts/Layout.astro';
 
 <p>第二，<strong>增加语义健康检查</strong>。触发器的健康定义不再是 "HTTP 200"，而是"过去 2 小时内至少完成了 1 次有效的任务派发"。没有派发就是病，哪怕 webhook 返回 200。这个检查我们加到了 Prometheus 的 <code>absent_over_time</code> 规则里。</p>
 
-<p>第三，<strong>心跳日志常态化</strong>。每个自动化任务每次执行，无论是否有业务动作，都必须输出一条结构化心跳：<code>{task_id, trigger_time, scanned_items, dispatched_items, skipped_reason}</code>。<code>dispatched_items=0</code> 连续出现 3 次立即告警——因为"什么都没做"本身就是值得告警的状态。</p>
+<p>第三，<strong>心跳日志常态化</strong>。每个自动化任务每次执行，无论是否有业务动作，都必须输出一条结构化心跳：<code>&#123;task_id, trigger_time, scanned_items, dispatched_items, skipped_reason&#125;</code>。<code>dispatched_items=0</code> 连续出现 3 次立即告警——因为"什么都没做"本身就是值得告警的状态。</p>
 
 <h3>三条可复用的原则</h3>
 

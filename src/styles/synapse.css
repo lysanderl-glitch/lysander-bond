@@ -1,0 +1,84 @@
+/* Synapse Forge brand tokens and utilities */
+:root {
+  --forge-amber: #FCAD2A;
+  --forge-sky: #38BDF8;
+  --forge-purple: #A855F7;
+  --forge-dark: #0A0F1C;
+  --forge-ink: #111827;
+  --forge-line: rgba(255, 255, 255, 0.10);
+}
+
+/* Sub-nav scrollbar (hidden) */
+.forge-subnav-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.forge-subnav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Accent underline animation for active sub-nav */
+.forge-subnav-link-active {
+  color: var(--forge-amber);
+  position: relative;
+}
+.forge-subnav-link-active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--forge-amber);
+  border-radius: 1px;
+}
+
+/* Card accent borders (hover) */
+.forge-card-amber:hover { border-color: rgba(252, 173, 42, 0.4) !important; }
+.forge-card-sky:hover { border-color: rgba(56, 189, 248, 0.4) !important; }
+.forge-card-purple:hover { border-color: rgba(168, 85, 247, 0.4) !important; }
+
+/* Timeline number circle */
+.forge-timeline-num {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--forge-amber);
+  color: var(--forge-amber);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(252, 173, 42, 0.08);
+}
+
+/* Code window chrome */
+.forge-code-window {
+  background: #0b1220;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.forge-code-window .forge-code-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+.forge-code-window .forge-code-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.forge-code-window pre {
+  margin: 0;
+  padding: 16px 18px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  color: #e5e7eb;
+  overflow-x: auto;
+  line-height: 1.6;
+}

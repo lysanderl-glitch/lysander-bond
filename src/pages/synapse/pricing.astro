@@ -1,0 +1,136 @@
+---
+import SynapseLayout from '../../layouts/SynapseLayout.astro';
+import Hero from '../../components/synapse/Hero.astro';
+import PillarSection from '../../components/synapse/PillarSection.astro';
+import PricingCard from '../../components/synapse/PricingCard.astro';
+import CTABanner from '../../components/synapse/CTABanner.astro';
+
+const tiers = [
+  {
+    tier: 'Community',
+    price: 'Free',
+    tagline: 'For builders and solo adopters willing to read the docs.',
+    features: [
+      'Full access to the Synapse operating system',
+      'Pre-assembled CLAUDE.md',
+      'All 46 agent cards',
+      'Generator and validator toolchain',
+      'Daily intelligence feed',
+      'Documentation',
+      'Community support via GitHub',
+    ],
+    cta: { label: 'Get started for free', href: '/synapse/get-started' },
+  },
+  {
+    tier: 'Assessment',
+    price: '$5K–$10K',
+    tagline: 'Two-week engagement. Map, plan, hand off.',
+    features: [
+      'Two-week engagement',
+      'Map current AI usage',
+      'Identify high-leverage Synapse adoption paths',
+      'Deliver customized synapse.yaml + rollout plan',
+      'One Harness Ops specialist + one Graphify strategist assigned',
+    ],
+    cta: {
+      label: 'Book an assessment',
+      href: 'mailto:lysanderl@janusd.io?subject=Synapse%20Assessment',
+      external: false,
+    },
+    highlighted: true,
+  },
+  {
+    tier: 'Implementation',
+    price: '$30K–$80K',
+    tagline: 'Full rollout. Scope priced by size and modules.',
+    features: [
+      'Four-to-twelve-week engagement',
+      'Custom agent cards for your domain',
+      'Integration with existing tools',
+      'Team training',
+      '90 days post-launch support',
+      'Scope priced by organization size and module count',
+    ],
+    cta: {
+      label: 'Request a proposal',
+      href: 'mailto:lysanderl@janusd.io?subject=Synapse%20Implementation',
+      external: false,
+    },
+  },
+];
+
+const addons = [
+  'Construction digital delivery module (Janus): priced per project',
+  'Quant trading module (Stock): priced per strategy',
+  'Private training cohort: $8,000 per seat, 6-week program',
+  'Ongoing fractional AI ops retainer: from $4,000/month',
+];
+---
+
+<SynapseLayout
+  title="Pricing"
+  description="The Synapse operating system is free. Services are how we help you land it in your organization."
+  subNavActive="pricing"
+>
+  <Hero
+    eyebrow="Pricing"
+    title="The system is free. The services are how we help you land it."
+    subtitle="Synapse Forge — the operating system, the 46-agent roster, the harness, the toolchain — is open and free. What you pay for is help getting it running in your specific organization."
+    primaryCta={{ label: 'Start Free', href: '/synapse/get-started' }}
+    secondaryCta={{
+      label: 'Talk to Us',
+      href: 'mailto:lysanderl@janusd.io?subject=Synapse%20Inquiry',
+    }}
+  />
+
+  <PillarSection
+    eyebrow="Three tiers"
+    title="Pick the one that fits"
+  >
+    <div class="grid md:grid-cols-3 gap-6">
+      {tiers.map((t) => (
+        <PricingCard {...t} />
+      ))}
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="Add-ons"
+    title="Specialized extensions and ongoing support"
+    bordered={true}
+  >
+    <div class="max-w-2xl mx-auto">
+      <ul class="space-y-4">
+        {addons.map((addon) => (
+          <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
+            <svg class="w-5 h-5 text-[#FCAD2A] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+            <span class="text-white/70 leading-relaxed">{addon}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="Who this is for"
+    title="The honest filter"
+  >
+    <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed">
+      <p>
+        Synapse Community is for anyone running Claude Code and willing to read documentation. Paid services are for organizations that need Synapse running correctly, faster than a solo adoption would get them there.
+      </p>
+    </div>
+  </PillarSection>
+
+  <CTABanner
+    heading="Ready to start?"
+    body="Either grab the free bundle and run it yourself, or book an assessment and have us map the path."
+    primaryCta={{ label: 'Get the Free Bundle', href: '/synapse/get-started' }}
+    secondaryCta={{
+      label: 'Book an Assessment',
+      href: 'mailto:lysanderl@janusd.io?subject=Synapse%20Assessment',
+    }}
+  />
+</SynapseLayout>

@@ -1,5 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import SynapseSubNav from '../../components/synapse/SynapseSubNav.astro';
+import PillarSection from '../../components/synapse/PillarSection.astro';
+import FeatureCard from '../../components/synapse/FeatureCard.astro';
 ---
 
 <Layout
@@ -7,6 +10,7 @@ import Layout from '../../layouts/Layout.astro';
   title="Synapse Forge — AI Team Management OS"
   description="从 Janus Digital 44 个 AI Agent 的实战经验中提炼，让任何团队都能锻造自己的 AI 团队。基于 Harness Engineering 的 AI 团队管理操作系统。"
 >
+  <SynapseSubNav active="overview" />
 
   <!-- Hero -->
   <section class="relative overflow-hidden">
@@ -29,24 +33,19 @@ import Layout from '../../layouts/Layout.astro';
 
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
-          href="https://github.com/lysanderl-glitch/synapse"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/synapse/get-started"
           class="inline-flex items-center gap-2 px-8 py-4 bg-[#FCAD2A] text-gray-900 font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all shadow-lg shadow-[#FCAD2A]/20 text-base"
         >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-          </svg>
-          View on GitHub
-        </a>
-        <a
-          href="mailto:lysanderl@janusd.io"
-          class="inline-flex items-center gap-2 px-8 py-4 bg-white/5 text-white font-semibold rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-base"
-        >
-          了解更多 — 联系 Janus Digital
+          Get Started
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
           </svg>
+        </a>
+        <a
+          href="/synapse/how-it-works"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-white/5 text-white font-semibold rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-base"
+        >
+          See How It Works
         </a>
       </div>
     </div>
@@ -293,24 +292,67 @@ import Layout from '../../layouts/Layout.astro';
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
-          href="https://github.com/lysanderl-glitch/synapse"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/synapse/get-started"
           class="inline-flex items-center gap-2 px-8 py-4 bg-[#FCAD2A] text-gray-900 font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all shadow-lg shadow-[#FCAD2A]/20 text-base"
         >
-          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          Get Started — 5 分钟激活
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
           </svg>
-          Star on GitHub — 免费获取
         </a>
         <a
-          href="/about"
+          href="/synapse/pricing"
           class="inline-flex items-center gap-2 px-8 py-4 bg-white/5 text-white font-semibold rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all text-base"
         >
-          了解 Janus Digital
+          View Pricing
         </a>
       </div>
     </div>
   </section>
+
+  <!-- Explore Synapse Forge -->
+  <PillarSection
+    eyebrow="Explore"
+    title="Everything in Synapse Forge"
+  >
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <FeatureCard
+        title="Capabilities"
+        body="Eleven specialist teams covering the full operating surface of a modern business."
+        accent="amber"
+        href="/synapse/capabilities"
+      />
+      <FeatureCard
+        title="How It Works"
+        body="Agent = Model + Harness. The five-step execution chain, guides and sensors, the three-layer CLAUDE.md."
+        accent="sky"
+        href="/synapse/how-it-works"
+      />
+      <FeatureCard
+        title="Team"
+        body="Forty-six specialists across eleven teams. Every one graded A/B/C and machine-readable."
+        accent="purple"
+        href="/synapse/team"
+      />
+      <FeatureCard
+        title="Intelligence"
+        body="Every morning, your AI team reports for work. A closed daily intelligence loop."
+        accent="amber"
+        href="/synapse/intelligence"
+      />
+      <FeatureCard
+        title="Pricing"
+        body="The system is free. Services — assessment and implementation — are how we help you land it."
+        accent="sky"
+        href="/synapse/pricing"
+      />
+      <FeatureCard
+        title="Get Started"
+        body="Three steps. Five minutes. Your AI CEO on duty."
+        accent="purple"
+        href="/synapse/get-started"
+      />
+    </div>
+  </PillarSection>
 
 </Layout>

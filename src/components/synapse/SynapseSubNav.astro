@@ -1,0 +1,46 @@
+---
+interface Props {
+  active?: string;
+}
+const { active = '' } = Astro.props;
+
+const links = [
+  { key: 'overview', label: 'Overview', href: '/synapse/' },
+  { key: 'capabilities', label: 'Capabilities', href: '/synapse/capabilities' },
+  { key: 'how-it-works', label: 'How It Works', href: '/synapse/how-it-works' },
+  { key: 'team', label: 'Team', href: '/synapse/team' },
+  { key: 'intelligence', label: 'Intelligence', href: '/synapse/intelligence' },
+  { key: 'pricing', label: 'Pricing', href: '/synapse/pricing' },
+  { key: 'get-started', label: 'Get Started', href: '/synapse/get-started' },
+];
+---
+
+<style is:global>
+  @import '../../styles/synapse.css';
+</style>
+
+<nav
+  class="sticky z-40 border-b border-white/10 backdrop-blur-md"
+  style="top: 64px; background: rgba(10,15,28,0.95);"
+>
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="flex items-center gap-6 py-3 overflow-x-auto forge-subnav-scroll">
+      {links.map((link) => {
+        const isActive = link.key === active;
+        return (
+          <a
+            href={link.href}
+            class:list={[
+              'whitespace-nowrap text-sm font-medium transition-colors pb-1',
+              isActive
+                ? 'forge-subnav-link-active'
+                : 'text-white/60 hover:text-white',
+            ]}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</nav>
