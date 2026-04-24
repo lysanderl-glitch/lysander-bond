@@ -1,0 +1,116 @@
+---
+// Global language toggle (EN | 中)
+// - Visual style mirrors the EN|中 toggle that used to live inside SynapseSubNav.
+// - Behavior:
+//   * On /synapse/zh/<slug>  -> clicking EN navigates to /synapse/<slug> (Forge EN peer)
+//   * On /synapse/<slug>     -> clicking 中 navigates to /synapse/zh/<slug> (Forge ZH peer)
+//   * On non-Forge pages (/, /academy, /services, /blog, /about, /training, /intelligence, ...):
+//       clicking EN falls back to /synapse/ (Forge EN portal — the only EN content today)
+//       clicking 中 keeps the user on the same URL (all non-Forge content is already ZH)
+// - Server-rendered current-language highlight is driven by the `currentLang` prop
+//   (passed from Layout.astro based on `lang`).
+interface Props {
+  currentLang?: 'en' | 'zh';
+}
+const { currentLang = 'zh' } = Astro.props;
+---
+
+<div
+  class="flex items-center gap-1 text-xs font-semibold whitespace-nowrap"
+  data-lang-toggle
+>
+  <a
+    href="#"
+    data-forge-lang="en"
+    aria-label="Switch to English"
+    class:list={[
+      'px-2 py-0.5 rounded transition-colors',
+      currentLang === 'en'
+        ? 'bg-[#FCAD2A]/20 text-[#FCAD2A]'
+        : 'text-white/50 hover:text-white',
+    ]}
+  >
+    EN
+  </a>
+  <span class="text-white/20">|</span>
+  <a
+    href="#"
+    data-forge-lang="zh"
+    aria-label="切换到中文"
+    class:list={[
+      'px-2 py-0.5 rounded transition-colors',
+      currentLang === 'zh'
+        ? 'bg-[#FCAD2A]/20 text-[#FCAD2A]'
+        : 'text-white/50 hover:text-white',
+    ]}
+  >
+    中
+  </a>
+</div>
+
+<script>
+  (function () {
+    // Forge pages that have a ZH peer under /synapse/zh/.
+    const BILINGUAL_FORGE_SLUGS = new Set([
+      '', // /synapse/ index
+      'capabilities',
+      'how-it-works',
+      'team',
+      'intelligence',
+      'pricing',
+      'get-started',
+    ]);
+
+    type ParsedPath =
+      | { kind: 'forge'; slug: string; isZh: boolean }
+      | { kind: 'other' };
+
+    function parsePath(path: string): ParsedPath {
+      const p = path.replace(/\/$/, '');
+      // /synapse/zh or /synapse/zh/<slug>
+      const zhMatch = p.match(/^\/synapse\/zh(?:\/(.*))?$/);
+      if (zhMatch) {
+        return { kind: 'forge', slug: zhMatch[1] || '', isZh: true };
+      }
+      // /synapse or /synapse/<slug>  (slug must not start with "zh")
+      const enMatch = p.match(/^\/synapse(?:\/(.*))?$/);
+      if (enMatch) {
+        return { kind: 'forge', slug: enMatch[1] || '', isZh: false };
+      }
+      return { kind: 'other' };
+    }
+
+    function computeTargetUrl(targetLang: 'en' | 'zh'): string | null {
+      const parsed = parsePath(window.location.pathname);
+
+      if (parsed.kind === 'forge') {
+        const slug = BILINGUAL_FORGE_SLUGS.has(parsed.slug) ? parsed.slug : '';
+        if (targetLang === 'zh') {
+          return slug ? `/synapse/zh/${slug}` : '/synapse/zh/';
+        }
+        return slug ? `/synapse/${slug}` : '/synapse/';
+      }
+
+      // Non-Forge page. All current content is ZH.
+      if (targetLang === 'en') {
+        // Fallback: send user to Forge EN portal (only EN surface available today).
+        return '/synapse/';
+      }
+      // Already on a ZH non-Forge page; no navigation needed.
+      return null;
+    }
+
+    document
+      .querySelectorAll<HTMLAnchorElement>('[data-lang-toggle] [data-forge-lang]')
+      .forEach((el) => {
+        el.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          const lang = el.getAttribute('data-forge-lang') as 'en' | 'zh';
+          const target = computeTargetUrl(lang);
+          if (target && target !== window.location.pathname) {
+            window.location.href = target;
+          }
+        });
+      });
+  })();
+</script>

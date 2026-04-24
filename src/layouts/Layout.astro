@@ -1,4 +1,6 @@
 ---
+import LangToggle from '../components/LangToggle.astro';
+
 interface Props {
   title?: string;
   description?: string;
@@ -12,10 +14,71 @@ const {
   darkContent = false,
   lang = 'zh-CN',
 } = Astro.props;
+
+// Normalize: any value of `lang` that starts with "en" means English UI;
+// everything else (zh, zh-CN, undefined) means Chinese UI.
+const isEn = typeof lang === 'string' && lang.toLowerCase().startsWith('en');
+const htmlLang = isEn ? 'en' : 'zh-CN';
+const toggleLang: 'en' | 'zh' = isEn ? 'en' : 'zh';
+
+// Header / Footer copy tables
+const t = isEn
+  ? {
+      navServices: 'Services',
+      navTraining: 'Training',
+      navBlog: 'Blog',
+      navIntelligence: 'Intelligence',
+      navAbout: 'About',
+      navForge: 'Forge',
+      navAcademy: 'Academy',
+      brandTag: 'AI Agent Operating System',
+      footerTagline: 'AI agent team operations system.<br>Harness Engineering in practice.',
+      footerColServices: 'Services',
+      footerSvcAssessment: 'Synapse Assessment',
+      footerSvcImplementation: 'Synapse Implementation',
+      footerSvcTraining: 'SCP Training & Certification',
+      footerColAcademy: 'Academy',
+      footerAcademyHome: 'Academy Home',
+      footerAcademyGet: 'Get Synapse',
+      footerAcademyTeam: 'AI Team Roster',
+      footerAcademySkills: 'Skills Workflow',
+      footerAcademyLearn: 'Harness Methodology',
+      footerColResources: 'Resources',
+      footerResBlog: 'Blog',
+      footerResIntel: 'AI Intelligence Daily',
+      footerResAbout: 'About Us',
+      footerCopyright: '© 2026 Synapse. Harness Engineering for AI Teams.',
+    }
+  : {
+      navServices: '服务',
+      navTraining: '培训',
+      navBlog: '博客',
+      navIntelligence: '情报',
+      navAbout: '关于',
+      navForge: 'Forge',
+      navAcademy: '学院',
+      brandTag: 'AI Agent 协作运营体系',
+      footerTagline: 'AI Agent 团队协作运营体系<br>Harness Engineering 实践者',
+      footerColServices: '服务',
+      footerSvcAssessment: 'Synapse Assessment',
+      footerSvcImplementation: 'Synapse Implementation',
+      footerSvcTraining: 'SCP 培训认证',
+      footerColAcademy: '学院',
+      footerAcademyHome: '学院首页',
+      footerAcademyGet: '获取 Synapse',
+      footerAcademyTeam: 'AI 团队名录',
+      footerAcademySkills: 'Skills 工作流',
+      footerAcademyLearn: 'Harness 方法论',
+      footerColResources: '资源',
+      footerResBlog: '博客',
+      footerResIntel: 'AI 情报日报',
+      footerResAbout: '关于我们',
+      footerCopyright: '© 2026 Synapse. Harness Engineering for AI Teams.',
+    };
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={htmlLang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -40,14 +103,15 @@ const {
           </svg>
           <span class="text-lg font-bold text-[#FCAD2A]">Synapse</span>
         </a>
-        <div class="hidden md:flex gap-5 text-sm font-medium">
-          <a href="/services" class="text-white/70 hover:text-[#FCAD2A] transition-colors">服务</a>
-          <a href="/training" class="text-white/70 hover:text-[#FCAD2A] transition-colors">培训</a>
-          <a href="/blog" class="text-white/70 hover:text-[#FCAD2A] transition-colors">博客</a>
-          <a href="/intelligence" class="text-white/70 hover:text-[#FCAD2A] transition-colors">情报</a>
-          <a href="/about" class="text-white/70 hover:text-[#FCAD2A] transition-colors">关于</a>
-          <a href="/synapse" class="px-3 py-1 bg-[#FCAD2A]/15 text-[#FCAD2A] border border-[#FCAD2A]/30 rounded-full hover:bg-[#FCAD2A]/25 transition-colors font-semibold">Forge</a>
-          <a href="/academy" class="px-3 py-1 bg-[#FCAD2A]/15 text-[#FCAD2A] border border-[#FCAD2A]/30 rounded-full hover:bg-[#FCAD2A]/25 transition-colors font-semibold">学院</a>
+        <div class="hidden md:flex items-center gap-5 text-sm font-medium">
+          <a href="/services" class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navServices}</a>
+          <a href="/training" class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navTraining}</a>
+          <a href="/blog" class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navBlog}</a>
+          <a href="/intelligence" class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navIntelligence}</a>
+          <a href="/about" class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navAbout}</a>
+          <a href="/synapse" class="px-3 py-1 bg-[#FCAD2A]/15 text-[#FCAD2A] border border-[#FCAD2A]/30 rounded-full hover:bg-[#FCAD2A]/25 transition-colors font-semibold">{t.navForge}</a>
+          <a href="/academy" class="px-3 py-1 bg-[#FCAD2A]/15 text-[#FCAD2A] border border-[#FCAD2A]/30 rounded-full hover:bg-[#FCAD2A]/25 transition-colors font-semibold">{t.navAcademy}</a>
+          <LangToggle currentLang={toggleLang} />
         </div>
       </nav>
     </header>
@@ -70,41 +134,41 @@ const {
                 <path d="M33.13 8.05v27.52c.98-.21 1.68-.77 1.68-1.51V9.55c0-.73-.7-1.29-1.68-1.5Z" fill="#028CDC"/>
               </svg>
               <span class="font-bold text-[#FCAD2A]">Synapse</span>
-              <span class="text-white/40 text-sm">AI Agent 协作运营体系</span>
+              <span class="text-white/40 text-sm">{t.brandTag}</span>
             </div>
-            <p class="text-white/40 text-sm max-w-xs">AI Agent 团队协作运营体系<br>Harness Engineering 实践者</p>
+            <p class="text-white/40 text-sm max-w-xs" set:html={t.footerTagline}></p>
           </div>
           <div class="flex gap-12 text-sm">
             <div>
-              <h4 class="font-semibold text-white mb-3">服务</h4>
+              <h4 class="font-semibold text-white mb-3">{t.footerColServices}</h4>
               <div class="flex flex-col gap-2 text-white/40">
-                <a href="/services" class="hover:text-[#FCAD2A]">Synapse Assessment</a>
-                <a href="/services" class="hover:text-[#FCAD2A]">Synapse Implementation</a>
-                <a href="/training" class="hover:text-[#FCAD2A]">SCP 培训认证</a>
+                <a href="/services" class="hover:text-[#FCAD2A]">{t.footerSvcAssessment}</a>
+                <a href="/services" class="hover:text-[#FCAD2A]">{t.footerSvcImplementation}</a>
+                <a href="/training" class="hover:text-[#FCAD2A]">{t.footerSvcTraining}</a>
               </div>
             </div>
             <div>
-              <h4 class="font-semibold text-white mb-3">学院</h4>
+              <h4 class="font-semibold text-white mb-3">{t.footerColAcademy}</h4>
               <div class="flex flex-col gap-2 text-white/40">
-                <a href="/academy" class="hover:text-[#FCAD2A]">学院首页</a>
-                <a href="/academy/get-synapse" class="hover:text-[#FCAD2A]">获取 Synapse</a>
-                <a href="/academy/team" class="hover:text-[#FCAD2A]">AI 团队名录</a>
-                <a href="/academy/skills" class="hover:text-[#FCAD2A]">Skills 工作流</a>
-                <a href="/academy/learn" class="hover:text-[#FCAD2A]">Harness 方法论</a>
+                <a href="/academy" class="hover:text-[#FCAD2A]">{t.footerAcademyHome}</a>
+                <a href="/academy/get-synapse" class="hover:text-[#FCAD2A]">{t.footerAcademyGet}</a>
+                <a href="/academy/team" class="hover:text-[#FCAD2A]">{t.footerAcademyTeam}</a>
+                <a href="/academy/skills" class="hover:text-[#FCAD2A]">{t.footerAcademySkills}</a>
+                <a href="/academy/learn" class="hover:text-[#FCAD2A]">{t.footerAcademyLearn}</a>
               </div>
             </div>
             <div>
-              <h4 class="font-semibold text-white mb-3">资源</h4>
+              <h4 class="font-semibold text-white mb-3">{t.footerColResources}</h4>
               <div class="flex flex-col gap-2 text-white/40">
-                <a href="/blog" class="hover:text-[#FCAD2A]">博客</a>
-                <a href="/intelligence" class="hover:text-[#FCAD2A]">AI 情报日报</a>
-                <a href="/about" class="hover:text-[#FCAD2A]">关于我们</a>
+                <a href="/blog" class="hover:text-[#FCAD2A]">{t.footerResBlog}</a>
+                <a href="/intelligence" class="hover:text-[#FCAD2A]">{t.footerResIntel}</a>
+                <a href="/about" class="hover:text-[#FCAD2A]">{t.footerResAbout}</a>
               </div>
             </div>
           </div>
         </div>
         <div class="border-t border-white/5 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-white/30 gap-2">
-          <p>&copy; 2026 Synapse. Harness Engineering for AI Teams.</p>
+          <p>{t.footerCopyright}</p>
           <p>lysanderl@janusd.io</p>
         </div>
       </div>
