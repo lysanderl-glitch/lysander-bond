@@ -6,7 +6,7 @@ import TimelineItem from '../../../components/synapse/TimelineItem.astro';
 import CodeBlock from '../../../components/synapse/CodeBlock.astro';
 import CTABanner from '../../../components/synapse/CTABanner.astro';
 
-const installScript = `Invoke-WebRequest -Uri 'https://github.com/lysanderl-glitch/ai-team-system/archive/refs/heads/main.zip' -OutFile "$env:USERPROFILE\\Downloads\\synapse.zip"
+const installScript = `Invoke-WebRequest -Uri 'https://github.com/lysanderl-glitch/synapse/archive/refs/heads/main.zip' -OutFile "$env:USERPROFILE\\Downloads\\synapse.zip"
 Expand-Archive -Path "$env:USERPROFILE\\Downloads\\synapse.zip" -DestinationPath "$env:USERPROFILE\\Claude Code" -Force`;
 
 const dispatchExample = `/dispatch 写一页竞争对手格局的简报`;
@@ -26,7 +26,7 @@ const dispatchExample = `/dispatch 写一页竞争对手格局的简报`;
     primaryCta={{ label: '下载配置包', href: '/academy' }}
     secondaryCta={{
       label: '在 GitHub 上查看',
-      href: 'https://github.com/lysanderl-glitch/ai-team-system',
+      href: 'https://github.com/lysanderl-glitch/synapse',
       external: true,
     }}
   />
@@ -122,7 +122,7 @@ const dispatchExample = `/dispatch 写一页竞争对手格局的简报`;
         </li>
         <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
           <span class="text-[#FCAD2A] font-semibold shrink-0">社区：</span>
-          <a href="https://github.com/lysanderl-glitch/ai-team-system/issues" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">GitHub Issues</a>
+          <a href="https://github.com/lysanderl-glitch/synapse/issues" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">GitHub Issues</a>
         </li>
         <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
           <span class="text-[#FCAD2A] font-semibold shrink-0">付费支持：</span>
@@ -138,7 +138,7 @@ const dispatchExample = `/dispatch 写一页竞争对手格局的简报`;
     primaryCta={{ label: '从学院下载', href: '/academy' }}
     secondaryCta={{
       label: '在 GitHub 上查看',
-      href: 'https://github.com/lysanderl-glitch/ai-team-system',
+      href: 'https://github.com/lysanderl-glitch/synapse',
       external: true,
     }}
   />
