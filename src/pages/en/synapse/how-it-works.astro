@@ -1,0 +1,148 @@
+<!--
+synapse-page-metadata:
+  id: forge-how-it-works-en
+  type: core
+  status: published
+  lang: en
+  translation_of: null
+  version: 1.0
+  source_commit: 6843a47
+  synapse_version: 3.0.0
+  published_at: 2026-04-23
+  updated_at: 2026-04-24
+  author: content_strategist
+  review_by: [integration_qa, style_calibrator]
+  audience: [team_partner, technical_builder, enterprise_decider]
+  stale_after: 2026-10-23
+-->
+---
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import Hero from '../../../components/synapse/Hero.astro';
+import PillarSection from '../../../components/synapse/PillarSection.astro';
+import TimelineItem from '../../../components/synapse/TimelineItem.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
+
+const steps = [
+  {
+    step: 1,
+    title: 'Greeting + objective intake.',
+    body: 'Lysander confirms identity and restates the goal.',
+  },
+  {
+    step: 2,
+    title: 'Classification.',
+    body: 'The execution_auditor grades the task S/M/L. S ships fast. L goes through expert review.',
+  },
+  {
+    step: 3,
+    title: 'Mandatory dispatch table.',
+    body: 'No work starts without a named specialist and a named deliverable. This is a hard constraint.',
+  },
+  {
+    step: 4,
+    title: 'Isolated execution.',
+    body: 'Specialists run in sub-agent contexts. The CEO persona never touches Edit/Write/Bash directly — CEO Guard blocks it.',
+  },
+  {
+    step: 5,
+    title: 'QA gate + delivery.',
+    body: 'integration_qa scores the output on integrity, accuracy, consistency, maintainability, compliance. ≥85 ships.',
+  },
+];
+---
+
+<SynapseLayout
+  title="How It Works"
+  description="Agent = Model + Harness. Synapse is a reference implementation of Harness Engineering — the 2026 engineering discipline for production AI teams."
+  subNavActive="how-it-works"
+  currentLang="en"
+  altLang={{ lang: 'zh', href: '/synapse/how-it-works' }}
+>
+  <Hero
+    eyebrow="How It Works"
+    title="Agent = Model + Harness."
+    subtitle="Everyone has access to the same models. The harness is where reliability is engineered. Synapse is a reference implementation of Harness Engineering — the 2026 engineering discipline for production AI teams."
+    primaryCta={{ label: 'Read the Blog Post', href: '/blog/harness-engineering-guide' }}
+    secondaryCta={{ label: 'See the Team', href: '/en/synapse/team' }}
+  />
+
+  <PillarSection
+    eyebrow="The Mechanics"
+    title="Guides and Sensors"
+  >
+    <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
+      <p>
+        A harness is two things working together. <strong class="text-[#FCAD2A]">Guides</strong> are feed-forward: they shape behavior before action — the CLAUDE.md persona, the organization.yaml routing table, the decision_rules.yaml constraints, the agent capability cards.
+      </p>
+      <p>
+        <strong class="text-sky-400">Sensors</strong> are feedback: they watch behavior after action — the 85/100 QA review, the execution-chain auditor, the decision log, the cross-session state file.
+      </p>
+      <p class="text-white/80">
+        Guides stop drift. Sensors catch it when it happens anyway.
+      </p>
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="The Process"
+    title="The execution chain"
+    subtitle="Five steps, every time. Violating any one of them is logged as a P0 break."
+    bordered={true}
+  >
+    <div class="max-w-3xl mx-auto space-y-8">
+      {steps.map((s) => (
+        <TimelineItem step={s.step} title={s.title} body={s.body} />
+      ))}
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="The Cache Architecture"
+    title="The three-layer CLAUDE.md"
+  >
+    <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
+      <p>
+        Synapse's CLAUDE.md is three layers with distinct cache lifetimes.
+      </p>
+      <ul class="space-y-4">
+        <li class="flex gap-4">
+          <span class="text-[#FCAD2A] font-mono text-sm mt-1 shrink-0">Layer 1</span>
+          <span><strong class="text-white">Identity (~25 lines)</strong> — changes almost never.</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="text-sky-400 font-mono text-sm mt-1 shrink-0">Layer 2</span>
+          <span><strong class="text-white">Harness rules (~170 lines)</strong> — changes on upgrades.</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="text-purple-400 font-mono text-sm mt-1 shrink-0">Layer 3</span>
+          <span><strong class="text-white">Instance config (~85 lines)</strong> — changes on personalization.</span>
+        </li>
+      </ul>
+      <p>
+        The ordering is deliberate: stable content first so the Anthropic prompt cache stays valid across turns, cutting cost by ~90% on hits.
+      </p>
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="The Governance"
+    title="Entropy budget"
+    bordered={true}
+  >
+    <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
+      <p>
+        Every rule in Synapse carries a timestamp. Every 3 days, <strong class="text-white">harness_engineer</strong> runs <code class="text-[#FCAD2A] font-mono text-sm">audit_harness()</code> against the CLAUDE.md file — line count, duplicate semantics, stale rules past 180 days.
+      </p>
+      <p>
+        Above 300 lines, new additions are blocked until something is removed. Governance is a first-class feature, not an afterthought.
+      </p>
+    </div>
+  </PillarSection>
+
+  <CTABanner
+    heading="Ready to run it yourself?"
+    body="Download the configuration bundle. Five minutes from download to your first dispatch."
+    primaryCta={{ label: 'Get Started', href: '/en/synapse/get-started' }}
+    secondaryCta={{ label: 'View Pricing', href: '/en/synapse/pricing' }}
+  />
+</SynapseLayout>

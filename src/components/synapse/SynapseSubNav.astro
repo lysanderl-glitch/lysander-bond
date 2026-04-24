@@ -7,22 +7,22 @@ const { active = '', currentLang = 'en' } = Astro.props;
 
 const links = currentLang === 'zh'
   ? [
-      { key: 'overview', label: '概览', href: '/synapse/zh/' },
-      { key: 'capabilities', label: '能力', href: '/synapse/zh/capabilities' },
-      { key: 'how-it-works', label: '工作原理', href: '/synapse/zh/how-it-works' },
-      { key: 'team', label: '团队', href: '/synapse/zh/team' },
-      { key: 'intelligence', label: '情报闭环', href: '/synapse/zh/intelligence' },
-      { key: 'pricing', label: '定价', href: '/synapse/zh/pricing' },
-      { key: 'get-started', label: '快速上手', href: '/synapse/zh/get-started' },
+      { key: 'overview', label: '概览', href: '/synapse/' },
+      { key: 'capabilities', label: '能力', href: '/synapse/capabilities' },
+      { key: 'how-it-works', label: '工作原理', href: '/synapse/how-it-works' },
+      { key: 'team', label: '团队', href: '/synapse/team' },
+      { key: 'intelligence', label: '情报闭环', href: '/synapse/intelligence' },
+      { key: 'pricing', label: '定价', href: '/synapse/pricing' },
+      { key: 'get-started', label: '快速上手', href: '/synapse/get-started' },
     ]
   : [
-      { key: 'overview', label: 'Overview', href: '/synapse/' },
-      { key: 'capabilities', label: 'Capabilities', href: '/synapse/capabilities' },
-      { key: 'how-it-works', label: 'How It Works', href: '/synapse/how-it-works' },
-      { key: 'team', label: 'Team', href: '/synapse/team' },
-      { key: 'intelligence', label: 'Intelligence', href: '/synapse/intelligence' },
-      { key: 'pricing', label: 'Pricing', href: '/synapse/pricing' },
-      { key: 'get-started', label: 'Get Started', href: '/synapse/get-started' },
+      { key: 'overview', label: 'Overview', href: '/en/synapse/' },
+      { key: 'capabilities', label: 'Capabilities', href: '/en/synapse/capabilities' },
+      { key: 'how-it-works', label: 'How It Works', href: '/en/synapse/how-it-works' },
+      { key: 'team', label: 'Team', href: '/en/synapse/team' },
+      { key: 'intelligence', label: 'Intelligence', href: '/en/synapse/intelligence' },
+      { key: 'pricing', label: 'Pricing', href: '/en/synapse/pricing' },
+      { key: 'get-started', label: 'Get Started', href: '/en/synapse/get-started' },
     ];
 ---
 

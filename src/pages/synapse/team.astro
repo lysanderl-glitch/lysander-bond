@@ -1,12 +1,12 @@
 <!--
 synapse-page-metadata:
-  id: forge-team-en
+  id: forge-team-zh
   type: core
   status: published
-  lang: en
-  translation_of: null
+  lang: zh
+  translation_of: forge-team-en
   version: 1.0
-  source_commit: 6843a47
+  source_commit: c53ed5b
   synapse_version: 3.0.0
   published_at: 2026-04-23
   updated_at: 2026-04-24
@@ -24,30 +24,30 @@ import CTABanner from '../../components/synapse/CTABanner.astro';
 
 const featuredTeams = [
   {
-    team: 'Graphify — Strategic Intelligence',
+    team: 'Graphify — 战略智囊团',
     memberCount: 7,
-    description: 'The strategic nervous system. Maps goals, watches trends, synthesizes decisions, audits execution. Graphify is where signals become strategy — every L3+ decision passes through this team before it moves forward.',
+    description: '战略神经系统。测绘目标、监测趋势、综合决策、审计执行。Graphify 是信号转化为战略的地方——每一条 L3 以上决策都先过这支团队，才能向下推进。',
     accent: 'amber' as const,
     members: ['strategy_mapper', 'trend_watcher', 'decision_synthesizer', 'execution_auditor', 'ai_frontier_researcher', 'system_evolution', 'decision_advisor'],
   },
   {
-    team: 'Harness Ops — System Engineering',
+    team: 'Harness Ops — 体系工程',
     memberCount: 5,
-    description: 'Owns the harness itself. Writes and polices CLAUDE.md. Maintains hr_base.py and the capability validator. Enforces the 300-line entropy budget. When the system needs to change, Harness Ops changes it — not the CEO persona.',
+    description: '拥有 Harness 本身。编写和守护 CLAUDE.md。维护 hr_base.py 与能力验证器。执行 300 行熵增预算。当体系需要变化，是 Harness Ops 动手——不是 CEO 人格。',
     accent: 'sky' as const,
     members: ['harness_engineer', 'ai_systems_dev', 'knowledge_engineer', 'integration_qa', 'capability_architect'],
   },
   {
-    team: 'Content Ops — Content Operations',
+    team: 'Content Ops — 内容运营',
     memberCount: 8,
-    description: 'The production floor for everything published. Strategy, long-form writing, visual design, publishing pipelines, training content, AI imagery, video scripts, video production. An eight-person content studio that ships on schedule without a human editor in the loop.',
+    description: '所有发布内容的生产线。策略、长文写作、视觉设计、发布管线、培训内容、AI 图像、视频脚本、视频制作。一个按计划交付的八人内容工作室，回路中没有人类编辑。',
     accent: 'purple' as const,
     members: ['content_strategist', 'long_form_writer', 'visual_designer', 'publishing_ops', 'training_content', 'ai_imagery', 'video_scripter', 'video_producer'],
   },
   {
-    team: 'PDG — President Delivery Group',
+    team: 'PDG — 总裁交付组',
     memberCount: 2,
-    description: 'The last mile before anything reaches the president. PDG shapes executive briefings, calibrates tone and length, and ensures the one line that lands in Slack is the right one line. Two specialists, zero tolerance for verbose output.',
+    description: '送达总裁前的最后一公里。PDG 打磨高管简报、校准语调与长度，确保落到 Slack 里的那一行，是该落的那一行。两位专家，对啰嗦输出零容忍。',
     accent: 'amber' as const,
     members: ['executive_briefer', 'style_calibrator'],
   },
@@ -55,54 +55,54 @@ const featuredTeams = [
 ---
 
 <SynapseLayout
-  title="Team"
-  description="Forty-six specialists across eleven teams. Every one has a machine-readable capability card, an A/B/C grade, and a clear place in the routing table."
+  title="团队"
+  description="46 位专家，11 支团队。每位都有机器可读的能力卡、A/B/C 分级、以及路由表中的清晰定位。"
   subNavActive="team"
-  currentLang="en"
-  altLang={{ lang: 'zh', href: '/synapse/zh/team' }}
+  currentLang="zh"
+  altLang={{ lang: 'en', href: '/en/synapse/team' }}
 >
   <Hero
-    eyebrow="Team"
-    title="A team that shows up pre-assembled."
-    subtitle="Forty-six specialists across eleven teams. Every one has a machine-readable capability card, an A/B/C grade, and a clear place in the routing table. No blank slates. No generalists pretending to specialize."
-    primaryCta={{ label: 'See All Capabilities', href: '/synapse/capabilities' }}
-    secondaryCta={{ label: 'Get the Bundle', href: '/synapse/get-started' }}
+    eyebrow="Team / 团队"
+    title="一支开箱即用的团队"
+    subtitle="46 位专家，11 支团队。每位都有机器可读的能力卡、A/B/C 分级、清晰的派单定位。零白板，零冒充通才。"
+    primaryCta={{ label: '查看全部能力', href: '/synapse/capabilities' }}
+    secondaryCta={{ label: '获取配置包', href: '/synapse/get-started' }}
   />
 
   <PillarSection
-    eyebrow="Grading Rubric"
-    title="Capability grading, honest and enforced"
-    subtitle="Every agent card is scored. Vague cards never load."
+    eyebrow="Grading Rubric / 分级标准"
+    title="诚实且可执行的能力分级"
+    subtitle="每张 Agent 卡都要评分。模糊的卡片永远加载不进去。"
   >
     <div class="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
       <div class="bg-gradient-to-b from-green-500/10 to-transparent border border-green-500/30 rounded-2xl p-6">
         <div class="text-3xl font-extrabold text-green-400 mb-2">A</div>
         <p class="text-white/70 text-sm leading-relaxed">
-          Names specific frameworks, specific tools, specific measurable outcomes.
+          指名具体框架、具体工具、具体可度量的产出。
         </p>
         <p class="text-white/50 text-xs italic mt-3 leading-relaxed">
-          "Prompt Caching with &gt;60% hit target. RAGAS evaluation. LoRA/QLoRA fine-tuning on domain corpora."
+          例："Prompt Caching，命中率目标 &gt;60%。RAGAS 评估。LoRA/QLoRA 在领域语料上微调。"
         </p>
       </div>
       <div class="bg-gradient-to-b from-[#FCAD2A]/10 to-transparent border border-[#FCAD2A]/30 rounded-2xl p-6">
         <div class="text-3xl font-extrabold text-[#FCAD2A] mb-2">B</div>
         <p class="text-white/70 text-sm leading-relaxed">
-          Names methodology families without specifics. Accepted, but flagged for upgrade within two sessions.
+          指名方法论家族，但缺少细节。可接受，但标记为两轮内必须升级到 A。
         </p>
       </div>
       <div class="bg-gradient-to-b from-red-500/10 to-transparent border border-red-500/30 rounded-2xl p-6">
         <div class="text-3xl font-extrabold text-red-400 mb-2">C</div>
         <p class="text-white/70 text-sm leading-relaxed">
-          Activity-only — "does content", "handles operations". Rejected at validator.py. Cards that vague never load.
+          只写活动——"做内容""管运营"。validator.py 直接拒绝。这么模糊的卡，根本不会被加载。
         </p>
       </div>
     </div>
   </PillarSection>
 
   <PillarSection
-    eyebrow="Featured Teams"
-    title="Four teams that matter most"
-    subtitle="The other seven are documented in Capabilities. These four are where the system wins or loses."
+    eyebrow="Featured Teams / 重点团队"
+    title="决定成败的四支团队"
+    subtitle="另外七支在「能力」页已详述。这四支，是体系赢或输的地方。"
     bordered={true}
   >
     <div class="grid md:grid-cols-2 gap-5">
@@ -113,23 +113,23 @@ const featuredTeams = [
   </PillarSection>
 
   <PillarSection
-    eyebrow="Onboarding"
-    title="How the team grows"
+    eyebrow="Onboarding / 入职"
+    title="团队如何成长"
   >
     <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
       <p>
-        New agents don't join by fiat. They submit an agent card matching the canonical schema. <strong class="text-white">hr_director</strong> approves onboarding. <strong class="text-white">capability_architect</strong> reviews probation.
+        新 Agent 不能凭一句话加入。他们必须提交符合标准 schema 的能力卡。<strong class="text-white">hr_director</strong> 审批入职，<strong class="text-white">capability_architect</strong> 审查试用期。
       </p>
       <p>
-        Weekly <code class="text-[#FCAD2A] font-mono text-sm">audit_agents.py</code> re-scores everyone. Agents below 85/100 get flagged for upgrade. Teams above 8 specialists require a Lysander-level decision.
+        每周 <code class="text-[#FCAD2A] font-mono text-sm">audit_agents.py</code> 对所有人重新打分。低于 85/100 的 Agent 被标记为需升级。团队超过 8 人需 Lysander 级决策。
       </p>
     </div>
   </PillarSection>
 
   <CTABanner
-    heading="Hire the team in five minutes."
-    body="Every specialist is pre-configured, graded, and ready to dispatch."
-    primaryCta={{ label: 'Get Started', href: '/synapse/get-started' }}
-    secondaryCta={{ label: 'View Pricing', href: '/synapse/pricing' }}
+    heading="五分钟招齐这支团队"
+    body="每位专家都已预配置、已分级、随时可派单。"
+    primaryCta={{ label: '立即上手', href: '/synapse/get-started' }}
+    secondaryCta={{ label: '查看定价', href: '/synapse/pricing' }}
   />
 </SynapseLayout>

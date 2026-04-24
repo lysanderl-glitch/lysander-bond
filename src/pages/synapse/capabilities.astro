@@ -1,12 +1,12 @@
 <!--
 synapse-page-metadata:
-  id: forge-capabilities-en
+  id: forge-capabilities-zh
   type: core
   status: published
-  lang: en
-  translation_of: null
+  lang: zh
+  translation_of: forge-capabilities-en
   version: 1.0
-  source_commit: 6843a47
+  source_commit: c53ed5b
   synapse_version: 3.0.0
   published_at: 2026-04-23
   updated_at: 2026-04-24
@@ -24,108 +24,108 @@ import CTABanner from '../../components/synapse/CTABanner.astro';
 
 const coreTeams = [
   {
-    team: 'Graphify — Strategic Intelligence',
+    team: 'Graphify — 战略智囊团',
     memberCount: 7,
-    description: 'Strategy mapping, trend watching, decision synthesis, execution auditing, frontier-AI research, system evolution.',
+    description: '战略测绘、趋势监测、决策综合、执行审计、前沿 AI 研究、体系进化。每一条 L3 以上决策都先过这支团队。',
     accent: 'amber' as const,
   },
   {
-    team: 'Harness Ops — System Engineering',
+    team: 'Harness Ops — 体系工程',
     memberCount: 5,
-    description: 'Owns the harness itself. Writes CLAUDE.md. Maintains hr_base.py. Polices entropy.',
+    description: '拥有 Harness 本身。编写 CLAUDE.md，维护 hr_base.py，守护熵增预算。',
     accent: 'sky' as const,
   },
   {
-    team: 'Butler — Delivery & Operations',
+    team: 'Butler — 交付运营',
     memberCount: 6,
-    description: 'Cross-project delivery, PMO, IoT integration, UAT, training.',
+    description: '跨项目交付、PMO、IoT 集成、UAT、培训。',
     accent: 'purple' as const,
   },
   {
-    team: 'RD — Research & Development',
+    team: 'RD — 研发',
     memberCount: 5,
-    description: 'Architecture, backend, frontend, DevOps, QA.',
+    description: '架构、后端、前端、DevOps、QA。',
     accent: 'amber' as const,
   },
   {
-    team: 'OBS — Knowledge Management',
+    team: 'OBS — 知识管理',
     memberCount: 4,
-    description: 'Second-brain structure, knowledge capture, search tuning, quality audit.',
+    description: '第二大脑结构、知识沉淀、搜索调优、质量审计。',
     accent: 'sky' as const,
   },
   {
-    team: 'Content Ops — Content Operations',
+    team: 'Content Ops — 内容运营',
     memberCount: 8,
-    description: 'Strategy, long-form, visual, publishing, training, AI imagery, video script, video production.',
+    description: '策略、长文、视觉、发布、培训、AI 图像、视频脚本、视频制作。',
     accent: 'purple' as const,
   },
   {
-    team: 'Growth — Growth & Revenue',
+    team: 'Growth — 增长营收',
     memberCount: 4,
-    description: 'Insights, GTM, enablement, community.',
+    description: '洞察、GTM、赋能、社群。',
     accent: 'amber' as const,
   },
   {
-    team: 'PDG — President Delivery Group',
+    team: 'PDG — 总裁交付组',
     memberCount: 2,
-    description: 'Executive briefings, style calibration.',
+    description: '高管简报、语调校准。',
     accent: 'sky' as const,
   },
   {
-    team: 'AI/ML Engineering',
+    team: 'AI/ML 工程',
     memberCount: 1,
-    description: 'Prompt caching, RAG, tool use, fine-tuning.',
+    description: 'Prompt Caching、RAG、工具调用、微调。',
     accent: 'purple' as const,
   },
   {
-    team: 'Specialist — Domain',
+    team: 'Specialist — 领域专家',
     memberCount: 2,
-    description: 'Legal counsel, financial analyst.',
+    description: '法律顾问、财务分析师。',
     accent: 'amber' as const,
   },
   {
-    team: 'HR',
+    team: 'HR — 人事',
     memberCount: 2,
-    description: 'Agent onboarding, capability design.',
+    description: 'Agent 入职、能力设计。',
     accent: 'sky' as const,
   },
 ];
 
 const optionalModules = [
   {
-    team: 'Janus — Construction Digital Delivery',
+    team: 'Janus — 建筑数字交付',
     memberCount: 6,
-    description: 'BIM-integrated workflow for construction digital delivery. Drops in without touching the base.',
+    description: 'BIM 集成的建筑数字化交付工作流。即插即用，不影响主体。',
     accent: 'purple' as const,
   },
   {
-    team: 'Stock — Quant Trading',
+    team: 'Stock — 量化交易',
     memberCount: 5,
-    description: 'Strategy research and execution for systematic trading. Drops in without touching the base.',
+    description: '系统化交易的策略研究与执行。即插即用，不影响主体。',
     accent: 'amber' as const,
   },
 ];
 ---
 
 <SynapseLayout
-  title="Capabilities"
-  description="Eleven specialist teams covering the full operating surface of a modern business, orchestrated by a single AI CEO persona."
+  title="能力"
+  description="十一支专业团队，覆盖现代企业的完整运营面，由一位 AI CEO 统筹编排。"
   subNavActive="capabilities"
-  currentLang="en"
-  altLang={{ lang: 'zh', href: '/synapse/zh/capabilities' }}
+  currentLang="zh"
+  altLang={{ lang: 'en', href: '/en/synapse/capabilities' }}
 >
   <Hero
-    eyebrow="Capabilities"
-    title="Eleven teams. One operator."
-    subtitle="Strategy, engineering, content, growth, knowledge, compliance, delivery — Synapse covers the full operating surface of a modern business, orchestrated by a single AI CEO persona."
-    primaryCta={{ label: 'Try It Yourself', href: '/synapse/get-started' }}
-    secondaryCta={{ label: 'See How It Works', href: '/synapse/how-it-works' }}
+    eyebrow="Capabilities / 能力"
+    title="十一支专业团队，一位 AI CEO"
+    subtitle="战略、工程、内容、增长、知识、合规、交付——Synapse 覆盖现代企业的完整运营面，由一位 AI CEO 统筹编排。"
+    primaryCta={{ label: '亲自试试', href: '/synapse/get-started' }}
+    secondaryCta={{ label: '了解工作原理', href: '/synapse/how-it-works' }}
   />
 
   <PillarSection
-    eyebrow="The Eleven Teams"
-    title="A pre-assembled organization"
-    subtitle="Forty-six specialists across eleven functional teams. Everyone has a role, a capability grade, and a clear place in the routing table."
+    eyebrow="The Eleven Teams / 十一支团队"
+    title="一支开箱即用的组织"
+    subtitle="46 位专家分布在 11 支功能团队。每位都有明确角色、能力等级，以及路由表中的清晰定位。"
   >
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
       {coreTeams.map((t) => (
@@ -135,9 +135,9 @@ const optionalModules = [
   </PillarSection>
 
   <PillarSection
-    eyebrow="Optional Modules"
-    title="Drop-in domain extensions"
-    subtitle="Beyond the core 46, drop-in modules extend Synapse into specific verticals without touching the base. Build your own in the same shape."
+    eyebrow="Optional Modules / 可选模块"
+    title="即插即用的领域扩展"
+    subtitle="46 人核心之外，领域模块可即插即用地扩展 Synapse 到特定垂直领域，不触碰主体架构。你也可以按同样形态构建自己的模块。"
     bordered={true}
   >
     <div class="grid md:grid-cols-2 gap-5 max-w-3xl mx-auto">
@@ -148,23 +148,23 @@ const optionalModules = [
   </PillarSection>
 
   <PillarSection
-    eyebrow="How work flows"
-    title="From goal to delivery, every step logged"
+    eyebrow="How work flows / 工作如何流转"
+    title="从目标到交付，每一步都留痕"
   >
     <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
       <p>
-        A president-level goal enters the system. <strong class="text-white">Lysander</strong> (the CEO persona) confirms the objective, picks a decision level (L1-L4), and issues a dispatch table naming specific specialists.
+        总裁级目标进入体系。<strong class="text-white">Lysander</strong>（CEO 人格）承接目标，判定决策级别（L1-L4），输出指名到专家的派单表。
       </p>
       <p>
-        Each specialist executes in an isolated context, returns work, and <strong class="text-white">integration_qa</strong> scores it against a 100-point rubric. Below 85, it goes back. At or above, it ships. Every step is logged.
+        每位专家在独立上下文中执行、交回产出，<strong class="text-white">integration_qa</strong> 依据 100 分评分卡打分。低于 85，打回；达到或高于，出厂。每一步都有日志。
       </p>
     </div>
   </PillarSection>
 
   <CTABanner
-    heading="See it running"
-    body="The whole team is documented, graded, and version-controlled."
-    primaryCta={{ label: 'Meet the Team', href: '/synapse/team' }}
-    secondaryCta={{ label: 'View Pricing', href: '/synapse/pricing' }}
+    heading="看它运行起来"
+    body="整支团队都已文档化、分级、版本受控。"
+    primaryCta={{ label: '认识团队', href: '/synapse/team' }}
+    secondaryCta={{ label: '查看定价', href: '/synapse/pricing' }}
   />
 </SynapseLayout>

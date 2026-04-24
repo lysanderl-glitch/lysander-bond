@@ -1,21 +1,17 @@
 ---
 // Global language toggle (EN | 中)
 // - Visual style mirrors the EN|中 toggle that used to live inside SynapseSubNav.
+// - Post-Stage-4 URL architecture:
+//   * Chinese is the DEFAULT locale served at `/...` (no prefix).
+//   * English lives under `/en/...`.
 // - Behavior:
-//   * On /synapse/zh/<slug>  -> clicking EN navigates to /synapse/<slug> (Forge EN peer)
-//   * On /synapse/<slug>     -> clicking 中 navigates to /synapse/zh/<slug> (Forge ZH peer)
-//   * On non-Forge pages (/, /academy, /services, /blog, /about, /training, /intelligence, ...):
-//       Non-Forge pages have no EN peer today. Clicking EN is ineligible:
-//       the button is visually disabled (data-ineligible="true"), a tooltip
-//       (desktop) and a toast (mobile) guide the user to the Synapse Forge EN portal.
-//       Clicking 中 on a ZH non-Forge page is a no-op.
-// - Server-rendered current-language highlight is driven by the `currentLang` prop
-//   (passed from Layout.astro based on `lang`).
-// - TODO(blog-bilingual): When the blog starts supporting bilingual posts, introduce
-//   a `hasEnglish` frontmatter flag on /blog/<slug>.md(x) and surface it to this
-//   component via a <meta name="x-has-english" content="true|false"> tag from
-//   Layout.astro. Toggle would then route EN clicks to /blog/en/<slug> when true,
-//   or keep the disabled UX when false. Deferred per Plan A' 2026-04-24.
+//   * On /en/<slug>         -> clicking 中 navigates to /<slug> (strip /en prefix)
+//   * On /<slug>            -> clicking EN navigates to /en/<slug> IF that page exists;
+//                              otherwise the EN button is disabled with a tooltip.
+// - Server-rendered current-language highlight is driven by the `currentLang` prop.
+// - TODO(main-site-bilingual): When /, /services, /academy, /blog etc gain English
+//   versions under /en/, expand HAS_EN_VERSION below. Until then the disabled UX
+//   provides graceful degradation.
 interface Props {
   currentLang?: 'en' | 'zh';
 }
@@ -91,40 +87,47 @@ const { currentLang = 'zh' } = Astro.props;
 
 <script>
   (function () {
-    // Forge pages that have a ZH peer under /synapse/zh/.
-    // Must be kept in sync with src/pages/synapse/zh/*.astro on disk.
-    const BILINGUAL_FORGE_SLUGS = new Set([
-      '', // /synapse/ index
-      'beta',
-      'capabilities',
-      'how-it-works',
-      'team',
-      'intelligence',
-      'pricing',
-      'get-started',
+    // Pages that have an English version under /en/.
+    // Keys are the normalized ZH path (no trailing slash, leading slash kept).
+    // Must be kept in sync with src/pages/en/**/*.astro on disk.
+    //
+    // Stage 4 Step 2-4 (2026-04-24): initial whitelist covers the 8 Forge pages.
+    // Expand when main-site pages (/, /services, /academy, /blog, /about, ...)
+    // gain English versions under /en/.
+    const HAS_EN_VERSION = new Set<string>([
+      '/synapse',
+      '/synapse/capabilities',
+      '/synapse/how-it-works',
+      '/synapse/team',
+      '/synapse/intelligence',
+      '/synapse/pricing',
+      '/synapse/get-started',
+      '/synapse/beta',
     ]);
 
-    // Tooltip copy for disabled state (bilingual per currentLang of the active page).
-    const TOOLTIP_EN = 'English content is expanding—explore Synapse Forge';
-    const TOOLTIP_ZH = '当前页面暂无英文版，可访问 Synapse Forge 英文产品线';
+    // Tooltip copy for disabled state (localized to the page the user is viewing).
+    const TOOLTIP_EN_DISABLED =
+      'English version coming soon — explore our English content on Synapse Forge';
+    const TOOLTIP_ZH_DISABLED = '此页面暂无中文版';
 
-    type ParsedPath =
-      | { kind: 'forge'; slug: string; isZh: boolean }
-      | { kind: 'other' };
-
-    function parsePath(path: string): ParsedPath {
+    function normalizePath(path: string): string {
+      // Strip trailing slash; keep '/' for root.
       const p = path.replace(/\/$/, '');
-      // /synapse/zh or /synapse/zh/<slug>
-      const zhMatch = p.match(/^\/synapse\/zh(?:\/(.*))?$/);
-      if (zhMatch) {
-        return { kind: 'forge', slug: zhMatch[1] || '', isZh: true };
-      }
-      // /synapse or /synapse/<slug>  (slug must not start with "zh")
-      const enMatch = p.match(/^\/synapse(?:\/(.*))?$/);
-      if (enMatch) {
-        return { kind: 'forge', slug: enMatch[1] || '', isZh: false };
-      }
-      return { kind: 'other' };
+      return p === '' ? '/' : p;
+    }
+
+    function isEnPath(path: string): boolean {
+      // /en, /en/, /en/anything
+      return path === '/en' || path.startsWith('/en/');
+    }
+
+    function stripEnPrefix(path: string): string {
+      // '/en'        -> '/'
+      // '/en/foo'    -> '/foo'
+      // '/en/foo/bar'-> '/foo/bar'
+      if (path === '/en') return '/';
+      if (path.startsWith('/en/')) return path.slice(3) || '/';
+      return path;
     }
 
     function detectCurrentLang(): 'en' | 'zh' {
@@ -132,59 +135,60 @@ const { currentLang = 'zh' } = Astro.props;
       if (htmlLang.startsWith('zh')) return 'zh';
       if (htmlLang.startsWith('en')) return 'en';
       // Fallback: infer from path.
-      const parsed = parsePath(window.location.pathname);
-      if (parsed.kind === 'forge' && parsed.isZh) return 'zh';
-      if (parsed.kind === 'forge' && !parsed.isZh) return 'en';
-      // Non-Forge pages are ZH today.
-      return 'zh';
+      return isEnPath(normalizePath(window.location.pathname)) ? 'en' : 'zh';
     }
 
     function computeTargetUrl(targetLang: 'en' | 'zh'): string | null {
-      const parsed = parsePath(window.location.pathname);
+      const path = normalizePath(window.location.pathname);
+      const currentIsEn = isEnPath(path);
 
-      if (parsed.kind === 'forge') {
-        if (BILINGUAL_FORGE_SLUGS.has(parsed.slug)) {
-          const slug = parsed.slug;
-          if (targetLang === 'zh') {
-            return slug ? `/synapse/zh/${slug}` : '/synapse/zh/';
-          }
-          return slug ? `/synapse/${slug}` : '/synapse/';
-        }
-        // Forge page not in bilingual whitelist — fall back to Forge portal.
-        return targetLang === 'zh' ? '/synapse/zh/' : '/synapse/';
+      // Same-language click: stay (no navigation needed)
+      if (currentIsEn && targetLang === 'en') return null;
+      if (!currentIsEn && targetLang === 'zh') return null;
+
+      if (targetLang === 'zh') {
+        // Going from EN to ZH: strip /en prefix.
+        // Every /en/* page has a ZH peer at the unprefixed path (ZH is default).
+        return stripEnPrefix(path);
       }
 
-      // kind === 'other' — non-Forge page. No EN peer today.
-      // Return null so the click handler skips navigation; the button is
-      // visually disabled and shows guidance tooltip/toast.
+      // targetLang === 'en', currentIsEn === false
+      // Check whitelist for EN version.
+      // path is normalized (no trailing slash), e.g. '/synapse' or '/synapse/capabilities'.
+      if (HAS_EN_VERSION.has(path)) {
+        return path === '/' ? '/en/' : `/en${path}`;
+      }
+
+      // No EN peer — disabled state.
       return null;
     }
 
     function tooltipFor(targetLang: 'en' | 'zh'): string {
-      const activeLang = detectCurrentLang();
       // Localize tooltip to the language of the currently viewed page.
-      // (User reads the page in activeLang, so tooltip speaks their language.)
-      if (activeLang === 'zh') return TOOLTIP_ZH;
-      return TOOLTIP_EN;
+      const activeLang = detectCurrentLang();
+      if (targetLang === 'en' && activeLang === 'zh') return TOOLTIP_EN_DISABLED;
+      if (targetLang === 'zh' && activeLang === 'en') return TOOLTIP_ZH_DISABLED;
+      // Fallbacks
+      return activeLang === 'zh' ? TOOLTIP_EN_DISABLED : TOOLTIP_ZH_DISABLED;
     }
 
     function markIneligibleState() {
-      const parsed = parsePath(window.location.pathname);
       const buttons = document.querySelectorAll<HTMLAnchorElement>(
         '[data-lang-toggle] [data-forge-lang]'
       );
       buttons.forEach((btn) => {
         const lang = btn.getAttribute('data-forge-lang') as 'en' | 'zh';
-        let ineligible = false;
+        const target = computeTargetUrl(lang);
 
-        if (parsed.kind === 'other') {
-          // Non-Forge page: clicking EN is ineligible. (ZH click is a no-op
-          // already, but flag as ineligible too so mobile toast works.)
-          ineligible = lang === 'en' || lang === 'zh';
-        } else if (parsed.kind === 'forge' && !BILINGUAL_FORGE_SLUGS.has(parsed.slug)) {
-          // Forge page not in whitelist — disabled for both.
-          ineligible = true;
-        }
+        // computeTargetUrl returns null for two cases:
+        //  1. Same-language click (stay). This is the ACTIVE button — don't mark ineligible.
+        //  2. Cross-language click with no peer page. Mark ineligible.
+        const path = normalizePath(window.location.pathname);
+        const currentIsEn = isEnPath(path);
+        const isSameLangClick =
+          (currentIsEn && lang === 'en') || (!currentIsEn && lang === 'zh');
+
+        const ineligible = target === null && !isSameLangClick;
 
         if (ineligible) {
           btn.setAttribute('data-ineligible', 'true');

@@ -1,0 +1,206 @@
+---
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import Hero from '../../../components/synapse/Hero.astro';
+import PillarSection from '../../../components/synapse/PillarSection.astro';
+import FeatureCard from '../../../components/synapse/FeatureCard.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
+
+const benefits = [
+  {
+    title: 'Founding Member #001–030',
+    body: 'Permanent recognition on the Synapse site. A Founding badge that ships with every future release.',
+  },
+  {
+    title: 'Lifetime free Pro subscription',
+    body: 'When the commercial tier launches, your founding team keeps full Pro access — for as long as Synapse exists.',
+  },
+  {
+    title: 'Direct line to Lysander',
+    body: 'One hour of co-creation time per quarter with the Lysander CEO persona. Architecture, rollout, whatever moves your team forward.',
+  },
+  {
+    title: 'Your name in /about, forever',
+    body: 'Listed in the co-creators section of the public site. You built this with us — the record reflects it.',
+  },
+  {
+    title: 'First dibs on new modules',
+    body: 'Janus (construction digital delivery), Stock (quant trading), and every future domain pack — founding teams get them first.',
+  },
+];
+
+const commitments = [
+  {
+    title: 'Deploy within 2 weeks',
+    body: 'Complete your initial Synapse deployment — CLAUDE.md personalized, first dispatch run — within 14 days of acceptance.',
+  },
+  {
+    title: '1 structured feedback per month',
+    body: 'A short, structured report: what worked, what broke, what you wish existed. The template is lightweight.',
+  },
+  {
+    title: 'Allow anonymized case use',
+    body: 'Let us reference your experience anonymously in the Synapse learning library. Nothing public without your approval.',
+  },
+  {
+    title: 'Join the private channel',
+    body: 'Founding teams share a dedicated Slack / Discord. Async, low-noise, high signal.',
+  },
+];
+
+const audiences = [
+  {
+    title: 'AI Builders',
+    body: 'Independent developers and deep Claude Code users who want a production-grade harness instead of reinventing one.',
+    accent: 'amber' as const,
+  },
+  {
+    title: 'Small Tech Teams',
+    body: 'Startup CTOs and tech leads in 5–20 person teams who need AI ops that scale with the org chart.',
+    accent: 'sky' as const,
+  },
+  {
+    title: 'Independent Consultants',
+    body: 'Consulting practices and PMOs with real process-governance pain — Synapse is a methodology you can adopt whole.',
+    accent: 'purple' as const,
+  },
+  {
+    title: 'Industry Partners',
+    body: 'Construction digital delivery, quant finance, and other vertical practitioners ready to co-shape domain modules.',
+    accent: 'amber' as const,
+  },
+];
+
+const applyMailto = 'mailto:lysanderl@janusd.io?subject=Synapse%20Forge%20Beta%20Application&body=Team%20Name:%0ATeam%20Size:%0ACurrent%20AI%20Tools:%0AWhy%20Synapse:%0AContact:';
+---
+
+<SynapseLayout
+  title="Closed Beta"
+  description="Synapse Forge is entering closed beta. Thirty founding teams will shape the next year of the system — and carry a permanent Founding Member badge."
+  subNavActive=""
+  currentLang="en"
+  altLang={{ lang: 'zh', href: '/synapse/beta' }}
+>
+  <Hero
+    eyebrow="Closed Beta · Founding 30"
+    title="Join the Founding 30."
+    subtitle="Synapse Forge is entering closed beta. Thirty founding teams will shape the next year of the system — and carry a permanent Founding Member badge."
+    primaryCta={{ label: 'Apply to Join', href: '#apply' }}
+    secondaryCta={{ label: 'Read the Methodology', href: '/en/synapse/how-it-works' }}
+  />
+
+  <!-- Section A: What you get -->
+  <PillarSection
+    eyebrow="What you get"
+    title="What a founding team receives"
+    subtitle="The Founding 30 is not a discount. It is a permanent position in how Synapse evolves."
+  >
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {benefits.map((b) => (
+        <FeatureCard title={b.title} body={b.body} accent="amber" />
+      ))}
+    </div>
+  </PillarSection>
+
+  <!-- Section B: What we ask -->
+  <PillarSection
+    eyebrow="What we ask"
+    title="What we ask in return"
+    subtitle="Real founding status requires real engagement. Here is the commitment."
+    bordered={true}
+  >
+    <div class="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto">
+      {commitments.map((c) => (
+        <FeatureCard title={c.title} body={c.body} accent="sky" />
+      ))}
+    </div>
+  </PillarSection>
+
+  <!-- Section C: Who we're looking for -->
+  <PillarSection
+    eyebrow="Who we're looking for"
+    title="Four kinds of founding team"
+    subtitle="If you see your practice in one of these, we want to hear from you."
+  >
+    <div class="grid md:grid-cols-2 gap-5">
+      {audiences.map((a) => (
+        <FeatureCard title={a.title} body={a.body} accent={a.accent} />
+      ))}
+    </div>
+  </PillarSection>
+
+  <!-- Section D: How to apply -->
+  <section id="apply" class="border-y border-white/5 bg-white/2">
+    <div class="max-w-3xl mx-auto px-6 py-16 md:py-20 text-center">
+      <div class="text-[#FCAD2A] text-xs font-semibold tracking-wider uppercase mb-3">
+        How to apply
+      </div>
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Send one short email.</h2>
+      <p class="text-white/60 text-base md:text-lg leading-relaxed mb-8">
+        The application is deliberately low-friction. Tell us who you are, what you're already using,
+        and why Synapse fits. We read every note personally and respond within a few days.
+      </p>
+
+      <div class="bg-gray-900/60 border border-white/10 rounded-2xl p-6 md:p-8 text-left font-mono text-sm text-white/70 mb-8">
+        <div class="text-white/40 text-xs mb-3">Template (pre-filled in the mailto link)</div>
+        <div class="space-y-1.5 leading-relaxed">
+          <div><span class="text-[#FCAD2A]">Team Name:</span> <span class="text-white/40">…</span></div>
+          <div><span class="text-[#FCAD2A]">Team Size:</span> <span class="text-white/40">…</span></div>
+          <div><span class="text-[#FCAD2A]">Current AI Tools:</span> <span class="text-white/40">…</span></div>
+          <div><span class="text-[#FCAD2A]">Why Synapse:</span> <span class="text-white/40">…</span></div>
+          <div><span class="text-[#FCAD2A]">Contact:</span> <span class="text-white/40">…</span></div>
+        </div>
+      </div>
+
+      <a
+        href={applyMailto}
+        class="inline-flex items-center gap-2 px-8 py-4 bg-[#FCAD2A] text-gray-900 font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all shadow-lg shadow-[#FCAD2A]/20 text-base"
+      >
+        Apply via Email
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+      <p class="text-white/40 text-xs mt-4">
+        Opens your mail client with the template prefilled. Sends to
+        <span class="text-white/60">lysanderl@janusd.io</span>.
+      </p>
+    </div>
+  </section>
+
+  <!-- Section E: Timeline -->
+  <PillarSection
+    eyebrow="Timeline"
+    title="Rolling acceptance, structured onboarding"
+  >
+    <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
+      <p>
+        We're accepting applications on a rolling basis until the Founding 30 are in place.
+        Each accepted team runs through the same onboarding rhythm:
+      </p>
+      <ul class="space-y-4">
+        <li class="flex gap-4">
+          <span class="text-[#FCAD2A] font-mono text-sm mt-1 shrink-0">72 h</span>
+          <span><strong class="text-white">Deployment check.</strong> A short async review to confirm your personalized CLAUDE.md runs clean.</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="text-sky-400 font-mono text-sm mt-1 shrink-0">Week 1</span>
+          <span><strong class="text-white">30-minute video onboarding.</strong> Walk through your first real dispatch, tune the harness for your domain.</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="text-purple-400 font-mono text-sm mt-1 shrink-0">Weekly</span>
+          <span><strong class="text-white">Friday progress thread.</strong> Lysander posts progress + open Asks; founding teams share wins and blockers.</span>
+        </li>
+      </ul>
+      <p class="text-white/60 text-sm">
+        No calendars, no sales calls, no pitch decks. Engineering cadence only.
+      </p>
+    </div>
+  </PillarSection>
+
+  <CTABanner
+    heading="See Synapse in action first?"
+    body="Read the Harness Engineering methodology before you apply. The application goes faster when you already know which parts excite you."
+    primaryCta={{ label: 'See How It Works', href: '/en/synapse/how-it-works' }}
+    secondaryCta={{ label: 'Apply to Join', href: applyMailto }}
+  />
+</SynapseLayout>

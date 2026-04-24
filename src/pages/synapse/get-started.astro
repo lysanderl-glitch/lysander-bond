@@ -1,10 +1,10 @@
 <!--
 synapse-page-metadata:
-  id: forge-get-started-en
+  id: forge-get-started-zh
   type: core
   status: published
-  lang: en
-  translation_of: null
+  lang: zh
+  translation_of: forge-get-started-en
   version: 1.0
   source_commit: 78ddeba
   synapse_version: 3.0.0
@@ -26,38 +26,38 @@ import CTABanner from '../../components/synapse/CTABanner.astro';
 const installScript = `Invoke-WebRequest -Uri 'https://github.com/lysanderl-glitch/synapse/archive/refs/heads/main.zip' -OutFile "$env:USERPROFILE\\Downloads\\synapse.zip"
 Expand-Archive -Path "$env:USERPROFILE\\Downloads\\synapse.zip" -DestinationPath "$env:USERPROFILE\\Claude Code" -Force`;
 
-const dispatchExample = `/dispatch write a one-page brief on our competitor landscape`;
+const dispatchExample = `/dispatch 写一页竞争对手格局的简报`;
 ---
 
 <SynapseLayout
-  title="Get Started"
-  description="Three steps. Five minutes. Your AI CEO on duty. Synapse is designed to work on first load."
+  title="快速上手"
+  description="三步。五分钟。你的 AI CEO 上岗。Synapse 开箱即用，无构建步骤、无多小时配置。"
   subNavActive="get-started"
-  currentLang="en"
-  altLang={{ lang: 'zh', href: '/synapse/zh/get-started' }}
+  currentLang="zh"
+  altLang={{ lang: 'en', href: '/en/synapse/get-started' }}
 >
   <Hero
-    eyebrow="Get Started"
-    title="Three steps. Five minutes. Your AI CEO on duty."
-    subtitle="Synapse is designed to work on first load. No build step. No multi-hour setup. Here is the entire onboarding."
-    primaryCta={{ label: 'Download the Bundle', href: '/academy' }}
+    eyebrow="Get Started / 快速上手"
+    title="三步。五分钟。AI CEO 上岗。"
+    subtitle="Synapse 开箱即用，无构建步骤、无多小时配置。以下是全部接入流程。"
+    primaryCta={{ label: '下载配置包', href: '/academy' }}
     secondaryCta={{
-      label: 'View on GitHub',
+      label: '在 GitHub 上查看',
       href: 'https://github.com/lysanderl-glitch/synapse',
       external: true,
     }}
   />
 
   <PillarSection
-    eyebrow="The Five Steps"
-    title="From download to first dispatch"
+    eyebrow="The Five Steps / 五个步骤"
+    title="从下载到第一次派单"
     bordered={true}
   >
     <div class="max-w-3xl mx-auto space-y-10">
       <TimelineItem
         step={1}
-        title="Get the configuration bundle"
-        body="Option A (recommended): Visit /academy to download a personalized bundle. Option B (technical users): Clone on GitHub."
+        title="获取配置包"
+        body="方案 A（推荐）：访问 /academy 下载个人化配置包。方案 B（技术用户）：从 GitHub 克隆。"
       >
         <CodeBlock
           lang="powershell"
@@ -68,26 +68,26 @@ const dispatchExample = `/dispatch write a one-page brief on our competitor land
 
       <TimelineItem
         step={2}
-        title="Personalize (Option B only)"
-        body="Open CLAUDE.md. Global-replace (Ctrl+H) three tokens: Lysander with your CEO's name, 刘子杨 with your own name, Synapse-PJ with your organization. Save."
+        title="个人化（仅方案 B）"
+        body="打开 CLAUDE.md。全局替换（Ctrl+H）三个字段：Lysander 替换为你的 CEO 名、刘子杨 替换为你的名字、Synapse-PJ 替换为你的组织名。保存。"
       />
 
       <TimelineItem
         step={3}
-        title="Open Claude Code"
-        body="Launch Claude Code. Open Folder. Pick the directory containing CLAUDE.md."
+        title="打开 Claude Code"
+        body="启动 Claude Code，Open Folder，选择包含 CLAUDE.md 的目录。"
       />
 
       <TimelineItem
         step={4}
-        title="Say anything"
-        body="Send any message. You will receive a greeting confirming identity and team readiness. From that moment the dispatch workflow is active."
+        title="随便说一句"
+        body="发送任何消息。你会收到一条问候，确认身份与团队就绪。从这一刻起，派单工作流已激活。"
       />
 
       <TimelineItem
         step={5}
-        title="Try a dispatch"
-        body="Send the command below and watch Graphify take it."
+        title="试一次派单"
+        body="发送下面这条指令，看 Graphify 接单。"
       >
         <CodeBlock
           lang="text"
@@ -99,62 +99,62 @@ const dispatchExample = `/dispatch write a one-page brief on our competitor land
   </PillarSection>
 
   <PillarSection
-    eyebrow="What to try first"
-    title="Four commands that show what Synapse is"
+    eyebrow="What to try first / 先试试这些"
+    title="四条指令，让你看懂 Synapse"
   >
     <div class="max-w-3xl mx-auto grid md:grid-cols-2 gap-4">
       <div class="bg-gray-900/60 border border-white/10 rounded-xl p-5">
         <code class="text-[#FCAD2A] font-mono text-sm block mb-2">升级 Synapse</code>
-        <p class="text-white/60 text-sm">Check for system updates.</p>
+        <p class="text-white/60 text-sm">检查体系更新。</p>
       </div>
       <div class="bg-gray-900/60 border border-white/10 rounded-xl p-5">
-        <code class="text-[#FCAD2A] font-mono text-sm block mb-2">Open obs/</code>
-        <p class="text-white/60 text-sm">See where knowledge accumulates.</p>
+        <code class="text-[#FCAD2A] font-mono text-sm block mb-2">打开 obs/</code>
+        <p class="text-white/60 text-sm">看知识在哪里沉淀。</p>
       </div>
       <div class="bg-gray-900/60 border border-white/10 rounded-xl p-5">
-        <code class="text-[#FCAD2A] font-mono text-sm block mb-2">Edit synapse.yaml</code>
-        <p class="text-white/60 text-sm">Enable an optional module like janus or stock.</p>
+        <code class="text-[#FCAD2A] font-mono text-sm block mb-2">编辑 synapse.yaml</code>
+        <p class="text-white/60 text-sm">启用可选模块，如 janus 或 stock。</p>
       </div>
       <div class="bg-gray-900/60 border border-white/10 rounded-xl p-5">
         <code class="text-[#FCAD2A] font-mono text-sm block mb-2">/dispatch …</code>
-        <p class="text-white/60 text-sm">Route any task to the right specialist.</p>
+        <p class="text-white/60 text-sm">把任何任务路由到正确的专家。</p>
       </div>
     </div>
   </PillarSection>
 
   <PillarSection
-    eyebrow="Troubleshooting"
-    title="When you get stuck"
+    eyebrow="Troubleshooting / 遇到问题"
+    title="卡住时去哪里"
     bordered={true}
   >
     <div class="max-w-2xl mx-auto">
       <ul class="space-y-4">
         <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
-          <span class="text-[#FCAD2A] font-semibold shrink-0">Documentation:</span>
-          <span class="text-white/70"><code class="font-mono text-sm">COLLEAGUE_GUIDE.md</code> in the repo</span>
+          <span class="text-[#FCAD2A] font-semibold shrink-0">文档：</span>
+          <span class="text-white/70">仓库中的 <code class="font-mono text-sm">COLLEAGUE_GUIDE.md</code></span>
         </li>
         <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
-          <span class="text-[#FCAD2A] font-semibold shrink-0">Deep dive:</span>
-          <span class="text-white/70"><code class="font-mono text-sm">PROPOSAL.md</code> in the repo</span>
+          <span class="text-[#FCAD2A] font-semibold shrink-0">深度文档：</span>
+          <span class="text-white/70">仓库中的 <code class="font-mono text-sm">PROPOSAL.md</code></span>
         </li>
         <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
-          <span class="text-[#FCAD2A] font-semibold shrink-0">Community:</span>
+          <span class="text-[#FCAD2A] font-semibold shrink-0">社区：</span>
           <a href="https://github.com/lysanderl-glitch/synapse/issues" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">GitHub Issues</a>
         </li>
         <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
-          <span class="text-[#FCAD2A] font-semibold shrink-0">Paid help:</span>
-          <a href="/synapse/pricing" class="text-sky-400 hover:text-sky-300">Pricing</a>
+          <span class="text-[#FCAD2A] font-semibold shrink-0">付费支持：</span>
+          <a href="/synapse/pricing" class="text-sky-400 hover:text-sky-300">查看定价</a>
         </li>
       </ul>
     </div>
   </PillarSection>
 
   <CTABanner
-    heading="Five minutes from now, your AI CEO is on duty."
-    body="Run the install script, say hello, and watch the dispatch workflow kick in."
-    primaryCta={{ label: 'Download from Academy', href: '/academy' }}
+    heading="五分钟之后，AI CEO 就上岗了"
+    body="跑一次安装脚本，打个招呼，派单工作流立即启动。"
+    primaryCta={{ label: '从学院下载', href: '/academy' }}
     secondaryCta={{
-      label: 'View on GitHub',
+      label: '在 GitHub 上查看',
       href: 'https://github.com/lysanderl-glitch/synapse',
       external: true,
     }}

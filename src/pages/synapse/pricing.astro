@@ -1,12 +1,12 @@
 <!--
 synapse-page-metadata:
-  id: forge-pricing-en
+  id: forge-pricing-zh
   type: core
   status: published
-  lang: en
-  translation_of: null
+  lang: zh
+  translation_of: forge-pricing-en
   version: 1.0
-  source_commit: 6843a47
+  source_commit: c53ed5b
   synapse_version: 3.0.0
   published_at: 2026-04-23
   updated_at: 2026-04-24
@@ -25,32 +25,32 @@ import CTABanner from '../../components/synapse/CTABanner.astro';
 const tiers = [
   {
     tier: 'Community',
-    price: 'Free',
-    tagline: 'For builders and solo adopters willing to read the docs.',
+    price: '免费',
+    tagline: '面向愿意读文档的开发者与个人采用者。',
     features: [
-      'Full access to the Synapse operating system',
-      'Pre-assembled CLAUDE.md',
-      'All 46 agent cards',
-      'Generator and validator toolchain',
-      'Daily intelligence feed',
-      'Documentation',
-      'Community support via GitHub',
+      '完整访问 Synapse 操作系统',
+      '预装 CLAUDE.md',
+      '全部 46 份 Agent 能力卡',
+      '生成器与验证器工具链',
+      '每日情报管线',
+      '完整文档',
+      'GitHub 社区支持',
     ],
-    cta: { label: 'Get started for free', href: '/synapse/get-started' },
+    cta: { label: '免费开始', href: '/synapse/get-started' },
   },
   {
     tier: 'Assessment',
     price: '$5K–$10K',
-    tagline: 'Two-week engagement. Map, plan, hand off.',
+    tagline: '两周交付。测绘、规划、交接。',
     features: [
-      'Two-week engagement',
-      'Map current AI usage',
-      'Identify high-leverage Synapse adoption paths',
-      'Deliver customized synapse.yaml + rollout plan',
-      'One Harness Ops specialist + one Graphify strategist assigned',
+      '两周交付周期',
+      '测绘当前 AI 使用现状',
+      '识别高杠杆的 Synapse 采用路径',
+      '交付定制化 synapse.yaml 与落地计划',
+      '一位 Harness Ops 专家 + 一位 Graphify 战略师全程对接',
     ],
     cta: {
-      label: 'Book an assessment',
+      label: '预约评估',
       href: 'mailto:lysanderl@janusd.io?subject=Synapse%20Assessment',
       external: false,
     },
@@ -59,17 +59,17 @@ const tiers = [
   {
     tier: 'Implementation',
     price: '$30K–$80K',
-    tagline: 'Full rollout. Scope priced by size and modules.',
+    tagline: '全量落地。按组织规模与模块报价。',
     features: [
-      'Four-to-twelve-week engagement',
-      'Custom agent cards for your domain',
-      'Integration with existing tools',
-      'Team training',
-      '90 days post-launch support',
-      'Scope priced by organization size and module count',
+      '4 到 12 周交付周期',
+      '为你的领域定制 Agent 能力卡',
+      '与现有工具链集成',
+      '团队培训',
+      '上线后 90 天支持',
+      '按组织规模与模块数量定价',
     ],
     cta: {
-      label: 'Request a proposal',
+      label: '申请方案',
       href: 'mailto:lysanderl@janusd.io?subject=Synapse%20Implementation',
       external: false,
     },
@@ -77,69 +77,45 @@ const tiers = [
 ];
 
 const addons = [
-  'Construction digital delivery module (Janus): priced per project',
-  'Quant trading module (Stock): priced per strategy',
-  'Private training cohort: $8,000 per seat, 6-week program',
-  'Ongoing fractional AI ops retainer: from $4,000/month',
+  '建筑数字交付模块（Janus）：按项目报价',
+  '量化交易模块（Stock）：按策略报价',
+  '私人培训班：每席位 $8,000，6 周课程',
+  '持续 AI 运营顾问：起价 $4,000/月',
 ];
 ---
 
 <SynapseLayout
-  title="Pricing"
-  description="The Synapse operating system is free. Services are how we help you land it in your organization."
+  title="定价"
+  description="Synapse 操作系统免费。付费服务是我们帮你在组织内落地的方式。"
   subNavActive="pricing"
-  currentLang="en"
-  altLang={{ lang: 'zh', href: '/synapse/zh/pricing' }}
+  currentLang="zh"
+  altLang={{ lang: 'en', href: '/en/synapse/pricing' }}
 >
   <Hero
-    eyebrow="Pricing"
-    title="The system is free. The services are how we help you land it."
-    subtitle="Synapse Forge — the operating system, the 46-agent roster, the harness, the toolchain — is open and free. What you pay for is help getting it running in your specific organization."
-    primaryCta={{ label: 'Start Free', href: '/synapse/get-started' }}
+    eyebrow="Pricing / 定价"
+    title="体系免费。服务收费。"
+    subtitle="Synapse Forge 操作系统、46 人 Agent 花名册、Harness 框架、工具链——全部开源免费。付费是为了让它在你的组织中跑起来。"
+    primaryCta={{ label: '免费开始', href: '/synapse/get-started' }}
     secondaryCta={{
-      label: 'Talk to Us',
+      label: '与我们聊聊',
       href: 'mailto:lysanderl@janusd.io?subject=Synapse%20Inquiry',
     }}
   />
 
   <PillarSection
-    eyebrow="Three tiers"
-    title="Pick the one that fits"
+    eyebrow="Three tiers / 三档"
+    title="选一档适合你的"
   >
     <div class="grid md:grid-cols-3 gap-6">
       {tiers.map((t) => (
         <PricingCard {...t} />
       ))}
     </div>
-
-    <div class="max-w-3xl mx-auto mt-10">
-      <a
-        href="/synapse/beta"
-        class="block bg-gradient-to-r from-[#FCAD2A]/15 via-[#FCAD2A]/5 to-transparent border border-[#FCAD2A]/30 rounded-xl p-5 hover:border-[#FCAD2A]/60 transition-colors group"
-      >
-        <div class="flex items-center justify-between gap-4">
-          <div>
-            <div class="text-[#FCAD2A] text-xs font-semibold tracking-wider uppercase mb-1">
-              Founding 30 · Closed Beta
-            </div>
-            <div class="text-white font-semibold">
-              Closed Beta is now accepting applications
-            </div>
-            <div class="text-white/60 text-sm mt-1">
-              Lifetime Pro subscription + permanent Founding Member badge for the first thirty teams.
-            </div>
-          </div>
-          <svg class="w-5 h-5 text-[#FCAD2A] flex-shrink-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-          </svg>
-        </div>
-      </a>
-    </div>
   </PillarSection>
 
   <PillarSection
-    eyebrow="Add-ons"
-    title="Specialized extensions and ongoing support"
+    eyebrow="Add-ons / 附加项"
+    title="专项扩展与持续支持"
     bordered={true}
   >
     <div class="max-w-2xl mx-auto">
@@ -157,22 +133,22 @@ const addons = [
   </PillarSection>
 
   <PillarSection
-    eyebrow="Who this is for"
-    title="The honest filter"
+    eyebrow="Who this is for / 适合谁"
+    title="诚实的筛选"
   >
     <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed">
       <p>
-        Synapse Community is for anyone running Claude Code and willing to read documentation. Paid services are for organizations that need Synapse running correctly, faster than a solo adoption would get them there.
+        Synapse Community 适合任何使用 Claude Code、并愿意读文档的人。付费服务面向需要 Synapse 正确跑起来、且希望比独立采用更快落地的组织。
       </p>
     </div>
   </PillarSection>
 
   <CTABanner
-    heading="Ready to start?"
-    body="Either grab the free bundle and run it yourself, or book an assessment and have us map the path."
-    primaryCta={{ label: 'Get the Free Bundle', href: '/synapse/get-started' }}
+    heading="准备开始？"
+    body="要么拿走免费配置包自己跑，要么预约评估，让我们帮你测绘出路径。"
+    primaryCta={{ label: '获取免费配置包', href: '/synapse/get-started' }}
     secondaryCta={{
-      label: 'Book an Assessment',
+      label: '预约评估',
       href: 'mailto:lysanderl@janusd.io?subject=Synapse%20Assessment',
     }}
   />

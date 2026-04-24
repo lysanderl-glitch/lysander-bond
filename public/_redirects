@@ -1,0 +1,25 @@
+# Forge URL migration (2026-04-24 Stage 4 Step 2-4, president-approved)
+# Chinese is now the default locale served at /; English moves under /en/.
+#
+# ------------------------------------------------------------------
+# Only /synapse/zh/* redirects are defined here:
+#   - These paths no longer have static files (zh/ dir removed),
+#     so Cloudflare will apply the rules and 301 to /synapse/*.
+#
+# /synapse/* (old English URLs) are NOT redirected:
+#   - New Chinese pages now occupy those paths as real static files.
+#   - On Cloudflare Pages, static file matches take precedence over
+#     redirect rules, so any rule here would be a no-op.
+#   - English visitors arriving at old /synapse/<slug> URLs will see
+#     the new Chinese page; hreflang tags and the LangToggle UI
+#     surface the /en/synapse/<slug> counterpart.
+# ------------------------------------------------------------------
+
+/synapse/zh/ /synapse/ 301
+/synapse/zh/capabilities /synapse/capabilities 301
+/synapse/zh/how-it-works /synapse/how-it-works 301
+/synapse/zh/team /synapse/team 301
+/synapse/zh/intelligence /synapse/intelligence 301
+/synapse/zh/pricing /synapse/pricing 301
+/synapse/zh/get-started /synapse/get-started 301
+/synapse/zh/beta /synapse/beta 301

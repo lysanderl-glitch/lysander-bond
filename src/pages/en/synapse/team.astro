@@ -1,0 +1,135 @@
+<!--
+synapse-page-metadata:
+  id: forge-team-en
+  type: core
+  status: published
+  lang: en
+  translation_of: null
+  version: 1.0
+  source_commit: 6843a47
+  synapse_version: 3.0.0
+  published_at: 2026-04-23
+  updated_at: 2026-04-24
+  author: content_strategist
+  review_by: [integration_qa, style_calibrator]
+  audience: [team_partner, technical_builder, enterprise_decider]
+  stale_after: 2026-10-23
+-->
+---
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import Hero from '../../../components/synapse/Hero.astro';
+import PillarSection from '../../../components/synapse/PillarSection.astro';
+import AgentTeamCard from '../../../components/synapse/AgentTeamCard.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
+
+const featuredTeams = [
+  {
+    team: 'Graphify — Strategic Intelligence',
+    memberCount: 7,
+    description: 'The strategic nervous system. Maps goals, watches trends, synthesizes decisions, audits execution. Graphify is where signals become strategy — every L3+ decision passes through this team before it moves forward.',
+    accent: 'amber' as const,
+    members: ['strategy_mapper', 'trend_watcher', 'decision_synthesizer', 'execution_auditor', 'ai_frontier_researcher', 'system_evolution', 'decision_advisor'],
+  },
+  {
+    team: 'Harness Ops — System Engineering',
+    memberCount: 5,
+    description: 'Owns the harness itself. Writes and polices CLAUDE.md. Maintains hr_base.py and the capability validator. Enforces the 300-line entropy budget. When the system needs to change, Harness Ops changes it — not the CEO persona.',
+    accent: 'sky' as const,
+    members: ['harness_engineer', 'ai_systems_dev', 'knowledge_engineer', 'integration_qa', 'capability_architect'],
+  },
+  {
+    team: 'Content Ops — Content Operations',
+    memberCount: 8,
+    description: 'The production floor for everything published. Strategy, long-form writing, visual design, publishing pipelines, training content, AI imagery, video scripts, video production. An eight-person content studio that ships on schedule without a human editor in the loop.',
+    accent: 'purple' as const,
+    members: ['content_strategist', 'long_form_writer', 'visual_designer', 'publishing_ops', 'training_content', 'ai_imagery', 'video_scripter', 'video_producer'],
+  },
+  {
+    team: 'PDG — President Delivery Group',
+    memberCount: 2,
+    description: 'The last mile before anything reaches the president. PDG shapes executive briefings, calibrates tone and length, and ensures the one line that lands in Slack is the right one line. Two specialists, zero tolerance for verbose output.',
+    accent: 'amber' as const,
+    members: ['executive_briefer', 'style_calibrator'],
+  },
+];
+---
+
+<SynapseLayout
+  title="Team"
+  description="Forty-six specialists across eleven teams. Every one has a machine-readable capability card, an A/B/C grade, and a clear place in the routing table."
+  subNavActive="team"
+  currentLang="en"
+  altLang={{ lang: 'zh', href: '/synapse/team' }}
+>
+  <Hero
+    eyebrow="Team"
+    title="A team that shows up pre-assembled."
+    subtitle="Forty-six specialists across eleven teams. Every one has a machine-readable capability card, an A/B/C grade, and a clear place in the routing table. No blank slates. No generalists pretending to specialize."
+    primaryCta={{ label: 'See All Capabilities', href: '/en/synapse/capabilities' }}
+    secondaryCta={{ label: 'Get the Bundle', href: '/en/synapse/get-started' }}
+  />
+
+  <PillarSection
+    eyebrow="Grading Rubric"
+    title="Capability grading, honest and enforced"
+    subtitle="Every agent card is scored. Vague cards never load."
+  >
+    <div class="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
+      <div class="bg-gradient-to-b from-green-500/10 to-transparent border border-green-500/30 rounded-2xl p-6">
+        <div class="text-3xl font-extrabold text-green-400 mb-2">A</div>
+        <p class="text-white/70 text-sm leading-relaxed">
+          Names specific frameworks, specific tools, specific measurable outcomes.
+        </p>
+        <p class="text-white/50 text-xs italic mt-3 leading-relaxed">
+          "Prompt Caching with &gt;60% hit target. RAGAS evaluation. LoRA/QLoRA fine-tuning on domain corpora."
+        </p>
+      </div>
+      <div class="bg-gradient-to-b from-[#FCAD2A]/10 to-transparent border border-[#FCAD2A]/30 rounded-2xl p-6">
+        <div class="text-3xl font-extrabold text-[#FCAD2A] mb-2">B</div>
+        <p class="text-white/70 text-sm leading-relaxed">
+          Names methodology families without specifics. Accepted, but flagged for upgrade within two sessions.
+        </p>
+      </div>
+      <div class="bg-gradient-to-b from-red-500/10 to-transparent border border-red-500/30 rounded-2xl p-6">
+        <div class="text-3xl font-extrabold text-red-400 mb-2">C</div>
+        <p class="text-white/70 text-sm leading-relaxed">
+          Activity-only — "does content", "handles operations". Rejected at validator.py. Cards that vague never load.
+        </p>
+      </div>
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="Featured Teams"
+    title="Four teams that matter most"
+    subtitle="The other seven are documented in Capabilities. These four are where the system wins or loses."
+    bordered={true}
+  >
+    <div class="grid md:grid-cols-2 gap-5">
+      {featuredTeams.map((t) => (
+        <AgentTeamCard {...t} />
+      ))}
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="Onboarding"
+    title="How the team grows"
+  >
+    <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
+      <p>
+        New agents don't join by fiat. They submit an agent card matching the canonical schema. <strong class="text-white">hr_director</strong> approves onboarding. <strong class="text-white">capability_architect</strong> reviews probation.
+      </p>
+      <p>
+        Weekly <code class="text-[#FCAD2A] font-mono text-sm">audit_agents.py</code> re-scores everyone. Agents below 85/100 get flagged for upgrade. Teams above 8 specialists require a Lysander-level decision.
+      </p>
+    </div>
+  </PillarSection>
+
+  <CTABanner
+    heading="Hire the team in five minutes."
+    body="Every specialist is pre-configured, graded, and ready to dispatch."
+    primaryCta={{ label: 'Get Started', href: '/en/synapse/get-started' }}
+    secondaryCta={{ label: 'View Pricing', href: '/en/synapse/pricing' }}
+  />
+</SynapseLayout>

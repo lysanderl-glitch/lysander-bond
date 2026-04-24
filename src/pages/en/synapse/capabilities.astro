@@ -1,0 +1,170 @@
+<!--
+synapse-page-metadata:
+  id: forge-capabilities-en
+  type: core
+  status: published
+  lang: en
+  translation_of: null
+  version: 1.0
+  source_commit: 6843a47
+  synapse_version: 3.0.0
+  published_at: 2026-04-23
+  updated_at: 2026-04-24
+  author: content_strategist
+  review_by: [integration_qa, style_calibrator]
+  audience: [team_partner, technical_builder, enterprise_decider]
+  stale_after: 2026-10-23
+-->
+---
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import Hero from '../../../components/synapse/Hero.astro';
+import PillarSection from '../../../components/synapse/PillarSection.astro';
+import AgentTeamCard from '../../../components/synapse/AgentTeamCard.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
+
+const coreTeams = [
+  {
+    team: 'Graphify — Strategic Intelligence',
+    memberCount: 7,
+    description: 'Strategy mapping, trend watching, decision synthesis, execution auditing, frontier-AI research, system evolution.',
+    accent: 'amber' as const,
+  },
+  {
+    team: 'Harness Ops — System Engineering',
+    memberCount: 5,
+    description: 'Owns the harness itself. Writes CLAUDE.md. Maintains hr_base.py. Polices entropy.',
+    accent: 'sky' as const,
+  },
+  {
+    team: 'Butler — Delivery & Operations',
+    memberCount: 6,
+    description: 'Cross-project delivery, PMO, IoT integration, UAT, training.',
+    accent: 'purple' as const,
+  },
+  {
+    team: 'RD — Research & Development',
+    memberCount: 5,
+    description: 'Architecture, backend, frontend, DevOps, QA.',
+    accent: 'amber' as const,
+  },
+  {
+    team: 'OBS — Knowledge Management',
+    memberCount: 4,
+    description: 'Second-brain structure, knowledge capture, search tuning, quality audit.',
+    accent: 'sky' as const,
+  },
+  {
+    team: 'Content Ops — Content Operations',
+    memberCount: 8,
+    description: 'Strategy, long-form, visual, publishing, training, AI imagery, video script, video production.',
+    accent: 'purple' as const,
+  },
+  {
+    team: 'Growth — Growth & Revenue',
+    memberCount: 4,
+    description: 'Insights, GTM, enablement, community.',
+    accent: 'amber' as const,
+  },
+  {
+    team: 'PDG — President Delivery Group',
+    memberCount: 2,
+    description: 'Executive briefings, style calibration.',
+    accent: 'sky' as const,
+  },
+  {
+    team: 'AI/ML Engineering',
+    memberCount: 1,
+    description: 'Prompt caching, RAG, tool use, fine-tuning.',
+    accent: 'purple' as const,
+  },
+  {
+    team: 'Specialist — Domain',
+    memberCount: 2,
+    description: 'Legal counsel, financial analyst.',
+    accent: 'amber' as const,
+  },
+  {
+    team: 'HR',
+    memberCount: 2,
+    description: 'Agent onboarding, capability design.',
+    accent: 'sky' as const,
+  },
+];
+
+const optionalModules = [
+  {
+    team: 'Janus — Construction Digital Delivery',
+    memberCount: 6,
+    description: 'BIM-integrated workflow for construction digital delivery. Drops in without touching the base.',
+    accent: 'purple' as const,
+  },
+  {
+    team: 'Stock — Quant Trading',
+    memberCount: 5,
+    description: 'Strategy research and execution for systematic trading. Drops in without touching the base.',
+    accent: 'amber' as const,
+  },
+];
+---
+
+<SynapseLayout
+  title="Capabilities"
+  description="Eleven specialist teams covering the full operating surface of a modern business, orchestrated by a single AI CEO persona."
+  subNavActive="capabilities"
+  currentLang="en"
+  altLang={{ lang: 'zh', href: '/synapse/capabilities' }}
+>
+  <Hero
+    eyebrow="Capabilities"
+    title="Eleven teams. One operator."
+    subtitle="Strategy, engineering, content, growth, knowledge, compliance, delivery — Synapse covers the full operating surface of a modern business, orchestrated by a single AI CEO persona."
+    primaryCta={{ label: 'Try It Yourself', href: '/en/synapse/get-started' }}
+    secondaryCta={{ label: 'See How It Works', href: '/en/synapse/how-it-works' }}
+  />
+
+  <PillarSection
+    eyebrow="The Eleven Teams"
+    title="A pre-assembled organization"
+    subtitle="Forty-six specialists across eleven functional teams. Everyone has a role, a capability grade, and a clear place in the routing table."
+  >
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {coreTeams.map((t) => (
+        <AgentTeamCard {...t} />
+      ))}
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="Optional Modules"
+    title="Drop-in domain extensions"
+    subtitle="Beyond the core 46, drop-in modules extend Synapse into specific verticals without touching the base. Build your own in the same shape."
+    bordered={true}
+  >
+    <div class="grid md:grid-cols-2 gap-5 max-w-3xl mx-auto">
+      {optionalModules.map((t) => (
+        <AgentTeamCard {...t} />
+      ))}
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="How work flows"
+    title="From goal to delivery, every step logged"
+  >
+    <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
+      <p>
+        A president-level goal enters the system. <strong class="text-white">Lysander</strong> (the CEO persona) confirms the objective, picks a decision level (L1-L4), and issues a dispatch table naming specific specialists.
+      </p>
+      <p>
+        Each specialist executes in an isolated context, returns work, and <strong class="text-white">integration_qa</strong> scores it against a 100-point rubric. Below 85, it goes back. At or above, it ships. Every step is logged.
+      </p>
+    </div>
+  </PillarSection>
+
+  <CTABanner
+    heading="See it running"
+    body="The whole team is documented, graded, and version-controlled."
+    primaryCta={{ label: 'Meet the Team', href: '/en/synapse/team' }}
+    secondaryCta={{ label: 'View Pricing', href: '/en/synapse/pricing' }}
+  />
+</SynapseLayout>

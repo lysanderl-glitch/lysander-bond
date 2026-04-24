@@ -1,12 +1,12 @@
 <!--
 synapse-page-metadata:
-  id: forge-intelligence-en
+  id: forge-intelligence-zh
   type: core
   status: published
-  lang: en
-  translation_of: null
+  lang: zh
+  translation_of: forge-intelligence-en
   version: 1.0
-  source_commit: 6843a47
+  source_commit: c53ed5b
   synapse_version: 3.0.0
   published_at: 2026-04-23
   updated_at: 2026-04-24
@@ -25,45 +25,45 @@ import CTABanner from '../../components/synapse/CTABanner.astro';
 const pipeline = [
   {
     step: 1,
-    title: '6:00am Dubai — Task recovery.',
-    body: 'Reads active_tasks.yaml. Picks up anything left unblocked.',
+    title: '迪拜时间 6:00 — 任务恢复',
+    body: '读取 active_tasks.yaml，续接阻塞已解除的未完成工作。',
   },
   {
     step: 2,
-    title: '8:00am Dubai — Intelligence scan.',
-    body: 'AI and market signals collected, filtered for practical relevance, rendered as HTML, committed to git.',
+    title: '迪拜时间 8:00 — 情报扫描',
+    body: '采集 AI 与市场信号，过滤出可落地价值，渲染为 HTML 并提交到 git。',
   },
   {
     step: 3,
-    title: '10:00am Dubai — Action evaluation.',
-    body: 'Report recommendations pass a four-expert panel. Approved items dispatch to Harness Ops for execution.',
+    title: '迪拜时间 10:00 — 行动评估',
+    body: '日报中的建议通过四位专家评审，批准项派单到 Harness Ops 执行。',
   },
   {
     step: 4,
-    title: 'Completion — Slack notification.',
-    body: 'The president gets one line: done, blocked, or awaiting review.',
+    title: '完成 — Slack 通知',
+    body: '总裁收到一行字：已完成、被阻塞、或待审阅。',
   },
 ];
 ---
 
 <SynapseLayout
-  title="Intelligence"
-  description="Every morning, your AI team reports for work. A closed daily pipeline: scan, filter, decide, act, report."
+  title="情报闭环"
+  description="每天早晨，AI 团队自动上岗。一条闭合的日常管线：扫描、过滤、决策、行动、上报。"
   subNavActive="intelligence"
-  currentLang="en"
-  altLang={{ lang: 'zh', href: '/synapse/zh/intelligence' }}
+  currentLang="zh"
+  altLang={{ lang: 'en', href: '/en/synapse/intelligence' }}
 >
   <Hero
-    eyebrow="Intelligence"
-    title="Every morning, your AI team reports for work."
-    subtitle="Synapse runs a daily intelligence pipeline: scan the AI frontier, filter for signal, evaluate for action, ship the report. No human in the loop. The output is public — and the pipeline itself is part of the product."
-    primaryCta={{ label: 'View the Daily Dispatch', href: '/intelligence' }}
-    secondaryCta={{ label: 'See How It Works', href: '/synapse/how-it-works' }}
+    eyebrow="Intelligence / 情报闭环"
+    title="每天早晨，AI 团队自动上岗"
+    subtitle="Synapse 运转一条日常情报管线：扫描 AI 前沿 → 过滤信号 → 评估行动 → 交付报告。无人工介入。产出公开——管线本身即是产品的一部分。"
+    primaryCta={{ label: '查看每日快报', href: '/intelligence' }}
+    secondaryCta={{ label: '了解工作原理', href: '/synapse/how-it-works' }}
   />
 
   <PillarSection
-    eyebrow="The Daily Pipeline"
-    title="Four steps. Before most teams start the day."
+    eyebrow="The Daily Pipeline / 日常管线"
+    title="四步。在大多数团队开始上班之前。"
     bordered={true}
   >
     <div class="max-w-3xl mx-auto space-y-8">
@@ -74,23 +74,23 @@ const pipeline = [
   </PillarSection>
 
   <PillarSection
-    eyebrow="What makes it different"
-    title="A closed intelligence loop — not a newsletter"
+    eyebrow="What makes it different / 与众不同之处"
+    title="闭合的情报回路——不是一封新闻简报"
   >
     <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
       <p>
-        This is not a daily newsletter. It is a closed intelligence loop. Signals come in, decisions come out, actions happen, results return.
+        这不是一封每日新闻简报。它是一条闭合的情报回路。信号进来，决策出去，行动发生，结果回流。
       </p>
       <p>
-        Every daily report is archived with an outcome — what we learned, what we changed, what we didn't act on and why. Over months, the archive becomes a compounding record of how an organization actually keeps up with AI.
+        每份日报都归档并附带结果——学到了什么、改了什么、没做什么以及为什么。几个月后，档案本身就成为一份复利式的记录：一个组织究竟是如何跟上 AI 前沿的。
       </p>
     </div>
   </PillarSection>
 
   <PillarSection
-    eyebrow="Today's report"
-    title="Subscribe to the morning dispatch"
-    subtitle="Archive coming soon. In the meantime, get the morning dispatch delivered."
+    eyebrow="Today's report / 今日情报"
+    title="订阅晨间快报"
+    subtitle="档案库即将上线。在此之前，先订阅晨间快报直投邮箱。"
     bordered={true}
   >
     <div class="max-w-xl mx-auto">
@@ -102,7 +102,7 @@ const pipeline = [
       >
         <input type="hidden" name="subject" value="Synapse Intelligence Subscription" />
         <label for="email" class="block text-white/70 text-sm font-medium mb-2">
-          Email address
+          邮箱地址
         </label>
         <div class="flex flex-col sm:flex-row gap-3">
           <input
@@ -117,20 +117,20 @@ const pipeline = [
             type="submit"
             class="inline-flex items-center justify-center px-6 py-3 bg-[#FCAD2A] text-gray-900 font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all whitespace-nowrap"
           >
-            Subscribe to the morning dispatch
+            订阅晨间快报
           </button>
         </div>
         <p class="text-white/40 text-xs mt-3">
-          We will follow up personally. Unsubscribe any time.
+          我们会亲自跟进。随时可退订。
         </p>
       </form>
     </div>
   </PillarSection>
 
   <CTABanner
-    heading="Run your own intelligence loop."
-    body="Synapse ships with the daily pipeline included. Yours starts the first morning you open Claude Code."
-    primaryCta={{ label: 'Get Started', href: '/synapse/get-started' }}
-    secondaryCta={{ label: 'View Pricing', href: '/synapse/pricing' }}
+    heading="跑一条属于你的情报回路"
+    body="Synapse 自带这条日常管线。你的回路，从你第一次打开 Claude Code 的那个清晨开始。"
+    primaryCta={{ label: '立即上手', href: '/synapse/get-started' }}
+    secondaryCta={{ label: '查看定价', href: '/synapse/pricing' }}
   />
 </SynapseLayout>
