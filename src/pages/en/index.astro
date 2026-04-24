@@ -1,0 +1,266 @@
+<!--
+synapse-page-metadata:
+  id: home-en
+  type: narrative
+  status: published
+  lang: en
+  translation_of: home-zh-v1
+  version: 0.1
+  source_draft: docs/drafts/home-en-draft-2026-04-24.md
+  synapse_version: 3.0.0
+  published_at: 2026-04-24
+  updated_at: 2026-04-24
+  author: content_strategist
+  review_by: [integration_qa, style_calibrator]
+  audience: [technical_builder, enterprise_decider, team_partner]
+  stale_after: 2026-10-24
+-->
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout
+  lang="en"
+  title="Synapse — AI Team Operating System | Harness Engineering in Production"
+  description="An AI team operating system proven on 50 agents at Janus Digital. Harness Engineering for teams who need agents that actually ship."
+>
+
+  <!-- ════ Hero: Abstract gradient + geometric network ════ -->
+  <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #0A1628 0%, #0d1f3c 40%, #013A7D 100%); min-height: 520px;">
+    <svg class="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <circle cx="900" cy="200" r="3" fill="#FCAD2A"/><circle cx="1000" cy="300" r="2" fill="#028CDC"/><circle cx="800" cy="350" r="2.5" fill="#028CDC"/>
+      <circle cx="950" cy="150" r="1.5" fill="#FCAD2A"/><circle cx="1050" cy="250" r="2" fill="#028CDC"/><circle cx="850" cy="100" r="1.5" fill="#FCAD2A"/>
+      <circle cx="750" cy="250" r="2" fill="#028CDC"/><circle cx="1100" cy="180" r="1.5" fill="#FCAD2A"/><circle cx="700" cy="400" r="2" fill="#028CDC"/>
+      <circle cx="980" cy="420" r="1.5" fill="#028CDC"/><circle cx="1080" cy="380" r="2" fill="#FCAD2A"/><circle cx="820" cy="480" r="1.5" fill="#028CDC"/>
+      <line x1="900" y1="200" x2="1000" y2="300" stroke="#028CDC" stroke-width="0.5" opacity="0.6"/>
+      <line x1="900" y1="200" x2="800" y2="350" stroke="#FCAD2A" stroke-width="0.5" opacity="0.4"/>
+      <line x1="1000" y1="300" x2="1050" y2="250" stroke="#028CDC" stroke-width="0.5" opacity="0.5"/>
+      <line x1="800" y1="350" x2="750" y2="250" stroke="#028CDC" stroke-width="0.5" opacity="0.4"/>
+      <line x1="900" y1="200" x2="950" y2="150" stroke="#FCAD2A" stroke-width="0.5" opacity="0.5"/>
+      <line x1="950" y1="150" x2="1100" y2="180" stroke="#FCAD2A" stroke-width="0.3" opacity="0.3"/>
+      <line x1="1000" y1="300" x2="1080" y2="380" stroke="#FCAD2A" stroke-width="0.3" opacity="0.3"/>
+      <line x1="800" y1="350" x2="700" y2="400" stroke="#028CDC" stroke-width="0.3" opacity="0.3"/>
+      <line x1="1050" y1="250" x2="1100" y2="180" stroke="#028CDC" stroke-width="0.3" opacity="0.4"/>
+      <line x1="700" y1="400" x2="820" y2="480" stroke="#028CDC" stroke-width="0.3" opacity="0.3"/>
+      <line x1="980" y1="420" x2="1080" y2="380" stroke="#FCAD2A" stroke-width="0.3" opacity="0.3"/>
+      <circle cx="900" cy="200" r="40" fill="#FCAD2A" opacity="0.03"/><circle cx="1000" cy="300" r="30" fill="#028CDC" opacity="0.04"/>
+    </svg>
+
+    <div class="max-w-5xl mx-auto px-6 pt-24 pb-20 relative z-10 text-white">
+      <div class="max-w-2xl">
+        <p class="text-sm font-semibold tracking-widest text-[#FCAD2A] uppercase mb-6">Synapse Framework</p>
+        <h1 class="text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-[1.1] tracking-tight">
+          Build AI teams<br>
+          <span class="bg-gradient-to-r from-[#FCAD2A] to-[#028CDC] bg-clip-text text-transparent">that actually ship work.</span>
+        </h1>
+        <p class="text-lg text-white/50 mt-6 leading-relaxed max-w-lg">
+          Synapse is the operating system for multi-agent teams — ten specialist groups, fifty agents, running 24/7 on Harness Engineering. Proven in production at Janus Digital.
+        </p>
+        <p class="text-sm font-mono text-[#FCAD2A]/80 mt-4">10 Teams · 50 Agents · 93.8 Audit Score · 24/7 Uptime</p>
+        <div class="flex flex-wrap gap-4 mt-8">
+          <a href="/en/synapse/get-started" class="px-7 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-lg font-bold hover:opacity-90 transition-opacity text-sm">Get Started</a>
+          <a href="/en/synapse/how-it-works" class="px-7 py-3 border border-[#FCAD2A]/40 bg-[#FCAD2A]/10 text-[#FCAD2A] rounded-lg font-semibold hover:bg-[#FCAD2A]/20 transition-colors text-sm">See how it works →</a>
+          <a href="/en/blog" class="px-7 py-3 border border-white/15 rounded-lg font-medium hover:bg-white/5 transition-colors text-sm text-white/70">Read the blog</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ Formula bar ════ -->
+  <section class="border-b border-[var(--color-border)]">
+    <div class="max-w-5xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+      <p class="text-sm text-[var(--color-muted)]">Harness Engineering — Core Principle</p>
+      <p class="text-xl font-bold text-[var(--color-text)]">Agent = Model + <span class="text-[#FCAD2A]">Harness</span></p>
+      <p class="text-sm text-[var(--color-muted)]">Models are a commodity. The harness is where the moat lives.</p>
+    </div>
+  </section>
+
+  <!-- ════ Guides + Sensors ════ -->
+  <section class="max-w-5xl mx-auto px-6 py-16">
+    <div class="text-center mb-10">
+      <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-2">The Harness</p>
+      <h2 class="text-2xl font-bold text-[var(--color-text)]">Two control loops, one reliable team.</h2>
+      <p class="text-[var(--color-muted)] mt-2 text-sm max-w-2xl mx-auto">Guides shape what an agent does before it acts. Sensors verify what it produced after. Together they turn a raw model into a teammate you can rely on.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #013A7D;">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-8 h-8 rounded-md bg-[#013A7D]/8 flex items-center justify-center text-sm font-bold text-[#013A7D]">G</div>
+          <h3 class="font-bold text-[var(--color-text)]">Guides — Before the act</h3>
+        </div>
+        <p class="text-[var(--color-text-light)] text-sm mb-4">Feedforward control. An agent knows its role, its rules, and where the guardrails sit before it writes a single line.</p>
+        <div class="space-y-2.5 text-sm text-[var(--color-text-light)]">
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#013A7D] shrink-0"></span>CLAUDE.md — role, rules, and workflow, version-controlled</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#013A7D] shrink-0"></span>Decision Rules — four escalation tiers</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#013A7D] shrink-0"></span>Agent Profiles — capabilities, grades, routing</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#013A7D] shrink-0"></span>Team Dispatch — mandatory routing table</div>
+        </div>
+      </div>
+      <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #028CDC;">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-8 h-8 rounded-md bg-[#028CDC]/8 flex items-center justify-center text-sm font-bold text-[#028CDC]">S</div>
+          <h3 class="font-bold text-[var(--color-text)]">Sensors — After the act</h3>
+        </div>
+        <p class="text-[var(--color-text-light)] text-sm mb-4">Feedback control. Nothing ships without evidence it passed.</p>
+        <div class="space-y-2.5 text-sm text-[var(--color-text-light)]">
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#028CDC] shrink-0"></span>QA Auto Review — four-dimension rubric, 85/100 to pass</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#028CDC] shrink-0"></span>Chain Audit — every step logged and checked</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#028CDC] shrink-0"></span>Expert Panel — multi-specialist cross-scoring</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#028CDC] shrink-0"></span>HR Audit Engine — quarterly capability review</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-line max-w-5xl mx-auto"></div>
+
+  <!-- ════ Services ════ -->
+  <section class="bg-[#F7F8FA] py-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-10">
+        <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-2">Engagements</p>
+        <h2 class="text-2xl font-bold text-[var(--color-text)]">From diagnosis to build to ongoing evolution.</h2>
+        <p class="text-[var(--color-muted)] mt-2 text-sm">Three ways to work with us, each with a clear outcome and a published price.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #FCAD2A;">
+          <div class="text-xs font-bold text-[#FCAD2A] tracking-wider uppercase mb-3">Assessment</div>
+          <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Synapse Assessment</h3>
+          <p class="text-[var(--color-text-light)] text-sm leading-relaxed mb-4">A two-day readout that measures your current AI-team maturity against the Harness Engineering standard. Ends with a roadmap you own.</p>
+          <p class="text-xs font-semibold text-[var(--color-muted)]">$5K — $10K · 2 Days</p>
+        </div>
+        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #028CDC;">
+          <div class="text-xs font-bold text-[#028CDC] tracking-wider uppercase mb-3">Implementation</div>
+          <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Synapse Implementation</h3>
+          <p class="text-[var(--color-text-light)] text-sm leading-relaxed mb-4">The full system, installed and running: execution chain, decision hierarchy, agent team, intelligence pipeline, HR audit.</p>
+          <p class="text-xs font-semibold text-[var(--color-muted)]">$30K — $80K · 2—4 Weeks</p>
+        </div>
+        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #013A7D;">
+          <div class="text-xs font-bold text-[#013A7D] tracking-wider uppercase mb-3">Certification</div>
+          <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">SCP Training</h3>
+          <p class="text-[var(--color-text-light)] text-sm leading-relaxed mb-4">Synapse Certified Practitioner. Eight hours of theory plus hands-on build. Attendees leave with a working AI-agent operating system — a repo, not slides.</p>
+          <p class="text-xs font-semibold text-[var(--color-muted)]">$500 — $15K</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ Trust: Product preview + data ════ -->
+  <section class="max-w-5xl mx-auto px-6 py-16">
+    <div class="text-center mb-10">
+      <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-2">Proof</p>
+      <h2 class="text-2xl font-bold text-[var(--color-text)]">Measured on a real team, not a demo.</h2>
+      <p class="text-[var(--color-muted)] mt-2 text-sm">Every number below came out of Synapse running in production — not a pitch deck.</p>
+    </div>
+
+    <div class="mb-10 rounded-xl overflow-hidden border border-[var(--color-border)] shadow-lg">
+      <div class="bg-[#f0f0f0] px-4 py-2.5 flex items-center gap-2 border-b border-[#e0e0e0]">
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
+          <div class="w-3 h-3 rounded-full bg-[#febc2e]"></div>
+          <div class="w-3 h-3 rounded-full bg-[#28c840]"></div>
+        </div>
+        <div class="flex-1 mx-4">
+          <div class="bg-white rounded-md px-3 py-1 text-xs text-[#999] text-center">synapse-dashboard — Expert Review Panel · Score: 5.0/5.0</div>
+        </div>
+      </div>
+      <div class="bg-[#0A1628] p-6 md:p-8">
+        <div class="grid grid-cols-4 gap-3 mb-6">
+          <div class="text-center p-3 bg-white/[0.04] rounded-lg border border-white/5">
+            <div class="text-2xl font-black text-[#FCAD2A]">10</div>
+            <div class="text-[10px] text-white/40 mt-1">Teams</div>
+          </div>
+          <div class="text-center p-3 bg-white/[0.04] rounded-lg border border-white/5">
+            <div class="text-2xl font-black text-[#028CDC]">50</div>
+            <div class="text-[10px] text-white/40 mt-1">Agents</div>
+          </div>
+          <div class="text-center p-3 bg-white/[0.04] rounded-lg border border-white/5">
+            <div class="text-2xl font-black text-[#FCAD2A]">93.8</div>
+            <div class="text-[10px] text-white/40 mt-1">Audit Score</div>
+          </div>
+          <div class="text-center p-3 bg-white/[0.04] rounded-lg border border-white/5">
+            <div class="text-2xl font-black text-[#028CDC]">24/7</div>
+            <div class="text-[10px] text-white/40 mt-1">Uptime</div>
+          </div>
+        </div>
+        <div class="space-y-2">
+          <div class="flex items-center gap-3 p-2.5 bg-white/[0.03] rounded-lg">
+            <div class="w-6 h-6 rounded bg-[#FCAD2A]/20 flex items-center justify-center text-[10px] text-[#FCAD2A] font-bold">5</div>
+            <div class="text-xs text-white/60">Strategist — Strategic direction correctly identified</div>
+            <div class="ml-auto text-[10px] text-[#FCAD2A] font-mono">APPROVED</div>
+          </div>
+          <div class="flex items-center gap-3 p-2.5 bg-white/[0.03] rounded-lg">
+            <div class="w-6 h-6 rounded bg-[#028CDC]/20 flex items-center justify-center text-[10px] text-[#028CDC] font-bold">5</div>
+            <div class="text-xs text-white/60">Decision Advisor — Risk assessment comprehensive and controlled</div>
+            <div class="ml-auto text-[10px] text-[#028CDC] font-mono">APPROVED</div>
+          </div>
+          <div class="flex items-center gap-3 p-2.5 bg-white/[0.03] rounded-lg">
+            <div class="w-6 h-6 rounded bg-[#028CDC]/20 flex items-center justify-center text-[10px] text-[#028CDC] font-bold">5</div>
+            <div class="text-xs text-white/60">Trend Watcher — Fully aligned with industry trajectory</div>
+            <div class="ml-auto text-[10px] text-[#028CDC] font-mono">APPROVED</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quote -->
+    <div class="bg-white border-l-3 border-[#FCAD2A] rounded-r-xl p-6 shadow-sm" style="border-left: 3px solid #FCAD2A;">
+      <p class="text-[var(--color-text)] italic leading-relaxed">
+        "The roster went from 64.1 to 93.8 on the audit. Eleven failing agents dropped to zero. We didn't swap in a better model — we built the harness."
+      </p>
+      <p class="text-[var(--color-muted)] text-sm mt-2">— Synapse in-house operations data</p>
+    </div>
+  </section>
+
+  <div class="glow-line max-w-5xl mx-auto"></div>
+
+  <!-- ════ Automation Pipeline ════ -->
+  <section class="bg-[#F7F8FA] py-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-10">
+        <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-2">Automation</p>
+        <h2 class="text-2xl font-bold text-[var(--color-text)]">The loop runs whether you're watching or not.</h2>
+        <p class="text-[var(--color-muted)] mt-2 text-sm">Four scheduled agents keep the system honest. You see a Slack summary — the rest happens on its own.</p>
+      </div>
+      <div class="grid md:grid-cols-4 gap-4">
+        <div class="group relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center card-glow">
+          <div class="text-xs font-mono font-bold text-[#FCAD2A] mb-3">06:00</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm">Task Recovery</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-2">Scans unfinished work,<br>resumes what unblocked</p>
+          <div class="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 text-[var(--color-border)]">→</div>
+        </div>
+        <div class="group relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center card-glow">
+          <div class="text-xs font-mono font-bold text-[#028CDC] mb-3">08:00</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm">Intelligence</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-2">Sweeps the frontier,<br>filters for signal</p>
+          <div class="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 text-[var(--color-border)]">→</div>
+        </div>
+        <div class="group relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center card-glow">
+          <div class="text-xs font-mono font-bold text-[#013A7D] mb-3">10:00</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm">Action Pipeline</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-2">Triage → 4-expert panel<br>→ approved items ship</p>
+          <div class="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 text-[var(--color-border)]">→</div>
+        </div>
+        <div class="group p-5 bg-white rounded-xl border border-[var(--color-border)] text-center card-glow">
+          <div class="text-xs font-mono font-bold text-[#FCAD2A] mb-3">MON</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm">HR Audit</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-2">Weekly capability review,<br>auto-remediated</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ CTA ════ -->
+  <section class="py-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="rounded-2xl p-10 text-center" style="background: linear-gradient(135deg, #0A1628 0%, #013A7D 100%);">
+        <h2 class="text-2xl font-bold text-white mb-3">Ready to forge your AI team?</h2>
+        <p class="text-white/40 mb-6 text-sm max-w-md mx-auto">Start with the two-day assessment. You'll walk away with a measured baseline and a roadmap — regardless of what you do next.</p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="mailto:lysanderl@janusd.io?subject=Synapse%20Assessment%20Inquiry" class="inline-block px-8 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-lg font-bold hover:opacity-90 transition-opacity text-sm">Book an Assessment</a>
+          <a href="/en/synapse" class="inline-block px-8 py-3 border border-white/20 text-white/80 rounded-lg font-semibold hover:bg-white/5 transition-colors text-sm">Explore Synapse Forge</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

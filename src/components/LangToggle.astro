@@ -92,9 +92,15 @@ const { currentLang = 'zh' } = Astro.props;
     // Must be kept in sync with src/pages/en/**/*.astro on disk.
     //
     // Stage 4 Step 2-4 (2026-04-24): initial whitelist covers the 8 Forge pages.
-    // Expand when main-site pages (/, /services, /academy, /blog, /about, ...)
-    // gain English versions under /en/.
+    // Stage 4 Step 5 (2026-04-24): +5 main-site P0 pages (/, /services, /training,
+    //   /intelligence, /about) deployed as English versions under /en/.
+    // Expand when remaining pages (/academy, /blog, ...) gain English versions.
     const HAS_EN_VERSION = new Set<string>([
+      '/',
+      '/services',
+      '/training',
+      '/intelligence',
+      '/about',
       '/synapse',
       '/synapse/capabilities',
       '/synapse/how-it-works',
