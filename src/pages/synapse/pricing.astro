@@ -71,6 +71,8 @@ const addons = [
   title="Pricing"
   description="The Synapse operating system is free. Services are how we help you land it in your organization."
   subNavActive="pricing"
+  currentLang="en"
+  altLang={{ lang: 'zh', href: '/synapse/zh/pricing' }}
 >
   <Hero
     eyebrow="Pricing"
@@ -91,6 +93,30 @@ const addons = [
       {tiers.map((t) => (
         <PricingCard {...t} />
       ))}
+    </div>
+
+    <div class="max-w-3xl mx-auto mt-10">
+      <a
+        href="/synapse/beta"
+        class="block bg-gradient-to-r from-[#FCAD2A]/15 via-[#FCAD2A]/5 to-transparent border border-[#FCAD2A]/30 rounded-xl p-5 hover:border-[#FCAD2A]/60 transition-colors group"
+      >
+        <div class="flex items-center justify-between gap-4">
+          <div>
+            <div class="text-[#FCAD2A] text-xs font-semibold tracking-wider uppercase mb-1">
+              Founding 30 · Closed Beta
+            </div>
+            <div class="text-white font-semibold">
+              Closed Beta is now accepting applications
+            </div>
+            <div class="text-white/60 text-sm mt-1">
+              Lifetime Pro subscription + permanent Founding Member badge for the first thirty teams.
+            </div>
+          </div>
+          <svg class="w-5 h-5 text-[#FCAD2A] flex-shrink-0 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </div>
+      </a>
     </div>
   </PillarSection>
 
