@@ -1,0 +1,145 @@
+---
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import Hero from '../../../components/synapse/Hero.astro';
+import PillarSection from '../../../components/synapse/PillarSection.astro';
+import TimelineItem from '../../../components/synapse/TimelineItem.astro';
+import CodeBlock from '../../../components/synapse/CodeBlock.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
+
+const installScript = `Invoke-WebRequest -Uri 'https://github.com/lysanderl-glitch/ai-team-system/archive/refs/heads/main.zip' -OutFile "$env:USERPROFILE\\Downloads\\synapse.zip"
+Expand-Archive -Path "$env:USERPROFILE\\Downloads\\synapse.zip" -DestinationPath "$env:USERPROFILE\\Claude Code" -Force`;
+
+const dispatchExample = `/dispatch 写一页竞争对手格局的简报`;
+---
+
+<SynapseLayout
+  title="快速上手"
+  description="三步。五分钟。你的 AI CEO 上岗。Synapse 开箱即用，无构建步骤、无多小时配置。"
+  subNavActive="get-started"
+  currentLang="zh"
+  altLang={{ lang: 'en', href: '/synapse/get-started' }}
+>
+  <Hero
+    eyebrow="Get Started / 快速上手"
+    title="三步。五分钟。AI CEO 上岗。"
+    subtitle="Synapse 开箱即用，无构建步骤、无多小时配置。以下是全部接入流程。"
+    primaryCta={{ label: '下载配置包', href: '/academy' }}
+    secondaryCta={{
+      label: '在 GitHub 上查看',
+      href: 'https://github.com/lysanderl-glitch/ai-team-system',
+      external: true,
+    }}
+  />
+
+  <PillarSection
+    eyebrow="The Five Steps / 五个步骤"
+    title="从下载到第一次派单"
+    bordered={true}
+  >
+    <div class="max-w-3xl mx-auto space-y-10">
+      <TimelineItem
+        step={1}
+        title="获取配置包"
+        body="方案 A（推荐）：访问 /academy 下载个人化配置包。方案 B（技术用户）：从 GitHub 克隆。"
+      >
+        <CodeBlock
+          lang="powershell"
+          filename="install.ps1"
+          code={installScript}
+        />
+      </TimelineItem>
+
+      <TimelineItem
+        step={2}
+        title="个人化（仅方案 B）"
+        body="打开 CLAUDE.md。全局替换（Ctrl+H）三个字段：Lysander 替换为你的 CEO 名、刘子杨 替换为你的名字、Synapse-PJ 替换为你的组织名。保存。"
+      />
+
+      <TimelineItem
+        step={3}
+        title="打开 Claude Code"
+        body="启动 Claude Code，Open Folder，选择包含 CLAUDE.md 的目录。"
+      />
+
+      <TimelineItem
+        step={4}
+        title="随便说一句"
+        body="发送任何消息。你会收到一条问候，确认身份与团队就绪。从这一刻起，派单工作流已激活。"
+      />
+
+      <TimelineItem
+        step={5}
+        title="试一次派单"
+        body="发送下面这条指令，看 Graphify 接单。"
+      >
+        <CodeBlock
+          lang="text"
+          filename="claude-code session"
+          code={dispatchExample}
+        />
+      </TimelineItem>
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="What to try first / 先试试这些"
+    title="四条指令，让你看懂 Synapse"
+  >
+    <div class="max-w-3xl mx-auto grid md:grid-cols-2 gap-4">
+      <div class="bg-gray-900/60 border border-white/10 rounded-xl p-5">
+        <code class="text-[#FCAD2A] font-mono text-sm block mb-2">升级 Synapse</code>
+        <p class="text-white/60 text-sm">检查体系更新。</p>
+      </div>
+      <div class="bg-gray-900/60 border border-white/10 rounded-xl p-5">
+        <code class="text-[#FCAD2A] font-mono text-sm block mb-2">打开 obs/</code>
+        <p class="text-white/60 text-sm">看知识在哪里沉淀。</p>
+      </div>
+      <div class="bg-gray-900/60 border border-white/10 rounded-xl p-5">
+        <code class="text-[#FCAD2A] font-mono text-sm block mb-2">编辑 synapse.yaml</code>
+        <p class="text-white/60 text-sm">启用可选模块，如 janus 或 stock。</p>
+      </div>
+      <div class="bg-gray-900/60 border border-white/10 rounded-xl p-5">
+        <code class="text-[#FCAD2A] font-mono text-sm block mb-2">/dispatch …</code>
+        <p class="text-white/60 text-sm">把任何任务路由到正确的专家。</p>
+      </div>
+    </div>
+  </PillarSection>
+
+  <PillarSection
+    eyebrow="Troubleshooting / 遇到问题"
+    title="卡住时去哪里"
+    bordered={true}
+  >
+    <div class="max-w-2xl mx-auto">
+      <ul class="space-y-4">
+        <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
+          <span class="text-[#FCAD2A] font-semibold shrink-0">文档：</span>
+          <span class="text-white/70">仓库中的 <code class="font-mono text-sm">COLLEAGUE_GUIDE.md</code></span>
+        </li>
+        <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
+          <span class="text-[#FCAD2A] font-semibold shrink-0">深度文档：</span>
+          <span class="text-white/70">仓库中的 <code class="font-mono text-sm">PROPOSAL.md</code></span>
+        </li>
+        <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
+          <span class="text-[#FCAD2A] font-semibold shrink-0">社区：</span>
+          <a href="https://github.com/lysanderl-glitch/ai-team-system/issues" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">GitHub Issues</a>
+        </li>
+        <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
+          <span class="text-[#FCAD2A] font-semibold shrink-0">付费支持：</span>
+          <a href="/synapse/zh/pricing" class="text-sky-400 hover:text-sky-300">查看定价</a>
+        </li>
+      </ul>
+    </div>
+  </PillarSection>
+
+  <CTABanner
+    heading="五分钟之后，AI CEO 就上岗了"
+    body="跑一次安装脚本，打个招呼，派单工作流立即启动。"
+    primaryCta={{ label: '从学院下载', href: '/academy' }}
+    secondaryCta={{
+      label: '在 GitHub 上查看',
+      href: 'https://github.com/lysanderl-glitch/ai-team-system',
+      external: true,
+    }}
+  />
+</SynapseLayout>

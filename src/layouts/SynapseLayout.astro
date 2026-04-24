@@ -2,19 +2,46 @@
 import Layout from './Layout.astro';
 import SynapseSubNav from '../components/synapse/SynapseSubNav.astro';
 
+interface AltLang {
+  lang: 'en' | 'zh';
+  href: string;
+}
+
 interface Props {
   title: string;
   description: string;
   ogImage?: string;
   subNavActive?: string;
+  currentLang?: 'en' | 'zh';
+  altLang?: AltLang;
 }
 
-const { title, description, ogImage, subNavActive = '' } = Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  subNavActive = '',
+  currentLang = 'en',
+  altLang,
+} = Astro.props;
 const fullTitle = `${title} | Synapse Forge`;
+// Canonical hreflang pair: always emit a link to "self" language and, if altLang given, to the other.
+const selfPath = Astro.url.pathname;
+const selfLang = currentLang === 'zh' ? 'zh-CN' : 'en';
 ---
 
 <Layout title={fullTitle} description={description} darkContent={true}>
-  <SynapseSubNav active={subNavActive} />
+  <Fragment slot="head">
+    <link rel="alternate" hreflang={selfLang} href={selfPath} />
+    {altLang && (
+      <link
+        rel="alternate"
+        hreflang={altLang.lang === 'zh' ? 'zh-CN' : 'en'}
+        href={altLang.href}
+      />
+    )}
+  </Fragment>
+  <SynapseSubNav active={subNavActive} currentLang={currentLang} />
   <slot />
 </Layout>
 

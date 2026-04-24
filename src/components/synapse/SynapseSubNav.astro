@@ -1,18 +1,29 @@
 ---
 interface Props {
   active?: string;
+  currentLang?: 'en' | 'zh';
 }
-const { active = '' } = Astro.props;
+const { active = '', currentLang = 'en' } = Astro.props;
 
-const links = [
-  { key: 'overview', label: 'Overview', href: '/synapse/' },
-  { key: 'capabilities', label: 'Capabilities', href: '/synapse/capabilities' },
-  { key: 'how-it-works', label: 'How It Works', href: '/synapse/how-it-works' },
-  { key: 'team', label: 'Team', href: '/synapse/team' },
-  { key: 'intelligence', label: 'Intelligence', href: '/synapse/intelligence' },
-  { key: 'pricing', label: 'Pricing', href: '/synapse/pricing' },
-  { key: 'get-started', label: 'Get Started', href: '/synapse/get-started' },
-];
+const links = currentLang === 'zh'
+  ? [
+      { key: 'overview', label: '概览', href: '/synapse/zh/' },
+      { key: 'capabilities', label: '能力', href: '/synapse/zh/capabilities' },
+      { key: 'how-it-works', label: '工作原理', href: '/synapse/zh/how-it-works' },
+      { key: 'team', label: '团队', href: '/synapse/zh/team' },
+      { key: 'intelligence', label: '情报闭环', href: '/synapse/zh/intelligence' },
+      { key: 'pricing', label: '定价', href: '/synapse/zh/pricing' },
+      { key: 'get-started', label: '快速上手', href: '/synapse/zh/get-started' },
+    ]
+  : [
+      { key: 'overview', label: 'Overview', href: '/synapse/' },
+      { key: 'capabilities', label: 'Capabilities', href: '/synapse/capabilities' },
+      { key: 'how-it-works', label: 'How It Works', href: '/synapse/how-it-works' },
+      { key: 'team', label: 'Team', href: '/synapse/team' },
+      { key: 'intelligence', label: 'Intelligence', href: '/synapse/intelligence' },
+      { key: 'pricing', label: 'Pricing', href: '/synapse/pricing' },
+      { key: 'get-started', label: 'Get Started', href: '/synapse/get-started' },
+    ];
 ---
 
 <style is:global>
@@ -41,6 +52,84 @@ const links = [
           </a>
         );
       })}
+
+      <!-- Language Toggle (pushed to right end) -->
+      <div class="ml-auto flex items-center gap-1 text-xs font-semibold whitespace-nowrap pl-4">
+        <a
+          href="#"
+          data-forge-lang="en"
+          class:list={[
+            'px-2 py-0.5 rounded transition-colors',
+            currentLang === 'en'
+              ? 'bg-[#FCAD2A]/20 text-[#FCAD2A]'
+              : 'text-white/50 hover:text-white',
+          ]}
+        >
+          EN
+        </a>
+        <span class="text-white/20">|</span>
+        <a
+          href="#"
+          data-forge-lang="zh"
+          class:list={[
+            'px-2 py-0.5 rounded transition-colors',
+            currentLang === 'zh'
+              ? 'bg-[#FCAD2A]/20 text-[#FCAD2A]'
+              : 'text-white/50 hover:text-white',
+          ]}
+        >
+          中
+        </a>
+      </div>
     </div>
   </div>
 </nav>
+
+<script>
+  // Language toggle: compute target URL from current path
+  (function () {
+    const BILINGUAL_PAGES = new Set([
+      '', // /synapse/ index
+      'capabilities',
+      'how-it-works',
+      'team',
+      'intelligence',
+      'pricing',
+      'get-started',
+    ]);
+
+    function getCurrentSlug(path: string): { slug: string; isZh: boolean } {
+      // Remove trailing slash, normalize
+      const p = path.replace(/\/$/, '');
+      // Match /synapse/zh/<slug> or /synapse/zh
+      const zhMatch = p.match(/^\/synapse\/zh(?:\/(.*))?$/);
+      if (zhMatch) {
+        return { slug: zhMatch[1] || '', isZh: true };
+      }
+      // Match /synapse/<slug> or /synapse
+      const enMatch = p.match(/^\/synapse(?:\/(.*))?$/);
+      if (enMatch) {
+        return { slug: enMatch[1] || '', isZh: false };
+      }
+      return { slug: '', isZh: false };
+    }
+
+    function computeTargetUrl(targetLang: 'en' | 'zh'): string {
+      const { slug } = getCurrentSlug(window.location.pathname);
+      // If slug is unknown/unsupported, fallback to language root
+      const effectiveSlug = BILINGUAL_PAGES.has(slug) ? slug : '';
+      if (targetLang === 'zh') {
+        return effectiveSlug ? `/synapse/zh/${effectiveSlug}` : '/synapse/zh/';
+      }
+      return effectiveSlug ? `/synapse/${effectiveSlug}` : '/synapse/';
+    }
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-forge-lang]').forEach((el) => {
+      el.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        const lang = el.getAttribute('data-forge-lang') as 'en' | 'zh';
+        window.location.href = computeTargetUrl(lang);
+      });
+    });
+  })();
+</script>
