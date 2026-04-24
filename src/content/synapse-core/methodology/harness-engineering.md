@@ -1,4 +1,4 @@
-<!-- Auto-generated from synapse@36ab925 on 2026-04-24T13:38:21.253Z; DO NOT EDIT. -->
+<!-- Auto-generated from synapse@36ab925 on 2026-04-24T17:39:28.226Z; DO NOT EDIT. -->
 ---
 id: harness-engineering-methodology
 type: core
