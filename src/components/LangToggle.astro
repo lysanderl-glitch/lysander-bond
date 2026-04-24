@@ -5,10 +5,17 @@
 //   * On /synapse/zh/<slug>  -> clicking EN navigates to /synapse/<slug> (Forge EN peer)
 //   * On /synapse/<slug>     -> clicking 中 navigates to /synapse/zh/<slug> (Forge ZH peer)
 //   * On non-Forge pages (/, /academy, /services, /blog, /about, /training, /intelligence, ...):
-//       clicking EN falls back to /synapse/ (Forge EN portal — the only EN content today)
-//       clicking 中 keeps the user on the same URL (all non-Forge content is already ZH)
+//       Non-Forge pages have no EN peer today. Clicking EN is ineligible:
+//       the button is visually disabled (data-ineligible="true"), a tooltip
+//       (desktop) and a toast (mobile) guide the user to the Synapse Forge EN portal.
+//       Clicking 中 on a ZH non-Forge page is a no-op.
 // - Server-rendered current-language highlight is driven by the `currentLang` prop
 //   (passed from Layout.astro based on `lang`).
+// - TODO(blog-bilingual): When the blog starts supporting bilingual posts, introduce
+//   a `hasEnglish` frontmatter flag on /blog/<slug>.md(x) and surface it to this
+//   component via a <meta name="x-has-english" content="true|false"> tag from
+//   Layout.astro. Toggle would then route EN clicks to /blog/en/<slug> when true,
+//   or keep the disabled UX when false. Deferred per Plan A' 2026-04-24.
 interface Props {
   currentLang?: 'en' | 'zh';
 }
@@ -24,7 +31,7 @@ const { currentLang = 'zh' } = Astro.props;
     data-forge-lang="en"
     aria-label={currentLang === 'zh' ? '切换到英文' : 'Switch to English'}
     class:list={[
-      'px-2 py-0.5 rounded transition-colors',
+      'lang-toggle-btn px-2 py-0.5 rounded transition-colors',
       currentLang === 'en'
         ? 'bg-[#FCAD2A]/20 text-[#FCAD2A]'
         : 'text-white/50 hover:text-white',
@@ -38,7 +45,7 @@ const { currentLang = 'zh' } = Astro.props;
     data-forge-lang="zh"
     aria-label={currentLang === 'zh' ? '切换到中文' : 'Switch to Chinese'}
     class:list={[
-      'px-2 py-0.5 rounded transition-colors',
+      'lang-toggle-btn px-2 py-0.5 rounded transition-colors',
       currentLang === 'zh'
         ? 'bg-[#FCAD2A]/20 text-[#FCAD2A]'
         : 'text-white/50 hover:text-white',
@@ -48,11 +55,47 @@ const { currentLang = 'zh' } = Astro.props;
   </a>
 </div>
 
+<style>
+  /* Disabled state for language toggle when current page has no peer in target language */
+  [data-lang-toggle] a.lang-toggle-btn[data-ineligible="true"] {
+    color: rgba(255, 255, 255, 0.3) !important;
+    cursor: not-allowed;
+  }
+  [data-lang-toggle] a.lang-toggle-btn[data-ineligible="true"]:hover {
+    color: rgba(255, 255, 255, 0.3) !important;
+    background-color: transparent !important;
+  }
+
+  /* Toast for mobile tap fallback (desktop uses native title tooltip) */
+  #lang-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    max-width: min(90vw, 420px);
+    text-align: center;
+  }
+  #lang-toast.visible {
+    opacity: 1;
+  }
+</style>
+
 <script>
   (function () {
     // Forge pages that have a ZH peer under /synapse/zh/.
+    // Must be kept in sync with src/pages/synapse/zh/*.astro on disk.
     const BILINGUAL_FORGE_SLUGS = new Set([
       '', // /synapse/ index
+      'beta',
       'capabilities',
       'how-it-works',
       'team',
@@ -60,6 +103,10 @@ const { currentLang = 'zh' } = Astro.props;
       'pricing',
       'get-started',
     ]);
+
+    // Tooltip copy for disabled state (bilingual per currentLang of the active page).
+    const TOOLTIP_EN = 'English content is expanding—explore Synapse Forge';
+    const TOOLTIP_ZH = '当前页面暂无英文版，可访问 Synapse Forge 英文产品线';
 
     type ParsedPath =
       | { kind: 'forge'; slug: string; isZh: boolean }
@@ -80,37 +127,125 @@ const { currentLang = 'zh' } = Astro.props;
       return { kind: 'other' };
     }
 
+    function detectCurrentLang(): 'en' | 'zh' {
+      const htmlLang = (document.documentElement.lang || '').toLowerCase();
+      if (htmlLang.startsWith('zh')) return 'zh';
+      if (htmlLang.startsWith('en')) return 'en';
+      // Fallback: infer from path.
+      const parsed = parsePath(window.location.pathname);
+      if (parsed.kind === 'forge' && parsed.isZh) return 'zh';
+      if (parsed.kind === 'forge' && !parsed.isZh) return 'en';
+      // Non-Forge pages are ZH today.
+      return 'zh';
+    }
+
     function computeTargetUrl(targetLang: 'en' | 'zh'): string | null {
       const parsed = parsePath(window.location.pathname);
 
       if (parsed.kind === 'forge') {
-        const slug = BILINGUAL_FORGE_SLUGS.has(parsed.slug) ? parsed.slug : '';
-        if (targetLang === 'zh') {
-          return slug ? `/synapse/zh/${slug}` : '/synapse/zh/';
+        if (BILINGUAL_FORGE_SLUGS.has(parsed.slug)) {
+          const slug = parsed.slug;
+          if (targetLang === 'zh') {
+            return slug ? `/synapse/zh/${slug}` : '/synapse/zh/';
+          }
+          return slug ? `/synapse/${slug}` : '/synapse/';
         }
-        return slug ? `/synapse/${slug}` : '/synapse/';
+        // Forge page not in bilingual whitelist — fall back to Forge portal.
+        return targetLang === 'zh' ? '/synapse/zh/' : '/synapse/';
       }
 
-      // Non-Forge page. All current content is ZH.
-      if (targetLang === 'en') {
-        // Fallback: send user to Forge EN portal (only EN surface available today).
-        return '/synapse/';
-      }
-      // Already on a ZH non-Forge page; no navigation needed.
+      // kind === 'other' — non-Forge page. No EN peer today.
+      // Return null so the click handler skips navigation; the button is
+      // visually disabled and shows guidance tooltip/toast.
       return null;
     }
 
-    document
-      .querySelectorAll<HTMLAnchorElement>('[data-lang-toggle] [data-forge-lang]')
-      .forEach((el) => {
-        el.addEventListener('click', (ev) => {
-          ev.preventDefault();
-          const lang = el.getAttribute('data-forge-lang') as 'en' | 'zh';
-          const target = computeTargetUrl(lang);
-          if (target && target !== window.location.pathname) {
-            window.location.href = target;
-          }
-        });
+    function tooltipFor(targetLang: 'en' | 'zh'): string {
+      const activeLang = detectCurrentLang();
+      // Localize tooltip to the language of the currently viewed page.
+      // (User reads the page in activeLang, so tooltip speaks their language.)
+      if (activeLang === 'zh') return TOOLTIP_ZH;
+      return TOOLTIP_EN;
+    }
+
+    function markIneligibleState() {
+      const parsed = parsePath(window.location.pathname);
+      const buttons = document.querySelectorAll<HTMLAnchorElement>(
+        '[data-lang-toggle] [data-forge-lang]'
+      );
+      buttons.forEach((btn) => {
+        const lang = btn.getAttribute('data-forge-lang') as 'en' | 'zh';
+        let ineligible = false;
+
+        if (parsed.kind === 'other') {
+          // Non-Forge page: clicking EN is ineligible. (ZH click is a no-op
+          // already, but flag as ineligible too so mobile toast works.)
+          ineligible = lang === 'en' || lang === 'zh';
+        } else if (parsed.kind === 'forge' && !BILINGUAL_FORGE_SLUGS.has(parsed.slug)) {
+          // Forge page not in whitelist — disabled for both.
+          ineligible = true;
+        }
+
+        if (ineligible) {
+          btn.setAttribute('data-ineligible', 'true');
+          btn.setAttribute('aria-disabled', 'true');
+          btn.setAttribute('title', tooltipFor(lang));
+        } else {
+          btn.removeAttribute('data-ineligible');
+          btn.removeAttribute('aria-disabled');
+          btn.removeAttribute('title');
+        }
       });
+    }
+
+    function showToast(msg: string) {
+      let toast = document.getElementById('lang-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'lang-toast';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      // Force reflow so transition re-triggers.
+      void toast.offsetWidth;
+      toast.classList.add('visible');
+      window.setTimeout(() => {
+        toast!.classList.remove('visible');
+      }, 3000);
+    }
+
+    function bindHandlers() {
+      document
+        .querySelectorAll<HTMLAnchorElement>('[data-lang-toggle] [data-forge-lang]')
+        .forEach((el) => {
+          el.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            const lang = el.getAttribute('data-forge-lang') as 'en' | 'zh';
+
+            // Ineligible button: show toast (mobile) / rely on native title (desktop).
+            if (el.getAttribute('data-ineligible') === 'true') {
+              const msg = el.getAttribute('title') || tooltipFor(lang);
+              showToast(msg);
+              return;
+            }
+
+            const target = computeTargetUrl(lang);
+            if (target && target !== window.location.pathname) {
+              window.location.href = target;
+            }
+          });
+        });
+    }
+
+    function init() {
+      markIneligibleState();
+      bindHandlers();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
   })();
 </script>

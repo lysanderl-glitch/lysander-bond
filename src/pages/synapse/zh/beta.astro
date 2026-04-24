@@ -1,0 +1,223 @@
+<!--
+synapse-page-metadata:
+  id: forge-beta-zh
+  type: core
+  status: published
+  lang: zh
+  translation_of: forge-beta-en
+  version: 1.0
+  source_commit: pending
+  synapse_version: 3.0.0
+  published_at: 2026-04-23
+  updated_at: 2026-04-23
+  author: content_strategist
+  review_by: [integration_qa, style_calibrator]
+  audience: [team_partner, technical_builder, enterprise_decider]
+  stale_after: 2026-10-23
+-->
+---
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import Hero from '../../../components/synapse/Hero.astro';
+import PillarSection from '../../../components/synapse/PillarSection.astro';
+import FeatureCard from '../../../components/synapse/FeatureCard.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
+
+const benefits = [
+  {
+    title: 'Founding Member #001–030（创始成员编号）',
+    body: '在 Synapse 官网获得永久署名。未来每一个版本发布时，都会随附一枚 Founding 徽章。',
+  },
+  {
+    title: '终身免费 Pro 订阅',
+    body: '当商业版本发布时，创始团队保留完整 Pro 访问权限——只要 Synapse 还在运转，这个权限就一直有效。',
+  },
+  {
+    title: '每季度 1 小时 Lysander 直连',
+    body: '每季度一次与 Lysander CEO 的共创时间。架构问题、落地节奏、让你团队前进的任何事，都可以聊。',
+  },
+  {
+    title: '/about 共创者名单永久挂载',
+    body: '你的姓名将列入公开站点的共创者（co-creators）区块。这套体系是你与我们一起搭起来的，记录需要如实反映。',
+  },
+  {
+    title: '新模块优先试用权',
+    body: 'Janus（建筑数字交付）、Stock（量化交易），以及未来每一个领域模块包——创始团队第一时间拿到手。',
+  },
+];
+
+const commitments = [
+  {
+    title: '2 周内完成首次部署',
+    body: '接受邀请后 14 天内完成 Synapse 首次部署——个人化 CLAUDE.md、跑通一次派单。',
+  },
+  {
+    title: '每月 1 次结构化反馈',
+    body: '一份短而结构化的报告：哪些好用、哪些卡住、你希望还能有什么。模板很轻，不占时间。',
+  },
+  {
+    title: '允许匿名化引用案例',
+    body: '允许我们在 Synapse 学习库中匿名引用你的经验。未经你同意，不会有任何公开内容。',
+  },
+  {
+    title: '加入创始团队专属频道',
+    body: '创始团队共享一个专属 Slack / Discord。异步、低噪音、高信号。',
+  },
+];
+
+const audiences = [
+  {
+    title: 'AI Builder（独立开发者）',
+    body: '独立开发者、深度 Claude Code 使用者——想要一套生产级 Harness，而不是每次从头再造一遍。',
+    accent: 'amber' as const,
+  },
+  {
+    title: 'Small Tech Team（小型技术团队）',
+    body: '5 至 20 人规模初创的 CTO 与技术负责人——需要一套能随组织扩张而扩张的 AI 运营体系。',
+    accent: 'sky' as const,
+  },
+  {
+    title: 'Independent Consultant（独立咨询 / PMO）',
+    body: '有真实流程治理痛点的咨询业务与 PMO——Synapse 是一套你可以整体采纳的方法论。',
+    accent: 'purple' as const,
+  },
+  {
+    title: 'Industry Partner（行业伙伴）',
+    body: '建筑数字化、量化金融，以及其他垂直领域的从业者——愿意与我们共同塑造该领域的模块包。',
+    accent: 'amber' as const,
+  },
+];
+
+const applyMailto = 'mailto:lysanderl@janusd.io?subject=Synapse%20Forge%20Beta%20%E7%94%B3%E8%AF%B7&body=Team%20Name:%0ATeam%20Size:%0ACurrent%20AI%20Tools:%0AWhy%20Synapse:%0AContact:';
+---
+
+<SynapseLayout
+  title="封闭测试"
+  description="Synapse Forge 启动封闭测试。三十支创始团队将共同塑造体系未来一年的演进路径——并获得一枚永久的 Founding Member 徽章。"
+  subNavActive=""
+  currentLang="zh"
+  altLang={{ lang: 'en', href: '/synapse/beta' }}
+>
+  <Hero
+    eyebrow="Closed Beta · Founding 30 / 封闭测试 · 创始三十人"
+    title="加入创始三十人。"
+    subtitle="Synapse Forge 启动封闭测试。三十支创始团队将共同塑造体系未来一年的演进路径——并获得一枚永久的 Founding Member 徽章。"
+    primaryCta={{ label: '申请加入', href: '#apply' }}
+    secondaryCta={{ label: '先读方法论', href: '/synapse/zh/how-it-works' }}
+  />
+
+  <!-- Section A: What you get -->
+  <PillarSection
+    eyebrow="What you get / 你获得什么"
+    title="创始团队将得到"
+    subtitle="Founding 30 不是一个折扣席位。它是一个永久写入 Synapse 演进路径的位置。"
+  >
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {benefits.map((b) => (
+        <FeatureCard title={b.title} body={b.body} accent="amber" />
+      ))}
+    </div>
+  </PillarSection>
+
+  <!-- Section B: What we ask -->
+  <PillarSection
+    eyebrow="What we ask / 我们请你承诺"
+    title="我们请你回以的承诺"
+    subtitle="真正的创始身份需要真正的投入。以下是我们的期待。"
+    bordered={true}
+  >
+    <div class="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto">
+      {commitments.map((c) => (
+        <FeatureCard title={c.title} body={c.body} accent="sky" />
+      ))}
+    </div>
+  </PillarSection>
+
+  <!-- Section C: Who we're looking for -->
+  <PillarSection
+    eyebrow="Who we're looking for / 我们在找谁"
+    title="四类创始团队"
+    subtitle="如果你在其中一类里看到了自己的业务形态，欢迎来聊聊。"
+  >
+    <div class="grid md:grid-cols-2 gap-5">
+      {audiences.map((a) => (
+        <FeatureCard title={a.title} body={a.body} accent={a.accent} />
+      ))}
+    </div>
+  </PillarSection>
+
+  <!-- Section D: How to apply -->
+  <section id="apply" class="border-y border-white/5 bg-white/2">
+    <div class="max-w-3xl mx-auto px-6 py-16 md:py-20 text-center">
+      <div class="text-[#FCAD2A] text-xs font-semibold tracking-wider uppercase mb-3">
+        How to apply / 如何申请
+      </div>
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">发一封简短的邮件。</h2>
+      <p class="text-white/60 text-base md:text-lg leading-relaxed mb-8">
+        申请方式刻意做得轻量。告诉我们你是谁、你现在在用什么、为什么 Synapse 契合你的团队。
+        每封邮件我们都亲自阅读，通常几天内回复。
+      </p>
+
+      <div class="bg-gray-900/60 border border-white/10 rounded-2xl p-6 md:p-8 text-left font-mono text-sm text-white/70 mb-8">
+        <div class="text-white/40 text-xs mb-3">模板（已预填进 mailto 链接）</div>
+        <div class="space-y-1.5 leading-relaxed">
+          <div><span class="text-[#FCAD2A]">Team Name:</span> <span class="text-white/40">团队名称 …</span></div>
+          <div><span class="text-[#FCAD2A]">Team Size:</span> <span class="text-white/40">团队规模 …</span></div>
+          <div><span class="text-[#FCAD2A]">Current AI Tools:</span> <span class="text-white/40">当前在用的 AI 工具 …</span></div>
+          <div><span class="text-[#FCAD2A]">Why Synapse:</span> <span class="text-white/40">为什么选 Synapse …</span></div>
+          <div><span class="text-[#FCAD2A]">Contact:</span> <span class="text-white/40">联系方式 …</span></div>
+        </div>
+      </div>
+
+      <a
+        href={applyMailto}
+        class="inline-flex items-center gap-2 px-8 py-4 bg-[#FCAD2A] text-gray-900 font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all shadow-lg shadow-[#FCAD2A]/20 text-base"
+      >
+        通过邮件申请
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+      <p class="text-white/40 text-xs mt-4">
+        点击后将打开你的邮件客户端，模板已预填。邮件发往
+        <span class="text-white/60">lysanderl@janusd.io</span>。
+      </p>
+    </div>
+  </section>
+
+  <!-- Section E: Timeline -->
+  <PillarSection
+    eyebrow="Timeline / 节奏"
+    title="滚动接受申请，结构化 onboarding"
+  >
+    <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
+      <p>
+        我们滚动接受申请，直到 Founding 30 席位全部到位。每一位被接纳的团队，
+        都会走过同一套 onboarding 节奏：
+      </p>
+      <ul class="space-y-4">
+        <li class="flex gap-4">
+          <span class="text-[#FCAD2A] font-mono text-sm mt-1 shrink-0">72 h</span>
+          <span><strong class="text-white">部署检查。</strong>一次简短的异步 review，确认你个人化后的 CLAUDE.md 运行干净。</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="text-sky-400 font-mono text-sm mt-1 shrink-0">Week 1</span>
+          <span><strong class="text-white">30 分钟视频 onboarding。</strong>一起走一遍你的首次真实派单，为你的业务领域调校 Harness。</span>
+        </li>
+        <li class="flex gap-4">
+          <span class="text-purple-400 font-mono text-sm mt-1 shrink-0">Weekly</span>
+          <span><strong class="text-white">周五进展帖。</strong>Lysander 发布进展 + 待解决问题；创始团队分享成果与阻塞。</span>
+        </li>
+      </ul>
+      <p class="text-white/60 text-sm">
+        没有日历邀约、没有销售电话、没有 pitch deck。只有工程节奏。
+      </p>
+    </div>
+  </PillarSection>
+
+  <CTABanner
+    heading="想先看看 Synapse 怎么工作？"
+    body="在申请之前先读一遍 Harness Engineering 方法论。当你已经知道哪一部分最打动你时，申请会写得更快。"
+    primaryCta={{ label: '了解 Synapse 工作原理', href: '/synapse/zh/how-it-works' }}
+    secondaryCta={{ label: '申请加入', href: applyMailto }}
+  />
+</SynapseLayout>
