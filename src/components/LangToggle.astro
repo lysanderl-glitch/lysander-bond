@@ -22,7 +22,7 @@ const { currentLang = 'zh' } = Astro.props;
   <a
     href="#"
     data-forge-lang="en"
-    aria-label="Switch to English"
+    aria-label={currentLang === 'zh' ? '切换到英文' : 'Switch to English'}
     class:list={[
       'px-2 py-0.5 rounded transition-colors',
       currentLang === 'en'
@@ -36,7 +36,7 @@ const { currentLang = 'zh' } = Astro.props;
   <a
     href="#"
     data-forge-lang="zh"
-    aria-label="切换到中文"
+    aria-label={currentLang === 'zh' ? '切换到中文' : 'Switch to Chinese'}
     class:list={[
       'px-2 py-0.5 rounded transition-colors',
       currentLang === 'zh'
