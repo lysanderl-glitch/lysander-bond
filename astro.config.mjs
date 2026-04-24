@@ -20,6 +20,21 @@ export default defineConfig({
     }
   },
   integrations: [sitemap()],
+  // 2026-04-23: Nginx deployment does not honor Cloudflare _redirects
+  // format. Astro's native redirects config generates static HTML pages
+  // with meta-refresh, which works on any static host (Nginx, Cloudflare,
+  // etc.). Maps old /synapse/zh/* URLs to the new default-locale paths.
+  redirects: {
+    '/synapse/zh': '/synapse',
+    '/synapse/zh/': '/synapse/',
+    '/synapse/zh/capabilities': '/synapse/capabilities',
+    '/synapse/zh/how-it-works': '/synapse/how-it-works',
+    '/synapse/zh/team': '/synapse/team',
+    '/synapse/zh/intelligence': '/synapse/intelligence',
+    '/synapse/zh/pricing': '/synapse/pricing',
+    '/synapse/zh/get-started': '/synapse/get-started',
+    '/synapse/zh/beta': '/synapse/beta',
+  },
   vite: {
     plugins: [tailwindcss()]
   }

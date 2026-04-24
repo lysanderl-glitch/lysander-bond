@@ -1,3 +1,9 @@
+# NOTE: Cloudflare Pages format. Current lysander.bond deployment is
+# on Nginx via GitHub Actions SSH (not Cloudflare Pages), so this
+# file is currently INACTIVE. The actual 301 redirects are configured
+# in astro.config.mjs (generates static HTML meta-refresh pages).
+# If deployment platform changes, this file becomes the primary source.
+#
 # Forge URL migration (2026-04-24 Stage 4 Step 2-4, president-approved)
 # Chinese is now the default locale served at /; English moves under /en/.
 #
