@@ -1,0 +1,50 @@
+# Auto-generated from synapse@36ab925 on 2026-04-24T13:38:21.250Z; DO NOT EDIT.
+# Synapse Bilingual Glossary (Canonical)
+# Used by content_strategist for translation; enforced by check_glossary.py
+version: 1.0
+last_updated: 2026-04-24
+
+terms:
+  - en: Harness Engineering
+    zh: 约束工程
+    canonical_zh: 约束工程
+    aliases_zh: [束带工程]  # not recommended
+    note: Agent = Model + Harness. Core methodology.
+    audience: [all]
+
+  - en: Harness
+    zh: 约束 / Harness
+    note: In technical context, keep "Harness"; in prose, 约束 is acceptable.
+
+  - en: dispatch
+    zh: 派单
+    context: task routing
+    note: Command-style reference (/dispatch) keeps English.
+
+  - en: CEO Guard
+    zh: CEO 执行禁区
+    note: Keep "CEO" untranslated.
+
+  - en: Agent
+    zh: 智能体
+    aliases_zh: [Agent]  # acceptable in technical context
+    note: Specialist names (e.g., product_manager) are not translated.
+
+  - en: execution chain
+    zh: 执行链
+    note: Synapse-specific concept, keep consistent wording.
+
+  - en: SSOT (Single Source of Truth)
+    zh: 单一事实源
+    context: content governance
+
+  - en: harness fragment
+    zh: 约束片段
+
+  - en: Multi-Agent
+    zh: 多智能体 / Multi-Agent
+    note: In marketing, "多智能体"; in technical doc, "Multi-Agent" acceptable.
+
+  - en: QA gate
+    zh: 质量门禁
+    note: 85/100 rubric threshold.

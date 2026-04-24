@@ -1,0 +1,271 @@
+# Auto-generated from synapse@36ab925 on 2026-04-24T13:38:21.249Z; DO NOT EDIT.
+# Synapse Onboarding Steps (SSOT)
+# Consumed by:
+#   - Forge /synapse/get-started (5-minute version)
+#   - Academy /academy/courses/onboarding (30-minute version)
+# Any change here propagates to both consumers on next build.
+#
+# Schema:
+#   steps: list of onboarding steps (ordered)
+#     id            — stable identifier; downstream consumers key off this
+#     order         — display order (1-based)
+#     title         — {en, zh} bilingual title
+#     summary       — {en, zh} one-sentence summary (used by Forge 5min)
+#     deep_dive     — {en, zh} long-form explanation (used by Academy 30min)
+#     commands      — optional, keyed by shell (powershell/bash)
+#     verify        — optional, {en, zh} verification instruction
+#   troubleshooting: list of common issues
+#     symptom / cause / fix (each bilingual)
+
+version: 1.0
+last_updated: 2026-04-24
+maintainer: knowledge_engineer
+
+steps:
+  - id: get-bundle
+    order: 1
+    title:
+      en: "Get the configuration bundle"
+      zh: "获取配置包"
+    summary:
+      en: "Download the Synapse bundle from GitHub or the Academy personalization tool."
+      zh: "从 GitHub 或学院个性化工具下载 Synapse 配置包。"
+    deep_dive:
+      en: |
+        There are two ways to obtain the Synapse configuration bundle, and the right
+        choice depends on how much customization you want up front.
+
+        Option A — Direct GitHub download (fastest).
+        Clone or download the ZIP of the public synapse repository. You get the
+        canonical bundle shipped with default placeholder names (Lysander as the
+        AI CEO, a placeholder president name, a placeholder organization). You
+        will personalize those tokens by hand in Step 2. This path gets you to a
+        runnable state in under a minute and is the recommended path for technical
+        builders who want to see what ships by default.
+
+        Option B — Academy personalization tool.
+        The Academy hosts a form that asks three questions — what do you want to
+        name your AI CEO, what is your name, what is your organization — and then
+        hands you a ZIP with those values already substituted throughout CLAUDE.md
+        and related config. Recommended for non-technical users who want a
+        zero-edit experience. After unzipping, Step 2 (personalize) is skipped.
+
+        Both options produce the same runtime behavior once personalization is
+        complete. The bundle footprint is under 2 MB in either case.
+      zh: |
+        获取 Synapse 配置包的两种方式，选哪种取决于你希望前置多少定制工作。
+
+        方式 A — 直接从 GitHub 下载（最快）。
+        克隆或下载公开的 synapse 仓库 ZIP。你将获得配置包原始版本，其中包含默认占位符
+        （AI CEO 默认名 Lysander、总裁名占位符、组织名占位符）。你需要在第 2 步手动替换
+        这些占位符。此路径 1 分钟内即可跑通，推荐给想先看默认配置的技术用户。
+
+        方式 B — 学院个性化工具。
+        学院提供一个表单，询问三个问题：你想给 AI CEO 取什么名字、你自己的名字、你的组织名称。
+        提交后，你将获得一个已在 CLAUDE.md 及相关配置中完成替换的 ZIP。推荐给想要零编辑
+        体验的非技术用户。解压后，第 2 步（个性化）可直接跳过。
+
+        两种方式在完成个性化后运行行为完全一致。配置包体积均小于 2 MB。
+    commands:
+      powershell: |
+        Invoke-WebRequest -Uri 'https://github.com/lysanderl-glitch/synapse/archive/refs/heads/main.zip' -OutFile "$env:USERPROFILE\Downloads\synapse.zip"
+        Expand-Archive -Path "$env:USERPROFILE\Downloads\synapse.zip" -DestinationPath "$env:USERPROFILE\Claude Code" -Force
+      bash: |
+        curl -L https://github.com/lysanderl-glitch/synapse/archive/refs/heads/main.zip -o ~/Downloads/synapse.zip
+        unzip -o ~/Downloads/synapse.zip -d "$HOME/Claude Code"
+    verify:
+      en: "Verify: the directory '$HOME/Claude Code/synapse-main' exists with CLAUDE.md inside."
+      zh: "验证：目录 '$HOME/Claude Code/synapse-main' 存在且包含 CLAUDE.md 文件。"
+
+  - id: personalize
+    order: 2
+    title:
+      en: "Personalize (Option B only)"
+      zh: "个性化配置（仅方式 A 需要）"
+    summary:
+      en: "Replace three tokens in CLAUDE.md with your CEO name, your name, and your organization."
+      zh: "在 CLAUDE.md 中替换三个占位符：AI CEO 名字、你的名字、你的组织名称。"
+    deep_dive:
+      en: |
+        Skip this step if you used the Academy personalization tool — tokens are
+        already substituted.
+
+        Open CLAUDE.md in your editor. Use find-and-replace (Ctrl+H / Cmd+H)
+        three times, in this exact order:
+
+        1. `Lysander` → the name you want for your AI CEO. This name appears in
+           the mandatory greeting the system emits on every first reply.
+        2. `刘子杨` → your own name (how you want the AI CEO to address you).
+        3. `Synapse-PJ` → your organization or team name. Appears in org-context
+           sections of the harness.
+
+        Save the file. Total time: about two minutes. Do not leave any token
+        un-replaced — a half-personalized CLAUDE.md will emit greetings that mix
+        your name with the default placeholder, which is confusing.
+
+        If your editor supports regex replace, confirm afterwards that no
+        occurrence of the three placeholder strings remains in CLAUDE.md.
+      zh: |
+        如果你使用了学院个性化工具，跳过此步 — 占位符已自动替换。
+
+        在编辑器中打开 CLAUDE.md，按以下顺序执行三次查找替换（Ctrl+H / Cmd+H）：
+
+        1. `Lysander` → 你给 AI CEO 取的名字。该名字会出现在系统每次首条回复的
+           强制问候语中。
+        2. `刘子杨` → 你自己的名字（AI CEO 将以此称呼你）。
+        3. `Synapse-PJ` → 你的组织或团队名称。出现在 Harness 的组织上下文部分。
+
+        保存文件。约 2 分钟完成。不要遗漏任何占位符 — 半个性化的 CLAUDE.md 会
+        发出混合你的名字与默认占位符的问候，造成困惑。
+
+        如果编辑器支持正则替换，完成后确认 CLAUDE.md 中三个占位符字符串均已被
+        完全替换。
+
+  - id: open-claude-code
+    order: 3
+    title:
+      en: "Open Claude Code"
+      zh: "打开 Claude Code"
+    summary:
+      en: "Launch Claude Code, open the folder containing CLAUDE.md."
+      zh: "启动 Claude Code，打开包含 CLAUDE.md 的目录。"
+    deep_dive:
+      en: |
+        Launch Claude Code (Desktop or CLI). In the main interface:
+
+        1. Click "Open Folder".
+        2. Navigate to your synapse-main/ directory (the root folder of the
+           bundle, the one that contains CLAUDE.md).
+        3. Select and confirm.
+
+        Claude Code will detect CLAUDE.md at the root and load the Synapse harness
+        automatically. No command or flag is needed. If you open a subdirectory
+        instead of the root, the harness will not load — always select the folder
+        that has CLAUDE.md directly inside it, not a parent or child folder.
+      zh: |
+        启动 Claude Code（桌面版或 CLI 版）。在主界面：
+
+        1. 点击"打开文件夹"。
+        2. 导航到你的 synapse-main/ 目录（配置包根目录，即直接包含 CLAUDE.md 的那一层）。
+        3. 选择并确认。
+
+        Claude Code 会自动检测根目录的 CLAUDE.md 并加载 Synapse 配置。无需任何命令或参数。
+        如果你误选了子目录，Harness 不会加载 — 始终选择直接包含 CLAUDE.md 的那一层，
+        不要选上级或下级目录。
+
+  - id: say-anything
+    order: 4
+    title:
+      en: "Say anything"
+      zh: "发送任意消息"
+    summary:
+      en: "Send any message. You will receive a greeting confirming identity and team readiness."
+      zh: "发送任何消息。你会收到确认身份和团队就绪的问候语。"
+    deep_dive:
+      en: |
+        Send any message in the chat (for example, "hi" or a task description).
+        The expected response begins with the mandatory greeting:
+
+        > "[Your name]您好，我是 [CEO name]，Multi-Agents 团队为您服务！"
+
+        If you personalized with the name "Ava" for the CEO and "Chris" for
+        yourself, the greeting reads "Chris您好，我是 Ava，Multi-Agents 团队为您服务！".
+
+        This greeting is not cosmetic. It confirms three things:
+
+        1. Claude Code loaded CLAUDE.md successfully.
+        2. The identity layer took effect — the model is speaking as your AI CEO,
+           not as a generic assistant.
+        3. The dispatch workflow is active — subsequent messages will be routed
+           through the standard execution chain (intake → classification →
+           dispatch table → execution → QA).
+
+        If the greeting does not appear, jump to Troubleshooting below.
+      zh: |
+        在聊天框发送任意消息（例如"hi"或一个任务描述）。期望响应以强制问候语开头：
+
+        > "[你的名字]您好，我是 [CEO 名字]，Multi-Agents 团队为您服务！"
+
+        例如：若你将 CEO 个性化为 "Ava"、自己个性化为 "Chris"，问候语为
+        "Chris您好，我是 Ava，Multi-Agents 团队为您服务！"。
+
+        该问候语并非装饰，它确认三件事：
+
+        1. Claude Code 成功加载 CLAUDE.md；
+        2. 身份层已生效 — 模型正以你的 AI CEO 身份发言，不再是通用助手；
+        3. 派单工作流已激活 — 后续消息会走标准执行链（承接 → 分级 → 派单表 →
+           执行 → QA）。
+
+        若问候语未出现，请跳至下方"常见问题"。
+
+  - id: try-dispatch
+    order: 5
+    title:
+      en: "Try a dispatch"
+      zh: "尝试派单"
+    summary:
+      en: "Try: /dispatch write a one-page brief on our competitor landscape"
+      zh: "尝试：/dispatch 写一份关于竞争对手格局的一页简报"
+    deep_dive:
+      en: |
+        Type a /dispatch command to exercise the full 5-step execution chain. An
+        example task:
+
+        > /dispatch write a one-page brief on our competitor landscape
+
+        What happens behind the scenes:
+
+        1. Greeting + objective intake — the AI CEO restates your goal back to
+           confirm understanding.
+        2. Classification (S/M/L level) — execution_auditor decides whether this
+           is simple, standard, or large. A competitor brief is typically M.
+        3. Dispatch table — a markdown table showing who is doing what, with
+           specialist IDs and deliverables. This is the contract.
+        4. Isolated execution — each dispatched specialist runs in its own
+           sub-agent context, with appropriate tool access.
+        5. QA gate + delivery — integration_qa scores the output against the
+           85/100 pass line; execution_auditor verifies dispatch records exist.
+           Only then is the result delivered.
+
+        Watch the Graphify team (growth_insights, gtm_strategist, sales_enablement,
+        content_strategist) take on the task. The first dispatch you run is both
+        a test of the system and a live example of how work flows end-to-end.
+      zh: |
+        输入 /dispatch 命令以跑通完整的 5 步执行链。示例任务：
+
+        > /dispatch 写一份关于竞争对手格局的一页简报
+
+        幕后流程：
+
+        1. 问候 + 目标承接 — AI CEO 用自己的话复述你的目标，确认理解对齐。
+        2. 分级（S/M/L）— execution_auditor 判定任务是简单、标准还是重大。
+           一份竞争对手简报通常为 M 级。
+        3. 派单表 — 一张 markdown 表，列出执行者（specialist_id）与交付物。这是契约。
+        4. 隔离执行 — 每位被派单的专员在独立子 Agent 上下文中运行，具备相应工具权限。
+        5. QA 门禁 + 交付 — integration_qa 按 85/100 通过线打分；execution_auditor
+           检查派单记录是否完整。通过后结果才交付。
+
+        观察 Graphify 团队（growth_insights、gtm_strategist、sales_enablement、
+        content_strategist）承接任务。你跑的第一次派单既是系统测试，也是一个
+        端到端工作流的实时示例。
+
+troubleshooting:
+  - symptom:
+      en: "Greeting doesn't appear"
+      zh: "问候语未出现"
+    cause:
+      en: "CLAUDE.md personalization skipped or Claude Code not pointed at the right folder."
+      zh: "CLAUDE.md 未完成个性化，或 Claude Code 未指向正确目录。"
+    fix:
+      en: "Verify CLAUDE.md has no placeholder tokens (search for the three defaults) and the folder contains CLAUDE.md at root, not in a subdirectory."
+      zh: "确认 CLAUDE.md 中无占位符（搜索三个默认值），且所选文件夹根目录直接包含 CLAUDE.md，而非子目录。"
+
+  - symptom:
+      en: "Dispatch command not recognized"
+      zh: "派单命令未被识别"
+    cause:
+      en: "The /dispatch skill file is missing from .claude/commands/ in the bundle."
+      zh: ".claude/commands/ 中缺失 /dispatch 技能文件。"
+    fix:
+      en: "Re-download the bundle; ensure the .claude/commands/ directory is complete and contains dispatch.md."
+      zh: "重新下载配置包；确认 .claude/commands/ 目录完整，包含 dispatch.md 文件。"

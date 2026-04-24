@@ -3,6 +3,9 @@ dist/
 # generated types
 .astro/
 
+# SSOT sync cache
+.cache/
+
 # dependencies
 node_modules/
 
