@@ -30,7 +30,7 @@ const selfPath = Astro.url.pathname;
 const selfLang = currentLang === 'zh' ? 'zh-CN' : 'en';
 ---
 
-<Layout title={fullTitle} description={description} darkContent={true}>
+<Layout title={fullTitle} description={description} darkContent={true} lang={selfLang}>
   <Fragment slot="head">
     <link rel="alternate" hreflang={selfLang} href={selfPath} />
     {altLang && (

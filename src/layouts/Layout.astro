@@ -3,17 +3,19 @@ interface Props {
   title?: string;
   description?: string;
   darkContent?: boolean;
+  lang?: string;
 }
 
 const {
   title = 'Synapse — AI Agent 协作运营体系',
   description = 'Synapse — 基于 Harness Engineering 的 AI Agent 团队协作运营体系',
   darkContent = false,
+  lang = 'zh-CN',
 } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
