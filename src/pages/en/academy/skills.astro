@@ -1,0 +1,232 @@
+<!--
+synapse-page-metadata:
+  id: academy-skills-en
+  type: directory
+  status: published
+  lang: en
+  translation_of: academy-skills-zh
+  version: 1.0
+  source_draft: docs/drafts/academy-skills-en-draft-2026-04-25.md
+  synapse_version: 3.0.0
+  published_at: 2026-04-25
+  updated_at: 2026-04-25
+  author: content_strategist
+  review_by: [integration_qa, style_calibrator]
+  audience: [technical_builder, claude_code_user]
+  stale_after: 2026-10-25
+-->
+---
+import Layout from '../../../layouts/Layout.astro';
+
+const skills = [
+  {
+    id: "dispatch",
+    cmd: "/dispatch",
+    name: "Dispatch",
+    desc: "Structured task decomposition and team routing. Input a goal, output a dispatch table with specialist assignments, deliverables, and acceptance criteria. Guarantees execution-chain step ② never breaks.",
+    color: "#FCAD2A",
+    accent: "gold",
+    tag: "Core",
+  },
+  {
+    id: "qa-gate",
+    cmd: "/qa-gate",
+    name: "QA Gate",
+    desc: "Runs qa_auto_review(). Auto-scoring (≥3.5 to pass), YAML validation, execution-chain integrity check. Mandatory step ③ enforcement (the QA verification step).",
+    color: "#028CDC",
+    accent: "cyan",
+    tag: "Core",
+  },
+  {
+    id: "graphify",
+    cmd: "/graphify",
+    name: "Advisor Analysis",
+    desc: "Convenes the Graphify Advisors (six specialists) on complex problems. Outputs structured decision recommendations with risk assessment and confidence scoring.",
+    color: "#013A7D",
+    accent: "blue",
+    tag: "Decision",
+  },
+  {
+    id: "retro",
+    cmd: "/retro",
+    name: "Retrospective",
+    desc: "Auto-generates session or daily-work retrospective. Surfaces highlights, issues, improvement items. Optional HTML report for the OBS knowledge base.",
+    color: "#FCAD2A",
+    accent: "gold",
+    tag: "Knowledge",
+  },
+  {
+    id: "hr-audit",
+    cmd: "/hr-audit",
+    name: "HR Audit",
+    desc: "Runs audit_all_agents(). Bulk scans every agent's capability description, outputs the list of any falling below 90 for remediation.",
+    color: "#028CDC",
+    accent: "cyan",
+    tag: "Management",
+  },
+  {
+    id: "intel",
+    cmd: "/intel",
+    name: "Intelligence Daily",
+    desc: "Triggers the daily AI-tech intelligence pipeline: frontier search → key-person tracking → gap analysis → Markdown plus HTML report.",
+    color: "#013A7D",
+    accent: "blue",
+    tag: "Intel",
+  },
+  {
+    id: "dev-plan",
+    cmd: "/dev-plan",
+    name: "Development Plan",
+    desc: "R&D team produces a technical proposal: architecture design, task decomposition, risk identification, effort estimate. Output is an executable development plan document.",
+    color: "#FCAD2A",
+    accent: "gold",
+    tag: "R&D",
+  },
+  {
+    id: "dev-qa",
+    cmd: "/dev-qa",
+    name: "Code QA Review",
+    desc: "QA Engineer plus Tech Lead conduct multi-dimensional code review: functional correctness, security, performance, maintainability — each dimension scored.",
+    color: "#028CDC",
+    accent: "cyan",
+    tag: "R&D",
+  },
+  {
+    id: "dev-review",
+    cmd: "/dev-review",
+    name: "Code Review",
+    desc: "Structured code review pipeline. Output: issue list, improvement recommendations, severity classification.",
+    color: "#013A7D",
+    accent: "blue",
+    tag: "R&D",
+  },
+  {
+    id: "dev-secure",
+    cmd: "/dev-secure",
+    name: "Security Audit",
+    desc: "Scans code for security vulnerabilities (OWASP Top 10), secret leakage, permission misconfigurations. Output: hardening recommendations.",
+    color: "#FCAD2A",
+    accent: "gold",
+    tag: "R&D",
+  },
+  {
+    id: "dev-ship",
+    cmd: "/dev-ship",
+    name: "Ship & Deploy",
+    desc: "DevOps Engineer runs the standard release flow: build verify → test → canary → full rollout → monitor confirmation.",
+    color: "#028CDC",
+    accent: "cyan",
+    tag: "R&D",
+  },
+  {
+    id: "knowledge",
+    cmd: "/knowledge",
+    name: "Knowledge Distillation",
+    desc: "OBS team extracts insights, decisions, and methodologies from the current session and writes them into the matching OBS directory (01–06).",
+    color: "#013A7D",
+    accent: "blue",
+    tag: "Knowledge",
+  },
+  {
+    id: "daily-blog",
+    cmd: "/daily-blog",
+    name: "Daily Blog Post",
+    desc: "Content Ops team takes today's work or intel and produces a publishable technical blog post — SEO-optimized title and meta included.",
+    color: "#FCAD2A",
+    accent: "gold",
+    tag: "Content",
+  },
+  {
+    id: "synapse",
+    cmd: "/synapse",
+    name: "System Upgrade",
+    desc: "The Synapse Upgrade Protocol: check remote version → show changelog → confirm with operator → upgrade Core → QA verify → done.",
+    color: "#028CDC",
+    accent: "cyan",
+    tag: "Core",
+  },
+];
+
+const tags = ["All", "Core", "Decision", "R&D", "Content", "Intel", "Knowledge", "Management"];
+const colorMap = { gold: "#FCAD2A", cyan: "#028CDC", blue: "#013A7D" };
+---
+
+<Layout
+  lang="en"
+  title="Skills Library — 14 Built-in Workflows | Synapse Academy"
+  description="Fourteen ready-to-run skill workflows for Synapse. /dispatch for routing, /qa-gate for quality, and twelve more. One slash command, structured AI execution."
+>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #0A1628 0%, #011f5c 100%); padding: 72px 0 56px;">
+    <div class="grid-dots"></div>
+    <div class="glow-cyan" style="top:-60px; right:-40px; opacity:0.4;"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-6">
+      <a href="/en/academy" class="inline-flex items-center gap-1.5 text-white/40 text-sm hover:text-white/70 transition-colors mb-6">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Academy home
+      </a>
+      <p class="text-xs font-semibold tracking-widest text-[#028CDC] uppercase mb-3">SKILLS LIBRARY</p>
+      <h1 class="text-4xl font-extrabold text-white mb-4">Fourteen workflows. One command each.</h1>
+      <p class="text-white/60 text-lg">Built-in slash commands that trigger structured execution. No prompt engineering, no manual orchestration. Just type <code class="text-[#FCAD2A]">/</code>.</p>
+    </div>
+  </section>
+
+  <div class="glow-line"></div>
+
+  <div class="max-w-5xl mx-auto px-6 py-14">
+
+    <!-- How it works -->
+    <div class="bg-[#F7F8FA] border border-[var(--color-border)] rounded-xl p-6 mb-10">
+      <h2 class="font-bold text-[var(--color-text)] mb-3">What Skills Are</h2>
+      <p class="text-sm text-[var(--color-text-light)] mb-4">Skills are structured workflows baked into Synapse. Type <code class="bg-white border border-[var(--color-border)] px-1.5 py-0.5 rounded font-mono text-xs">/command-name</code> in Claude Code, and your AI CEO triggers the matching multi-step execution — no need to describe each step yourself.</p>
+      <div class="bg-[#0d1117] rounded-lg px-4 py-3 font-mono text-sm overflow-x-auto">
+        <p class="text-[#8b949e] mb-1"># What you type:</p>
+        <p class="text-[#FCAD2A]">You: <span class="text-white">/dispatch analyze competitors and write me a report</span></p>
+        <p class="text-[#8b949e] mt-2 mb-1"># What Lysander CEO does automatically:</p>
+        <p class="text-[#28c840]">→ execution_auditor tiers the task (M-grade)</p>
+        <p class="text-[#28c840]">→ strategist + relation_discovery split the analysis</p>
+        <p class="text-[#28c840]">→ knowledge_engineer assembles the report</p>
+        <p class="text-[#28c840]">→ integration_qa verifies quality ✓</p>
+      </div>
+      <p class="text-xs text-[var(--color-muted)] mt-3">One slash command, four specialists coordinated, structured output. That's a Skill.</p>
+    </div>
+
+    <!-- Skills grid -->
+    <div class="grid md:grid-cols-2 gap-4">
+      {skills.map(skill => (
+        <div class={`card-glow bg-white border border-[var(--color-border)] rounded-xl p-5 accent-top-${skill.accent}`}>
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <code class="px-2.5 py-1 rounded-lg text-xs font-bold font-mono"
+                style={`background: ${colorMap[skill.accent]}15; color: ${colorMap[skill.accent]};`}>
+                {skill.cmd}
+              </code>
+              <span class="font-semibold text-[var(--color-text)] text-sm">{skill.name}</span>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-[#F7F8FA] text-[var(--color-muted)] border border-[var(--color-border)] shrink-0">
+              {skill.tag}
+            </span>
+          </div>
+          <p class="text-sm text-[var(--color-text-light)] leading-relaxed">{skill.desc}</p>
+        </div>
+      ))}
+    </div>
+
+    <!-- Custom skills note -->
+    <div class="mt-10 p-6 bg-gradient-to-r from-[#013A7D]/5 to-[#028CDC]/5 border border-[#028CDC]/20 rounded-xl">
+      <h3 class="font-bold text-[var(--color-text)] mb-2">Build Your Own Skill</h3>
+      <p class="text-sm text-[var(--color-text-light)]">Create a folder under <code class="bg-white border border-[var(--color-border)] px-1.5 py-0.5 rounded font-mono text-xs">.claude/skills/</code> and add a <code class="bg-white border border-[var(--color-border)] px-1.5 py-0.5 rounded font-mono text-xs">SKILL.md</code> file describing the trigger conditions and execution steps. That's it — your custom workflow now lives alongside the built-ins. Reference any existing skill file in the repo for the format.</p>
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="flex flex-wrap gap-4 justify-between pt-8 mt-8 border-t border-[var(--color-border)]">
+      <a href="/en/academy" class="text-sm text-[var(--color-text-light)] hover:text-[#028CDC] flex items-center gap-1.5">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Back to Academy
+      </a>
+      <a href="/en/academy/get-synapse" class="text-sm text-[var(--color-text-light)] hover:text-[#FCAD2A]">Get Synapse now →</a>
+    </div>
+  </div>
+
+</Layout>

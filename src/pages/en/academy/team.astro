@@ -1,0 +1,214 @@
+<!--
+synapse-page-metadata:
+  id: academy-team-en
+  type: directory
+  status: published
+  lang: en
+  translation_of: academy-team-zh
+  version: 1.0
+  source_draft: docs/drafts/academy-team-en-draft-2026-04-25.md
+  synapse_version: 3.0.0
+  published_at: 2026-04-25
+  updated_at: 2026-04-25
+  author: content_strategist
+  review_by: [integration_qa, style_calibrator]
+  audience: [technical_builder, enterprise_decider]
+  stale_after: 2026-10-25
+-->
+---
+import Layout from '../../../layouts/Layout.astro';
+
+const teams = [
+  {
+    id: "graphify",
+    name: "Graphify Advisors",
+    role: "Strategy & Decision Support",
+    color: "#FCAD2A",
+    accent: "gold",
+    count: 6,
+    agents: [
+      { id: "strategist", name: "Strategy Analyst", score: 96, desc: "SWOT, PEST, Porter's Five Forces. Strategic planning and competitive landscape analysis." },
+      { id: "decision_advisor", name: "Decision Advisor", score: 94, desc: "Multi-option risk-reward modeling, L3 decision synthesis, uncertainty quantification." },
+      { id: "ai_tech_researcher", name: "AI Tech Researcher", score: 95, desc: "Frontier AI tracking, technical feasibility assessment, daily intel filtering with practical-value priority." },
+      { id: "evolution_engine", name: "Evolution Engine", score: 94, desc: "Self-improvement loop coordination, agent capability gap analysis, capability-version management." },
+      { id: "execution_auditor", name: "Execution Auditor", score: 93, desc: "S/M/L task tiering, execution-chain integrity audit, cross-session state tracking." },
+      { id: "trend_watcher", name: "Trend Watcher", score: 92, desc: "Macro trend identification, pattern surfacing, 3–12 month forecasts." },
+    ]
+  },
+  {
+    id: "harness_ops",
+    name: "Harness Ops",
+    role: "Execution Chain Engineering",
+    color: "#028CDC",
+    accent: "cyan",
+    count: 4,
+    agents: [
+      { id: "harness_engineer", name: "Harness Engineer", score: 96, desc: "CLAUDE.md and YAML config changes, execution-chain design and tuning, Harness rule authorship." },
+      { id: "ai_systems_dev", name: "AI Systems Developer", score: 94, desc: "hr_base.py and tooling, agent toolchain construction, Python automation." },
+      { id: "knowledge_engineer", name: "Knowledge Engineer", score: 93, desc: "Methodology documentation, knowledge graph construction, OBS knowledge-base architecture." },
+      { id: "integration_qa", name: "Integration QA Engineer", score: 95, desc: "qa_auto_review() scoring (≥3.5 to pass), YAML syntax validation, end-to-end verification." },
+    ]
+  },
+  {
+    id: "rd",
+    name: "R&D",
+    role: "Systems Development",
+    color: "#013A7D",
+    accent: "blue",
+    count: 5,
+    agents: [
+      { id: "tech_lead", name: "Tech Lead", score: 95, desc: "Architecture and tech decisions, technical-debt assessment, code-review standards." },
+      { id: "backend_dev", name: "Backend Engineer", score: 93, desc: "REST API and database design, Python and Node.js microservices, performance tuning." },
+      { id: "frontend_dev", name: "Frontend Engineer", score: 92, desc: "React and Vue component development, responsive design, UX optimization." },
+      { id: "qa_engineer", name: "QA Engineer", score: 94, desc: "pytest plus Playwright E2E testing, automated regression, BDD test cases." },
+      { id: "devops_engineer", name: "DevOps Engineer", score: 91, desc: "CI/CD pipelines (GitHub Actions), Docker and K8s containerization, monitoring and alerting." },
+    ]
+  },
+  {
+    id: "content_ops",
+    name: "Content Ops",
+    role: "Creation & Brand",
+    color: "#FCAD2A",
+    accent: "gold",
+    count: 6,
+    agents: [
+      { id: "content_strategist", name: "Content Strategist", score: 94, desc: "Content marketing strategy, audience modeling, content ROI assessment." },
+      { id: "content_creator", name: "Content Creator", score: 93, desc: "Technical articles and blog posts, AI engineering case studies, LinkedIn copy." },
+      { id: "visual_designer", name: "UI/UX Designer", score: 93, desc: "Web UI/UX design, light/dark mode decisions, Tailwind CSS implementation." },
+      { id: "ai_visual_creator", name: "AI Visual Creator", score: 95, desc: "Midjourney and DALL-E branded illustration, comic narrative design, visual asset production." },
+      { id: "publishing_ops", name: "Publishing Operator", score: 91, desc: "Multi-platform publishing (WeChat, LinkedIn, Ghost), SEO optimization, performance analytics." },
+      { id: "training_designer", name: "Training Designer", score: 92, desc: "SCP curriculum design, learning-path planning, assessment standards." },
+    ]
+  },
+  {
+    id: "growth",
+    name: "Growth",
+    role: "Strategy & GTM",
+    color: "#028CDC",
+    accent: "cyan",
+    count: 4,
+    agents: [
+      { id: "gtm_strategist", name: "GTM Strategist", score: 94, desc: "Product launch strategy, pricing-model design, channel-mix optimization." },
+      { id: "customer_insights_manager", name: "Customer Insights Manager", score: 93, desc: "User research design, NPS and CSAT analysis, customer-journey optimization." },
+      { id: "community_manager", name: "Community Manager", score: 91, desc: "Technical community building, KOL relationship management, word-of-mouth growth." },
+      { id: "sales_enablement", name: "Sales Enablement Specialist", score: 92, desc: "Sales-methodology training, demo-script design, customer-success framework." },
+    ]
+  },
+  {
+    id: "obs",
+    name: "OBS",
+    role: "Knowledge & Second Brain",
+    color: "#013A7D",
+    accent: "blue",
+    count: 4,
+    agents: [
+      { id: "obs_architecture_expert", name: "OBS Architecture Expert", score: 94, desc: "Obsidian second-brain architecture, knowledge-tier design (the 01–06 directory system), cross-vault linking." },
+      { id: "knowledge_search_expert", name: "Knowledge Search Expert", score: 92, desc: "Semantic search optimization, knowledge-graph queries, contextual association discovery." },
+      { id: "knowledge_quality_expert", name: "Knowledge Quality Expert", score: 93, desc: "Knowledge-asset scoring, stale-content cleanup, quality-standard authorship." },
+      { id: "knowledge_chandu_expert", name: "Knowledge Distillation Expert", score: 91, desc: "Session-to-knowledge-base auto-extraction, insight synthesis, cross-session memory enhancement." },
+    ]
+  },
+  {
+    id: "butler",
+    name: "Delivery",
+    role: "PMO & Customer Execution",
+    color: "#FCAD2A",
+    accent: "gold",
+    count: 7,
+    agents: [
+      { id: "pmo_expert", name: "PMO Expert", score: 93, desc: "Portfolio management, WBS decomposition, milestone tracking, gate reviews." },
+      { id: "delivery_expert", name: "Delivery Expert", score: 94, desc: "End-to-end delivery management, customer communication, acceptance-criteria definition." },
+      { id: "iot_expert", name: "IoT Expert", score: 92, desc: "IoT system integration, sensor-data acquisition, MQTT protocol configuration." },
+      { id: "iot_data_expert", name: "IoT Data Expert", score: 91, desc: "Time-series data processing, data-quality management, dashboard design." },
+      { id: "digital_modeling_expert", name: "Digital Modeling Expert", score: 93, desc: "BIM and digital-twin modeling, Revit and ArchiCAD workflows, model acceptance standards." },
+      { id: "uat_test_expert", name: "UAT Test Expert", score: 92, desc: "User-acceptance test strategy, defect-management process, test-report authorship." },
+      { id: "training_expert", name: "Training Expert", score: 90, desc: "User training programs, operations-manual authorship, post-launch support." },
+    ]
+  },
+];
+
+const colorMap = { gold: "#FCAD2A", cyan: "#028CDC", blue: "#013A7D" };
+---
+
+<Layout
+  lang="en"
+  title="AI Team Directory — 44 Specialists Across 7 Teams | Synapse Academy"
+  description="Forty-four AI specialists across seven teams: strategy, ops, R&D, content, growth, knowledge, delivery. Every agent audits at 90 or higher. Browse the roster."
+>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #0A1628 0%, #0d1f3c 100%); padding: 72px 0 56px;">
+    <div class="grid-dots"></div>
+    <div class="glow-gold" style="bottom:-40px; left:-40px; opacity:0.3;"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-6">
+      <a href="/en/academy" class="inline-flex items-center gap-1.5 text-white/40 text-sm hover:text-white/70 transition-colors mb-6">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Academy home
+      </a>
+      <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-3">AI TEAM DIRECTORY</p>
+      <h1 class="text-4xl font-extrabold text-white mb-4">Forty-four specialists, seven teams.</h1>
+      <p class="text-white/60 text-lg mb-8">Every agent carries a concrete capability description. Every published score 90 or higher. No filler, no figurehead roles.</p>
+      <div class="flex flex-wrap gap-3">
+        {teams.map(t => (
+          <a href={`#${t.id}`} class="px-3 py-1.5 rounded-full border border-white/20 bg-white/5 text-white/60 text-xs hover:bg-white/10 hover:text-white transition-colors">
+            {t.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-line"></div>
+
+  <div class="max-w-5xl mx-auto px-6 py-14 space-y-16">
+
+    {teams.map(team => (
+      <section id={team.id}>
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-1 h-8 rounded-full" style={`background: ${colorMap[team.accent]}`}></div>
+          <div>
+            <h2 class="text-xl font-bold text-[var(--color-text)]">{team.name}</h2>
+            <p class="text-sm text-[var(--color-muted)]">{team.role} · {team.count} members</p>
+          </div>
+          <span class="ml-auto score-pill pill-cyan text-xs">{team.count} Agents</span>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-3">
+          {team.agents.map(agent => (
+            <div class={`card-glow flex gap-4 p-4 bg-white border border-[var(--color-border)] rounded-xl accent-top-${team.accent}`}>
+              <div class="shrink-0">
+                <div class="w-9 h-9 rounded-lg flex items-center justify-center text-white font-bold text-sm"
+                  style={`background: ${colorMap[team.accent]}20; color: ${colorMap[team.accent]};`}>
+                  {agent.id.charAt(0).toUpperCase()}
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="font-semibold text-[var(--color-text)] text-sm">{agent.name}</span>
+                  <span class="score-pill pill-cyan text-xs shrink-0">{agent.score}</span>
+                </div>
+                <p class="text-xs text-[var(--color-muted)] leading-relaxed">{agent.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <!-- HR system note -->
+    <div class="bg-[#F7F8FA] border border-[var(--color-border)] rounded-xl p-6 text-center">
+      <p class="text-sm text-[var(--color-text-light)] mb-2">All agent capabilities are audited automatically by the <strong>HR Engine</strong> with a passing line at 90.</p>
+      <p class="text-xs text-[var(--color-muted)]">Capability descriptions follow B-grade or higher standards: every description must reference a specific methodology or framework. Vague descriptions like "project management" or "quality assurance" are rejected at audit.</p>
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="flex flex-wrap gap-4 justify-between pt-6 border-t border-[var(--color-border)]">
+      <a href="/en/academy" class="text-sm text-[var(--color-text-light)] hover:text-[#028CDC] flex items-center gap-1.5">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Back to Academy
+      </a>
+      <a href="/en/academy/skills" class="text-sm text-[var(--color-text-light)] hover:text-[#028CDC]">View the Skills Library →</a>
+    </div>
+  </div>
+
+</Layout>

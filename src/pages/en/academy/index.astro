@@ -1,0 +1,291 @@
+<!--
+synapse-page-metadata:
+  id: academy-index-en
+  type: navigation
+  status: published
+  lang: en
+  translation_of: academy-index-zh
+  version: 1.0
+  source_draft: docs/drafts/academy-index-en-draft-2026-04-25.md
+  synapse_version: 3.0.0
+  published_at: 2026-04-25
+  updated_at: 2026-04-25
+  author: content_strategist
+  review_by: [integration_qa, style_calibrator]
+  audience: [technical_builder, enterprise_decider, team_partner]
+  stale_after: 2026-10-25
+-->
+---
+import Layout from '../../../layouts/Layout.astro';
+---
+
+<Layout
+  lang="en"
+  title="Synapse Academy — A Multi-Agent AI Team You Can Run Today"
+  description="Get a 44-agent AI team running inside Claude Code. Built on Harness Engineering. Free core, paid evolution, enterprise-ready. Open the box and ship."
+>
+
+  <!-- ── Hero ─────────────────────────────────────────────────────── -->
+  <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #0A1628 0%, #0d1f3c 50%, #011f5c 100%); min-height: 480px;">
+    <div class="grid-dots"></div>
+    <div class="glow-gold" style="top:-100px; left:-100px; opacity:0.6;"></div>
+    <div class="glow-cyan" style="bottom:-80px; right:-80px; opacity:0.5;"></div>
+
+    <div class="relative z-10 max-w-5xl mx-auto px-6 py-24 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#FCAD2A]/30 bg-[#FCAD2A]/10 mb-6">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] pulse"></span>
+        <span class="text-[#FCAD2A] text-xs font-semibold tracking-widest uppercase">Synapse Multi-Agent Academy</span>
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-5 leading-tight">
+        An AI team that's<br>
+        <span style="background: linear-gradient(90deg, #FCAD2A, #028CDC); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">already in the room.</span>
+      </h1>
+
+      <p class="text-white/60 text-lg mb-10 max-w-2xl mx-auto">
+        Forty-four specialist agents, fourteen ready-to-run skills, four decision tiers.<br>
+        Cloned once, configured in three minutes, working alongside you from the first message.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-4 mb-14">
+        <a href="/en/academy/get-synapse" class="px-8 py-3.5 bg-[#FCAD2A] text-[#0A1628] rounded-lg font-bold hover:opacity-90 transition-opacity">
+          Get Synapse Free →
+        </a>
+        <a href="/en/academy/learn" class="px-8 py-3.5 bg-white/10 text-white rounded-lg font-semibold border border-white/20 hover:bg-white/15 transition-colors">
+          Read the methodology
+        </a>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
+        {[
+          { num: "44", label: "AI Agents" },
+          { num: "14+", label: "Skill Workflows" },
+          { num: "4", label: "Decision Tiers" },
+        ].map(s => (
+          <div class="rounded-xl border border-white/10 bg-white/5 py-4">
+            <div class="text-2xl font-extrabold text-[#FCAD2A]">{s.num}</div>
+            <div class="text-white/50 text-xs mt-1">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-line"></div>
+
+  <!-- ── Nav cards (sub-pages) ──────────────────────────────────────── -->
+  <section class="max-w-5xl mx-auto px-6 py-16">
+    <p class="text-sm font-semibold tracking-widest text-[#028CDC] uppercase mb-3 text-center">Academy Navigation</p>
+    <h2 class="text-2xl font-bold text-[var(--color-text)] text-center mb-10">Pick where to start.</h2>
+
+    <div class="grid md:grid-cols-3 gap-5">
+      <!-- Get Synapse -->
+      <a href="/en/academy/get-synapse" class="card-glow group block p-6 bg-white border border-[var(--color-border)] rounded-xl accent-top-gold hover:border-[#FCAD2A]/40">
+        <div class="w-10 h-10 rounded-lg bg-[#FCAD2A]/10 flex items-center justify-center mb-4 group-hover:bg-[#FCAD2A]/20 transition-colors">
+          <svg width="20" height="20" fill="none" stroke="#FCAD2A" stroke-width="2" viewBox="0 0 24 24"><path d="M12 16l4-4m0 0l-4-4m4 4H8"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
+        </div>
+        <h3 class="font-bold text-[var(--color-text)] mb-1">Get Synapse</h3>
+        <p class="text-sm text-[var(--color-muted)]">Free clone, three-step personalization, working in five minutes.</p>
+        <div class="mt-4 text-xs font-semibold text-[#FCAD2A]">Free →</div>
+      </a>
+
+      <!-- Team -->
+      <a href="/en/academy/team" class="card-glow group block p-6 bg-white border border-[var(--color-border)] rounded-xl accent-top-cyan hover:border-[#028CDC]/40">
+        <div class="w-10 h-10 rounded-lg bg-[#028CDC]/10 flex items-center justify-center mb-4 group-hover:bg-[#028CDC]/20 transition-colors">
+          <svg width="20" height="20" fill="none" stroke="#028CDC" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3 class="font-bold text-[var(--color-text)] mb-1">Meet the Team</h3>
+        <p class="text-sm text-[var(--color-muted)]">Forty-four specialists across seven groups, full capability map.</p>
+        <div class="mt-4 text-xs font-semibold text-[#028CDC]">Browse Team →</div>
+      </a>
+
+      <!-- Skills -->
+      <a href="/en/academy/skills" class="card-glow group block p-6 bg-white border border-[var(--color-border)] rounded-xl accent-top-blue hover:border-[#013A7D]/40">
+        <div class="w-10 h-10 rounded-lg bg-[#013A7D]/10 flex items-center justify-center mb-4 group-hover:bg-[#013A7D]/20 transition-colors">
+          <svg width="20" height="20" fill="none" stroke="#013A7D" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3 class="font-bold text-[var(--color-text)] mb-1">Skills Library</h3>
+        <p class="text-sm text-[var(--color-muted)]">Fourteen built-in workflows including <code class="text-xs">/dispatch</code> and <code class="text-xs">/qa-gate</code>.</p>
+        <div class="mt-4 text-xs font-semibold text-[#013A7D]">See All →</div>
+      </a>
+
+      <!-- Learn -->
+      <a href="/en/academy/learn" class="card-glow group block p-6 bg-white border border-[var(--color-border)] rounded-xl accent-top-gold hover:border-[#FCAD2A]/40">
+        <div class="w-10 h-10 rounded-lg bg-[#FCAD2A]/10 flex items-center justify-center mb-4 group-hover:bg-[#FCAD2A]/20 transition-colors">
+          <svg width="20" height="20" fill="none" stroke="#FCAD2A" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3 class="font-bold text-[var(--color-text)] mb-1">Harness Methodology</h3>
+        <p class="text-sm text-[var(--color-muted)]">Five core principles. Why <code class="text-xs">Agent = Model + Harness</code>.</p>
+        <div class="mt-4 text-xs font-semibold text-[#FCAD2A]">Start Learning →</div>
+      </a>
+
+      <!-- Dashboard -->
+      <a href="/en/academy/dashboard" class="card-glow group block p-6 bg-[#F7F8FA] border border-[var(--color-border)] rounded-xl opacity-70">
+        <div class="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center mb-4">
+          <svg width="20" height="20" fill="none" stroke="#94A3B8" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        </div>
+        <h3 class="font-bold text-[var(--color-text-light)] mb-1">Member Dashboard</h3>
+        <p class="text-sm text-[var(--color-muted)]">Version state, upgrade history, account.</p>
+        <div class="mt-4 text-xs font-semibold text-[var(--color-muted)]">Coming soon →</div>
+      </a>
+
+      <!-- Course -->
+      <a href="/en/academy/course" class="card-glow group block p-6 bg-[#F7F8FA] border border-[var(--color-border)] rounded-xl opacity-70">
+        <div class="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center mb-4">
+          <svg width="20" height="20" fill="none" stroke="#94A3B8" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+        </div>
+        <h3 class="font-bold text-[var(--color-text-light)] mb-1">SCP Course</h3>
+        <p class="text-sm text-[var(--color-muted)]">Synapse Certified Practitioner badge. Eight-hour curriculum.</p>
+        <div class="mt-4 text-xs font-semibold text-[var(--color-muted)]">Coming soon →</div>
+      </a>
+    </div>
+  </section>
+
+  <div class="glow-line"></div>
+
+  <!-- ── Tier pricing ────────────────────────────────────────────────── -->
+  <section class="max-w-5xl mx-auto px-6 py-16">
+    <p class="text-sm font-semibold tracking-widest text-[#028CDC] uppercase mb-3 text-center">Pricing</p>
+    <h2 class="text-2xl font-bold text-[var(--color-text)] text-center mb-2">Pick the version that matches how you'll use it.</h2>
+    <p class="text-[var(--color-text-light)] text-center mb-10">Free users get a complete snapshot. Evolution users ride the daily release train.</p>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <!-- Free -->
+      <div class="p-7 bg-white border border-[var(--color-border)] rounded-xl">
+        <p class="text-xs font-semibold text-[var(--color-muted)] uppercase tracking-widest mb-3">Free</p>
+        <div class="text-4xl font-extrabold text-[var(--color-text)] mb-1">$0</div>
+        <p class="text-sm text-[var(--color-muted)] mb-6">Forever. A one-time setup, yours to keep.</p>
+        <ul class="space-y-2.5 mb-8 text-sm">
+          {["Synapse Core v1.0.0 — the full system", "CLAUDE.md plus all 44 agents", "14+ skill workflows", "Harness Engineering methodology in full", "Every helper script and tool"].map(i => (
+            <li class="flex items-center gap-2 text-[var(--color-text)]">
+              <svg width="14" height="14" fill="none" stroke="#028CDC" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              {i}
+            </li>
+          ))}
+        </ul>
+        <a href="/en/academy/get-synapse" class="block text-center py-2.5 border border-[var(--color-border)] rounded-lg text-sm font-semibold text-[var(--color-text)] hover:border-[#028CDC] hover:text-[#028CDC] transition-colors">
+          Get it free →
+        </a>
+      </div>
+
+      <!-- Evolution -->
+      <div class="p-7 bg-white border-2 border-[#FCAD2A] rounded-xl shadow-lg relative">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#FCAD2A] text-[#0A1628] text-xs font-bold rounded-full">Recommended</div>
+        <p class="text-xs font-semibold text-[#FCAD2A] uppercase tracking-widest mb-3">Evolution</p>
+        <div class="flex items-baseline gap-1 mb-1">
+          <span class="text-4xl font-extrabold text-[#FCAD2A]">$99</span>
+          <span class="text-sm text-[var(--color-muted)]">/month</span>
+        </div>
+        <p class="text-sm text-[var(--color-muted)] mb-6">For active operators. Ride the daily release train.</p>
+        <ul class="space-y-2.5 mb-8 text-sm">
+          {["Everything in Free", "Daily and weekly Core updates", "First access to new agents", "Methodology updates as the framework evolves", "One-line upgrade command (\"upgrade Synapse\")", "Weekly evolution report"].map(i => (
+            <li class="flex items-center gap-2 text-[var(--color-text)]">
+              <svg width="14" height="14" fill="none" stroke="#FCAD2A" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              {i}
+            </li>
+          ))}
+        </ul>
+        <a href="mailto:lysanderl@janusd.io?subject=Synapse Evolution subscription" class="block text-center py-2.5 bg-[#FCAD2A] text-[#0A1628] rounded-lg text-sm font-bold hover:opacity-90 transition-opacity">
+          Talk to us →
+        </a>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="p-7 bg-white border border-[var(--color-border)] rounded-xl">
+        <p class="text-xs font-semibold text-[var(--color-muted)] uppercase tracking-widest mb-3">Enterprise</p>
+        <div class="text-4xl font-extrabold text-[var(--color-text)] mb-1">$999</div>
+        <p class="text-sm text-[var(--color-muted)] mb-6">/month · Custom-fit for serious teams.</p>
+        <ul class="space-y-2.5 mb-8 text-sm">
+          {["Everything in Evolution", "Industry-specific agent teams", "One-on-one Synapse advisory", "Priority access to new capabilities", "Dedicated Slack support channel", "Team training workshop included"].map(i => (
+            <li class="flex items-center gap-2 text-[var(--color-text)]">
+              <svg width="14" height="14" fill="none" stroke="#013A7D" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              {i}
+            </li>
+          ))}
+        </ul>
+        <a href="mailto:lysanderl@janusd.io?subject=Synapse Enterprise inquiry" class="block text-center py-2.5 border border-[var(--color-border)] rounded-lg text-sm font-semibold text-[var(--color-text)] hover:border-[#013A7D] hover:text-[#013A7D] transition-colors">
+          Talk to us →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-line"></div>
+
+  <!-- ── What's inside ──────────────────────────────────────────────── -->
+  <section class="relative overflow-hidden py-16" style="background: #F7F8FA;">
+    <div class="max-w-5xl mx-auto px-6">
+      <p class="text-sm font-semibold tracking-widest text-[#028CDC] uppercase mb-3 text-center">What You Get</p>
+      <h2 class="text-2xl font-bold text-[var(--color-text)] text-center mb-10">The complete operating system.</h2>
+
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="bg-white rounded-xl border border-[var(--color-border)] p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-2xl">🧠</span>
+            <div>
+              <h3 class="font-bold text-[var(--color-text)]">Harness Configuration</h3>
+              <p class="text-xs text-[var(--color-muted)]">CLAUDE.md — the control center</p>
+            </div>
+          </div>
+          <p class="text-sm text-[var(--color-text-light)]">Defines the CEO execution chain, the four-tier decision system, the dispatch protocol, and cross-session state. The single source of truth for how the system runs.</p>
+        </div>
+
+        <div class="bg-white rounded-xl border border-[var(--color-border)] p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-2xl">👥</span>
+            <div>
+              <h3 class="font-bold text-[var(--color-text)]">Forty-four AI Specialists</h3>
+              <p class="text-xs text-[var(--color-muted)]">Seven teams · Full capability coverage</p>
+            </div>
+          </div>
+          <p class="text-sm text-[var(--color-text-light)]">Strategy, R&amp;D, ops, content, growth, intelligence, and HR. Every specialist carries a concrete capability description (B-grade or above) and audits at 90 or higher.</p>
+        </div>
+
+        <div class="bg-white rounded-xl border border-[var(--color-border)] p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-2xl">⚡</span>
+            <div>
+              <h3 class="font-bold text-[var(--color-text)]">14+ Skill Workflows</h3>
+              <p class="text-xs text-[var(--color-muted)]">One slash command, structured execution</p>
+            </div>
+          </div>
+          <p class="text-sm text-[var(--color-text-light)]"><code>/dispatch</code> for routing · <code>/qa-gate</code> for quality · <code>/retro</code> for review · <code>/graphify</code> for advisor analysis · <code>/dev-plan</code> for engineering, and more.</p>
+        </div>
+
+        <div class="bg-white rounded-xl border border-[var(--color-border)] p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-2xl">📊</span>
+            <div>
+              <h3 class="font-bold text-[var(--color-text)]">HR Engine</h3>
+              <p class="text-xs text-[var(--color-muted)]">hr_base.py · automated audit</p>
+            </div>
+          </div>
+          <p class="text-sm text-[var(--color-text-light)]">Auto-scoring (90 to pass), capability grading (A/B/C), onboarding gates, cross-session state tracking. A complete governance layer for an AI team.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ─────────────────────────────────────────────────────────── -->
+  <section class="relative overflow-hidden py-20" style="background: linear-gradient(135deg, #0A1628 0%, #011f5c 100%);">
+    <div class="grid-dots" style="opacity:0.5;"></div>
+    <div class="glow-gold" style="top:-50px; right:10%; opacity:0.4;"></div>
+    <div class="relative z-10 max-w-2xl mx-auto px-6 text-center">
+      <h2 class="text-3xl font-extrabold text-white mb-4">
+        Ready?<br>
+        <span style="background: linear-gradient(90deg, #FCAD2A, #028CDC); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Five minutes from here to a working team.</span>
+      </h2>
+      <p class="text-white/50 mb-8">Free. Runs locally. No third party touches your data.</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/en/academy/get-synapse" class="px-8 py-3.5 bg-[#FCAD2A] text-[#0A1628] rounded-lg font-bold hover:opacity-90 transition-opacity">
+          Get Synapse now →
+        </a>
+        <a href="https://github.com/lysanderl-glitch/synapse" target="_blank" rel="noopener" class="px-8 py-3.5 bg-white/10 text-white rounded-lg font-semibold border border-white/20 hover:bg-white/15 transition-colors">
+          View on GitHub →
+        </a>
+      </div>
+    </div>
+  </section>
+
+</Layout>

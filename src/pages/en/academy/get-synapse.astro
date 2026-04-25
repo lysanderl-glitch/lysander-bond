@@ -1,0 +1,229 @@
+<!--
+synapse-page-metadata:
+  id: academy-get-synapse-en
+  type: tutorial
+  status: published
+  lang: en
+  translation_of: academy-get-synapse-zh
+  version: 1.0
+  source_draft: docs/drafts/academy-get-synapse-en-draft-2026-04-25.md
+  synapse_version: 3.0.0
+  published_at: 2026-04-25
+  updated_at: 2026-04-25
+  author: content_strategist
+  review_by: [integration_qa, style_calibrator]
+  audience: [technical_builder, claude_code_user]
+  stale_after: 2026-10-25
+-->
+---
+import Layout from '../../../layouts/Layout.astro';
+---
+
+<Layout
+  lang="en"
+  title="Get Synapse — Five-Minute Setup for Claude Code"
+  description="Clone, personalize, run. Get a 44-agent AI team running inside Claude Code in five minutes. Free, local, your data never leaves your machine."
+>
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #0A1628 0%, #0d1f3c 100%); padding: 72px 0 56px;">
+    <div class="grid-dots"></div>
+    <div class="glow-cyan" style="top:-80px; right:-60px; opacity:0.4;"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6">
+      <a href="/en/academy" class="inline-flex items-center gap-1.5 text-white/40 text-sm hover:text-white/70 transition-colors mb-6">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Academy home
+      </a>
+      <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-3">GET SYNAPSE</p>
+      <h1 class="text-4xl font-extrabold text-white mb-4">Three steps. Five minutes.</h1>
+      <p class="text-white/60 text-lg">Clone the repo, open it in Claude Code, paste one prompt. That's all the setup. Free forever.</p>
+    </div>
+  </section>
+
+  <div class="glow-line"></div>
+
+  <div class="max-w-4xl mx-auto px-6 py-16">
+
+    <!-- Quick start terminal -->
+    <div class="mb-14 rounded-xl overflow-hidden border border-[var(--color-border)] shadow-md">
+      <div class="bg-[#1e1e1e] px-4 py-2.5 flex items-center gap-2 border-b border-[#333]">
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
+          <div class="w-3 h-3 rounded-full bg-[#febc2e]"></div>
+          <div class="w-3 h-3 rounded-full bg-[#28c840]"></div>
+        </div>
+        <span class="text-[#666] text-xs ml-2">PowerShell — Quick start (Windows)</span>
+      </div>
+      <div class="bg-[#0d1117] p-6 font-mono text-sm leading-loose overflow-x-auto">
+  <p class="text-[#8b949e] mb-1"># Step 1: Clone the repo</p>
+  <p class="text-[#79c0ff]">git clone <span class="text-[#a5d6ff]">https://github.com/lysanderl-glitch/synapse.git</span></p>
+  <br/>
+  <p class="text-[#8b949e] mb-1"># Step 2: Open in Claude Code, send the init prompt</p>
+  <p class="text-[#d2a8ff]">Please complete Synapse initialization:</p>
+  <p class="text-[#d2a8ff]">- My name: <span class="text-[#a8d1a0]">[your name]</span></p>
+  <p class="text-[#d2a8ff]">- AI CEO name: <span class="text-[#a8d1a0]">[e.g. Alex, Aurora]</span></p>
+  <p class="text-[#d2a8ff]">- Company / team: <span class="text-[#a8d1a0]">[your org]</span></p>
+  <br/>
+  <p class="text-[#8b949e] mb-1"># Step 3: You'll get a personalized greeting — system is live</p>
+  <p class="text-[#a8d1a0]">"Hi [your name], I'm [CEO name], the Multi-Agents team is at your service." ✓</p>
+</div>
+    </div>
+
+    <!-- 3 steps detail -->
+    <h2 class="text-xl font-bold text-[var(--color-text)] mb-6">Detailed Steps</h2>
+
+    <!-- Before You Start -->
+    <div class="mb-12 rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-6">
+      <h3 class="mb-4 text-lg font-semibold text-yellow-400">Before You Start</h3>
+      <p class="mb-5 text-sm text-gray-400">Synapse runs inside Claude Code on your local machine. Make sure these are in place first.</p>
+      <div class="space-y-3">
+        <!-- Claude Account -->
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 text-green-400 text-sm">✓</span>
+          <div class="flex-1">
+            <span class="text-sm font-medium text-white">Claude Account</span>
+            <span class="ml-2 text-sm text-gray-400">Pro / Max plan or API Key</span>
+            <a href="https://claude.ai" target="_blank" class="ml-2 text-xs text-blue-400 hover:text-blue-300">Get Claude →</a>
+          </div>
+        </div>
+        <!-- Node.js -->
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 text-green-400 text-sm">✓</span>
+          <div class="flex-1">
+            <span class="text-sm font-medium text-white">Node.js ≥ 18</span>
+            <code class="ml-2 rounded bg-gray-800 px-1.5 py-0.5 text-xs text-gray-300">node --version</code>
+            <a href="https://nodejs.org" target="_blank" class="ml-2 text-xs text-blue-400 hover:text-blue-300">Install →</a>
+          </div>
+        </div>
+        <!-- Claude Code -->
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 text-green-400 text-sm">✓</span>
+          <div class="flex-1">
+            <span class="text-sm font-medium text-white">Claude Code</span>
+            <code class="ml-2 rounded bg-gray-800 px-1.5 py-0.5 text-xs text-gray-300">npm install -g @anthropic-ai/claude-code</code>
+            <a href="https://docs.anthropic.com/claude-code" target="_blank" class="ml-2 text-xs text-blue-400 hover:text-blue-300">Docs →</a>
+          </div>
+        </div>
+        <!-- Git -->
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 text-green-400 text-sm">✓</span>
+          <div class="flex-1">
+            <span class="text-sm font-medium text-white">Git</span>
+            <code class="ml-2 rounded bg-gray-800 px-1.5 py-0.5 text-xs text-gray-300">git --version</code>
+            <a href="https://git-scm.com" target="_blank" class="ml-2 text-xs text-blue-400 hover:text-blue-300">Install →</a>
+          </div>
+        </div>
+        <!-- OS -->
+        <div class="flex items-start gap-3">
+          <span class="mt-0.5 text-green-400 text-sm">✓</span>
+          <div class="flex-1">
+            <span class="text-sm font-medium text-white">macOS / Linux / Windows WSL</span>
+            <a href="https://learn.microsoft.com/en-us/windows/wsl/install" target="_blank" class="ml-2 text-xs text-blue-400 hover:text-blue-300">Install WSL →</a>
+          </div>
+        </div>
+      </div>
+      <p class="mt-5 text-xs text-gray-500">Already set up? <a href="#quickstart" class="text-blue-400 hover:text-blue-300">Skip to Step 1 ↓</a></p>
+    </div>
+
+    <div id="quickstart" class="space-y-4 mb-14">
+      <!-- Step 1 -->
+      <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl hover:shadow-sm transition-shadow">
+        <div class="shrink-0 w-10 h-10 rounded-full bg-[#FCAD2A]/10 border-2 border-[#FCAD2A] flex items-center justify-center font-extrabold text-[#FCAD2A]">1</div>
+        <div class="flex-1">
+          <h3 class="font-bold text-[var(--color-text)] mb-2">Clone the repo</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">Run this in PowerShell. The folder name is yours to choose; Claude Code will open whichever you pick.</p>
+          <div class="bg-[#0d1117] rounded-lg px-4 py-3 font-mono text-xs text-[#79c0ff] overflow-x-auto">
+            git clone https://github.com/lysanderl-glitch/synapse.git "$env:USERPROFILE\Claude Code\Synapse"
+          </div>
+          <p class="text-xs text-[var(--color-muted)] mt-2">💡 macOS / Linux work the same — replace the path with <code class="bg-[#F7F8FA] px-1 rounded">~/Claude\ Code/Synapse</code> or wherever you keep projects.</p>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl hover:shadow-sm transition-shadow">
+        <div class="shrink-0 w-10 h-10 rounded-full bg-[#028CDC]/10 border-2 border-[#028CDC] flex items-center justify-center font-extrabold text-[#028CDC]">2</div>
+        <div class="flex-1">
+          <h3 class="font-bold text-[var(--color-text)] mb-2">Open in Claude Code, send the init prompt</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">Open Claude Code → <strong>Open Folder</strong> → select your Synapse directory. Then paste this prompt with your details filled in:</p>
+          <div class="bg-[#0d1117] rounded-lg px-4 py-3 font-mono text-xs text-[#d2a8ff] overflow-x-auto mb-3 leading-relaxed">
+            <p>Please complete Synapse initialization:</p>
+            <p>- My name: <span class="text-[#a8d1a0]">[your name, e.g. Alex Chen]</span></p>
+            <p>- AI CEO name: <span class="text-[#a8d1a0]">[your AI CEO's name, e.g. Aurora, Aria]</span></p>
+            <p>- Company / team: <span class="text-[#a8d1a0]">[your organization or team]</span></p>
+          </div>
+          <div class="bg-[#F7F8FA] border border-[var(--color-border)] rounded-lg px-4 py-3 text-sm">
+            <p class="text-[var(--color-muted)] text-xs mb-1">When initialization succeeds, the next session opens with a personalized greeting:</p>
+            <p class="text-[#013A7D] font-semibold">"Hi [your name], I'm [CEO name], the Multi-Agents team is at your service."</p>
+          </div>
+          <p class="text-xs text-[var(--color-muted)] mt-2">⚠️ Troubleshooting: If the greeting doesn't appear, confirm Claude Code opened the directory containing <code class="bg-[#F7F8FA] px-1 rounded">CLAUDE.md</code> at its root.</p>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl hover:shadow-sm transition-shadow">
+        <div class="shrink-0 w-10 h-10 rounded-full bg-[#FCAD2A]/10 border-2 border-[#FCAD2A] flex items-center justify-center font-extrabold text-[#FCAD2A]">3</div>
+        <div class="flex-1">
+          <h3 class="font-bold text-[var(--color-text)] mb-2">Meet your team</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">Once your CEO is live, send this single message to walk through everything you just unlocked:</p>
+          <div class="bg-[#0d1117] rounded-lg px-4 py-3 font-mono text-xs text-[#79c0ff] overflow-x-auto mb-3">
+            Hello — please introduce: 1) the current team architecture and what each team owns; 2) how the execution chain runs from goal-input to final delivery; 3) how the four-tier decision system decides what to escalate to me?
+          </div>
+          <p class="text-xs text-[var(--color-muted)]">This one prompt activates your AI CEO, surfaces all 44 agents across seven teams, walks through the six-step execution chain, and explains exactly when decisions escalate.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upgrade section -->
+    <div class="bg-gradient-to-r from-[#0A1628] to-[#011f5c] rounded-xl p-7 mb-14 text-white relative overflow-hidden">
+      <div class="grid-dots" style="opacity:0.3;"></div>
+      <div class="relative z-10">
+        <div class="flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg bg-[#FCAD2A]/20 flex items-center justify-center shrink-0 mt-0.5">
+            <svg width="20" height="20" fill="none" stroke="#FCAD2A" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-[#FCAD2A] mb-1">Upgrade with one sentence</h3>
+            <p class="text-white/60 text-sm mb-3">When a new Synapse release ships, just say it. Tell your AI CEO:</p>
+            <div class="bg-white/10 border border-white/20 rounded-lg px-4 py-2.5 font-mono text-sm text-[#FCAD2A] inline-block">
+              "Upgrade Synapse"
+            </div>
+            <p class="text-white/50 text-xs mt-3">The CEO automatically pulls the latest release → runs the audit (must clear 90) → preserves your personalization → reports back when complete. No manual Git work, no merge conflicts, no migration anxiety.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <h2 class="text-xl font-bold text-[var(--color-text)] mb-6">Common Questions</h2>
+    <div class="space-y-3 mb-14">
+      {[
+        { q: "Is my data safe?", a: "Synapse runs entirely on your machine. Nothing transits a third party except the Anthropic Claude API call itself. Your conversations and files stay local." },
+        { q: "Does it cost money?", a: "The Synapse package is free, forever. You'll need a Claude Code subscription to run it (Anthropic's product, $20/month Max plan as of writing). The framework itself is $0." },
+        { q: "Can I customize the team?", a: "Fully. Edit agent-CEO/config/organization.yaml to add or remove teams and agents. For deep customization, see CUSTOMIZATION_GUIDE.md in the repo." },
+        { q: "What's the difference between Free and Evolution?", a: "Free is a snapshot — yours forever, no expiration, but no automatic updates. Evolution syncs daily and weekly with the latest evolution: new agent capabilities, methodology revisions, execution-chain upgrades." },
+        { q: "Does it work on macOS and Linux?", a: "Yes. Claude Code is cross-platform. Synapse itself is OS-agnostic. The PowerShell command in Step 1 swaps cleanly for git clone plus normal directory operations on Unix-likes." },
+      ].map(faq => (
+        <details class="group border border-[var(--color-border)] rounded-xl">
+          <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold text-[var(--color-text)] text-sm list-none">
+            {faq.q}
+            <svg class="w-4 h-4 text-[var(--color-muted)] group-open:rotate-180 transition-transform shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="px-5 pb-4 text-sm text-[var(--color-text-light)]">{faq.a}</div>
+        </details>
+      ))}
+    </div>
+
+    <!-- Navigation bottom -->
+    <div class="flex flex-wrap gap-4 justify-between pt-6 border-t border-[var(--color-border)]">
+      <a href="/en/academy" class="text-sm text-[var(--color-text-light)] hover:text-[#028CDC] flex items-center gap-1.5">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Back to Academy
+      </a>
+      <div class="flex gap-4">
+        <a href="/en/academy/team" class="text-sm text-[var(--color-text-light)] hover:text-[#028CDC]">Browse the AI Team →</a>
+        <a href="/en/academy/skills" class="text-sm text-[var(--color-text-light)] hover:text-[#028CDC]">View Skills →</a>
+      </div>
+    </div>
+  </div>
+
+</Layout>

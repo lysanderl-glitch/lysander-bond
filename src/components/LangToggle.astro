@@ -94,7 +94,10 @@ const { currentLang = 'zh' } = Astro.props;
     // Stage 4 Step 2-4 (2026-04-24): initial whitelist covers the 8 Forge pages.
     // Stage 4 Step 5 (2026-04-24): +5 main-site P0 pages (/, /services, /training,
     //   /intelligence, /about) deployed as English versions under /en/.
-    // Expand when remaining pages (/academy, /blog, ...) gain English versions.
+    // Stage 4 Step 6 (2026-04-25): +7 Academy pages (/academy, /academy/get-synapse,
+    //   /academy/team, /academy/skills, /academy/learn, /academy/dashboard,
+    //   /academy/course) deployed as English versions under /en/academy/.
+    // Expand when remaining pages (/blog, ...) gain English versions.
     const HAS_EN_VERSION = new Set<string>([
       '/',
       '/services',
@@ -109,6 +112,13 @@ const { currentLang = 'zh' } = Astro.props;
       '/synapse/pricing',
       '/synapse/get-started',
       '/synapse/beta',
+      '/academy',
+      '/academy/get-synapse',
+      '/academy/team',
+      '/academy/skills',
+      '/academy/learn',
+      '/academy/dashboard',
+      '/academy/course',
     ]);
 
     // Tooltip copy for disabled state (localized to the page the user is viewing).
