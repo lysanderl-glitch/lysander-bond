@@ -3,7 +3,7 @@ title: "构建AI团队协作体系：让Obsidian成为第二大脑"
 slug: aiobsidian
 description: "分享如何用Obsidian构建AI团队协作体系，实现HR知识库自动化、决策体系代码级强制执行、Harness Engineering错误自愈。附完整开源体系和实施指南。"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P3
 publishDate: 2026-04-09

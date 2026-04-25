@@ -3,7 +3,7 @@ title: "Asana + Slack + n8n 自动化"
 slug: asana-slack-n8n-automation
 description: "完整的项目管理自动化方案"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P3
 publishDate: 2026-04-03

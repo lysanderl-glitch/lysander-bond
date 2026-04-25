@@ -3,7 +3,7 @@ title: "AI应用实战分享"
 slug: ai-application-sharing
 description: "AI应用实战分享：构建我的AI工作与生活系统，包含cc-connect微信互联、个人日记体系、Harness Engineering、Agent管家系统、股票交易系统等"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: multi-agent-case
 priority: P3
 publishDate: 2026-04-11

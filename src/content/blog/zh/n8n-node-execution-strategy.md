@@ -3,7 +3,7 @@ title: "n8n 节点执行策略"
 slug: n8n-node-execution-strategy
 description: "深入理解 n8n 的 executeOnce 配置"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P3
 publishDate: 2026-04-04

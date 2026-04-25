@@ -3,7 +3,7 @@ title: "AI 定时任务的静默失败：19次触发0产出的排查思路"
 slug: ai-scheduled-task-silent-failure-debug
 description: "pmo-wbs-trigger 连续19次触发但消息数为0，如何从日志模式识别定时任务的静默失败，以及设计自愈机制的方法论"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: multi-agent-case
 priority: P3
 publishDate: 2026-04-17

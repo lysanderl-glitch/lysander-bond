@@ -3,7 +3,7 @@ title: "如何用AI打造\"第二大脑\" - Claude Code实战分享"
 slug: ai-second-brain-presentation
 description: "AI应用分享演示文稿：如何用Claude Code打造第二大脑，包含Software 2.0理念、Agent管家系统、自动决策机制"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: multi-agent-case
 priority: P3
 publishDate: 2026-04-11

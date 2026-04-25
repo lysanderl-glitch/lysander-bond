@@ -3,7 +3,7 @@ title: "从原则失效到自动化决策：AI决策体系的构建之路"
 slug: ai
 description: "如何通过代码级强制机制解决团队协作中"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P3
 publishDate: 2026-04-09

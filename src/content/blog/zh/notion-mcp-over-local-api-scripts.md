@@ -3,7 +3,7 @@ title: "当脚本撞墙：用Notion MCP替代本地API脚本的迁移决策"
 slug: notion-mcp-over-local-api-scripts
 description: "在PMO数据迁移中遭遇权限墙时，如何快速判断'换方案'比'解决权限问题'更合理，MCP集成作为降维打击路径的适用场景"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P3
 publishDate: 2026-04-22

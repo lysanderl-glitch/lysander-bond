@@ -3,7 +3,7 @@ title: "自动化流水线的「幽灵数据」：为什么你的门禁检查统
 slug: automation-pipeline-gate-check-data-inconsistency
 description: "从 WBS→Asana 流水线中写入111条但门禁只读到19条的真实 Bug，拆解多步骤自动化中数据一致性陷阱"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P3
 publishDate: 2026-04-20

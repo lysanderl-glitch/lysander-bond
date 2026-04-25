@@ -3,7 +3,7 @@ title: "n8n 微信公众号博客发布工作流开发复盘"
 slug: n8n-wechat-blog-workflow
 description: "通过 n8n 工作流将个人网站博客内容自动发布到微信公众号草稿箱，完整记录踩坑过程与解决方案"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P3
 publishDate: 2026-04-06

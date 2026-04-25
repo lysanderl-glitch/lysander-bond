@@ -3,7 +3,7 @@ title: "如何给 AI 产品做 GA 验收：PMO Auto V2.0 版本锁定全流程"
 slug: ai-product-ga-validation-version-lock
 description: "以 PMO Auto V2.0 为案例，展示 AI 原生产品从「功能完成」到「GA 锁定」需要经历的验收检查清单与版本串联动作"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: multi-agent-case
 priority: P3
 publishDate: 2026-04-24

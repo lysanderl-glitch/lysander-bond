@@ -3,7 +3,7 @@ title: "当你的 AI 自动化体系碎片化：四实例合并实录"
 slug: ai-system-fragmentation-four-instances-merge
 description: "从'我在四个目录各有一套 Synapse'到'建立唯一权威版本'的决策过程，以及如何识别和消除 AI 工作流的配置漂移"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: multi-agent-case
 priority: P3
 publishDate: 2026-04-17

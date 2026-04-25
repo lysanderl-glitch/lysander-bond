@@ -3,7 +3,7 @@ title: "用n8n + Claude构建PMO自动化：从理想到生产的坑"
 slug: n8n-claude-pmo-automation-lessons
 description: "环境变量 vs Credentials、Notion API限制、E2E测试验收标准——一次真实的PMO自动化落地过程"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P3
 publishDate: 2026-04-23

@@ -3,7 +3,7 @@ title: "如何用AI打造\"第二大脑\"：Claude Code对话知识提取实战"
 slug: claude-code-knowledge-extraction
 description: "分享如何基于Claude Code构建对话知识提取系统，实现AI辅助的个人知识管理"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P2
 publishDate: 2026-04-08
