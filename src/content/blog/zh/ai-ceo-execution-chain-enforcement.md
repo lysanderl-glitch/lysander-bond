@@ -3,7 +3,7 @@ title: "我如何为AI CEO设计'不可绕过'的执行链"
 slug: ai-ceo-execution-chain-enforcement
 description: "从CEO Guard审计系统、派单表强制前置、到P0规则违规记录，一套让AI真正受约束的治理架构"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: methodology
 priority: P1
 publishDate: 2026-04-23

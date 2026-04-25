@@ -1,0 +1,55 @@
+---
+// English blog index — Stage 5 batch 1.
+//
+// Lists every post in the `blog` collection where lang === 'en'.
+// Uses the typed Content Collection so future EN posts appear automatically.
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+
+const allEnPosts = await getCollection('blog', ({ data }) => data.lang === 'en');
+const posts = allEnPosts.sort(
+  (a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime()
+);
+
+const formatDate = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+---
+
+<Layout lang="en" darkContent={true} title="Blog - Lysander" description="Notes from operating an AI team in production: Harness Engineering, multi-agent design, execution chain governance.">
+  <Fragment slot="head">
+    <meta name="x-has-english" content="true" />
+  </Fragment>
+  <section class="max-w-4xl mx-auto px-6 py-16">
+    <h1 class="text-4xl font-bold text-white mb-4">Blog</h1>
+    <p class="text-white/60 mb-12">Notes from operating an AI team in production — Harness Engineering, multi-agent design, execution chain governance.</p>
+
+    <div class="space-y-6">
+      {posts.map((post) => (
+        <a href={`/en/blog/${post.data.slug}`} class="group block p-6 bg-white/5 rounded-xl border border-white/10 hover:border-sky-500/50 transition-colors">
+          <div class="flex items-center gap-3 mb-3 flex-wrap">
+            <time class="text-white/40 text-sm">{formatDate(post.data.publishDate)}</time>
+            {post.data.priority && (
+              <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">{post.data.priority}</span>
+            )}
+            {post.data.pillar && (
+              <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs">{post.data.pillar}</span>
+            )}
+          </div>
+          <h2 class="text-xl font-semibold text-white group-hover:text-sky-400 transition-colors">
+            {post.data.title}
+          </h2>
+          <p class="text-white/50 mt-2">{post.data.description}</p>
+        </a>
+      ))}
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-white/10 text-center text-sm text-white/50">
+      Building an AI engineering team? The Synapse framework is open →
+      <a href="https://github.com/lysanderl-glitch/synapse"
+         class="text-sky-400 hover:text-sky-300 ml-1"
+         target="_blank" rel="noopener noreferrer">
+        synapse-core on GitHub
+      </a>
+    </div>
+  </section>
+</Layout>

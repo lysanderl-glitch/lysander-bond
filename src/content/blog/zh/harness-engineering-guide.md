@@ -3,7 +3,7 @@ title: "Harness Engineering 入门：AI 代理的控制框架"
 slug: harness-engineering-guide
 description: "深入理解 Harness Engineering——让 AI 代理不再犯同一个错误的工程化方法"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: methodology
 priority: P1
 publishDate: 2026-04-06

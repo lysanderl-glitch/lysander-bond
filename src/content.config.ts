@@ -16,7 +16,15 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const blogCollection = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/blog',
+    // Stage 5 batch 1 (2026-04-24): blog now has zh/ and en/ subdirectories
+    // with the same slug names. Default glob ids derive from basename, which
+    // collides across the two languages. Generate a directory-prefixed id so
+    // every entry stays unique.
+    generateId: ({ entry }) => entry.replace(/\.md$/, ''),
+  }),
   schema: z.object({
     // Identity
     title: z.string(),

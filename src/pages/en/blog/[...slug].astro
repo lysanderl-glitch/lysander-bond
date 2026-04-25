@@ -1,16 +1,15 @@
 ---
-// Dynamic blog route — Stage 5 / scope B (president-approved 2026-04-24).
+// Dynamic English blog route — Stage 5 batch 1.
 //
-// Replaces the 32 hand-written `src/pages/blog/<slug>.astro` files (the
-// `index.astro` list page is preserved). Reads from the typed
-// Content Collection defined in `src/content.config.ts` so every
-// `/blog/<slug>/` URL stays live and can be queried by lang/pillar/
-// priority/hasEnglish for future English rollout.
+// Mirrors src/pages/blog/[...slug].astro but filtered to lang === 'en'.
+// Each English post lives under /en/blog/<slug>/ and points back to its
+// Chinese counterpart through the LangToggle (driven by the
+// `x-has-english`-style meta tag and ZH-default URL architecture).
 import { getCollection, render } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => data.lang === 'zh');
+  const posts = await getCollection('blog', ({ data }) => data.lang === 'en');
   return posts.map((post) => ({
     params: { slug: post.data.slug },
     props: { post },
@@ -29,12 +28,10 @@ const formatDate = (d: Date) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 ---
 
-<Layout darkContent={true} title={layoutTitle} description={post.data.description}>
-  {post.data.hasEnglish && (
-    <Fragment slot="head">
-      <meta name="x-has-english" content="true" />
-    </Fragment>
-  )}
+<Layout lang="en" darkContent={true} title={layoutTitle} description={post.data.description}>
+  <Fragment slot="head">
+    <meta name="x-has-english" content="true" />
+  </Fragment>
   <article class="max-w-4xl mx-auto px-6 py-16">
     <header class="mb-12">
       <div class="flex items-center gap-3 mb-4 flex-wrap">
@@ -61,7 +58,7 @@ const formatDate = (d: Date) =>
     </div>
 
     <footer class="mt-16 pt-8 border-t border-white/10">
-      <a href="/blog" class="text-sky-400 hover:text-sky-300">&larr; 返回博客</a>
+      <a href="/en/blog" class="text-sky-400 hover:text-sky-300">&larr; Back to Blog</a>
     </footer>
   </article>
 </Layout>

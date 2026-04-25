@@ -154,6 +154,28 @@ const { currentLang = 'zh' } = Astro.props;
       return isEnPath(normalizePath(window.location.pathname)) ? 'en' : 'zh';
     }
 
+    // Blog detection — blog uses a per-page meta tag rather than a hardcoded
+    // whitelist, so the 33+ blog posts (only some of which are translated)
+    // don't have to be enumerated here.
+    //
+    // Convention: ZH blog post pages (/blog/<slug>) emit
+    //   <meta name="x-has-english" content="true">
+    // when their `hasEnglish` frontmatter flag is true. EN blog post pages
+    // (/en/blog/<slug>) always emit it. Absence means no peer page exists.
+    function isBlogPath(path: string): boolean {
+      return (
+        path === '/blog' ||
+        path.startsWith('/blog/') ||
+        path === '/en/blog' ||
+        path.startsWith('/en/blog/')
+      );
+    }
+
+    function blogHasEnglishPeer(): boolean {
+      const meta = document.querySelector('meta[name="x-has-english"]');
+      return !!meta && meta.getAttribute('content') === 'true';
+    }
+
     function computeTargetUrl(targetLang: 'en' | 'zh'): string | null {
       const path = normalizePath(window.location.pathname);
       const currentIsEn = isEnPath(path);
@@ -169,7 +191,17 @@ const { currentLang = 'zh' } = Astro.props;
       }
 
       // targetLang === 'en', currentIsEn === false
-      // Check whitelist for EN version.
+      // Blog: meta-tag-driven (avoids whitelist explosion as posts get translated).
+      if (isBlogPath(path)) {
+        if (blogHasEnglishPeer()) {
+          // /blog       -> /en/blog
+          // /blog/<x>   -> /en/blog/<x>
+          return `/en${path}`;
+        }
+        return null;
+      }
+
+      // Other pages: explicit whitelist of paths that have /en/ versions.
       // path is normalized (no trailing slash), e.g. '/synapse' or '/synapse/capabilities'.
       if (HAS_EN_VERSION.has(path)) {
         return path === '/' ? '/en/' : `/en${path}`;

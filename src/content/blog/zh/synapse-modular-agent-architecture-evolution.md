@@ -3,7 +3,7 @@ title: "从44人AI团队到模块化Agent市场：Synapse体系的架构演进"
 slug: synapse-modular-agent-architecture-evolution
 description: "以真实重构决策为主线，展示AI团队体系如何从单体架构走向模块化、按需组合的可分发产品形态"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: methodology
 priority: P1
 publishDate: 2026-04-13

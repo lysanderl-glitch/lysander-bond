@@ -3,7 +3,7 @@ title: "Synapse多智能体体系进化框架：如何让AI团队越用越强"
 slug: synapse-multi-agent-evolution-framework
 description: "Agent能力卡片周期审计 + Harness规则熵控制 + 情报管线反哺——一套让AI团队具备自我进化能力的机制设计"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: intelligence-evolution
 priority: P1
 publishDate: 2026-04-23
