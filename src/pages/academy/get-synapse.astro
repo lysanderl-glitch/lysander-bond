@@ -139,19 +139,31 @@ import Layout from '../../layouts/Layout.astro';
             <p class="text-[#013A7D] font-semibold">"[你的名字]您好，我是 [CEO名称]，Multi-Agents 团队为您服务！"</p>
           </div>
           <p class="text-xs text-[var(--color-muted)] mt-2">⚠️ 如果没有出现问候语：确认 Claude Code 打开的是含 CLAUDE.md 的根目录</p>
+
+          <!-- Manual personalization (Option B) -->
+          <div class="mt-5 pt-4 border-t border-dashed border-[var(--color-border)]">
+            <p class="text-xs font-semibold text-[var(--color-muted)] uppercase tracking-wide mb-2">备选方式 · 手动编辑 CLAUDE.md（仅当方式 B 自行 clone 时需要）</p>
+            <p class="text-sm text-[var(--color-text-light)] mb-3">如果你没有用初始化提示词，也可手动打开 <code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs">CLAUDE.md</code>，使用全局替换（Ctrl+H）：</p>
+            <ul class="text-sm text-[var(--color-text-light)] space-y-1 mb-3 list-disc list-inside">
+              <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs">Lysander</code> → 你给 AI CEO 起的名字</li>
+              <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs">刘子杨</code> → 你的名字</li>
+              <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs">Synapse-PJ</code> → 你的组织/团队名</li>
+            </ul>
+            <p class="text-xs text-[var(--color-muted)]">保存。约 2 分钟完成。如果你通过 <a href="/academy/bundle/" class="text-[#028CDC] hover:underline">/academy/bundle/</a> 下载了个性化包，此步骤已为你自动完成。</p>
+          </div>
         </div>
       </div>
 
-      <!-- Step 4 -->
+      <!-- Step 3 -->
       <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl hover:shadow-sm transition-shadow">
         <div class="shrink-0 w-10 h-10 rounded-full bg-[#FCAD2A]/10 border-2 border-[#FCAD2A] flex items-center justify-center font-extrabold text-[#FCAD2A]">3</div>
         <div class="flex-1">
-          <h3 class="font-bold text-[var(--color-text)] mb-2">Step 3 · Meet Your Team</h3>
-          <p class="text-sm text-[var(--color-text-light)] mb-3">Once Claude Code loads your Synapse folder, send this message to experience the full system — team structure, execution chain, and decision system in one go:</p>
+          <h3 class="font-bold text-[var(--color-text)] mb-2">Step 3 · 见见你的团队</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">打开 Claude Code 并指向包含 CLAUDE.md 的目录后，发送任意一句话。你会收到："[你的名字]您好，我是 [CEO 名字]，Multi-Agents 团队为您服务！" — 这条问候确认派单工作流已激活。然后试试以下提示词，一次性体验团队架构、执行链与决策体系：</p>
           <div class="bg-[#0d1117] rounded-lg px-4 py-3 font-mono text-xs text-[#79c0ff] overflow-x-auto mb-3">
             你好，请介绍：1) 当前团队架构与各团队职责；2) 执行链是如何运转的（从我提出目标到最终交付）；3) 四级决策体系如何判断何时上报总裁？
           </div>
-          <p class="text-xs text-[var(--color-muted)]">This single prompt activates your AI CEO, surfaces all 44 agents across 7 teams, walks through the 6-step execution chain, and explains when decisions escalate to you.</p>
+          <p class="text-xs text-[var(--color-muted)]">这一条提示会激活你的 AI CEO，呈现 44 位 Agent 跨 7 个团队的全景，走完 6 步执行链，并说明何时决策上报。</p>
         </div>
       </div>
     </div>

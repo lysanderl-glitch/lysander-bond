@@ -5,8 +5,12 @@ interface Props {
   accent?: 'amber' | 'sky' | 'purple';
   icon?: string;
   href?: string;
+  lang?: 'en' | 'zh';
 }
-const { title, body, accent = 'amber', icon, href } = Astro.props;
+const { title, body, accent = 'amber', icon, href, lang } = Astro.props;
+// Auto-detect language from current URL if not explicitly passed
+const isEn = lang ? lang === 'en' : Astro.url.pathname.startsWith('/en/');
+const ctaText = isEn ? 'Learn more' : '了解更多';
 
 const accentClass = {
   amber: 'forge-card-amber',
@@ -39,7 +43,7 @@ const Tag = href ? 'a' : 'div';
   <p class="text-white/60 text-sm leading-relaxed">{body}</p>
   {href && (
     <div class="mt-4 flex items-center gap-1 text-[#FCAD2A] text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-      Learn more
+      {ctaText}
       <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
       </svg>

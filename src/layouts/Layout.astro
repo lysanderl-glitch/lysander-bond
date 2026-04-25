@@ -21,6 +21,54 @@ const isEn = typeof lang === 'string' && lang.toLowerCase().startsWith('en');
 const htmlLang = isEn ? 'en' : 'zh-CN';
 const toggleLang: 'en' | 'zh' = isEn ? 'en' : 'zh';
 
+// Dynamic nav prefix: EN pages link to /en/*, ZH pages keep root paths
+const navLinks = isEn
+  ? {
+      home: '/en/',
+      services: '/en/services',
+      training: '/en/training',
+      blog: '/en/blog',
+      intelligence: '/en/intelligence',
+      about: '/en/about',
+      forge: '/en/synapse',
+      academy: '/en/academy',
+      academyGet: '/en/academy/get-synapse',
+      academyTeam: '/en/academy/team',
+      academySkills: '/en/academy/skills',
+      academyLearn: '/en/academy/learn',
+    }
+  : {
+      home: '/',
+      services: '/services',
+      training: '/training',
+      blog: '/blog',
+      intelligence: '/intelligence',
+      about: '/about',
+      forge: '/synapse',
+      academy: '/academy',
+      academyGet: '/academy/get-synapse',
+      academyTeam: '/academy/team',
+      academySkills: '/academy/skills',
+      academyLearn: '/academy/learn',
+    };
+
+// hreflang alternate URLs (auto-derived from current path)
+const currentPath = Astro.url.pathname;
+let zhPath: string;
+let enPath: string;
+if (isEn) {
+  enPath = currentPath;
+  // Strip /en prefix to get ZH path
+  const stripped = currentPath.replace(/^\/en(\/|$)/, '/');
+  zhPath = stripped || '/';
+} else {
+  zhPath = currentPath;
+  enPath = currentPath === '/' ? '/en/' : `/en${currentPath}`;
+}
+const baseUrl = 'https://lysander.bond';
+const zhHref = `${baseUrl}${zhPath}`;
+const enHref = `${baseUrl}${enPath}`;
+
 // Header / Footer copy tables
 const t = isEn
   ? {
@@ -88,13 +136,16 @@ const t = isEn
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="alternate" hreflang="zh-CN" href={zhHref} />
+    <link rel="alternate" hreflang="en" href={enHref} />
+    <link rel="alternate" hreflang="x-default" href={zhHref} />
     <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col bg-white">
     <!-- Dark header -->
     <header class="bg-gray-900/95 backdrop-blur-md border-b border-[#FCAD2A]/30 sticky top-0 z-50">
       <nav class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a href="/" class="flex items-center gap-2">
+        <a href={navLinks.home} class="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 44" width="22" height="28">
             <path d="M24.39.09C25.4-.32 26.42.73 26.42 2.18V41.44c0 1.45-1.02 2.49-2.03 2.08L9.71 39.63l8.53-1.03c.51-.08.98-.35 1.31-.77.34-.42.53-.96.53-1.51V7.32c0-.56-.19-1.09-.53-1.51-.34-.42-.81-.69-1.31-.77L9.63 4 24.39.09Z" fill="white"/>
             <path d="M2.45 38.84L16.61 37.33c.51-.08.97-.33 1.31-.73.34-.39.53-.9.53-1.42V8.42c0-.52-.19-1.03-.53-1.42-.34-.39-.8-.64-1.31-.71L2.45 4.77c-.3-.05-.61-.02-.9.06-.3.09-.57.24-.8.44s-.42.45-.55.73c-.13.28-.2.59-.2.9v29.79c0 .31.07.62.2.9.13.28.3.53.54.73.23.2.51.35.8.44.29.09.61.11.91.06Z" fill="#FCAD2A"/>
@@ -104,13 +155,13 @@ const t = isEn
           <span class="text-lg font-bold text-[#FCAD2A]">Synapse</span>
         </a>
         <div class="hidden md:flex items-center gap-5 text-sm font-medium">
-          <a href="/services" class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navServices}</a>
-          <a href="/training" class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navTraining}</a>
-          <a href="/blog" class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navBlog}</a>
-          <a href="/intelligence" class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navIntelligence}</a>
-          <a href="/about" class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navAbout}</a>
-          <a href="/synapse" class="px-3 py-1 bg-[#FCAD2A]/15 text-[#FCAD2A] border border-[#FCAD2A]/30 rounded-full hover:bg-[#FCAD2A]/25 transition-colors font-semibold">{t.navForge}</a>
-          <a href="/academy" class="px-3 py-1 bg-[#FCAD2A]/15 text-[#FCAD2A] border border-[#FCAD2A]/30 rounded-full hover:bg-[#FCAD2A]/25 transition-colors font-semibold">{t.navAcademy}</a>
+          <a href={navLinks.services} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navServices}</a>
+          <a href={navLinks.training} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navTraining}</a>
+          <a href={navLinks.blog} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navBlog}</a>
+          <a href={navLinks.intelligence} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navIntelligence}</a>
+          <a href={navLinks.about} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navAbout}</a>
+          <a href={navLinks.forge} class="px-3 py-1 bg-[#FCAD2A]/15 text-[#FCAD2A] border border-[#FCAD2A]/30 rounded-full hover:bg-[#FCAD2A]/25 transition-colors font-semibold">{t.navForge}</a>
+          <a href={navLinks.academy} class="px-3 py-1 bg-[#FCAD2A]/15 text-[#FCAD2A] border border-[#FCAD2A]/30 rounded-full hover:bg-[#FCAD2A]/25 transition-colors font-semibold">{t.navAcademy}</a>
           <LangToggle currentLang={toggleLang} />
         </div>
       </nav>
@@ -142,27 +193,27 @@ const t = isEn
             <div>
               <h4 class="font-semibold text-white mb-3">{t.footerColServices}</h4>
               <div class="flex flex-col gap-2 text-white/40">
-                <a href="/services" class="hover:text-[#FCAD2A]">{t.footerSvcAssessment}</a>
-                <a href="/services" class="hover:text-[#FCAD2A]">{t.footerSvcImplementation}</a>
-                <a href="/training" class="hover:text-[#FCAD2A]">{t.footerSvcTraining}</a>
+                <a href={navLinks.services} class="hover:text-[#FCAD2A]">{t.footerSvcAssessment}</a>
+                <a href={navLinks.services} class="hover:text-[#FCAD2A]">{t.footerSvcImplementation}</a>
+                <a href={navLinks.training} class="hover:text-[#FCAD2A]">{t.footerSvcTraining}</a>
               </div>
             </div>
             <div>
               <h4 class="font-semibold text-white mb-3">{t.footerColAcademy}</h4>
               <div class="flex flex-col gap-2 text-white/40">
-                <a href="/academy" class="hover:text-[#FCAD2A]">{t.footerAcademyHome}</a>
-                <a href="/academy/get-synapse" class="hover:text-[#FCAD2A]">{t.footerAcademyGet}</a>
-                <a href="/academy/team" class="hover:text-[#FCAD2A]">{t.footerAcademyTeam}</a>
-                <a href="/academy/skills" class="hover:text-[#FCAD2A]">{t.footerAcademySkills}</a>
-                <a href="/academy/learn" class="hover:text-[#FCAD2A]">{t.footerAcademyLearn}</a>
+                <a href={navLinks.academy} class="hover:text-[#FCAD2A]">{t.footerAcademyHome}</a>
+                <a href={navLinks.academyGet} class="hover:text-[#FCAD2A]">{t.footerAcademyGet}</a>
+                <a href={navLinks.academyTeam} class="hover:text-[#FCAD2A]">{t.footerAcademyTeam}</a>
+                <a href={navLinks.academySkills} class="hover:text-[#FCAD2A]">{t.footerAcademySkills}</a>
+                <a href={navLinks.academyLearn} class="hover:text-[#FCAD2A]">{t.footerAcademyLearn}</a>
               </div>
             </div>
             <div>
               <h4 class="font-semibold text-white mb-3">{t.footerColResources}</h4>
               <div class="flex flex-col gap-2 text-white/40">
-                <a href="/blog" class="hover:text-[#FCAD2A]">{t.footerResBlog}</a>
-                <a href="/intelligence" class="hover:text-[#FCAD2A]">{t.footerResIntel}</a>
-                <a href="/about" class="hover:text-[#FCAD2A]">{t.footerResAbout}</a>
+                <a href={navLinks.blog} class="hover:text-[#FCAD2A]">{t.footerResBlog}</a>
+                <a href={navLinks.intelligence} class="hover:text-[#FCAD2A]">{t.footerResIntel}</a>
+                <a href={navLinks.about} class="hover:text-[#FCAD2A]">{t.footerResAbout}</a>
               </div>
             </div>
           </div>

@@ -23,7 +23,7 @@ import TimelineItem from '../../../components/synapse/TimelineItem.astro';
 import CodeBlock from '../../../components/synapse/CodeBlock.astro';
 import CTABanner from '../../../components/synapse/CTABanner.astro';
 
-const installScript = `Invoke-WebRequest -Uri 'https://github.com/lysanderl-glitch/en/synapse/archive/refs/heads/main.zip' -OutFile "$env:USERPROFILE\\Downloads\\synapse.zip"
+const installScript = `Invoke-WebRequest -Uri 'https://github.com/lysanderl-glitch/synapse/archive/refs/heads/main.zip' -OutFile "$env:USERPROFILE\\Downloads\\synapse.zip"
 Expand-Archive -Path "$env:USERPROFILE\\Downloads\\synapse.zip" -DestinationPath "$env:USERPROFILE\\Claude Code" -Force`;
 
 const dispatchExample = `/dispatch write a one-page brief on our competitor landscape`;
@@ -139,7 +139,7 @@ const dispatchExample = `/dispatch write a one-page brief on our competitor land
         </li>
         <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
           <span class="text-[#FCAD2A] font-semibold shrink-0">Community:</span>
-          <a href="https://github.com/lysanderl-glitch/en/synapse/issues" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">GitHub Issues</a>
+          <a href="https://github.com/lysanderl-glitch/synapse/issues" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300">GitHub Issues</a>
         </li>
         <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">
           <span class="text-[#FCAD2A] font-semibold shrink-0">Paid help:</span>

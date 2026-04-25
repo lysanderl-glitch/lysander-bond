@@ -156,6 +156,18 @@ import Layout from '../../../layouts/Layout.astro';
             <p class="text-[#013A7D] font-semibold">"Hi [your name], I'm [CEO name], the Multi-Agents team is at your service."</p>
           </div>
           <p class="text-xs text-[var(--color-muted)] mt-2">⚠️ Troubleshooting: If the greeting doesn't appear, confirm Claude Code opened the directory containing <code class="bg-[#F7F8FA] px-1 rounded">CLAUDE.md</code> at its root.</p>
+
+          <!-- Manual personalization (Option B) -->
+          <div class="mt-5 pt-4 border-t border-dashed border-[var(--color-border)]">
+            <p class="text-xs font-semibold text-[var(--color-muted)] uppercase tracking-wide mb-2">Alternative · Manual personalization (only if you cloned manually via Option B)</p>
+            <p class="text-sm text-[var(--color-text-light)] mb-3">If you skipped the init prompt, you can edit <code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs">CLAUDE.md</code> directly with global replace (Ctrl+H):</p>
+            <ul class="text-sm text-[var(--color-text-light)] space-y-1 mb-3 list-disc list-inside">
+              <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs">Lysander</code> → your AI CEO's name</li>
+              <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs">刘子杨</code> → your name</li>
+              <li><code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs">Synapse-PJ</code> → your organization</li>
+            </ul>
+            <p class="text-xs text-[var(--color-muted)]">Save. About 2 minutes. If you downloaded a personalized bundle via <a href="/en/academy/bundle/" class="text-[#028CDC] hover:underline">/en/academy/bundle/</a>, this step is already done for you.</p>
+          </div>
         </div>
       </div>
 
