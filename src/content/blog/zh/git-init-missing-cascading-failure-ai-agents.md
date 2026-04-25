@@ -3,7 +3,7 @@ title: "一个 git init 的缺失如何让 AI 团队停摆4天"
 slug: git-init-missing-cascading-failure-ai-agents
 description: "用真实事故复盘展示：AI 自动化体系中基础设施层的单点故障如何产生级联失效"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P2
 publishDate: 2026-04-19

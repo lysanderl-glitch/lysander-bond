@@ -3,7 +3,7 @@ title: "一句话复制你的AI协作体系：如何把Synapse发给同事"
 slug: share-ai-team-system-one-prompt
 description: "从'我搭了一套AI协作体系'到'同事一句话就能复现'——Prompt即部署文档的实践"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P2
 publishDate: 2026-04-10

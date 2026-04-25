@@ -3,7 +3,7 @@ title: "别急着装 gstack — 先想想谁该用它"
 slug: gstack-team-empowerment
 description: "YC 总裁开源的 gstack 让一个人变成一支团队，但更高级的玩法是把它拆开，融进你已有的团队 DNA 里。"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P2
 publishDate: 2026-04-11

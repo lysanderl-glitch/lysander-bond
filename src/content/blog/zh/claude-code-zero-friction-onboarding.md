@@ -3,7 +3,7 @@ title: "Claude Code作为零门槛部署引擎：让非技术同事也能用上A
 slug: claude-code-zero-friction-onboarding
 description: "Claude Code的自动依赖处理如何消除AI工具推广中的'最后一公里'阻力"
 lang: zh
-hasEnglish: false
+hasEnglish: true
 pillar: ops-practical
 priority: P2
 publishDate: 2026-04-10
