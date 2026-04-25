@@ -1,0 +1,62 @@
+---
+// Dynamic blog route — Stage 5 / scope B (president-approved 2026-04-24).
+//
+// Replaces the 32 hand-written `src/pages/blog/<slug>.astro` files (the
+// `index.astro` list page is preserved). Reads from the typed
+// Content Collection defined in `src/content.config.ts` so every
+// `/blog/<slug>/` URL stays live and can be queried by lang/pillar/
+// priority/hasEnglish for future English rollout.
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => data.lang === 'zh');
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const titleSuffix = ' - Lysander';
+const layoutTitle = post.data.title.endsWith(titleSuffix)
+  ? post.data.title
+  : `${post.data.title}${titleSuffix}`;
+
+const formatDate = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+---
+
+<Layout darkContent={true} title={layoutTitle} description={post.data.description}>
+  <article class="max-w-4xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-4 flex-wrap">
+        <time class="text-white/40 text-sm">{formatDate(post.data.publishDate)}</time>
+        {post.data.priority && (
+          <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">
+            {post.data.priority}
+          </span>
+        )}
+        {post.data.pillar && (
+          <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs">
+            {post.data.pillar}
+          </span>
+        )}
+        {post.data.keywords?.slice(0, 4).map((k) => (
+          <span class="px-2 py-0.5 bg-sky-500/20 text-sky-400 rounded text-xs">{k}</span>
+        ))}
+      </div>
+      <h1 class="text-4xl font-bold text-white">{post.data.title}</h1>
+    </header>
+
+    <div class="prose prose-invert max-w-none space-y-6 text-white/80 leading-relaxed">
+      <Content />
+    </div>
+
+    <footer class="mt-16 pt-8 border-t border-white/10">
+      <a href="/blog" class="text-sky-400 hover:text-sky-300">&larr; 返回博客</a>
+    </footer>
+  </article>
+</Layout>
