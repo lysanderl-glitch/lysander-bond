@@ -68,6 +68,7 @@ if (isEn) {
 const baseUrl = 'https://lysander.bond';
 const zhHref = `${baseUrl}${zhPath}`;
 const enHref = `${baseUrl}${enPath}`;
+const canonicalHref = isEn ? enHref : zhHref;
 
 // Header / Footer copy tables
 const t = isEn
@@ -139,6 +140,7 @@ const t = isEn
     <link rel="alternate" hreflang="zh-CN" href={zhHref} />
     <link rel="alternate" hreflang="en" href={enHref} />
     <link rel="alternate" hreflang="x-default" href={zhHref} />
+    <link rel="canonical" href={canonicalHref} />
     <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col bg-white">
