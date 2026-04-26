@@ -22,34 +22,40 @@ const htmlLang = isEn ? 'en' : 'zh-CN';
 const toggleLang: 'en' | 'zh' = isEn ? 'en' : 'zh';
 
 // Dynamic nav prefix: EN pages link to /en/*, ZH pages keep root paths
+// 2026-04-26: IA consolidation — main nav slimmed 8 → 5 items
+// (Product / Get Started / Blog / Pricing / About). Footer keeps deeper links.
 const navLinks = isEn
   ? {
       home: '/en/',
-      services: '/en/services',
-      training: '/en/training',
+      product: '/en/synapse',
+      getStarted: '/en/academy/get-synapse',
       blog: '/en/blog',
-      intelligence: '/en/intelligence',
+      pricing: '/en/synapse/pricing',
       about: '/en/about',
+      // Retained for footer
       forge: '/en/synapse',
       academy: '/en/academy',
       academyGet: '/en/academy/get-synapse',
       academyTeam: '/en/academy/team',
       academySkills: '/en/academy/skills',
       academyLearn: '/en/academy/learn',
+      intelligence: '/en/synapse/intelligence',
     }
   : {
       home: '/',
-      services: '/services',
-      training: '/training',
+      product: '/synapse',
+      getStarted: '/academy/get-synapse',
       blog: '/blog',
-      intelligence: '/intelligence',
+      pricing: '/synapse/pricing',
       about: '/about',
+      // Retained for footer
       forge: '/synapse',
       academy: '/academy',
       academyGet: '/academy/get-synapse',
       academyTeam: '/academy/team',
       academySkills: '/academy/skills',
       academyLearn: '/academy/learn',
+      intelligence: '/synapse/intelligence',
     };
 
 // hreflang alternate URLs (auto-derived from current path)

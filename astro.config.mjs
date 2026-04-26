@@ -34,6 +34,19 @@ export default defineConfig({
     '/synapse/zh/pricing': '/synapse/pricing',
     '/synapse/zh/get-started': '/synapse/get-started',
     '/synapse/zh/beta': '/synapse/beta',
+    // 2026-04-26: IA consolidation — services/training/intelligence pages
+    // merged into Synapse pricing + intelligence sub-pages.
+    '/services': '/synapse/pricing',
+    '/training': '/synapse/pricing',
+    '/intelligence': '/synapse/intelligence',
+    '/en/services': '/en/synapse/pricing',
+    '/en/training': '/en/synapse/pricing',
+    '/en/intelligence': '/en/synapse/intelligence',
+    // Academy placeholder pages removed (decision ②A 2026-04-26).
+    '/academy/dashboard': '/academy',
+    '/academy/course': '/synapse/pricing',
+    '/en/academy/dashboard': '/en/academy',
+    '/en/academy/course': '/en/synapse/pricing',
   },
   vite: {
     plugins: [tailwindcss()]
