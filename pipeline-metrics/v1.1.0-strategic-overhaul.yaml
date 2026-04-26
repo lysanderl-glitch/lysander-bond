@@ -1,0 +1,36 @@
+version: v1.1.0-strategic-overhaul
+released_at: 2026-04-26
+released_by: Lysander (auto-approved per L3 dual-UAT pass)
+
+http_health:
+  total_pages_checked: 10
+  pass_rate: 100%
+  redirects_passing: 8/8 (functional, 2-step)
+
+seo:
+  hreflang_coverage: 100% (zh-CN + en + x-default per page)
+  canonical_coverage: 100%
+  sitemap_url_count: 110 (55 ZH + 55 EN, 1:1)
+  robots_txt: present
+
+i18n:
+  bilingual_pages: 54
+  ssot_drift_count: 0
+  langtoggle_whitelist_size: 20
+
+content:
+  blog_count: 34
+  bilingual_blog_pct: 100% (5 P1 + 9 P2 + 20 P3)
+  main_pages_bilingual: 5/5
+  forge_pages_bilingual: 8/8
+  academy_pages_bilingual: 5/5 (after dashboard+course removal)
+
+governance:
+  license_present: yes (BSL-1.1)
+  usage_terms_present: yes (bilingual)
+  readme_banner: yes
+  ssot_synced: yes (synapse-stats.yaml -> 53/13/5)
+
+uat_results:
+  product_uat_score: 90+ (all 3 personas)
+  quality_uat_pass_rate: 29/29 (100%)
