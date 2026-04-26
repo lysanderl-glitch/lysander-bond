@@ -1,0 +1,94 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout darkContent={true} title="当 AI 团队的人数出现三个版本：我们如何用元规则修复数字漂移 - Lysander" description="从一个真实事故出发：同一个 AI 体系中出现 44/46/50 三个'AI agent 人数'，剖析数字漂移的根因并提出 Fact-SSOT 元规则作为系统性解法">
+  <article class="max-w-4xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <time class="text-white/40 text-sm">2026-04-25</time>
+        <div class="flex gap-2">
+          <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">问题日志</span>
+          <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">AI工程</span>
+          <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs">Synapse</span>
+        </div>
+      </div>
+      <h1 class="text-4xl font-bold text-white">当 AI 团队的人数出现三个版本：我们如何用元规则修复数字漂移</h1>
+    </header>
+
+    <div class="prose prose-invert max-w-none space-y-8 text-white/80 leading-relaxed">
+
+<p>上周，我在审查系统文档时发现了一个让我有点尴尬的问题：同一个 AI 协作体系，三份不同文件里写的 agent 人数分别是 44、46 和 50。</p>
+
+<p>这三个数字都是"我"写的。</p>
+
+<h2>事故经过</h2>
+
+<p>我们的 Synapse 体系有一个 Multi-Agent 执行团队。随着体系演化，成员陆续增加。每次新增成员，我会更新几个地方：CLAUDE.md 配置文件、团队介绍文档、对外的说明页面。理论上这些地方应该保持一致。</p>
+
+<p>但实际上，当我把三份文件并排打开的时候：<br>
+- <code>CLAUDE.md</code> 写的是「Multi-Agent 团队 (44人)」<br>
+- <code>obs/01-team-knowledge/</code> 里的团队文档写的是 46 人<br>
+- Notion 对外展示页面写的是 50 人</p>
+
+<p>哪个是对的？我自己都不确定。</p>
+
+<p>这就是数字漂移（Number Drift）的典型表现：一个事实，在系统里存在多个副本，每个副本独立更新，最终互相矛盾。更糟的是，这类矛盾通常不会触发任何报错，系统照常运行，直到有人把几份文件放在一起才发现问题。</p>
+
+<h2>根因分析：副本是问题的根本</h2>
+
+<p>我花了一个小时追溯每个数字的来源。44 是某次配置重写后遗留的旧值，当时没有同步更新其他文件。46 是某次整理文档时的实际人数。50 是某次对外演示时"预期规划"的数字，不知道什么时候被当成现状写进了展示页面。</p>
+
+<p>根因很清晰：<strong>同一个事实没有唯一的权威来源（SSOT，Single Source of Truth），而是分散存储在多个位置，各自独立维护。</strong></p>
+
+<p>这个问题在软件工程里不新鲜。数据库有主键约束来保证唯一性，代码有变量来避免魔法数字的散落，但文档系统、配置文件、对外材料之间的一致性，通常靠的是"人记得要同步"——而人是会忘的，AI 也是会忘的。</p>
+
+<p>当你维护的是一个由多文件、多工具、多角色协作的系统时，漂移几乎是必然的。不是流程不好，是架构上就没有对抗漂移的机制。</p>
+
+<h2>解法：Fact-SSOT 元规则</h2>
+
+<p>我们引入了一个叫 <strong>Fact-SSOT</strong> 的元规则，核心思路很简单：</p>
+
+<p><strong>对于任何会被多处引用的「数字事实」，必须指定唯一的权威文件（SSOT），其他所有引用必须标注来源，禁止在非 SSOT 文件中直接写死数值。</strong></p>
+
+<p>具体落地方式分三步：</p>
+
+<p><strong>第一步：识别哪些数字是「漂移高风险数字」。</strong> 不是所有数字都需要 SSOT 管理。漂移高风险的特征是：会随时间变化、会被多个文件引用、变更时不会有自动提醒。团队人数、版本号、价格、配置参数——这类数字全部纳入管理。</p>
+
+<p><strong>第二步：为每类事实指定 SSOT 文件。</strong> 我们的规则是：团队人数的权威来源是 <code>agent-butler/config/organization.yaml</code>，其他文件只能引用这里的值，不能独立维护。版本号的权威来源是项目根目录的 <code>VERSION</code> 文件。</p>
+
+<p><strong>第三步：在 AI 指令层面写入约束。</strong> 在 CLAUDE.md 里加入元规则：「当任何数字被多于一个文件引用时，必须在提案阶段标注该数字的 SSOT 来源；修改数字事实时，必须先更新 SSOT，再检查并更新所有引用位置。」</p>
+
+<p>这个规则的本质是把「一致性维护」从人的记忆迁移到系统约束。规则本身不复杂，但它是元规则（meta-rule）——管理其他规则的规则，管理数字这类基础事实的规则。</p>
+
+<h2>修复过程与验证</h2>
+
+<p>规则确立后，我用大约 20 分钟完成了存量修复：打开 <code>organization.yaml</code>，确认当前实际人数，然后在所有引用位置统一替换，并在每处标注「来源：organization.yaml」。</p>
+
+<p>为了防止未来再次漂移，我们在代码提交流程中加了一个检查点：凡是涉及 SSOT 文件变更的 commit，系统会自动提示检查关联引用位置。这不是强制拦截，是提醒——因为我们希望规则有弹性，能处理特殊情况，而不是用技术手段把流程锁死。</p>
+
+<p>三周后回看，这个修复的效果是实质性的：我们做了两次成员变动，两次都顺利完成了全文件同步，没有出现新的漂移。更重要的是，团队成员（包括 AI agent）在讨论人数时会下意识地问「这个数字的 SSOT 在哪里」，这个习惯本身就是最好的防漂移机制。</p>
+
+<h2>可复用的原则</h2>
+
+<p>这个模式不是 AI 系统专属的。任何维护多文件系统的团队都会遇到数字漂移：</p>
+
+<p>产品文档里的「支持 X 种语言」写在官网、App Store 描述、用户手册三个地方，一旦新增语言，三处未必同步。API 文档里的速率限制（rate limit）写在文档页面和错误提示两个地方，改了一处忘了另一处。数据库 schema 里的枚举值和前端代码里的枚举值各自维护，总有一天会不一致。</p>
+
+<p>解决方案的逻辑是一样的：找到漂移高风险的数据点，指定权威来源，把引用关系显式化。做到这三点，漂移就从「必然发生」变成「可以发现并修复」。</p>
+
+<p>元规则的价值在于它作用于规则本身，而不是具体问题。当你的系统足够复杂，靠人记住每一个细节是不现实的，这时候需要的不是更多提醒，而是让系统架构本身来承载一致性保证。</p>
+
+<p>如果你在构建 AI 工程团队，欢迎参考我们开源的 <a href="https://github.com/lysanderl-janusd/Synapse-Mini">Synapse 框架</a>。Fact-SSOT 元规则已作为标准模块集成在其中，包括 SSOT 文件约定、引用标注格式和变更检查流程，可以直接迁移到你的体系里使用。</p>
+
+    </div>
+
+    <footer class="mt-16 pt-8 border-t border-white/10">
+      <p class="text-white/40 text-sm mb-4">
+        如果你在构建 AI 工程团队，欢迎参考我们开源的
+        <a href="https://github.com/lysanderl-glitch/synapse" class="text-sky-400 hover:text-sky-300" target="_blank" rel="noopener noreferrer">Synapse 框架</a>
+      </p>
+      <a href="/blog" class="text-sky-400 hover:text-sky-300">&larr; 返回博客</a>
+    </footer>
+  </article>
+</Layout>

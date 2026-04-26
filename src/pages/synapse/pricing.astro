@@ -30,7 +30,7 @@ const tiers = [
     features: [
       '完整访问 Synapse 操作系统',
       '预装 CLAUDE.md',
-      '全部 44 份 Agent 能力卡',
+      '全部 53 份 Agent 能力卡',
       '生成器与验证器工具链',
       '每日情报管线',
       '完整文档',
@@ -77,8 +77,8 @@ const tiers = [
 ];
 
 const addons = [
-  '建筑数字交付模块（Janus）：按项目报价',
-  '量化交易模块（Stock）：按策略报价',
+  'SCP 培训认证（Synapse Certified Practitioner）：8 小时理论+实操，$500 — $15K',
+  '行业领域包（Janus / Stock）：按项目或策略报价',
   '私人培训班：每席位 $8,000，6 周课程',
   '持续 AI 运营顾问：起价 $4,000/月',
 ];
@@ -94,7 +94,7 @@ const addons = [
   <Hero
     eyebrow="Pricing / 定价"
     title="体系免费。服务收费。"
-    subtitle="Synapse Forge 操作系统、44 人 Agent 花名册、Harness 框架、工具链——全部开源免费。付费是为了让它在你的组织中跑起来。"
+    subtitle="Synapse 操作系统、53 人 Agent 花名册、Harness 框架、工具链——全部开源免费。付费是为了让它在你的组织中跑起来。"
     primaryCta={{ label: '免费开始', href: '/synapse/get-started' }}
     secondaryCta={{
       label: '与我们聊聊',
@@ -118,7 +118,7 @@ const addons = [
     title="专项扩展与持续支持"
     bordered={true}
   >
-    <div class="max-w-2xl mx-auto">
+    <div class="max-w-2xl mx-auto" id="scp">
       <ul class="space-y-4">
         {addons.map((addon) => (
           <li class="flex items-start gap-3 bg-gray-900/60 border border-white/10 rounded-xl p-5">

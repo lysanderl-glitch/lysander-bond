@@ -93,9 +93,9 @@ const coreTeams = [
 
 const optionalModules = [
   {
-    team: 'Janus — 建筑数字交付',
+    team: 'Janus — 行业领域包',
     memberCount: 6,
-    description: 'BIM 集成的建筑数字化交付工作流。即插即用，不影响主体。',
+    description: '面向项目交付场景的领域工作流。即插即用，不影响主体。',
     accent: 'purple' as const,
   },
   {
@@ -109,23 +109,23 @@ const optionalModules = [
 
 <SynapseLayout
   title="能力"
-  description="十一支专业团队，覆盖现代企业的完整运营面，由一位 AI CEO 统筹编排。"
+  description="十三个功能模块，覆盖现代企业的完整运营面，由一位 AI CEO 统筹编排。"
   subNavActive="capabilities"
   currentLang="zh"
   altLang={{ lang: 'en', href: '/en/synapse/capabilities' }}
 >
   <Hero
     eyebrow="Capabilities / 能力"
-    title="十一支专业团队，一位 AI CEO"
+    title="十三个功能模块，一位 AI CEO"
     subtitle="战略、工程、内容、增长、知识、合规、交付——Synapse 覆盖现代企业的完整运营面，由一位 AI CEO 统筹编排。"
     primaryCta={{ label: '亲自试试', href: '/synapse/get-started' }}
     secondaryCta={{ label: '了解工作原理', href: '/synapse/how-it-works' }}
   />
 
   <PillarSection
-    eyebrow="The Eleven Teams / 十一支团队"
+    eyebrow="The Thirteen Modules / 十三个模块"
     title="一支开箱即用的组织"
-    subtitle="46 位专家分布在 11 支功能团队。每位都有明确角色、能力等级，以及路由表中的清晰定位。"
+    subtitle="53 位专家分布在 13 个功能模块。每位都有明确角色、能力等级，以及路由表中的清晰定位。"
   >
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
       {coreTeams.map((t) => (
@@ -137,7 +137,7 @@ const optionalModules = [
   <PillarSection
     eyebrow="Optional Modules / 可选模块"
     title="即插即用的领域扩展"
-    subtitle="44 人核心之外，领域模块可即插即用地扩展 Synapse 到特定垂直领域，不触碰主体架构。你也可以按同样形态构建自己的模块。"
+    subtitle="53 人核心之外，领域模块可即插即用地扩展 Synapse 到特定垂直领域，不触碰主体架构。你也可以按同样形态构建自己的模块。"
     bordered={true}
   >
     <div class="grid md:grid-cols-2 gap-5 max-w-3xl mx-auto">
