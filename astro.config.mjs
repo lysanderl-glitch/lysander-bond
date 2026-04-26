@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://lysander.bond',
+  site: process.env.SITE_URL || 'https://lysander.bond',
   output: 'static',
   // Stage 4 Step 1 (2026-04-24): Astro 6 native i18n preparation.
   // - Chinese is the default locale (no URL prefix, stays at `/`).
