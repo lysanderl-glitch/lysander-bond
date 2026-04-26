@@ -9,7 +9,7 @@ export function GET() {
     upgrade_method: "git_pull",
     upgrade_command: "git pull origin main",
     min_version: "1.0.0",
-    release_notes: "v1.0.0 — First public release. 44 Agents, CEO Guard hooks, Harness Engineering methodology."
+    release_notes: "v1.0.0 — First public release. 53 Agents, CEO Guard hooks, Harness Engineering methodology."
   };
 
   return new Response(JSON.stringify(data, null, 2), {

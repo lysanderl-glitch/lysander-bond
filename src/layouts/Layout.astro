@@ -79,13 +79,11 @@ const canonicalHref = isEn ? enHref : zhHref;
 // Header / Footer copy tables
 const t = isEn
   ? {
-      navServices: 'Services',
-      navTraining: 'Training',
+      navProduct: 'Product',
+      navGetStarted: 'Get Started',
       navBlog: 'Blog',
-      navIntelligence: 'Intelligence',
+      navPricing: 'Pricing',
       navAbout: 'About',
-      navForge: 'Forge',
-      navAcademy: 'Academy',
       brandTag: 'AI Agent Operating System',
       footerTagline: 'AI agent team operations system.<br>Harness Engineering in practice.',
       footerColServices: 'Services',
@@ -105,13 +103,11 @@ const t = isEn
       footerCopyright: '© 2026 Synapse. Harness Engineering for AI Teams.',
     }
   : {
-      navServices: '服务',
-      navTraining: '培训',
+      navProduct: '产品',
+      navGetStarted: '上手',
       navBlog: '博客',
-      navIntelligence: '情报',
+      navPricing: '定价',
       navAbout: '关于',
-      navForge: 'Forge',
-      navAcademy: '学院',
       brandTag: 'AI Agent 协作运营体系',
       footerTagline: 'AI Agent 团队协作运营体系<br>Harness Engineering 实践者',
       footerColServices: '服务',
@@ -163,13 +159,11 @@ const t = isEn
           <span class="text-lg font-bold text-[#FCAD2A]">Synapse</span>
         </a>
         <div class="hidden md:flex items-center gap-5 text-sm font-medium">
-          <a href={navLinks.services} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navServices}</a>
-          <a href={navLinks.training} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navTraining}</a>
+          <a href={navLinks.product} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navProduct}</a>
+          <a href={navLinks.getStarted} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navGetStarted}</a>
           <a href={navLinks.blog} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navBlog}</a>
-          <a href={navLinks.intelligence} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navIntelligence}</a>
+          <a href={navLinks.pricing} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navPricing}</a>
           <a href={navLinks.about} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navAbout}</a>
-          <a href={navLinks.forge} class="px-3 py-1 bg-[#FCAD2A]/15 text-[#FCAD2A] border border-[#FCAD2A]/30 rounded-full hover:bg-[#FCAD2A]/25 transition-colors font-semibold">{t.navForge}</a>
-          <a href={navLinks.academy} class="px-3 py-1 bg-[#FCAD2A]/15 text-[#FCAD2A] border border-[#FCAD2A]/30 rounded-full hover:bg-[#FCAD2A]/25 transition-colors font-semibold">{t.navAcademy}</a>
           <LangToggle currentLang={toggleLang} />
         </div>
       </nav>
@@ -201,9 +195,9 @@ const t = isEn
             <div>
               <h4 class="font-semibold text-white mb-3">{t.footerColServices}</h4>
               <div class="flex flex-col gap-2 text-white/40">
-                <a href={navLinks.services} class="hover:text-[#FCAD2A]">{t.footerSvcAssessment}</a>
-                <a href={navLinks.services} class="hover:text-[#FCAD2A]">{t.footerSvcImplementation}</a>
-                <a href={navLinks.training} class="hover:text-[#FCAD2A]">{t.footerSvcTraining}</a>
+                <a href={navLinks.pricing} class="hover:text-[#FCAD2A]">{t.footerSvcAssessment}</a>
+                <a href={navLinks.pricing} class="hover:text-[#FCAD2A]">{t.footerSvcImplementation}</a>
+                <a href={`${navLinks.pricing}#scp`} class="hover:text-[#FCAD2A]">{t.footerSvcTraining}</a>
               </div>
             </div>
             <div>

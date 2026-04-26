@@ -22,7 +22,7 @@ import Layout from '../../../layouts/Layout.astro';
 <Layout
   lang="en"
   title="Synapse Academy — A Multi-Agent AI Team You Can Run Today"
-  description="Get a 44-agent AI team running inside Claude Code. Built on Harness Engineering. Free core, paid evolution, enterprise-ready. Open the box and ship."
+  description="Get a 53-agent AI team running inside Claude Code. Built on Harness Engineering. Free core, paid implementation services. Open the box and ship."
 >
 
   <!-- ── Hero ─────────────────────────────────────────────────────── -->
@@ -43,7 +43,7 @@ import Layout from '../../../layouts/Layout.astro';
       </h1>
 
       <p class="text-white/60 text-lg mb-10 max-w-2xl mx-auto">
-        Forty-four specialist agents, fourteen ready-to-run skills, four decision tiers.<br>
+        Fifty-three specialist agents, fourteen ready-to-run skills, four decision tiers.<br>
         Cloned once, configured in three minutes, working alongside you from the first message.
       </p>
 
@@ -59,7 +59,7 @@ import Layout from '../../../layouts/Layout.astro';
       <!-- Stats strip -->
       <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
         {[
-          { num: "44", label: "AI Agents" },
+          { num: "53", label: "AI Agents" },
           { num: "14+", label: "Skill Workflows" },
           { num: "4", label: "Decision Tiers" },
         ].map(s => (
@@ -96,7 +96,7 @@ import Layout from '../../../layouts/Layout.astro';
           <svg width="20" height="20" fill="none" stroke="#028CDC" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
         </div>
         <h3 class="font-bold text-[var(--color-text)] mb-1">Meet the Team</h3>
-        <p class="text-sm text-[var(--color-muted)]">Forty-four specialists across seven groups, full capability map.</p>
+        <p class="text-sm text-[var(--color-muted)]">Fifty-three specialists across thirteen modules, full capability map.</p>
         <div class="mt-4 text-xs font-semibold text-[#028CDC]">Browse Team →</div>
       </a>
 
@@ -120,94 +120,22 @@ import Layout from '../../../layouts/Layout.astro';
         <div class="mt-4 text-xs font-semibold text-[#FCAD2A]">Start Learning →</div>
       </a>
 
-      <!-- Dashboard -->
-      <a href="/en/academy/dashboard" class="card-glow group block p-6 bg-[#F7F8FA] border border-[var(--color-border)] rounded-xl opacity-70">
-        <div class="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center mb-4">
-          <svg width="20" height="20" fill="none" stroke="#94A3B8" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        </div>
-        <h3 class="font-bold text-[var(--color-text-light)] mb-1">Member Dashboard</h3>
-        <p class="text-sm text-[var(--color-muted)]">Version state, upgrade history, account.</p>
-        <div class="mt-4 text-xs font-semibold text-[var(--color-muted)]">Coming soon →</div>
-      </a>
-
-      <!-- Course -->
-      <a href="/en/academy/course" class="card-glow group block p-6 bg-[#F7F8FA] border border-[var(--color-border)] rounded-xl opacity-70">
-        <div class="w-10 h-10 rounded-lg bg-gray-200 flex items-center justify-center mb-4">
-          <svg width="20" height="20" fill="none" stroke="#94A3B8" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-        </div>
-        <h3 class="font-bold text-[var(--color-text-light)] mb-1">SCP Course</h3>
-        <p class="text-sm text-[var(--color-muted)]">Synapse Certified Practitioner badge. Eight-hour curriculum.</p>
-        <div class="mt-4 text-xs font-semibold text-[var(--color-muted)]">Coming soon →</div>
-      </a>
     </div>
   </section>
 
   <div class="glow-line"></div>
 
-  <!-- ── Tier pricing ────────────────────────────────────────────────── -->
+  <!-- ── Pricing redirect ────────────────────────────────────────────── -->
   <section class="max-w-5xl mx-auto px-6 py-16">
     <p class="text-sm font-semibold tracking-widest text-[#028CDC] uppercase mb-3 text-center">Pricing</p>
-    <h2 class="text-2xl font-bold text-[var(--color-text)] text-center mb-2">Pick the version that matches how you'll use it.</h2>
-    <p class="text-[var(--color-text-light)] text-center mb-10">Free users get a complete snapshot. Evolution users ride the daily release train.</p>
-
-    <div class="grid md:grid-cols-3 gap-6">
-      <!-- Free -->
-      <div class="p-7 bg-white border border-[var(--color-border)] rounded-xl">
-        <p class="text-xs font-semibold text-[var(--color-muted)] uppercase tracking-widest mb-3">Free</p>
-        <div class="text-4xl font-extrabold text-[var(--color-text)] mb-1">$0</div>
-        <p class="text-sm text-[var(--color-muted)] mb-6">Forever. A one-time setup, yours to keep.</p>
-        <ul class="space-y-2.5 mb-8 text-sm">
-          {["Synapse Core v1.0.0 — the full system", "CLAUDE.md plus all 44 agents", "14+ skill workflows", "Harness Engineering methodology in full", "Every helper script and tool"].map(i => (
-            <li class="flex items-center gap-2 text-[var(--color-text)]">
-              <svg width="14" height="14" fill="none" stroke="#028CDC" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              {i}
-            </li>
-          ))}
-        </ul>
-        <a href="/en/academy/get-synapse" class="block text-center py-2.5 border border-[var(--color-border)] rounded-lg text-sm font-semibold text-[var(--color-text)] hover:border-[#028CDC] hover:text-[#028CDC] transition-colors">
-          Get it free →
-        </a>
-      </div>
-
-      <!-- Evolution -->
-      <div class="p-7 bg-white border-2 border-[#FCAD2A] rounded-xl shadow-lg relative">
-        <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#FCAD2A] text-[#0A1628] text-xs font-bold rounded-full">Recommended</div>
-        <p class="text-xs font-semibold text-[#FCAD2A] uppercase tracking-widest mb-3">Evolution</p>
-        <div class="flex items-baseline gap-1 mb-1">
-          <span class="text-4xl font-extrabold text-[#FCAD2A]">$99</span>
-          <span class="text-sm text-[var(--color-muted)]">/month</span>
-        </div>
-        <p class="text-sm text-[var(--color-muted)] mb-6">For active operators. Ride the daily release train.</p>
-        <ul class="space-y-2.5 mb-8 text-sm">
-          {["Everything in Free", "Daily and weekly Core updates", "First access to new agents", "Methodology updates as the framework evolves", "One-line upgrade command (\"upgrade Synapse\")", "Weekly evolution report"].map(i => (
-            <li class="flex items-center gap-2 text-[var(--color-text)]">
-              <svg width="14" height="14" fill="none" stroke="#FCAD2A" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              {i}
-            </li>
-          ))}
-        </ul>
-        <a href="mailto:lysanderl@janusd.io?subject=Synapse Evolution subscription" class="block text-center py-2.5 bg-[#FCAD2A] text-[#0A1628] rounded-lg text-sm font-bold hover:opacity-90 transition-opacity">
-          Talk to us →
-        </a>
-      </div>
-
-      <!-- Enterprise -->
-      <div class="p-7 bg-white border border-[var(--color-border)] rounded-xl">
-        <p class="text-xs font-semibold text-[var(--color-muted)] uppercase tracking-widest mb-3">Enterprise</p>
-        <div class="text-4xl font-extrabold text-[var(--color-text)] mb-1">$999</div>
-        <p class="text-sm text-[var(--color-muted)] mb-6">/month · Custom-fit for serious teams.</p>
-        <ul class="space-y-2.5 mb-8 text-sm">
-          {["Everything in Evolution", "Industry-specific agent teams", "One-on-one Synapse advisory", "Priority access to new capabilities", "Dedicated Slack support channel", "Team training workshop included"].map(i => (
-            <li class="flex items-center gap-2 text-[var(--color-text)]">
-              <svg width="14" height="14" fill="none" stroke="#013A7D" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              {i}
-            </li>
-          ))}
-        </ul>
-        <a href="mailto:lysanderl@janusd.io?subject=Synapse Enterprise inquiry" class="block text-center py-2.5 border border-[var(--color-border)] rounded-lg text-sm font-semibold text-[var(--color-text)] hover:border-[#013A7D] hover:text-[#013A7D] transition-colors">
-          Talk to us →
-        </a>
-      </div>
+    <h2 class="text-2xl font-bold text-[var(--color-text)] text-center mb-4">The system is free. Services are how we land it.</h2>
+    <p class="text-[var(--color-text-light)] text-center max-w-xl mx-auto mb-8">
+      Synapse itself is fully open-source and free. Pricing for assessment, implementation, and training services lives on a single page.
+    </p>
+    <div class="text-center">
+      <a href="/en/synapse/pricing" class="inline-block px-8 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-lg font-bold hover:opacity-90 transition-opacity">
+        See full pricing →
+      </a>
     </div>
   </section>
 
@@ -235,8 +163,8 @@ import Layout from '../../../layouts/Layout.astro';
           <div class="flex items-center gap-3 mb-4">
             <span class="text-2xl">👥</span>
             <div>
-              <h3 class="font-bold text-[var(--color-text)]">Forty-four AI Specialists</h3>
-              <p class="text-xs text-[var(--color-muted)]">Seven teams · Full capability coverage</p>
+              <h3 class="font-bold text-[var(--color-text)]">Fifty-three AI Specialists</h3>
+              <p class="text-xs text-[var(--color-muted)]">Thirteen modules · Full capability coverage</p>
             </div>
           </div>
           <p class="text-sm text-[var(--color-text-light)]">Strategy, R&amp;D, ops, content, growth, intelligence, and HR. Every specialist carries a concrete capability description (B-grade or above) and audits at 90 or higher.</p>

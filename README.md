@@ -1,10 +1,13 @@
-# Astro Starter Kit: Minimal
+# lysander.bond — Synapse public site
 
-```sh
-npm create astro@latest -- --template minimal
-```
+> **Limited Preview — Internal Testing.** By using, you accept LICENSE
+> ([BSL-1.1](./LICENSE.md)) + [USAGE_TERMS](./USAGE_TERMS.md). Synapse is
+> currently being refined with internal teams; external access opens once
+> readiness criteria are met.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+This repo is the public site for **Synapse** — an AI team operating
+system built on Harness Engineering. The site is built with Astro and
+deployed via GitHub Actions.
 
 ## 🚀 Project Structure
 

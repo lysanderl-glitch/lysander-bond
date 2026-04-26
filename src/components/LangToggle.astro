@@ -100,9 +100,6 @@ const { currentLang = 'zh' } = Astro.props;
     // Expand when remaining pages (/blog, ...) gain English versions.
     const HAS_EN_VERSION = new Set<string>([
       '/',
-      '/services',
-      '/training',
-      '/intelligence',
       '/about',
       '/synapse',
       '/synapse/capabilities',
@@ -117,8 +114,6 @@ const { currentLang = 'zh' } = Astro.props;
       '/academy/team',
       '/academy/skills',
       '/academy/learn',
-      '/academy/dashboard',
-      '/academy/course',
     ]);
 
     // Tooltip copy for disabled state (localized to the page the user is viewing).

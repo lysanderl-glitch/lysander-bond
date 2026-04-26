@@ -13,10 +13,6 @@ keywords:
   - "AI工程"
   - "Synapse"
 ---
-总裁您好，我是 Lysander，Multi-Agents 团队为您服务！
-
-
-
 
 ## 当自动化系统静默失败 23 次：为什么零日志比报错更危险
 
