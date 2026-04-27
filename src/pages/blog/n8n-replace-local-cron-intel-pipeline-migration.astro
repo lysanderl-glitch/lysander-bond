@@ -1,0 +1,57 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout darkContent={true} title="用n8n替代本地Cron：情报管线迁移的完整思路 - Lysander" description="从发现定时任务职责重叠，到系统性清理冗余，再到确立迁移后的单一真相源">
+  <article class="max-w-4xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <time class="text-white/40 text-sm">2026-04-27</time>
+        <div class="flex gap-2">
+          <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">问题日志</span>
+          <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">AI工程</span>
+          <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs">Synapse</span>
+        </div>
+      </div>
+      <h1 class="text-4xl font-bold text-white">用n8n替代本地Cron：情报管线迁移的完整思路</h1>
+    </header>
+
+    <div class="prose prose-invert max-w-none space-y-8 text-white/80 leading-relaxed">
+
+<h2>用n8n替代本地Cron：一次情报管线迁移的完整思路</h2>
+
+<p>事情的起点是一次代码审查时发现的尴尬：同一个RSS源，我在本地有一个Python脚本每小时抓取一次，n8n里也有一个workflow在做几乎完全相同的事情。两者的输出路径不同，一个写入本地SQLite，一个推送到Notion，但数据源和解析逻辑高度重叠。更麻烦的是，当源站偶尔改变结构导致解析失败时，我需要同时去两个地方排查。这不是"双重保险"，这是纯粹的技术债。</p>
+
+<p>这种本地脚本+cron与n8n并存的状态，在个人开发者和小团队里极为普遍。通常的演化路径是这样的：早期靠cron跑几个Python脚本起家，后来引入n8n做可视化编排，但旧的cron任务没人动，就这么一直跑着。时间久了，没人说得清哪个是"权威来源"，出问题了也不知道先看哪里。我的情况完全符合这个模式。</p>
+
+<h2>先做资产盘点，再谈迁移</h2>
+
+<p>我的第一步不是急着迁移，而是把所有定时任务列成一张表。用<code>crontab -l</code>导出本地所有任务，同时把n8n里所有带Schedule Trigger的workflow也列出来，逐条对比：任务目的是什么、数据流向哪里、依赖什么外部服务、失败了有没有告警。这个过程大概花了两个小时，但非常值得。结果发现，我的11个本地cron任务里，有4个和n8n的workflow存在功能重叠，3个是纯本地文件操作（没必要迁移），剩下4个是真正需要单独维护的任务。</p>
+
+<p>判断"要不要迁移"的核心问题只有一个：这个任务是否需要与外部服务交互、是否需要可观测性、是否需要多步骤编排？如果三个答案都是否，留在cron里完全合理。比如我有一个每天凌晨清理临时文件的脚本，它只操作本地目录，没有网络请求，失败了重跑就行——这种任务迁移到n8n只会增加维护成本，没有任何收益。相反，那些需要调用API、需要根据结果分支处理、需要知道"上次到底有没有跑成功"的任务，n8n的优势才真正体现出来。</p>
+
+<h2>迁移过程中的几个具体问题</h2>
+
+<p>真正开始迁移后，遇到了几个值得记录的细节问题。第一个是环境变量和密钥管理。本地脚本直接读<code>.env</code>文件，迁移到n8n后需要把所有Credentials统一配置到n8n的Credential Store里，这个过程需要逐一梳理，不能遗漏。第二个是错误处理逻辑的重写。Python脚本里的try/except块有些写得比较随意，迁移时我强制自己用n8n的Error Trigger做统一的失败通知，反而比原来更规范了。第三个是调度时间的冲突问题。原来本地cron和n8n各自独立调度，迁移后需要重新规划执行时间，避免多个重量级任务同时触发导致资源争抢——特别是涉及LLM调用的任务，并发太高会把API配额打满。</p>
+
+<p>迁移过程中我保留了一个原则：不做大爆炸式替换。每迁移一个任务，让新旧两个版本并行跑至少三天，对比输出结果，确认一致之后再把旧的cron任务注释掉，观察一周没问题再彻底删除。这个步骤看起来慢，但实际上每个任务平均只多花了半天时间，换来的是迁移过程中零生产事故。</p>
+
+<h2>迁移之后：确立单一真相源</h2>
+
+<p>完成迁移后，我给自己定了一条新的工程规范：所有需要定时执行且涉及外部交互的任务，必须且只能在n8n里维护。本地cron只保留纯本地操作的系统维护类脚本。这条规范的价值不在于技术上有多先进，而在于它消除了"我到底应该去哪里查"这个认知负担。现在任何情报管线出问题，我只看n8n的执行日志，不需要再去翻本地的log文件。</p>
+
+<p>可复用的决策框架可以总结成三步：第一，盘点所有定时任务，建立职责清单；第二，用"是否需要外部交互+是否需要可观测性+是否需要多步骤编排"三个问题做迁移决策，不满足的留在cron，满足的迁移到n8n；第三，并行验证后再切换，切换后明确单一真相源的规范。重点不是工具本身，而是通过这次迁移把隐性的系统复杂度显式化，然后主动降低它。</p>
+
+<p>如果你在构建AI工程团队，欢迎参考我们开源的 Synapse 框架——它在情报采集、任务编排和知识管线的工程实践上积累了不少可直接复用的模式，包括本文提到的迁移决策逻辑也有对应的参考实现。</p>
+
+    </div>
+
+    <footer class="mt-16 pt-8 border-t border-white/10">
+      <p class="text-white/40 text-sm mb-4">
+        如果你在构建 AI 工程团队，欢迎参考我们开源的
+        <a href="https://github.com/lysanderl-glitch/synapse" class="text-sky-400 hover:text-sky-300" target="_blank" rel="noopener noreferrer">Synapse 框架</a>
+      </p>
+      <a href="/blog" class="text-sky-400 hover:text-sky-300">&larr; 返回博客</a>
+    </footer>
+  </article>
+</Layout>
