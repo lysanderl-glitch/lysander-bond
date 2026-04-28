@@ -300,3 +300,52 @@ a:hover { opacity: 0.85; }
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.8);
 }
+
+/* TL;DR Block */
+.blog-content .tl-dr {
+  background: rgba(2, 140, 220, 0.08);
+  border: 1px solid rgba(2, 140, 220, 0.25);
+  border-left: 4px solid #028CDC;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.blog-content .tl-dr ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.blog-content .tl-dr li {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0.4rem;
+}
+
+.blog-content .tl-dr li:last-child {
+  margin-bottom: 0;
+}
+
+/* Callout: Key Insight */
+.blog-content .callout {
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+}
+
+.blog-content .callout-insight {
+  background: rgba(252, 173, 42, 0.08);
+  border: 1px solid rgba(252, 173, 42, 0.25);
+  border-left: 4px solid #FCAD2A;
+}
+
+.blog-content .callout-insight p {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
+  margin: 0;
+}
+
+.blog-content .callout-insight p::before {
+  content: "💡 ";
+}
