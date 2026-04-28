@@ -1,0 +1,42 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('intelligence-daily'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<Layout title="情报快报档案 | Lysander" description="Synapse AI 团队每日情报快报完整档案" lang="zh" darkContent={true}>
+  <section class="pt-24 pb-16 px-6">
+    <div class="max-w-3xl mx-auto">
+      <a href="/intelligence" class="text-sm text-white/40 hover:text-white/70 mb-6 inline-block">← 情报中枢</a>
+      <h1 class="text-3xl font-bold text-white mb-2">情报快报档案</h1>
+      <p class="text-white/50 mb-10">AI 团队每日 08:00 Dubai 自动生成，扫描全球 AI 战场动态</p>
+
+      {posts.length === 0 ? (
+        <div class="text-center py-20 text-white/30">首份情报日报生成后自动出现在这里</div>
+      ) : (
+        <div class="space-y-4">
+          {posts.map(post => (
+            <a href={`/intelligence/daily/${post.data.date}`}
+               class="flex items-start gap-4 p-5 rounded-xl bg-white/5 border border-white/10 hover:border-sky-500/40 transition-colors group">
+              <div class="flex-shrink-0 text-center">
+                <div class="text-2xl font-bold text-sky-400">{new Date(post.data.date).getDate()}</div>
+                <div class="text-xs text-white/40">{new Date(post.data.date).toLocaleDateString('zh-CN', {month:'short'})}</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h2 class="font-semibold text-white group-hover:text-sky-400 mb-1">{post.data.title}</h2>
+                <p class="text-sm text-white/50 line-clamp-2">{post.data.summary}</p>
+                <div class="flex gap-3 mt-2 text-xs text-white/30">
+                  <span>{post.data.itemCount} 条情报</span>
+                  {post.data.topScore && <span>最高评分 {post.data.topScore}</span>}
+                  {post.data.tags.slice(0,3).map(t => <span class="bg-sky-500/10 text-sky-400 px-1.5 py-0.5 rounded">{t}</span>)}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,41 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const decisions = (await getCollection('intelligence-decisions'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const levelColor = (l: string) => ({
+  'L4': 'bg-red-500/20 text-red-400',
+  'L3': 'bg-orange-500/20 text-orange-400',
+  'L2': 'bg-yellow-500/20 text-yellow-400',
+  'L1': 'bg-white/10 text-white/40',
+})[l] || 'bg-white/10 text-white/40';
+---
+
+<Layout title="执行决策档案 | Lysander" description="Synapse AI 团队 L3/L4 级决策完整记录" lang="zh" darkContent={true}>
+  <section class="pt-24 pb-16 px-6">
+    <div class="max-w-3xl mx-auto">
+      <a href="/intelligence" class="text-sm text-white/40 hover:text-white/70 mb-6 inline-block">← 情报中枢</a>
+      <h1 class="text-3xl font-bold text-white mb-2">执行决策档案</h1>
+      <p class="text-white/50 mb-10">L3 Lysander 决策 / L4 总裁决策，完整的决策上下文与专家评审过程</p>
+      {decisions.length === 0 ? (
+        <div class="text-center py-20 text-white/30">决策归档后自动出现在这里</div>
+      ) : (
+        <div class="space-y-4">
+          {decisions.map(d => (
+            <a href={`/intelligence/decisions/${d.data.id}`}
+               class="flex items-start gap-4 p-5 rounded-xl bg-white/5 border border-white/10 hover:border-purple-500/40 transition-colors group">
+              <span class={`flex-shrink-0 text-xs px-2 py-1 rounded font-mono ${levelColor(d.data.decisionLevel)}`}>{d.data.decisionLevel}</span>
+              <div class="flex-1 min-w-0">
+                <div class="text-xs text-white/40 mb-1">{d.data.date} · {d.data.decidedBy}</div>
+                <h2 class="font-semibold text-white group-hover:text-purple-400 mb-1">{d.data.title}</h2>
+                <p class="text-sm text-white/50 line-clamp-2">{d.data.summary}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

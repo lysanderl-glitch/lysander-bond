@@ -1,0 +1,119 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const dailyPosts = (await getCollection('intelligence-daily'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 5);
+
+const decisions = (await getCollection('intelligence-decisions'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 5);
+
+const results = (await getCollection('intelligence-results'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 5);
+---
+
+<Layout
+  title="情报中枢 | Lysander"
+  description="Synapse AI 团队每日情报快报、执行决策与行动结果的公开档案。"
+  lang="zh"
+  darkContent={true}
+>
+  <!-- Hero -->
+  <section class="pt-24 pb-12 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-sm font-medium mb-6">
+        <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+        每日自动更新
+      </div>
+      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">情报中枢</h1>
+      <p class="text-lg text-white/60 max-w-2xl mx-auto">
+        Synapse AI 团队的公开运营账本。每日情报、每条决策、每次执行的完整记录。
+      </p>
+    </div>
+  </section>
+
+  <!-- 三栏内容线 -->
+  <section class="py-8 px-6">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+
+      <!-- 情报快报 -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+            <span class="text-sky-400">📡</span> 情报快报
+          </h2>
+          <a href="/intelligence/daily" class="text-sm text-sky-400 hover:text-sky-300">全部档案 →</a>
+        </div>
+        <div class="space-y-3">
+          {dailyPosts.length === 0 ? (
+            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-white/40 text-sm text-center">首份日报生成后自动展示</div>
+          ) : dailyPosts.map(post => (
+            <a href={`/intelligence/daily/${post.data.date}`}
+               class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-sky-500/40 transition-colors group">
+              <time class="text-xs text-white/40">{post.data.date}</time>
+              <h3 class="text-sm font-medium text-white group-hover:text-sky-400 mt-1 line-clamp-2">{post.data.title}</h3>
+              <div class="flex gap-2 mt-2">
+                <span class="text-xs text-white/40">{post.data.itemCount} 条情报</span>
+                {post.data.topScore && <span class="text-xs text-sky-400">最高 {post.data.topScore} 分</span>}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- 执行决策 -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+            <span class="text-purple-400">⚖️</span> 执行决策
+          </h2>
+          <a href="/intelligence/decisions" class="text-sm text-purple-400 hover:text-purple-300">全部档案 →</a>
+        </div>
+        <div class="space-y-3">
+          {decisions.length === 0 ? (
+            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-white/40 text-sm text-center">决策归档后自动展示</div>
+          ) : decisions.map(d => (
+            <a href={`/intelligence/decisions/${d.data.id}`}
+               class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-purple-500/40 transition-colors group">
+              <div class="flex items-center gap-2 mb-1">
+                <time class="text-xs text-white/40">{d.data.date}</time>
+                <span class={`text-xs px-1.5 py-0.5 rounded font-mono ${d.data.decisionLevel === 'L4' ? 'bg-red-500/20 text-red-400' : d.data.decisionLevel === 'L3' ? 'bg-orange-500/20 text-orange-400' : 'bg-white/10 text-white/40'}`}>
+                  {d.data.decisionLevel}
+                </span>
+              </div>
+              <h3 class="text-sm font-medium text-white group-hover:text-purple-400 line-clamp-2">{d.data.title}</h3>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- 执行结果 -->
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+            <span class="text-green-400">✅</span> 执行结果
+          </h2>
+          <a href="/intelligence/results" class="text-sm text-green-400 hover:text-green-300">全部档案 →</a>
+        </div>
+        <div class="space-y-3">
+          {results.length === 0 ? (
+            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-white/40 text-sm text-center">行动报告生成后自动展示</div>
+          ) : results.map(r => (
+            <a href={`/intelligence/results/${r.data.date}`}
+               class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-green-500/40 transition-colors group">
+              <time class="text-xs text-white/40">{r.data.date}</time>
+              <h3 class="text-sm font-medium text-white group-hover:text-green-400 mt-1 line-clamp-2">{r.data.title}</h3>
+              <div class="flex gap-2 mt-2">
+                <span class="text-xs text-white/40">{r.data.actionsCount} 项行动</span>
+                <span class="text-xs text-green-400">{r.data.completedCount} 项完成</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
