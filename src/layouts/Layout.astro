@@ -23,18 +23,17 @@ const toggleLang: 'en' | 'zh' = isEn ? 'en' : 'zh';
 
 // Dynamic nav prefix: EN pages link to /en/*, ZH pages keep root paths
 // 2026-04-26: IA consolidation — main nav slimmed 8 → 5 items
-// (Product / Get Started / Blog / Pricing / About). Footer keeps deeper links.
+// 2026-04-28: Pricing removed, replaced with Academy in main nav.
 const navLinks = isEn
   ? {
       home: '/en/',
       product: '/en/synapse',
       getStarted: '/en/academy/get-synapse',
       blog: '/en/blog',
-      pricing: '/en/synapse/pricing',
+      academy: '/en/academy',
       about: '/en/about',
       // Retained for footer
       forge: '/en/synapse',
-      academy: '/en/academy',
       academyGet: '/en/academy/get-synapse',
       academyTeam: '/en/academy/team',
       academySkills: '/en/academy/skills',
@@ -46,11 +45,10 @@ const navLinks = isEn
       product: '/synapse',
       getStarted: '/academy/get-synapse',
       blog: '/blog',
-      pricing: '/synapse/pricing',
+      academy: '/academy',
       about: '/about',
       // Retained for footer
       forge: '/synapse',
-      academy: '/academy',
       academyGet: '/academy/get-synapse',
       academyTeam: '/academy/team',
       academySkills: '/academy/skills',
@@ -82,7 +80,7 @@ const t = isEn
       navProduct: 'Product',
       navGetStarted: 'Get Started',
       navBlog: 'Blog',
-      navPricing: 'Pricing',
+      navAcademy: 'Academy',
       navAbout: 'About',
       brandTag: 'AI Agent Operating System',
       footerTagline: 'AI agent team operations system.<br>Harness Engineering in practice.',
@@ -98,7 +96,7 @@ const t = isEn
       footerAcademyLearn: 'Harness Methodology',
       footerColResources: 'Resources',
       footerResBlog: 'Blog',
-      footerResIntel: 'AI Intelligence Daily',
+      footerResIntel: 'Intelligence Loop',
       footerResAbout: 'About Us',
       footerCopyright: '© 2026 Synapse. Harness Engineering for AI Teams.',
     }
@@ -106,7 +104,7 @@ const t = isEn
       navProduct: '产品',
       navGetStarted: '上手',
       navBlog: '博客',
-      navPricing: '定价',
+      navAcademy: '学院',
       navAbout: '关于',
       brandTag: 'AI Agent 协作运营体系',
       footerTagline: 'AI Agent 团队协作运营体系<br>Harness Engineering 实践者',
@@ -122,7 +120,7 @@ const t = isEn
       footerAcademyLearn: 'Harness 方法论',
       footerColResources: '资源',
       footerResBlog: '博客',
-      footerResIntel: 'AI 情报日报',
+      footerResIntel: '情报闭环',
       footerResAbout: '关于我们',
       footerCopyright: '© 2026 Synapse. Harness Engineering for AI Teams.',
     };
@@ -162,7 +160,7 @@ const t = isEn
           <a href={navLinks.product} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navProduct}</a>
           <a href={navLinks.getStarted} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navGetStarted}</a>
           <a href={navLinks.blog} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navBlog}</a>
-          <a href={navLinks.pricing} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navPricing}</a>
+          <a href={navLinks.academy} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navAcademy}</a>
           <a href={navLinks.about} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navAbout}</a>
           <LangToggle currentLang={toggleLang} />
         </div>
@@ -195,9 +193,9 @@ const t = isEn
             <div>
               <h4 class="font-semibold text-white mb-3">{t.footerColServices}</h4>
               <div class="flex flex-col gap-2 text-white/40">
-                <a href={navLinks.pricing} class="hover:text-[#FCAD2A]">{t.footerSvcAssessment}</a>
-                <a href={navLinks.pricing} class="hover:text-[#FCAD2A]">{t.footerSvcImplementation}</a>
-                <a href={`${navLinks.pricing}#scp`} class="hover:text-[#FCAD2A]">{t.footerSvcTraining}</a>
+                <a href={navLinks.academy} class="hover:text-[#FCAD2A]">{t.footerSvcAssessment}</a>
+                <a href={navLinks.academy} class="hover:text-[#FCAD2A]">{t.footerSvcImplementation}</a>
+                <a href={navLinks.academyGet} class="hover:text-[#FCAD2A]">{t.footerSvcTraining}</a>
               </div>
             </div>
             <div>

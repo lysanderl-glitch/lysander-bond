@@ -57,7 +57,7 @@ const pipeline = [
     eyebrow="Intelligence"
     title="Every morning, your AI team reports for work."
     subtitle="Synapse runs a daily intelligence pipeline: scan the AI frontier, filter for signal, evaluate for action, ship the report. No human in the loop. The output is public — and the pipeline itself is part of the product."
-    primaryCta={{ label: 'View the Daily Dispatch', href: '/intelligence' }}
+    primaryCta={{ label: 'Subscribe to Intelligence Daily', href: '#subscribe' }}
     secondaryCta={{ label: 'See How It Works', href: '/en/synapse/how-it-works' }}
   />
 
@@ -87,50 +87,76 @@ const pipeline = [
     </div>
   </PillarSection>
 
-  <PillarSection
-    eyebrow="Today's report"
-    title="Subscribe to the morning dispatch"
-    subtitle="Archive coming soon. In the meantime, get the morning dispatch delivered."
-    bordered={true}
-  >
-    <div class="max-w-xl mx-auto">
-      <form
-        action="mailto:lysanderl@janusd.io"
-        method="GET"
-        enctype="text/plain"
-        class="bg-gray-900/60 border border-white/10 rounded-2xl p-6"
-      >
-        <input type="hidden" name="subject" value="Synapse Intelligence Subscription" />
-        <label for="email" class="block text-white/70 text-sm font-medium mb-2">
-          Email address
-        </label>
-        <div class="flex flex-col sm:flex-row gap-3">
-          <input
-            id="email"
-            name="body"
-            type="email"
-            required
-            placeholder="you@company.com"
-            class="flex-1 px-4 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-[#FCAD2A]/50"
-          />
-          <button
-            type="submit"
-            class="inline-flex items-center justify-center px-6 py-3 bg-[#FCAD2A] text-gray-900 font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all whitespace-nowrap"
-          >
-            Subscribe to the morning dispatch
-          </button>
-        </div>
-        <p class="text-white/40 text-xs mt-3">
-          We will follow up personally. Unsubscribe any time.
-        </p>
+  <section id="subscribe" class="py-16 px-6" style="background: var(--color-dark, #0A1628);">
+    <div class="max-w-xl mx-auto text-center">
+      <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-3">Today's report</p>
+      <h2 class="text-2xl font-bold text-white mb-3">Subscribe to Intelligence Daily</h2>
+      <p class="text-white/60 mb-8">Daily AI battlefield updates, curated by the Synapse team. Straight to your inbox.</p>
+      <form id="subscribe-form" class="flex flex-col sm:flex-row gap-3">
+        <input
+          type="email"
+          id="subscribe-email"
+          placeholder="your@email.com"
+          required
+          class="flex-1 px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-sky-400"
+        />
+        <button
+          type="submit"
+          id="subscribe-btn"
+          class="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-lg transition-colors whitespace-nowrap"
+        >
+          Subscribe
+        </button>
       </form>
+      <p id="subscribe-msg" class="mt-4 text-sm hidden"></p>
     </div>
-  </PillarSection>
+  </section>
+
+  <script>
+    const form = document.getElementById('subscribe-form');
+    const emailInput = document.getElementById('subscribe-email') as HTMLInputElement | null;
+    const btn = document.getElementById('subscribe-btn') as HTMLButtonElement | null;
+    const msg = document.getElementById('subscribe-msg');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput?.value?.trim();
+      if (!email) return;
+
+      if (btn) { btn.disabled = true; btn.textContent = 'Submitting…'; }
+
+      try {
+        const res = await fetch('https://n8n.lysander.bond/webhook/blog-subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, source: 'lysander.bond', lang: 'en', timestamp: new Date().toISOString() })
+        });
+
+        if (res.ok) {
+          if (msg) {
+            msg.textContent = '✅ Subscribed! Your first Intelligence Daily arrives tomorrow morning.';
+            msg.className = 'mt-4 text-sm text-sky-400';
+          }
+          form.reset();
+        } else {
+          throw new Error('Server error');
+        }
+      } catch {
+        if (msg) {
+          msg.textContent = '⚠️ Submission failed. Please email lysanderl@janusd.io to subscribe manually.';
+          msg.className = 'mt-4 text-sm text-yellow-400';
+        }
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'Subscribe'; }
+        msg?.classList.remove('hidden');
+      }
+    });
+  </script>
 
   <CTABanner
     heading="Run your own intelligence loop."
     body="Synapse ships with the daily pipeline included. Yours starts the first morning you open Claude Code."
     primaryCta={{ label: 'Get Started', href: '/en/synapse/get-started' }}
-    secondaryCta={{ label: 'View Pricing', href: '/en/synapse/pricing' }}
+    secondaryCta={{ label: 'Visit Academy', href: '/en/academy' }}
   />
 </SynapseLayout>

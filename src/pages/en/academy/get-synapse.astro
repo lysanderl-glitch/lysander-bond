@@ -210,9 +210,9 @@ import Layout from '../../../layouts/Layout.astro';
     <div class="space-y-3 mb-14">
       {[
         { q: "Is my data safe?", a: "Synapse runs entirely on your machine. Nothing transits a third party except the Anthropic Claude API call itself. Your conversations and files stay local." },
-        { q: "Does it cost money?", a: "The Synapse package is free, forever. You'll need a Claude Code subscription to run it (Anthropic's product, $20/month Max plan as of writing). The framework itself is $0." },
+        { q: "Does it cost money?", a: "The Synapse package is free, forever. You'll need a Claude Code subscription to run it (Anthropic's Max plan). The framework itself is $0." },
         { q: "Can I customize the team?", a: "Fully. Edit agent-CEO/config/organization.yaml to add or remove teams and agents. For deep customization, see CUSTOMIZATION_GUIDE.md in the repo." },
-        { q: "What's the difference between Free and Evolution?", a: "Free is a snapshot — yours forever, no expiration, but no automatic updates. Evolution syncs daily and weekly with the latest evolution: new agent capabilities, methodology revisions, execution-chain upgrades." },
+        { q: "How do I stay up to date?", a: "The base package is yours forever — no expiration, no auto-updates. Whenever a new Synapse release ships, just tell your AI CEO: 'Upgrade Synapse.' The CEO pulls the latest, runs the audit, preserves your personalization, and reports back." },
         { q: "Does it work on macOS and Linux?", a: "Yes. Claude Code is cross-platform. Synapse itself is OS-agnostic. The PowerShell command in Step 1 swaps cleanly for git clone plus normal directory operations on Unix-likes." },
       ].map(faq => (
         <details class="group border border-[var(--color-border)] rounded-xl">

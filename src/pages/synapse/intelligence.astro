@@ -57,7 +57,7 @@ const pipeline = [
     eyebrow="Intelligence / 情报闭环"
     title="每天早晨，AI 团队自动上岗"
     subtitle="Synapse 运转一条日常情报管线：扫描 AI 前沿 → 过滤信号 → 评估行动 → 交付报告。无人工介入。产出公开——管线本身即是产品的一部分。"
-    primaryCta={{ label: '查看每日快报', href: '/intelligence' }}
+    primaryCta={{ label: '订阅情报日报', href: '#subscribe' }}
     secondaryCta={{ label: '了解工作原理', href: '/synapse/how-it-works' }}
   />
 
@@ -87,50 +87,76 @@ const pipeline = [
     </div>
   </PillarSection>
 
-  <PillarSection
-    eyebrow="Today's report / 今日情报"
-    title="订阅晨间快报"
-    subtitle="档案库即将上线。在此之前，先订阅晨间快报直投邮箱。"
-    bordered={true}
-  >
-    <div class="max-w-xl mx-auto">
-      <form
-        action="mailto:lysanderl@janusd.io"
-        method="GET"
-        enctype="text/plain"
-        class="bg-gray-900/60 border border-white/10 rounded-2xl p-6"
-      >
-        <input type="hidden" name="subject" value="Synapse Intelligence Subscription" />
-        <label for="email" class="block text-white/70 text-sm font-medium mb-2">
-          邮箱地址
-        </label>
-        <div class="flex flex-col sm:flex-row gap-3">
-          <input
-            id="email"
-            name="body"
-            type="email"
-            required
-            placeholder="you@company.com"
-            class="flex-1 px-4 py-3 bg-black/40 border border-white/10 rounded-xl text-white placeholder-white/30 focus:outline-none focus:border-[#FCAD2A]/50"
-          />
-          <button
-            type="submit"
-            class="inline-flex items-center justify-center px-6 py-3 bg-[#FCAD2A] text-gray-900 font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all whitespace-nowrap"
-          >
-            订阅晨间快报
-          </button>
-        </div>
-        <p class="text-white/40 text-xs mt-3">
-          我们会亲自跟进。随时可退订。
-        </p>
+  <section id="subscribe" class="py-16 px-6" style="background: var(--color-dark, #0A1628);">
+    <div class="max-w-xl mx-auto text-center">
+      <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-3">Today's report / 今日情报</p>
+      <h2 class="text-2xl font-bold text-white mb-3">订阅情报日报</h2>
+      <p class="text-white/60 mb-8">每日 AI 战场最新动态，Synapse 团队精选评述，直达你的收件箱。</p>
+      <form id="subscribe-form" class="flex flex-col sm:flex-row gap-3">
+        <input
+          type="email"
+          id="subscribe-email"
+          placeholder="your@email.com"
+          required
+          class="flex-1 px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-sky-400"
+        />
+        <button
+          type="submit"
+          id="subscribe-btn"
+          class="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-lg transition-colors whitespace-nowrap"
+        >
+          订阅晨间快报
+        </button>
       </form>
+      <p id="subscribe-msg" class="mt-4 text-sm hidden"></p>
     </div>
-  </PillarSection>
+  </section>
+
+  <script>
+    const form = document.getElementById('subscribe-form');
+    const emailInput = document.getElementById('subscribe-email') as HTMLInputElement | null;
+    const btn = document.getElementById('subscribe-btn') as HTMLButtonElement | null;
+    const msg = document.getElementById('subscribe-msg');
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput?.value?.trim();
+      if (!email) return;
+
+      if (btn) { btn.disabled = true; btn.textContent = '提交中…'; }
+
+      try {
+        const res = await fetch('https://n8n.lysander.bond/webhook/blog-subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, source: 'lysander.bond', lang: 'zh', timestamp: new Date().toISOString() })
+        });
+
+        if (res.ok) {
+          if (msg) {
+            msg.textContent = '✅ 订阅成功！我们会在明天早上将情报日报发到你的收件箱。';
+            msg.className = 'mt-4 text-sm text-sky-400';
+          }
+          form.reset();
+        } else {
+          throw new Error('Server error');
+        }
+      } catch {
+        if (msg) {
+          msg.textContent = '⚠️ 提交暂时失败，请通过 lysanderl@janusd.io 联系我们完成订阅。';
+          msg.className = 'mt-4 text-sm text-yellow-400';
+        }
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = '订阅晨间快报'; }
+        msg?.classList.remove('hidden');
+      }
+    });
+  </script>
 
   <CTABanner
     heading="跑一条属于你的情报回路"
     body="Synapse 自带这条日常管线。你的回路，从你第一次打开 Claude Code 的那个清晨开始。"
     primaryCta={{ label: '立即上手', href: '/synapse/get-started' }}
-    secondaryCta={{ label: '查看定价', href: '/synapse/pricing' }}
+    secondaryCta={{ label: '了解学院', href: '/academy' }}
   />
 </SynapseLayout>

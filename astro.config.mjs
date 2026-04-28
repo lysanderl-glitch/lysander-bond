@@ -31,22 +31,25 @@ export default defineConfig({
     '/synapse/zh/how-it-works': '/synapse/how-it-works',
     '/synapse/zh/team': '/synapse/team',
     '/synapse/zh/intelligence': '/synapse/intelligence',
-    '/synapse/zh/pricing': '/synapse/pricing',
+    '/synapse/zh/pricing': '/academy',
     '/synapse/zh/get-started': '/synapse/get-started',
     '/synapse/zh/beta': '/synapse/beta',
     // 2026-04-26: IA consolidation — services/training/intelligence pages
     // merged into Synapse pricing + intelligence sub-pages.
-    '/services': '/synapse/pricing',
-    '/training': '/synapse/pricing',
+    '/services': '/academy',
+    '/training': '/academy',
     '/intelligence': '/synapse/intelligence',
-    '/en/services': '/en/synapse/pricing',
-    '/en/training': '/en/synapse/pricing',
+    '/en/services': '/en/academy',
+    '/en/training': '/en/academy',
     '/en/intelligence': '/en/synapse/intelligence',
+    // Pricing pages removed (2026-04-28): redirect to academy.
+    '/synapse/pricing': '/academy',
+    '/en/synapse/pricing': '/en/academy',
     // Academy placeholder pages removed (decision ②A 2026-04-26).
     '/academy/dashboard': '/academy',
-    '/academy/course': '/synapse/pricing',
+    '/academy/course': '/academy',
     '/en/academy/dashboard': '/en/academy',
-    '/en/academy/course': '/en/synapse/pricing',
+    '/en/academy/course': '/en/academy',
   },
   vite: {
     plugins: [tailwindcss()]
