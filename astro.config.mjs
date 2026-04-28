@@ -38,7 +38,6 @@ export default defineConfig({
     // merged into Synapse pricing + intelligence sub-pages.
     '/services': '/academy',
     '/training': '/academy',
-    '/intelligence': '/synapse/intelligence',
     '/en/services': '/en/academy',
     '/en/training': '/en/academy',
     '/en/intelligence': '/en/synapse/intelligence',

@@ -1,6 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const items = await getCollection('intelligence-results');
@@ -11,7 +11,7 @@ export async function getStaticPaths() {
 }
 
 const { item } = Astro.props;
-const { Content } = await item.render();
+const { Content } = await render(item);
 ---
 
 <Layout title={`${item.data.title} | 执行结果`} description={item.data.summary} lang="zh" darkContent={true}>
