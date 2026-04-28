@@ -131,3 +131,172 @@ a:hover { opacity: 0.85; }
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none; z-index: 0;
 }
+
+/* ══ Blog article typography — dark theme ══
+   Replaces @tailwindcss/typography (not installed).
+   Applied via .blog-content wrapper in [...slug].astro
+   Added: 2026-04-28
+*/
+.blog-content {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.125rem;       /* 18px */
+  line-height: 1.75;
+  max-width: none;
+}
+
+/* Headings */
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4,
+.blog-content h5,
+.blog-content h6 {
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.blog-content h2 {
+  font-size: 1.6rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.blog-content h3 {
+  font-size: 1.3rem;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.blog-content h4 {
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Paragraphs */
+.blog-content p {
+  margin-bottom: 1.5rem;
+}
+
+/* Links */
+.blog-content a {
+  color: #38bdf8;             /* sky-400 */
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  opacity: 1;
+}
+.blog-content a:hover {
+  color: #7dd3fc;             /* sky-300 */
+  opacity: 1;
+}
+
+/* Strong / Em */
+.blog-content strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+.blog-content em {
+  color: rgba(255, 255, 255, 0.9);
+  font-style: italic;
+}
+
+/* Lists */
+.blog-content ul,
+.blog-content ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.75rem;
+}
+.blog-content ul {
+  list-style-type: disc;
+}
+.blog-content ol {
+  list-style-type: decimal;
+}
+.blog-content li {
+  margin-bottom: 0.5rem;
+}
+.blog-content li > ul,
+.blog-content li > ol {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Blockquote */
+.blog-content blockquote {
+  border-left: 3px solid #38bdf8;
+  padding: 0.75rem 1.25rem;
+  margin: 1.75rem 0;
+  background: rgba(56, 189, 248, 0.06);
+  border-radius: 0 6px 6px 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-style: italic;
+}
+.blog-content blockquote p {
+  margin-bottom: 0;
+}
+
+/* Inline code */
+.blog-content code {
+  background: rgba(255, 255, 255, 0.08);
+  color: #7dd3fc;
+  padding: 0.15em 0.45em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+}
+
+/* Code blocks */
+.blog-content pre {
+  background: rgba(10, 18, 40, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.75rem 0;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.blog-content pre code {
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+/* Images */
+.blog-content img {
+  border-radius: 8px;
+  margin: 1.75rem auto;
+  display: block;
+  max-width: 100%;
+}
+
+/* Horizontal rule */
+.blog-content hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin: 2.5rem 0;
+}
+
+/* Tables */
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.75rem 0;
+  font-size: 0.95rem;
+}
+.blog-content th {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.blog-content td {
+  padding: 0.6rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+}

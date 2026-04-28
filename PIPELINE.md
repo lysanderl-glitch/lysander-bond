@@ -79,7 +79,22 @@ governance:
 
 Stored in `pipeline-metrics/v{X.Y.Z}.yaml`.
 
-## 5. Branching Strategy
+## 5. Deployment Targets
+
+| Domain | Server | Trigger | Status |
+|--------|--------|---------|--------|
+| **lysander.bond** | Cloudflare Pages | push to `main` (auto via `deploy.yml`) | Active |
+| **synapsehd.com** | 火山引擎 `118.196.41.252` | push to `main` (auto via `deploy-volcano.yml`) | ICP 备案中（预计 2026-04-30 激活） |
+
+### synapsehd.com — lysander.bond 镜像分支
+
+- **内容**：100% 同源（同一仓库 `main`，同一构建产物）
+- **独立性**：无独立版本迭代，版本号与 lysander.bond 同步
+- **构建差异**：`SITE_URL=https://synapsehd.com`（canonical URL 不同）
+- **SSL/HTTPS**：ICP 备案通过后自动启用
+- **凭证**：需 GitHub Secret `VOLCANO_SSH_KEY`（总裁手动在 GitHub Settings 配置）
+
+## 5b. Branching Strategy
 
 - `main` — current production baseline
 - `release/v{X.Y.Z}` — release candidates (optional, for MAJOR)
