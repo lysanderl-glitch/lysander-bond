@@ -58,8 +58,40 @@ const pipeline = [
     title="每天早晨，AI 团队自动上岗"
     subtitle="Synapse 运转一条日常情报管线：扫描 AI 前沿 → 过滤信号 → 评估行动 → 交付报告。无人工介入。产出公开——管线本身即是产品的一部分。"
     primaryCta={{ label: '订阅情报日报', href: '#subscribe' }}
-    secondaryCta={{ label: '了解工作原理', href: '/synapse/how-it-works' }}
+    secondaryCta={{ label: '查看每日快报', href: '/intelligence' }}
   />
+
+  <!-- 情报档案入口卡片 -->
+  <section class="py-12 px-6 border-t border-white/10">
+    <div class="max-w-4xl mx-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/intelligence/daily" class="group flex flex-col gap-3 p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-sky-500/50 transition-all">
+          <div class="text-2xl">📡</div>
+          <div>
+            <div class="text-white font-semibold mb-1">情报快报</div>
+            <div class="text-white/50 text-sm">每日 AI 前沿信号精选，08:00 Dubai 自动生成</div>
+          </div>
+          <div class="text-sky-400 text-sm font-medium mt-auto">查看档案 →</div>
+        </a>
+        <a href="/intelligence/decisions" class="group flex flex-col gap-3 p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-sky-500/50 transition-all">
+          <div class="text-2xl">⚖️</div>
+          <div>
+            <div class="text-white font-semibold mb-1">执行决策</div>
+            <div class="text-white/50 text-sm">L1-L4 决策归档，附推理过程与采纳理由</div>
+          </div>
+          <div class="text-sky-400 text-sm font-medium mt-auto">查看决策 →</div>
+        </a>
+        <a href="/intelligence/results" class="group flex flex-col gap-3 p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-sky-500/50 transition-all">
+          <div class="text-2xl">✅</div>
+          <div>
+            <div class="text-white font-semibold mb-1">执行结果</div>
+            <div class="text-white/50 text-sm">行动项完成率与复盘，闭合每个情报周期</div>
+          </div>
+          <div class="text-sky-400 text-sm font-medium mt-auto">查看结果 →</div>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <PillarSection
     eyebrow="The Daily Pipeline / 日常管线"
@@ -86,25 +118,6 @@ const pipeline = [
       </p>
     </div>
   </PillarSection>
-
-  <!-- 情报档案入口 -->
-  <section class="py-12 px-6 border-t border-white/10">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-2xl font-bold text-white mb-3">查看每日快报</h2>
-      <p class="text-white/50 mb-8">情报档案实时更新，每日 08:00 Dubai 自动生成</p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/intelligence/daily" class="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-lg transition-colors">
-          📡 情报快报档案
-        </a>
-        <a href="/intelligence/decisions" class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-colors">
-          ⚖️ 执行决策记录
-        </a>
-        <a href="/intelligence/results" class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-colors">
-          ✅ 执行结果报告
-        </a>
-      </div>
-    </div>
-  </section>
 
   <section id="subscribe" class="py-16 px-6" style="background: var(--color-dark, #0A1628);">
     <div class="max-w-xl mx-auto text-center">

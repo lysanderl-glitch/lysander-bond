@@ -58,8 +58,40 @@ const pipeline = [
     title="Every morning, your AI team reports for work."
     subtitle="Synapse runs a daily intelligence pipeline: scan the AI frontier, filter for signal, evaluate for action, ship the report. No human in the loop. The output is public — and the pipeline itself is part of the product."
     primaryCta={{ label: 'Subscribe to Intelligence Daily', href: '#subscribe' }}
-    secondaryCta={{ label: 'See How It Works', href: '/en/synapse/how-it-works' }}
+    secondaryCta={{ label: 'View Daily Intel', href: '/en/intelligence' }}
   />
+
+  <!-- Intelligence archive entry cards -->
+  <section class="py-12 px-6 border-t border-white/10">
+    <div class="max-w-4xl mx-auto">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/en/intelligence/daily" class="group flex flex-col gap-3 p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-sky-500/50 transition-all">
+          <div class="text-2xl">📡</div>
+          <div>
+            <div class="text-white font-semibold mb-1">Daily Intel</div>
+            <div class="text-white/50 text-sm">Latest AI signal picks, auto-generated 08:00 Dubai</div>
+          </div>
+          <div class="text-sky-400 text-sm font-medium mt-auto">View Archive →</div>
+        </a>
+        <a href="/en/intelligence/decisions" class="group flex flex-col gap-3 p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-sky-500/50 transition-all">
+          <div class="text-2xl">⚖️</div>
+          <div>
+            <div class="text-white font-semibold mb-1">Decisions</div>
+            <div class="text-white/50 text-sm">L1-L4 decision log with reasoning and outcomes</div>
+          </div>
+          <div class="text-sky-400 text-sm font-medium mt-auto">Browse Decisions →</div>
+        </a>
+        <a href="/en/intelligence/results" class="group flex flex-col gap-3 p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-sky-500/50 transition-all">
+          <div class="text-2xl">✅</div>
+          <div>
+            <div class="text-white font-semibold mb-1">Results</div>
+            <div class="text-white/50 text-sm">Action completion rates and retrospectives</div>
+          </div>
+          <div class="text-sky-400 text-sm font-medium mt-auto">See Results →</div>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <PillarSection
     eyebrow="The Daily Pipeline"
@@ -86,25 +118,6 @@ const pipeline = [
       </p>
     </div>
   </PillarSection>
-
-  <!-- Intelligence archive entry -->
-  <section class="py-12 px-6 border-t border-white/10">
-    <div class="max-w-4xl mx-auto text-center">
-      <h2 class="text-2xl font-bold text-white mb-3">Browse the Daily Reports</h2>
-      <p class="text-white/50 mb-8">Live archive — auto-generated every day at 08:00 Dubai time</p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="/en/intelligence/daily" class="px-6 py-3 bg-sky-500 hover:bg-sky-400 text-white font-semibold rounded-lg transition-colors">
-          📡 Daily Intel Archive
-        </a>
-        <a href="/en/intelligence/decisions" class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-colors">
-          ⚖️ Decision Log
-        </a>
-        <a href="/en/intelligence/results" class="px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-colors">
-          ✅ Execution Results
-        </a>
-      </div>
-    </div>
-  </section>
 
   <section id="subscribe" class="py-16 px-6" style="background: var(--color-dark, #0A1628);">
     <div class="max-w-xl mx-auto text-center">
