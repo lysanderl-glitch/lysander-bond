@@ -2,6 +2,8 @@
 title: "[EN] When Your AI Team Has 3 Different Headcounts: Fixing Number Drift with Fact-SSOT"
 description: "From a real incident where 44/46/50 coexisted as the 'correct' agent count — root cause analysis of number drift in multi-file AI systems and the Fact-SSOT meta-rule solution"
 date: 2026-04-26
+publishDate: 2026-04-26T00:00:00.000Z
+slug: ai-agent-count-drift-fact-ssot-meta-rule
 lang: en
 tags:
   - AI Engineering

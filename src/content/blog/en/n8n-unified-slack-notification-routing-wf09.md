@@ -2,6 +2,8 @@
 title: "[EN] Building WF-09: The n8n Slack Notification Hub Router — Architecture Deep Dive"
 description: "7 workflows, each with its own Slack credentials and zero audit trail. The complete design and migration story for WF-09, a centralized n8n notification router."
 date: 2026-04-26
+publishDate: 2026-04-26T00:00:00.000Z
+slug: n8n-unified-slack-notification-routing-wf09
 lang: en
 tags:
   - AI Engineering

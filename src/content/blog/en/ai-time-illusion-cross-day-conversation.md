@@ -2,6 +2,8 @@
 title: "[EN] The AI Time Illusion: A System-Level Analysis of Cross-Day Conversation Failures"
 description: "A 2am email listing Wednesday tasks as 'completed today' on Thursday — dissecting why long AI sessions systematically lose temporal grounding and three layers of engineering fix"
 date: 2026-04-26
+publishDate: 2026-04-26T00:00:00.000Z
+slug: ai-time-illusion-cross-day-conversation
 lang: en
 tags:
   - AI Engineering

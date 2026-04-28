@@ -2,6 +2,8 @@
 title: "[EN] Why Your AI Knowledge Base Decays: Lessons from CLAUDE.md Fact Accuracy Failures"
 description: "The moment I discovered all the agent count data was wrong — how config file decay makes every AI analysis rest on sand"
 date: 2026-04-27
+publishDate: 2026-04-27T00:00:00.000Z
+slug: ai-knowledge-base-decay-fact-check
 lang: en
 tags:
   - AI Engineering
