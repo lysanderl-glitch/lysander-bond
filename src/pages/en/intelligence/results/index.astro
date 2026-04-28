@@ -1,0 +1,42 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const results = (await getCollection('intelligence-results'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<Layout title="Execution Results | Lysander" description="AI team daily action reports — complete record from task to delivery." lang="en" darkContent={true}>
+  <section class="pt-24 pb-16 px-6">
+    <div class="max-w-3xl mx-auto">
+      <a href="/en/intelligence" class="text-sm text-white/40 hover:text-white/70 mb-6 inline-block">← Intelligence Hub</a>
+      <h1 class="text-3xl font-bold text-white mb-2">Execution Results</h1>
+      <p class="text-white/50 mb-10">AI team daily action reports — complete record from task to delivery.</p>
+
+      {results.length === 0 ? (
+        <div class="text-center py-20 text-white/30">No results yet. Action reports will appear here automatically once generated.</div>
+      ) : (
+        <div class="space-y-4">
+          {results.map(r => (
+            <a href={`/en/intelligence/results/${r.data.date}`}
+               class="flex items-start gap-4 p-5 rounded-xl bg-white/5 border border-white/10 hover:border-green-500/40 transition-colors group">
+              <div class="flex-shrink-0 text-center">
+                <div class="text-2xl font-bold text-green-400">{new Date(r.data.date).getDate()}</div>
+                <div class="text-xs text-white/40">{new Date(r.data.date).toLocaleDateString('en-US', {month:'short'})}</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <h2 class="font-semibold text-white group-hover:text-green-400 mb-1">{r.data.title}</h2>
+                <p class="text-sm text-white/50 line-clamp-2">{r.data.summary}</p>
+                <div class="flex gap-3 mt-2 text-xs text-white/30">
+                  <span>{r.data.actionsCount} actions</span>
+                  <span class="text-green-400">{r.data.completedCount} completed</span>
+                  {r.data.tags.slice(0,3).map(t => <span class="bg-green-500/10 text-green-400 px-1.5 py-0.5 rounded">{t}</span>)}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

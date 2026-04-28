@@ -1,0 +1,38 @@
+---
+import Layout from '../../../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const items = await getCollection('intelligence-results');
+  return items.map(item => ({
+    params: { date: item.data.date },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+---
+
+<Layout title={`${item.data.title} | Execution Results`} description={item.data.summary} lang="en" darkContent={true}>
+  <article class="pt-24 pb-16 px-6">
+    <div class="max-w-3xl mx-auto">
+      <a href="/en/intelligence/results" class="text-sm text-white/40 hover:text-white/70 mb-6 inline-block">← Execution Results</a>
+      <header class="mb-10">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full font-mono">{item.data.date}</span>
+          <span class="text-xs text-white/40">{item.data.actionsCount} actions · {item.data.completedCount} completed</span>
+        </div>
+        <h1 class="text-3xl font-bold text-white mb-3">{item.data.title}</h1>
+        <p class="text-white/60">{item.data.summary}</p>
+      </header>
+      <div class="blog-content">
+        <Content />
+      </div>
+      <footer class="mt-12 pt-6 border-t border-white/10 flex justify-between items-center">
+        <a href="/en/intelligence/results" class="text-sm text-white/40 hover:text-white">← All results</a>
+        <a href="/en/intelligence" class="text-sm text-green-400 hover:text-green-300">Intelligence Hub →</a>
+      </footer>
+    </div>
+  </article>
+</Layout>
