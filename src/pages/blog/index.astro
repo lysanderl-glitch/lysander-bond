@@ -3,6 +3,41 @@ import Layout from '../../layouts/Layout.astro';
 
 const posts = [
   {
+    slug: 'product-pipeline-auto-refresh-at-2am',
+    title: '为什么我们要给所有产品管线建立每日2AM自动更新机制',
+    date: '2026-04-29',
+    description: '数据过期是产品决策的隐性杀手，不是技术债 我们在三条产品线上吃了过期数据的亏后才建的这套机制 每日2AM自动更新不是运维习惯，是决策质量的基础设施',
+    tags: ['AI工程', 'Synapse', 'B类']
+  },
+  {
+    slug: 'pmo-product-redesign-from-scratch',
+    title: '从还原到重塑：我们如何用\'浴火重生\'方式重新设计PMO产品',
+    date: '2026-04-29',
+    description: '迁移旧PMO系统的成本，最终超过了重新设计的成本 我们放弃还原，选择以"浴火重生"方式重塑产品逻辑 回到原点不是退步，是发现了之前设计的根本性错误',
+    tags: ['AI工程', 'Synapse', 'B类']
+  },
+  {
+    slug: 'multi-agent-website-audit-workflow',
+    title: 'AI驱动的网站运维：如何让多智能体团队完成一次全站内容审计',
+    date: '2026-04-29',
+    description: '多智能体协作网站审计，4个角色分工明确才能跑通 产品委员会负责裁决，内容/市场/智囊团各司其职 最难的不是写agent，是设计"谁拍板"的权限边界',
+    tags: ['AI工程', 'Synapse', 'B类']
+  },
+  {
+    slug: 'ai-blog-content-quality-degradation-root-cause-fix',
+    title: 'AI生成博客内容质量退化的根因分析与固化方案',
+    date: '2026-04-28',
+    description: 'AI博客内容退化不是prompt问题，是产线约束缺失 结构扁平的根因：没有强制分层的模板约束 单次修prompt治标不治本，需在工作流入口固化规则',
+    tags: ['AI工程', 'Synapse', 'B类']
+  },
+  {
+    slug: 'agent-memory-collaboration-mechanism-design',
+    title: 'Agent记忆协作机制设计：让AI在下一次会话中\'记得\'上一次做了什么决策',
+    date: '2026-04-28',
+    description: 'Agent跨会话失忆，根因是上下文窗口天然无状态 解法：产品管线归档 + 外置记忆 + 委员会召回 不是RAG检索，而是结构化决策日志的定向注入 架',
+    tags: ['AI工程', 'Synapse', 'B类']
+  },
+  {
     slug: 'ai-agent-organization-lysander-autonomous-product-delivery',
     title: '从单一AI到Agent组织：我如何让Lysander带领一个虚拟团队自主完成产品交付',
     date: '2026-04-28',
