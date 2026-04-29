@@ -1,0 +1,49 @@
+name: Post-Deploy Health Check
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  post-deploy-health-check:
+    name: post-deploy-health-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Cloudflare Pages deployment
+        run: sleep 300
+
+      - name: Check site health
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_N8N }}
+          COMMIT_SHA: ${{ github.sha }}
+        run: |
+          URLS=(
+            "https://lysander.bond/"
+            "https://lysander.bond/intelligence/"
+            "https://lysander.bond/blog/"
+            "https://lysander.bond/synapse/"
+            "https://lysander.bond/en/intelligence/"
+          )
+
+          FAILED=0
+          for URL in "${URLS[@]}"; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+            if [ "$CODE" != "200" ]; then
+              echo "FAIL: $URL returned HTTP $CODE"
+              PAYLOAD=$(printf '{"text": "⚠️ lysander.bond 健康检查失败\n失败 URL: %s\nHTTP: %s\nCommit: %s"}' "$URL" "$CODE" "$COMMIT_SHA")
+              curl -s -X POST -H "Content-Type: application/json" \
+                -d "$PAYLOAD" \
+                "$SLACK_WEBHOOK"
+              FAILED=1
+            else
+              echo "OK: $URL → $CODE"
+            fi
+          done
+
+          if [ "$FAILED" -eq 1 ]; then
+            echo "One or more health checks failed."
+            exit 1
+          fi
+
+          echo "All health checks passed."
