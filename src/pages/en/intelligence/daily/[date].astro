@@ -27,6 +27,11 @@ const { Content } = await render(post);
         <p class="text-white/60">{post.data.summary}</p>
       </header>
       <div class="blog-content">
+        <!-- Language notice banner -->
+        <div class="mb-6 px-4 py-3 bg-amber-500/10 border border-amber-500/30 rounded-lg text-sm text-amber-300/80 flex items-start gap-2">
+          <span class="shrink-0 mt-0.5">🌐</span>
+          <span>This report was generated in Chinese. English summaries are coming soon. Use your browser's translation feature for full content.</span>
+        </div>
         <Content />
       </div>
       <footer class="mt-12 pt-6 border-t border-white/10 flex justify-between items-center">
