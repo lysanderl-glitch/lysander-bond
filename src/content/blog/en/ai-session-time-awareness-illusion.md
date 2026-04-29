@@ -1,5 +1,5 @@
 ---
-title: "[EN] The AI Time Illusion: Why Cross-Day Conversations Generate False 'Tonights'"
+title: "The AI Time Illusion: Why Cross-Day Conversations Generate False 'Tonights'"
 description: "Session continuity ≠ time continuity — how AI fails at temporal reasoning in long or resumed conversations, and how to fix it with explicit time anchoring"
 date: 2026-04-25
 publishDate: 2026-04-25T00:00:00.000Z

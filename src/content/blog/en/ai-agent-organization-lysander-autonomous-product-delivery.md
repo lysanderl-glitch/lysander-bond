@@ -1,6 +1,6 @@
 ---
-title: "[EN] 从单一AI到Agent组织：我如何让Lysander带领一个虚拟团队自主完成产品交付"
-description: "以真实会话记录为素材，拆解'用户授权→Lysander统筹→专家团决策→委员会协作'这套AI组织化运作机制的设计逻辑"
+title: "From Solo AI to Agent Teams: How Lysander Leads a Virtual Team Through Autonomous Product Delivery"
+description: "A real-world walkthrough of the AI organizational design behind Synapse: user authorization, Lysander coordination, specialist decision-making, and committee collaboration — and how it delivers autonomously."
 date: 2026-04-28
 publishDate: 2026-04-28T00:00:00.000Z
 slug: ai-agent-organization-lysander-autonomous-product-delivery

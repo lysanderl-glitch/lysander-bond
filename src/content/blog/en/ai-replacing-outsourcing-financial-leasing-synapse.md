@@ -1,5 +1,5 @@
 ---
-title: "[EN] Replacing a 15-Person Outsourced Team with AI: A Financial Leasing Company's Synapse Transition"
+title: "Replacing a 15-Person Outsourced Team with AI: A Financial Leasing Company's Synapse Transition"
 description: "From a real client scenario: how 'product manager + AI' can absorb work that previously required a 15-person outsourced development team"
 date: 2026-04-26
 publishDate: 2026-04-26T00:00:00.000Z

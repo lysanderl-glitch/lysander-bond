@@ -5,21 +5,27 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="关于 Synapse">
   <section class="max-w-4xl mx-auto px-6 py-20">
     <p class="text-sm font-semibold tracking-widest text-[#FCAD2A] uppercase mb-4">关于我们</p>
-    <h1 class="text-4xl font-extrabold text-[var(--color-text)] mb-6">关于 Synapse</h1>
+    <h1 class="text-4xl font-extrabold text-[var(--color-text)] mb-4">AI 团队的操作系统。</h1>
+    <p class="text-[var(--color-text-light)] text-lg mb-6">Synapse 从长期 Multi-Agent 实战中提炼而来 — 在 50+ 个 Agent 的压力测试中验证，作为一套框架交付给需要 Agent 真正落地的团队。</p>
 
-    <div class="space-y-12">
+    <div class="space-y-12 mt-12">
       <div>
+        <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-2">产品定义</p>
         <h2 class="text-xl font-bold text-[#013A7D] mb-4 pb-2 border-b-2 border-[#FCAD2A]">Synapse 是什么</h2>
         <p class="text-[var(--color-text-light)] leading-relaxed">
-          <strong class="text-[var(--color-text)]">Synapse</strong>（突触）是一套 AI 协作运营体系 — 知识、决策、执行之间的信息流转枢纽。基于 2026 年 AI 工程新范式 <strong class="text-[var(--color-text)]">Harness Engineering</strong>，让 AI Agent 团队可靠、可控、可进化地运行。
+          <strong class="text-[var(--color-text)]">Synapse</strong>（突触）是一套 AI 团队操作系统 — 知识（团队记忆）、决策（如何选择）、执行（做什么）之间的连接层。命名取自神经元之间传递信号的突触节点，正是它所承担的功能：让信息从工作的一个环节可靠地流向下一个环节。
         </p>
         <p class="text-[var(--color-text-light)] leading-relaxed mt-3">
-          Synapse 诞生于长期 Multi-Agent 协作的真实实战。每一条 Harness 规则背后，都是一次具体失败：CEO 越权执行的混乱、执行链断裂的任务失控、审计缺失的决策黑箱。Synapse 把这些教训沉淀为可复用的工程化框架。
+          构建于 <strong class="text-[var(--color-text)]">Harness Engineering</strong> —— 2026 年 AI 工程新范式：一个可靠的 Agent 等于模型加上它的 Harness，而工程能力真正沉淀在 Harness 之中。
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed mt-3">
+          Synapse 在生产环境运行，不是 Demo，不是 PPT。13 个功能模块，53 个 AI Agent，持续审计运行 — 每一条 Harness 规则背后，都有一次具体失败作为来由：CEO 越权执行的混乱、执行链断裂的任务失控、审计缺失的决策黑箱。
         </p>
       </div>
 
       <div>
-        <h2 class="text-xl font-bold text-[#013A7D] mb-4 pb-2 border-b-2 border-[#FCAD2A]">体系架构</h2>
+        <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-2">架构设计</p>
+        <h2 class="text-xl font-bold text-[#013A7D] mb-4 pb-2 border-b-2 border-[#FCAD2A]">五层架构，一个闭环</h2>
         <div class="bg-[#F7F8FA] border border-[var(--color-border)] rounded-xl p-6 font-mono text-sm leading-loose text-[var(--color-text-light)]">
           <p class="text-[#013A7D] font-bold mb-2">Synapse 五层架构</p>
           <p>├── <span class="text-[#028CDC]">记忆层</span> ── Obsidian 第二大脑 (OBS)</p>
@@ -28,29 +34,81 @@ import Layout from '../layouts/Layout.astro';
           <p>├── <span class="text-[#028CDC]">进化层</span> ── 情报闭环 (日报→评估→执行→报告)</p>
           <p>└── <span class="text-[#028CDC]">决策层</span> ── L1自动 → L2专家 → L3 CEO → L4总裁</p>
         </div>
+        <p class="text-[var(--color-text-light)] leading-relaxed mt-4">
+          每一层只负责一件事。记忆层负责记住。控制层约束行为边界。执行层负责交付。进化层让体系持续学习。决策层确保每个判断落在正确的层级 — 这是有组织的团队与无序群体的本质差异。
+        </p>
       </div>
 
       <div>
-        <h2 class="text-xl font-bold text-[#013A7D] mb-4 pb-2 border-b-2 border-[#FCAD2A]">核心理念</h2>
+        <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-2">核心理念</p>
+        <h2 class="text-xl font-bold text-[#013A7D] mb-4 pb-2 border-b-2 border-[#FCAD2A]">模型不是护城河</h2>
         <p class="text-[var(--color-text-light)] leading-relaxed">
-          AI 的竞争力不在模型本身，而在于你为它构建的环境、约束、反馈和组织。
+          AI 的竞争力不在模型本身，而在于你为它构建的环境 — 约束、反馈回路、角色分工、审计轨迹。同一个模型，Harness 不同，产生的团队能力天壤之别。
+        </p>
+        <div class="mt-4 p-5 bg-white border-l-4 border-[#FCAD2A] rounded-r-lg">
+          <p class="text-[#FCAD2A] font-semibold text-lg">Agent = Model + Harness。</p>
+          <p class="text-[var(--color-text)] font-semibold mt-1">模型是商品，Harness 才是护城河所在。</p>
+        </div>
+        <p class="text-[var(--color-text-light)] leading-relaxed mt-4">
+          这不是修辞。这是 Synapse 每一个设计决策所指向的底层假设。
+        </p>
+      </div>
+
+      <div>
+        <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-2">边界澄清</p>
+        <h2 class="text-xl font-bold text-[#013A7D] mb-4 pb-2 border-b-2 border-[#FCAD2A]">Synapse 不是什么</h2>
+        <div class="space-y-3">
+          <div class="flex gap-3 items-start p-4 bg-white border border-[var(--color-border)] rounded-lg">
+            <span class="text-[#FCAD2A] font-black shrink-0">—</span>
+            <div>
+              <span class="font-semibold text-[var(--color-text)]">不是模型提供商。</span>
+              <span class="text-[var(--color-text-light)]"> Synapse 可以包装任何有能力的模型，我们不训练基础模型，也无意进入那个赛道。</span>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start p-4 bg-white border border-[var(--color-border)] rounded-lg">
+            <span class="text-[#FCAD2A] font-black shrink-0">—</span>
+            <div>
+              <span class="font-semibold text-[var(--color-text)]">不是无代码 Agent 平台。</span>
+              <span class="text-[var(--color-text-light)]"> 如果你需要的是可视化拖拽流程，Synapse 不是合适的选择。它是方法论加框架，由会写代码的工程师来安装和运维。</span>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start p-4 bg-white border border-[var(--color-border)] rounded-lg">
+            <span class="text-[#FCAD2A] font-black shrink-0">—</span>
+            <div>
+              <span class="font-semibold text-[var(--color-text)]">不是通用咨询公司。</span>
+              <span class="text-[var(--color-text-light)]"> 一套方法论（Harness Engineering），一个交付产品（Synapse）。超出范围的需求我们会转介绍，不做大而全。</span>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start p-4 bg-white border border-[var(--color-border)] rounded-lg">
+            <span class="text-[#FCAD2A] font-black shrink-0">—</span>
+            <div>
+              <span class="font-semibold text-[var(--color-text)]">不是按月租用的 SaaS 软件。</span>
+              <span class="text-[var(--color-text-light)]"> 部署完成的 Synapse 实例完全归你所有：文档、Agent 配置、全部代码仓库 — 交付即转移所有权，不存在供应商锁定。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-2">体系来源</p>
+        <h2 class="text-xl font-bold text-[#013A7D] mb-4 pb-2 border-b-2 border-[#FCAD2A]">在持续实战中构建</h2>
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          Synapse 由 <strong class="text-[var(--color-text)]">刘子杨</strong> 设计，与 AI CEO <strong class="text-[var(--color-text)]">Lysander</strong> 在真实 Multi-Agent 运营中持续共创迭代。执行链、决策体系、CEO Guard、情报闭环 — 每个模块都经历了从混乱到收敛的完整周期，最终沉淀为可在单一团队之外复用的工程化框架。
         </p>
         <p class="text-[var(--color-text-light)] leading-relaxed mt-3">
-          <span class="text-[#FCAD2A] font-semibold">Agent = Model + Harness。模型人人可用，Harness 才是壁垒。</span>
+          简短的来由：一个长期在真实条件下运营 AI 团队的构建者，发现问题不在模型本身，而在模型周围的组织方式。Synapse 就是这个认知的产物。
         </p>
-      </div>
 
-      <div>
-        <h2 class="text-xl font-bold text-[#013A7D] mb-4 pb-2 border-b-2 border-[#FCAD2A]">体系作者</h2>
+        <h3 class="text-lg font-bold text-[var(--color-text)] mb-2 mt-8">体系作者</h3>
         <p class="text-[var(--color-text-light)] leading-relaxed">
-          <strong class="text-[var(--color-text)]">刘子杨</strong> — Synapse 体系作者，Harness Engineering 方法论提炼者。长期研究 AI 团队管理与 Multi-Agent 协作工程化，与 AI CEO Lysander 在持续实战中共同设计了 Synapse 的执行链、决策体系、CEO Guard 与情报闭环。
+          <strong class="text-[var(--color-text)]">刘子杨</strong> — Synapse 体系作者，Harness Engineering 方法论提炼者。长期研究 AI 团队管理与 Multi-Agent 协作工程化。
         </p>
 
-        <h2 class="text-xl font-bold text-[#013A7D] mb-4 pb-2 border-b-2 border-[#FCAD2A] mt-10">AI CEO</h2>
+        <h3 class="text-lg font-bold text-[var(--color-text)] mb-2 mt-6">AI CEO</h3>
         <p class="text-[var(--color-text-light)] leading-relaxed">
           <strong class="text-[var(--color-text)]">Lysander</strong> — Synapse 的 AI CEO 角色，由刘子杨设计与训练。负责团队统筹、执行链承接、决策落地。
         </p>
-        <div class="mt-4">
+        <div class="mt-6">
           <a href="mailto:lysanderl@janusd.io" class="text-[#028CDC] hover:text-[#FCAD2A] text-sm font-medium">lysanderl@janusd.io</a>
         </div>
       </div>

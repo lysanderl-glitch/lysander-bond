@@ -1,5 +1,5 @@
 ---
-title: "[EN] Replacing Local Cron with n8n: A Complete Intelligence Pipeline Migration"
+title: "Replacing Local Cron with n8n: A Complete Intelligence Pipeline Migration"
 description: "From discovering overlapping scheduled task responsibilities to systematically cleaning redundancy — establishing a single source of truth after migration"
 date: 2026-04-27
 publishDate: 2026-04-27T00:00:00.000Z

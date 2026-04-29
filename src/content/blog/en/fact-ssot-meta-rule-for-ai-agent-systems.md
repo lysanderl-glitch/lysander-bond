@@ -1,5 +1,5 @@
 ---
-title: "[EN] Fact-SSOT: The Meta-Rule for Eliminating Number Drift in AI Agent Systems"
+title: "Fact-SSOT: The Meta-Rule for Eliminating Number Drift in AI Agent Systems"
 description: "When the same AI system had agent counts of 44, 46, and 50 in three files simultaneously — root cause analysis and the Fact-SSOT meta-rule as a systematic fix"
 date: 2026-04-25
 publishDate: 2026-04-25T00:00:00.000Z

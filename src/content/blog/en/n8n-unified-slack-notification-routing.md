@@ -1,5 +1,5 @@
 ---
-title: "[EN] Unified Slack Notification Routing with n8n: From Fragmented Direct Connections to a Single Auditable Pipeline"
+title: "Unified Slack Notification Routing with n8n: From Fragmented Direct Connections to a Single Auditable Pipeline"
 description: "7 workflows directly connecting to Slack — credential sprawl, format inconsistency, zero observability. The WF-09 hub router pattern that fixed it."
 date: 2026-04-25
 publishDate: 2026-04-25T00:00:00.000Z

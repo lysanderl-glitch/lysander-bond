@@ -1,5 +1,5 @@
 ---
-title: "[EN] AI Team Decision Boundaries: When Should You Let the Agent Decide?"
+title: "AI Team Decision Boundaries: When Should You Let the Agent Decide?"
 description: "From 'ask me every 5 minutes' to 'professional decisions by professionals' — how we evolved Claude Code delegation in a real engineering team"
 date: 2026-04-27
 publishDate: 2026-04-27T00:00:00.000Z
