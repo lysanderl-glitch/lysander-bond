@@ -1,0 +1,30 @@
+version: "1.2.0-intelligence-hub"
+date: "2026-04-29"
+generated_by: knowledge_engineer
+classification: feature+fix+governance
+
+pages:
+  total_routes: 120        # 约估：108 (v1.1.0) + 12 新增 intelligence 路由
+  new_routes: 12           # /intelligence/{index,daily/*,decisions/*,results/*} × ZH+EN
+
+content_collections:
+  intelligence_daily: 9    # 历史日报
+  intelligence_decisions: 27
+  intelligence_results: 7
+  blog_zh: 33
+  blog_en: 10
+
+governance:
+  post_deploy_health_check: active
+  health_check_urls: 5
+  slack_alert: active
+
+quality:
+  cloudflare_build: success   # commit 30dcf32
+  health_check_run: success   # all 5 URLs 200
+  last_verified: "2026-04-29"
+
+notes: |
+  Intelligence Hub 首次上线，情报管线完整闭环可视化。
+  Post-deploy 健康检查正式激活，告别静默失败。
+  博客管线 .astro 生成漏洞根治。

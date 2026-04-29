@@ -1,5 +1,29 @@
 # Changelog
 
+## v1.2.0-intelligence-hub — 2026-04-29
+
+情报闭环管线可视化上线，管线质量治理体系建立
+
+### Feature
+- **Intelligence Hub** (`/intelligence/`): 全新情报中心，三栏布局展示每日情报快报 / 决策归档 / 执行结果
+- **EN intelligence routes** (`/en/intelligence/`): 英文镜像路由，含语言 disclaimer banner
+- **主导航情报入口**: 全站 Layout 新增"情报/Intel"入口
+- **Content Collections**: intelligence-daily / intelligence-decisions / intelligence-results 三套 schema
+- **GHA 自动发布**: intel-daily.yml + intel-action.yml 双管线自动推送到 lysander-bond
+
+### Fix
+- **P0**: Astro 6 `render()` API breaking change — `post.render()` → `render(post)` 修复所有动态路由
+- **P1**: 删除 `astro.config.mjs` 遗留 `/intelligence → /synapse/intelligence` redirect
+- **P1**: 13 个历史情报文件 `itemCount` / `actionsCount` 从 0 修正为实际值
+- **P0**: 博客管线 `auto-publish-blog.py` 不再生成 `.astro` 文件，根治 esbuild 崩溃
+- **P1**: `publish_to_bond.py` summary 换行符转义 + 降级路径 itemCount 提取逻辑修复
+
+### Governance
+- **Post-deploy 健康检查** (`post-deploy-health.yml`): 每次 push 后 5 分钟自动检查 5 个关键 URL，失败发 Slack 告警
+- **双语 QA 规则**: `quality-assurance-framework.md` 新增双语强制 5 项检查
+
+---
+
 ## v1.1.0-strategic-overhaul — 2026-04-26
 
 战略级改造完成，元规则修复，进入"管线产品"治理框架
