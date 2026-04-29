@@ -63,23 +63,23 @@ def dispatch_task(user_goal: str, delivery_criteria: list) -> dict:
     involved_domains = identify_domains(user_goal)
     # 示例输出：["product_design", "tech_spec", "copywriting", "qa_review"]
 
-    task_packages = {}
+    task_packages = &#123;&#125;
     for domain in involved_domains:
-        task_packages[domain] = {
+        task_packages[domain] = &#123;
             "sub_goal": decompose_goal(user_goal, domain),
             "context_boundary": "isolated",   # 关键：强制上下文隔离
             "output_format": get_template(domain),
             "escalation_condition": "cross_domain_decision_needed"
-        }
+        &#125;
 
     # 第二步：检测跨域依赖，触发委员会模式
     cross_domain_nodes = detect_dependencies(task_packages)
     if cross_domain_nodes:
-        task_packages["committee"] = {
+        task_packages["committee"] = &#123;
             "participants": cross_domain_nodes,
             "decision_protocol": "structured_discussion",
             "max_rounds": 3
-        }
+        &#125;
 
     return task_packages
 </code></pre>
