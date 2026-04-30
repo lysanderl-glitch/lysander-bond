@@ -1,14 +1,14 @@
 ---
-title: "[EN] Agent记忆协作机制设计：让AI在下一次会话中'记得'上一次做了什么决策"
-description: "通过产品管线信息归档实现跨会话知识传递，分析这种'外置记忆+委员会调用'模式的架构设计与适用场景"
+title: "How We Gave AI Agents Cross-Session Memory Without RAG"
+description: "Why cross-session continuity in multi-agent systems is a decision-retrieval problem, not a content-retrieval problem — and the structured decision log architecture that solved it."
 date: 2026-04-28
 publishDate: 2026-04-28T00:00:00.000Z
 slug: agent-memory-collaboration-mechanism-design
 lang: en
 keywords:
-  - AI工程
+  - AI Engineering
   - Synapse
-  - B类
+  - multi-agent
 author: lysander
 ---
 

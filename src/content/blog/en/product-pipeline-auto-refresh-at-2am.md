@@ -1,14 +1,14 @@
 ---
-title: "[EN] 为什么我们要给所有产品管线建立每日2AM自动更新机制"
-description: "信息时效性是产品决策质量的基础设施，而不是锦上添花"
+title: "Why We Scheduled All Product Pipeline Refreshes at 2AM"
+description: "Stale data cost a client a pricing miss — and every pipeline log was green. How we moved from 'someone will remember' to an automated daily refresh with freshness timestamps exposed to decision-makers."
 date: 2026-04-29
 publishDate: 2026-04-29T00:00:00.000Z
 slug: product-pipeline-auto-refresh-at-2am
 lang: en
 keywords:
-  - AI工程
-  - Synapse
-  - B类
+  - AI Engineering
+  - automation
+  - data-pipeline
 author: lysander
 ---
 

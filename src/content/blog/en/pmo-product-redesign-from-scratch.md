@@ -1,14 +1,14 @@
 ---
-title: "[EN] 从还原到重塑：我们如何用'浴火重生'方式重新设计PMO产品"
-description: "当迁移工具的成本高于重新思考产品本身时，回到原点才是最快的路"
+title: "When Migration Costs More Than Rebuilding: A PMO Product Phoenix Story"
+description: "At week 14, migration would take 27 weeks instead of 6. We stopped, discovered 40% of features existed only to manage the system's own complexity, and rebuilt from scratch."
 date: 2026-04-29
 publishDate: 2026-04-29T00:00:00.000Z
 slug: pmo-product-redesign-from-scratch
 lang: en
 keywords:
-  - AI工程
-  - Synapse
-  - B类
+  - AI Engineering
+  - PMO
+  - product-design
 author: lysander
 ---
 

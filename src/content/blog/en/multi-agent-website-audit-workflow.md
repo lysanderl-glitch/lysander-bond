@@ -1,14 +1,14 @@
 ---
-title: "[EN] AI驱动的网站运维：如何让多智能体团队完成一次全站内容审计"
-description: "产品委员会、内容团队、市场团队、智囊团协同完成网站审计的实际流程拆解"
+title: "How a 4-Agent Team Audited 47 Pages — and Why Authority Design Is the Hard Part"
+description: "A live test of multi-agent website auditing: how we structured committee authority, role-based output schemas, and a dedicated opposition agent that blocked 4 SEO-damaging changes."
 date: 2026-04-29
 publishDate: 2026-04-29T00:00:00.000Z
 slug: multi-agent-website-audit-workflow
 lang: en
 keywords:
-  - AI工程
+  - AI Engineering
+  - multi-agent
   - Synapse
-  - B类
 author: lysander
 ---
 

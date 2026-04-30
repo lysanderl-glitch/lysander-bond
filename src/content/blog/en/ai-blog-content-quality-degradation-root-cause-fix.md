@@ -1,14 +1,14 @@
 ---
-title: "[EN] AI生成博客内容质量退化的根因分析与固化方案"
-description: "从一篇结构扁平的AI生成博客出发，分析内容质量退化的系统性原因，以及如何通过产线约束而非单次prompt修复来防止复发"
+title: "When AI Blog Quality Degrades Silently: Root Cause Analysis and a Pipeline Fix"
+description: "Six articles degraded with no alerts. The root cause wasn't the prompt — it was a pipeline with no defined failure state for quality. How we fixed it with mandatory structure validation."
 date: 2026-04-28
 publishDate: 2026-04-28T00:00:00.000Z
 slug: ai-blog-content-quality-degradation-root-cause-fix
 lang: en
 keywords:
-  - AI工程
+  - AI Engineering
+  - content-pipeline
   - Synapse
-  - B类
 author: lysander
 ---
 
