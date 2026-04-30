@@ -1,0 +1,67 @@
+name: Validate EN Content Language
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/content/blog/en/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/content/blog/en/**'
+
+jobs:
+  validate-en-language:
+    name: Check EN blog titles for Chinese characters
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run language validation
+        run: |
+          python3 - << 'EOF'
+          import os, re, sys
+
+          CJK = re.compile(
+              r'[一-鿿'
+              r'㐀-䶿'
+              r'\U00020000-\U0002a6df'
+              r'豈-﫿'
+              r'　-〿'
+              r'＀-￯]',
+              re.UNICODE
+          )
+
+          blog_dir = 'src/content/blog/en'
+          errors = []
+          checked = 0
+
+          for root, _, files in os.walk(blog_dir):
+              for fname in sorted(files):
+                  if not fname.endswith('.md'):
+                      continue
+                  path = os.path.join(root, fname)
+                  with open(path, encoding='utf-8') as f:
+                      content = f.read()
+                  if not content.startswith('---'):
+                      continue
+                  fm_end = content.find('---', 3)
+                  if fm_end == -1:
+                      continue
+                  fm = content[3:fm_end]
+                  for line in fm.splitlines():
+                      if line.startswith('title:') or line.startswith('description:'):
+                          val = line.split(':', 1)[1].strip().strip('"\'')
+                          if CJK.search(val):
+                              errors.append(f'{path}: [{line.strip()}]')
+                  checked += 1
+
+          print(f'Checked {checked} EN blog files.')
+          if errors:
+              print('❌ Chinese characters found in EN blog frontmatter:')
+              for e in errors:
+                  print(f'  {e}')
+              sys.exit(1)
+          else:
+              print('✅ All EN blog files have clean English titles and descriptions.')
+          EOF
