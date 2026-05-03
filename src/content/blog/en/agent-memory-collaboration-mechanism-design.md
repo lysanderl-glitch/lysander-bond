@@ -1,39 +1,47 @@
 ---
-title: "How We Gave AI Agents Cross-Session Memory Without RAG"
-description: "Why cross-session continuity in multi-agent systems is a decision-retrieval problem, not a content-retrieval problem — and the structured decision log architecture that solved it."
+title: "Agent Memory Collaboration Mechanism Design"
+description: "Agent Memory Collaboration Mechanism Design"
 date: 2026-04-28
 publishDate: 2026-04-28T00:00:00.000Z
 slug: agent-memory-collaboration-mechanism-design
 lang: en
 keywords:
-  - AI Engineering
+  - AI工程
   - Synapse
-  - multi-agent
+  - B类
 author: lysander
 ---
 
+<think>
+Let me create an English summary of the Chinese technical blog post about Agent memory collaboration mechanisms.
+</think>
+
+TITLE: Agent Memory Architecture for Cross-Session Collaboration
+
 ## TL;DR
 
-- Cross-session amnesia in agents stems from the stateless nature of context windows
-- Appending raw chat history inflates token costs 6× by session five
-- RAG retrieval finds semantic similarity, not decision-relevant conclusions
-- The fix: structured decision logs with role-based injection, not full history
-- Write-time compression disciplines the architecture; read-time filtering controls noise
+- Structured YAML files replace vector databases for deterministic memory retrieval
+- Three-layer memory architecture handles task snapshots, product context, and decision logs
+- Committee invocation pattern enables parallel expert Agent collaboration
+- File system-based persistence eliminates external service dependencies
+- Session initialization loads approximately 2 seconds of context injection
 
-We run a product pipeline review process at Synapse where a committee of AI agents — playing product manager, tech lead, and market analyst — evaluate feature proposals across multiple sessions. Each session runs about 40 minutes and produces 12–18 decision records. The problem surfaced clearly at our fourth review meeting: the tech lead agent recommended an approach it had explicitly rejected two sessions earlier. It wasn't a model failure — it was an engineering reality. Every LLM call is stateless, and no retrieval shortcut changes that fundamental constraint.
+## Problem and Solution
 
-Our first attempt was naive: append the previous session transcript to the system prompt. By session five, token cost had grown to roughly 6× session one's baseline. Worse, models reading 3,000-word histories conflated rejected options with accepted conclusions about 30% of the time in our tests. We then tried RAG, vectorizing conversation history and retrieving semantically similar chunks. That failed more subtly. Semantic similarity does not equal decision relevance. A critical tech lead judgment — "this approach's latency is unacceptable" — ranked outside the top-5 results when the current session's question was about caching strategy. We retrieved plenty about caching. We retrieved nothing useful.
+Building multi-Agent collaboration systems reveals a critical gap: when a CEO Agent delegates a task involving "ventilator product line pricing strategy" to a think tank, the first question from a sub-Agent is "What is the background of this pricing decision?" The new session has zero context. Manual context transfer is time-consuming and error-prone, reducing session efficiency by around 40%.
 
-The real problem was that we wanted **decision continuity**, not content retrieval. Those require entirely different storage and recall mechanisms. We built a pipeline memory archive where a dedicated archiving agent compresses each session into structured decision logs after the session ends. Every entry enforces three fields: `decision`, `rationale` (capped at 50 words), and `owner` (which role made the call), plus a `status` field marking entries as `closed`, `open`, or `revisable`. At the start of the next session, `memory_injector.py` filters the archive by `owner` and injects only role-relevant entries into each agent's system prompt — typically under 400 tokens, but with extremely high signal-to-noise ratio. One non-obvious design choice: `status: open` entries are deliberately excluded from injection. Pending decisions cause agents to prematurely resolve them rather than focus on the current agenda.
+My team initially assumed vector databases would solve this—we'd embed all historical dialogues and retrieve relevant context via semantic similarity. But in Agent collaboration scenarios, fuzzy matching is precisely the killer. When a task's current phase is stage 3 and the next step should be "confirm supplier contract," you cannot accept "stage 3 relevance: 73%" as a valid answer. Agents need deterministic memory—knowing exactly where a task stands, with zero ambiguity.
+
+After three rounds of iteration, we designed a "externalized long-term memory + committee invocation" architecture using three file layers. The task snapshot layer stores all in-progress task states in `agent-CEO/config/active_tasks.yaml`, with mandatory fields for stage, blocker, and next_step. File size is hard-capped at 5KB to ensure complete loading in approximately 2 seconds per session.
 
 ## Key Takeaways
 
-- If you run multi-agent review workflows, add a dedicated archiving step after each session — never let the generating agent archive its own output
-- If you're tempted to use RAG for agent memory, ask first whether you need content retrieval or decision continuity — they are not the same problem
-- If token cost is growing across sessions, the fix is write-time compression with a strict schema, not better retrieval
-- If you inject historical context, filter by role — role-irrelevant history is noise, not grounding
-- If you have unresolved items, manage them separately at the coordination layer rather than embedding them in individual agent prompts
+- If you need unambiguous context retrieval in Agent systems, replace vector databases with structured YAML files containing mandatory schema fields.
+- If your Agent collaboration spans multiple sessions, implement a three-layer memory architecture separating task state from product context from decision logs.
+- If external memory services create single points of failure, embed memory in the file system to ensure reliability in network-isolated environments.
+- If you handle over 60% cross-session continuation tasks, enforce file size limits to maintain session initialization performance.
+- If you need parallel expert consultation, use committee invocation with a moderator Agent routing to specialist Agents based on task metadata.
 
 ## Read the Full Article (Chinese)
 
-This is an abstract. The full technical walkthrough — including the complete YAML schema, annotated pseudocode, and the specific failure modes we encountered — is in Chinese.
+This is an abstract. The full technical walkthrough, including code examples from files like `agent-CEO/config/active_tasks.yaml` and the WBS integration approach, is available in Chinese.

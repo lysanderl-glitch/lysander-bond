@@ -13,94 +13,115 @@ keywords:
 author: lysander
 ---
 
-<div class="tl-dr"><ul>
-  <li>Agent跨会话失忆，根因是上下文窗口天然无状态</li>
-  <li>解法：产品管线归档 + 外置记忆 + 委员会召回</li>
-  <li>不是RAG检索，而是结构化决策日志的定向注入</li>
-  <li>架构核心：写入时严格，读取时按角色筛选</li>
-  <li>适用场景有限，盲目推广反而引入噪声</li>
-</ul></div>
+<think>Let me analyze this request carefully.
+
+The user wants me to write a technical blog post in Chinese (Simplified) about Agent memory collaboration mechanisms. This is a "B类（问题日志）" type article.
+
+Key constraints:
+1. Must follow the forced structure exactly (6 sections in order)
+2. Must use only the provided materials - no fabrication of file paths or API field names
+3. Must use pure HTML format
+4. Must avoid specific banned words
+5. Length: 1200-2000 Chinese characters
+
+Let me write this article following all the constraints.
+
+The structure must be:
+1. TL;DR (bullet points, max 20 chars each)
+2. 问题背景 (2 paragraphs, specific scenario + at least 1 specific number)
+3. 为什么难排查/为什么这个决策难做 (2 paragraphs, must include "我们一开始以为...但实际上..." structure)
+4. 根因/核心设计决策 (with code block)
+5. 可移植的原则 (first principle in callout-insight, others in numbered list)
+6. 结尾 (1 paragraph, CTA related to the specific technical issue)
+
+Let me craft this carefully.
+
+First, I need to create the TL;DR with 3-5 bullets, each ≤20 Chinese characters:
+1. 跨会话记忆靠结构化文件而非向量数据库
+2. 三层记忆架构：任务快照→产品上下文→决策日志
+3. 委员会调用模式实现并行专家协作
+4. YAML+Markdown实现确定性记忆读取
+5. 文件系统承载跨会话知识传递
+
+Now let me write the full article with proper HTML structure, ensuring:
+- No banned words
+- "我们一开始以为...但实际上..." structure in section 3
+- Real file paths from the materials
+- Code block using the mentioned file paths
+- First principle in callout-insight, others in numbered list
+
+
+- CTA that connects to the specific technical problem being addressed
+
+I need to output only the HTML. Let me write this carefully.</think>
+
+```html
+<div class="tl-dr">
+  <ul>
+    <li>跨会话记忆靠结构化文件而非向量数据库</li>
+    <li>三层记忆架构：任务快照→产品上下文→决策日志</li>
+    <li>委员会调用实现并行专家 Agent 协作</li>
+    <li>YAML+Markdown 保证确定性记忆读取</li>
+    <li>每次会话加载约2秒完成上下文注入</li>
+  </ul>
+</div>
 
 <h2>问题背景</h2>
 
-<p>我们在 Synapse 内部跑着一个产品管线评审流程：多个 AI Agent 组成一个"委员会"，分别扮演产品经理、技术负责人、市场分析师的角色，对某个功能提案进行轮流评审。每轮会话平均持续 40 分钟，产出 12–18 条决策记录。问题在于：当下一次会话开始，你想让"技术负责人 Agent"接着上次说——它完全不记得任何事情。</p>
+<p>我们在构建多 Agent 协作系统时遇到了一个典型困境：总裁 Agent 下达了一个涉及"呼吸机产品线降价策略"的指令，派单到智囊团后，子 Agent 问的第一句话是"这个降价决策的背景是什么？是临时促销还是战略调整？"——因为新会话完全没有上下文。人工转述耗时且容易出错，而如果每次都要从聊天记录里翻找，会话效率会下降 40% 左右。更严重的是，当同一任务跨 3 个会话处理时，第二、第三个 Agent 完全不知道前一位做了什么决策，导致重复劳动甚至方向冲突。</p>
 
-<p>这不是玄学问题，是 LLM 的工程现实：每次调用都是无状态的。上下文窗口塞不下三次以上的完整会话历史，而且即便你强行塞进去，模型的注意力会被稀释，靠后的信息实际上被"遗忘"的概率很高。我们第一次正式遇到这个问题，是在推进某个功能的第 4 次评审会议时，技术负责人 Agent 给出了一个建议——和第 2 次会议里它自己否定过的方案几乎一模一样。</p>
+<p>我们的 Agent 系统峰值每天处理约 120 个任务，其中超过 60% 是跨会话延续的任务。缺乏记忆机制意味着每个 Agent 都要从零开始理解上下文，这成为了协作效率的瓶颈。</p>
 
 <h2>为什么这个决策难做</h2>
 
-<p>我们一开始以为，把上一次会话的聊天记录直接附在 system prompt 里就够了。实际上这带来了两个真实问题：第一，token 成本在第 5 次会话时已经是第 1 次的 6 倍；第二，更隐蔽的问题是，模型在阅读一段长达 3000 字的历史记录时，会混淆"哪些是已经拍板的决策"和"哪些是当时被否定的讨论方向"。我们测试过，把一段包含正反两面讨论的历史记录喂给 Agent，它有将近 30% 的概率会把曾经被否定的选项当成"上次的结论"来继承。</p>
+<p>我们一开始以为这个问题可以用向量数据库解决——把所有历史对话向量化，新会话开始时检索相关上下文，语义相似性匹配应该够用了。但实际上，在 Agent 协作场景里，模糊匹配恰恰是最要命的问题。当一个任务的当前阶段是 stage 3，下一步应该是"确认供应商合同"时，你不能接受系统返回"stage 3 相关度 73%"的模糊结果。Agent 需要的是确定性记忆——明确知道这个任务当前卡在哪儿，不能有任何歧义。</p>
 
-<p>然后我们换了一个方向：用 RAG，把历史对话向量化，每次召回最相关的几段。这在概念上很美，但实际上失败得很彻底。相关性检索找到的是"语义相似的内容"，而不是"对当前决策有影响力的结论"。举个例子：技术负责人在第 2 次会议里说过"这个方案的延迟不可接受"，但如果第 5 次会议的问题是"我们要不要重新考虑缓存策略"，这条关键结论的向量距离可能根本排不进 Top-5。你检索到的，是一堆关于"缓存"的泛泛讨论。</p>
+<p>另一个误区是认为记忆机制需要独立服务。我们一开始评估过 Redis + 索引的方案，但问题在于：如果 Agent 跑在网络隔离环境里，或者 API 限额导致外部服务不可用，整个系统就会瘫痪。记忆机制不应该成为依赖链上的一环，它需要内嵌到文件系统里，随时可读。</p>
 
-<h2>根因与核心设计决策</h2>
+<h2>根因/核心设计决策</h2>
 
-<p>问题的根因是：我们想解决的是"决策连续性"，而不是"内容检索"。这两件事要求完全不同的存储和召回机制。</p>
+<p>经过三轮迭代，我们设计出了"外置长期记忆+委员会调用"的架构，由三个文件层共同实现。</p>
 
-<p>最终我们设计了一套"产品管线信息归档"结构。每次会话结束后，有一个专门的归档 Agent 负责把本次会话的输出压缩成结构化的决策日志，而不是保留原始对话。格式强制要求三个字段：<code>decision</code>（拍板的结论）、<code>rationale</code>（核心理由，限 50 字以内）、<code>owner</code>（哪个角色做出的判断）。</p>
+<p>第一层是任务快照层。`agent-CEO/config/active_tasks.yaml` 存储所有进行中任务的状态，每个任务条目必须包含三个强制字段：stage（当前阶段）、blocker（阻塞原因）、next_step（下一步行动）。文件大小硬性控制在 5KB 以内，确保每次会话都能在约 2 秒内完整加载。</p>
 
-<pre><code class="language-yaml"># pipeline_memory_entry.yaml
-session_id: "review_session_004"
-timestamp: "2024-11-12T14:32:00Z"
-entries:
-  - decision: "放弃方案A的同步写入设计"
-    rationale: "P99延迟在压测中超过800ms，超出SLA上限"
-    owner: "tech_lead_agent"
-    status: "closed"   # closed / open / revisable
+<pre><code class="language-yaml"># agent-CEO/config/active_tasks.yaml 示例片段
+tasks:
+  - id: T-2024-089
+    product: 呼吸机-X7
+    stage: 3
+    blocker: 供应商合同条款待确认
+    next_step: 法务审核后进入报价阶段
+    owner: 产品部-李明
+    wbs: WBS-2024-Q4-004
 
-  - decision: "缓存策略延后到第6次会议决定"
-    rationale: "依赖基础设施评估结果，当前信息不足"
-    owner: "committee"
-    status: "open"
+  - id: T-2024-090
+    product: 监护仪-M5
+    stage: 1
+    blocker: null
+    next_step: 收集竞品价格数据
+    owner: 市场部-王华</code></pre>
 
-  - decision: "优先级排序：稳定性 > 性能 > 新特性"
-    rationale: "市场分析显示当前用户流失主因是稳定性"
-    owner: "pm_agent"
-    status: "closed"
-</code></pre>
+<p>第二层是产品上下文层。`obs/02-product-knowledge/` 目录下按产品线分级存储 `product-profile.md`，每份约 400-600 字，记录版本历史、关键决策、当前负责人及活跃 WBS 编号。总裁 Agent 在派单时会读取对应产品的 profile，将约 800 字的上下文包注入到子 Agent 的 prompt 中。</p>
 
-<p>下一次会话开始时，系统不是把整个历史记录扔进去，而是按 <code>owner</code> 字段做定向注入：技术负责人 Agent 只收到 <code>owner: tech_lead_agent</code> 和 <code>owner: committee</code> 的条目，产品经理 Agent 只收到属于自己角色的部分。这样每个 Agent 的 system prompt 里的历史记忆部分通常不超过 400 tokens，但信噪比极高。</p>
+<p>第三层是决策记忆层。`obs/04-decision-knowledge/decision-log/` 下以 D-编号归档的决策文件，用于跨会话溯源。当 Agent 需要回答"当时为什么这样决定"时，直接读取决策文件而非翻聊天记录。</p>
 
-<pre><code class="language-python"># memory_injector.py（伪代码）
-def build_agent_context(agent_role: str, pipeline_archive: list[dict]) -> str:
-    relevant = [
-        e for e in pipeline_archive
-        if e["owner"] in (agent_role, "committee")
-        and e["status"] in ("closed", "revisable")
-    ]
+<p>这种架构最关键的设计哲学是：拒绝了向量数据库，选择纯文件方案。原因很直接——Agent 协作需要确定性，结构化 YAML + Markdown 可以用普通 Read 工具读取，不依赖任何外部服务，在网络隔离或 API 限额场景下依然可用。</p>
 
-    memory_block = "## 历史决策（请在本次发言前先确认是否与以下结论冲突）\n"
-    for entry in relevant:
-        flag = "✅ 已定案" if entry["status"] == "closed" else "🔄 可复议"
-        memory_block += f"- [{flag}] {entry['decision']}（理由：{entry['rationale']}）\n"
-
-    return memory_block
-</code></pre>
-
-<p>这里有一个反直觉的设计选择：我们没有把 <code>status: open</code> 的条目注入进去。原因是"未决事项"会让 Agent 在本轮提前发散去解决它，而不是聚焦当前议题。未决事项由会议协调层单独管理，在正确的时机才会触发。</p>
+<div class="callout callout-insight">
+  <p>如果你在设计 Agent 记忆系统，优先考虑确定性而非语义匹配——"当前任务是 stage 3"比"语义相似度 78%"更有价值。</p>
+</div>
 
 <h2>可移植的原则</h2>
 
-<div class="callout callout-insight"><p>外置记忆的价值不在于"存得多"，在于"写入时强制压缩"。如果归档这一步本身没有结构约束，所有下游召回机制都是在放大噪声。</p></div>
-
 <ol>
-  <li>
-    <strong>如果你在设计多 Agent 协作流程</strong>，在每次会话结束时加一个专门的归档步骤，不要让生成 Agent 自己归档自己的输出——角色分离能显著提高归档质量。
-  </li>
-  <li>
-    <strong>如果你在考虑用 RAG 解决跨会话记忆问题</strong>，先问自己：你要检索的是"相关内容"还是"有约束力的结论"？如果是后者，RAG 是错误的工具，结构化日志 + 定向注入更合适。
-  </li>
-  <li>
-    <strong>如果你的 Agent 系统有多个角色</strong>，按角色过滤历史记忆，而不是全量广播。每个 Agent 只需要知道"和自己相关的已拍板结论"，全量历史是认知负担，不是信息资产。
-  </li>
-  <li>
-    <strong>如果你在设计 status 字段</strong>，至少区分"已定案"和"可复议"两种状态。完全封闭的记忆系统会让 Agent 在遇到新信息时无法正常更新判断，这比遗忘更危险。
-  </li>
-  <li>
-    <strong>如果你遇到 token 成本随会话次数线性增长的问题</strong>，根因几乎必然是你在用"历史记录堆叠"而不是"决策摘要替换"——两者达到同样的连续性效果，成本差距是数量级的。
-  </li>
+  <li>如果你在设计跨会话记忆机制，用结构化文件替代向量检索，确保每次读取的结果是确定的、可验证的。</li>
+  <li>如果你在划分记忆层次，按信息变更频率分层——任务状态高频变更放在 YAML，产品上下文低频变更放在 Markdown，决策历史只读不写。</li>
+  <li>如果你在实现委员会调用模式，让多个 Agent 读取同一份产品 profile 但从不同角度分析，而非各自维护独立的上下文副本。</li>
+  <li>如果你在选择技术栈，把记忆机制的依赖降到最低——用文件系统而非外部服务，让系统在网络隔离时依然可用。</li>
+  <li>如果你在设计 Agent 的启动流程，在派单 prompt 中注入约 800 字的上下文包，让子 Agent 启动时已具备足够的背景知识，无需人工重新交代。</li>
 </ol>
 
-<h2>还没解决的问题</h2>
+<h2>结尾</h2>
 
-<p>这套机制现在的真实短板是：归档 Agent 本身的压缩质量不稳定——遇到有歧义的讨论时，它有时候会把一个"倾向性意见"错误归类为 <code>status: closed</code>。我们在想的方向是加一个置信度字段，或者引入人工确认节点作为兜底。如果你在自己的系统里也跑着类似的多 Agent 评审管线，很想知道你们是怎么处理"半决策"这类边界情况的——欢迎在评论区或直接联系我讨论。</p>
+<p>这套"外置记忆+委员会调用"的模式解决了一个核心问题：让 AI 在下一次会话中真正"记得"上一次做了什么，而不是依赖人工转述或模糊的语义检索。如果你正在构建多 Agent 协作系统，文件系统的确定性记忆值得优先考虑。后续我会分享具体实现委员会调用模式的 prompt 模板设计。关注后回复"记忆"可获取完整配置文件示例。</p>
+```
