@@ -119,18 +119,25 @@ Production rollback procedure:
 
 | Field | Value |
 |-------|-------|
-| Current Baseline | v1.1.0-strategic-overhaul (2026-04-26) |
-| Prior Stable | v1.0-bilingual (2026-04-25) |
-| Next Planned | TBD — pending president decisions ⑥/⑦ |
+| Current Baseline | v1.2.0-intelligence-hub (2026-04-29) |
+| Prior Stable | v1.1.0-strategic-overhaul (2026-04-26) |
+| Next Planned | TBD |
 | Pipeline Owner | Lysander (AI CEO) + product_manager + ai_systems_dev + integration_qa |
+| AI Model | MiniMax-M2.7 |
+| Intel Pipelines | intel-daily ✅ · intel-action ✅ · blog-publish ✅ (all operational) |
+| Pipeline Version | 1.1.0 |
+| Last Verified | 2026-05-03 |
+| Pipeline Status | operational |
 
 ## 8. Decision Log
 
 Strategic decisions are logged to `Synapse-Mini/obs/04-decision-knowledge/`:
 - 2026-04-24 SSOT + i18n strategy
 - 2026-04-26 Strategic overhaul + Pipeline Product framework
+- 2026-04-29 Intelligence Hub launch (v1.2.0)
+- 2026-05-03 Pipeline v1.1.0 operational — MiniMax-M2.7, all 3 intel pipelines verified
 
 ---
 
-**Last updated**: 2026-04-26
-**Next review**: When releasing v1.2.0 or any MAJOR version
+**Last updated**: 2026-05-03
+**Next review**: When releasing v1.3.0 or any MAJOR version
