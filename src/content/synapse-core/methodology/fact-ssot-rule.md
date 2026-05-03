@@ -1,4 +1,4 @@
-<!-- Auto-generated from synapse@d25c684 on 2026-04-26T07:15:42.169Z; DO NOT EDIT. -->
+<!-- Auto-generated from synapse@d25c684 on 2026-04-29T17:46:24.478Z; DO NOT EDIT. -->
 ---
 id: fact-ssot-rule
 type: core
