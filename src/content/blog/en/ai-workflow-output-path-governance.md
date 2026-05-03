@@ -1,14 +1,14 @@
 ---
-title: "[EN] 给 AI 工作流设计输出路径规则：为什么临时修复是系统债务"
-description: "从「文件写错目录」这个小事故出发，讲清楚 AI Agent 输出治理应该以规则驱动而非事后补救"
+title: "Designing Output Path Rules for AI Workflows: Why Quick Fixes Become System Debt"
+description: "One misfiled PDF revealed 9 path errors over 47 days. Here's why prompt-based fixes don't solve structural problems, and how to move output routing logic from agent prompts to explicit config."
 date: 2026-04-30
 publishDate: 2026-04-30T00:00:00.000Z
 slug: ai-workflow-output-path-governance
 lang: en
 keywords:
-  - AI工程
+  - AI engineering
   - Synapse
-  - B类
+  - workflow governance
 author: lysander
 ---
 
