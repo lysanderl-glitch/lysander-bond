@@ -1,8 +1,8 @@
 ---
 title: "AI生成博客内容质量退化的根因分析与固化方案"
 description: "从一篇结构扁平的AI生成博客出发，分析内容质量退化的系统性原因，以及如何通过产线约束而非单次prompt修复来防止复发"
-date: 2026-04-28
-publishDate: 2026-04-28T00:00:00.000Z
+date: 2026-05-03
+publishDate: 2026-05-03T00:00:00.000Z
 slug: ai-blog-content-quality-degradation-root-cause-fix
 lang: zh
 hasEnglish: true
@@ -13,43 +13,7 @@ keywords:
 author: lysander
 ---
 
-<think>Let me analyze this request carefully:
 
-1. **Writing Type**: B类（问题日志）- Problem log/article
-2. **Topic**: AI-generated blog content quality degradation root cause analysis and fix
-3. **Format**: Pure HTML with specific elements
-4. **Required sections**: TL;DR, 问题背景, 为什么难排查/决策难, 根因/核心设计决策, 可移植的原则, 结尾
-5. **Language**: Simplified Chinese
-6. **Length**: 1200-2000 characters (Chinese)
-
-Key technical details from the source material:
-- Script: `scripts/auto-publish-blog.py`
-- Content generation has 5 stages
-- Stage 2 is where the problem occurs: structural_qa with threshold 75/100
-- When inbox articles lack `## 技术细节` section, structural_qa score drops to ~40/100
-- Threshold was mistakenly adjusted to 30 (should be 75)
-- Quantified difference: with `## 技术细节`, prompt is 1,800-2,200 tokens; without, it's 900-1,100 tokens
-- Fix: Add CI validation in `.github/workflows/blog-publish.yml`
-- Key decision: Make threshold a P1 rule in CLAUDE.md rather than configurable parameter
-- Input locations: `obs/04-content-pipeline/_inbox/` and `lysander-bond/src/content/blog/`
-
-Let me write this article following all the constraints:
-
-1. Start with TL;DR (3-5 bullets, ≤20 chars each)
-2. Problem background with specific scene and number
-3. "我们一开始以为...但实际上..." structure
-4. Root cause with real code block
-5. Portable principles in callout + ol format
-6. Ending with specific technical CTA
-
-Forbidden words: 关键、值得持续关注、AI很强大、更多可能、快速演进
-No conclusions repeating the body
-No fabricated paths or API fields
-
-
-Now I'll compose the HTML article with the proper structure and all required elements.</think>
-
-```html
 <h2>TL;DR</h2>
 <div class="tl-dr">
   <ul>
@@ -121,4 +85,3 @@ def validate_inbox_article(filepath):
 
 <h2>结尾</h2>
 <p>修复方案已经落地：.github/workflows/blog-publish.yml 的 CI 阶段新增了 inbox 格式校验，缺少必填章节的文件在 PR 合并前就会被拦截。同时，structural_qa 阈值从可配置参数移至 CLAUDE.md P1 规则，变更需要 harness_engineer 提案 + 我审批。如果你正在维护类似的内容管线，建议检查你的校验逻辑是否也存在"看起来合理"的门禁失效。</p>
-```

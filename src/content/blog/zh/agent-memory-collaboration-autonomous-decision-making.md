@@ -1,8 +1,8 @@
 ---
 title: "用Agent记忆协作机制替代人工审批：Lysander组织的自治决策实践"
 description: "当AI组织能够自主路由任务、调用历史归档、跨Agent协作时，人类只需设定边界而非参与每一步"
-date: 2026-04-28
-publishDate: 2026-04-28T00:00:00.000Z
+date: 2026-05-03
+publishDate: 2026-05-03T00:00:00.000Z
 slug: agent-memory-collaboration-autonomous-decision-making
 lang: zh
 hasEnglish: true
@@ -13,49 +13,6 @@ keywords:
 author: lysander
 ---
 
-<think>Let me analyze this carefully. The user wants me to write a B-type article (problem log) in Chinese about replacing manual approval with Agent memory collaboration mechanisms.
-
-Key requirements:
-1. TL;DR at the top (3-5 bullet points, each ≤20 characters)
-2. Must follow the strict structure: Background → Why it's difficult → Root cause/design → Portable principles → Closing
-3. Must include at least one code block with real paths from the materials
-4. Must use "我们一开始以为…但实际上…" reasoning structure
-5. Include callout-insight for the first principle
-6. Pure HTML output
-7. 1200-2000 Chinese characters
-8. No prohibited words
-9. Use only the provided material's file paths and technical details
-
-Key technical elements from materials:
-- product-profile.md at obs/02-product-knowledge/PMO-Auto-Monday/product-profile.md
-- product-routing.md at .claude/harness/product-routing.md
-- active_tasks.yaml at agent-CEO/config/active_tasks.yaml
-- L1-L4 decision framework in CLAUDE.md
-- 85% tasks in L1-L2 range
-- 30 seconds to restore task graph
-- Original problem: product-profile only had static descriptions, missing "active task ID" field
-- Recovery time reduced from ~5 minutes to direct positioning after adding active_wbs field to frontmatter
-
-Let me structure this:
-
-TL;DR:
-- Agent记忆协作替代人工审批
-- product-profile实现上下文注入
-- 30秒恢复完整任务图谱
-- 85%任务无需上报L4
-- active_wbs字段解决断点定位
-
-Problem background: A specific scenario with numbers (how manual approval was bottlenecking)
-
-
-Why difficult: Initial assumption that static product descriptions would suffice, but missing active task identification caused 5-minute recovery delays instead of 30-second restores
-Root cause: The core issue is that product-profile.md lacked active_wbs in its frontmatter, so agents could retrieve context but couldn't pinpoint where execution stopped. Adding this field to the YAML frontmatter enabled direct positioning and immediate task resumption.
-Portable principles: Callout for first principle → then numbered list of remaining principles
-Closing: CTA about specific technical problem, no marketing language
-
-Writing in Chinese, 1200-2000 characters, pure HTML format...
-
-<article> structure starting now.</think>
 
 <div class="tl-dr">
   <ul>

@@ -1,8 +1,8 @@
 ---
 title: "Agent Memory Collaboration Mechanism Design"
 description: "Agent Memory Collaboration Mechanism Design"
-date: 2026-04-28
-publishDate: 2026-04-28T00:00:00.000Z
+date: 2026-05-03
+publishDate: 2026-05-03T00:00:00.000Z
 slug: agent-memory-collaboration-mechanism-design
 lang: en
 keywords:
@@ -11,10 +11,6 @@ keywords:
   - B类
 author: lysander
 ---
-
-<think>
-Let me create an English summary of the Chinese technical blog post about Agent memory collaboration mechanisms.
-</think>
 
 TITLE: Agent Memory Architecture for Cross-Session Collaboration
 

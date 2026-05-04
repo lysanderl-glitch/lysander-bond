@@ -1,8 +1,8 @@
 ---
 title: "Agent记忆协作机制设计：让AI在下一次会话中'记得'上一次做了什么决策"
 description: "通过产品管线信息归档实现跨会话知识传递，分析这种'外置记忆+委员会调用'模式的架构设计与适用场景"
-date: 2026-04-28
-publishDate: 2026-04-28T00:00:00.000Z
+date: 2026-05-03
+publishDate: 2026-05-03T00:00:00.000Z
 slug: agent-memory-collaboration-mechanism-design
 lang: zh
 hasEnglish: true
@@ -13,49 +13,7 @@ keywords:
 author: lysander
 ---
 
-<think>Let me analyze this request carefully.
 
-The user wants me to write a technical blog post in Chinese (Simplified) about Agent memory collaboration mechanisms. This is a "B类（问题日志）" type article.
-
-Key constraints:
-1. Must follow the forced structure exactly (6 sections in order)
-2. Must use only the provided materials - no fabrication of file paths or API field names
-3. Must use pure HTML format
-4. Must avoid specific banned words
-5. Length: 1200-2000 Chinese characters
-
-Let me write this article following all the constraints.
-
-The structure must be:
-1. TL;DR (bullet points, max 20 chars each)
-2. 问题背景 (2 paragraphs, specific scenario + at least 1 specific number)
-3. 为什么难排查/为什么这个决策难做 (2 paragraphs, must include "我们一开始以为...但实际上..." structure)
-4. 根因/核心设计决策 (with code block)
-5. 可移植的原则 (first principle in callout-insight, others in numbered list)
-6. 结尾 (1 paragraph, CTA related to the specific technical issue)
-
-Let me craft this carefully.
-
-First, I need to create the TL;DR with 3-5 bullets, each ≤20 Chinese characters:
-1. 跨会话记忆靠结构化文件而非向量数据库
-2. 三层记忆架构：任务快照→产品上下文→决策日志
-3. 委员会调用模式实现并行专家协作
-4. YAML+Markdown实现确定性记忆读取
-5. 文件系统承载跨会话知识传递
-
-Now let me write the full article with proper HTML structure, ensuring:
-- No banned words
-- "我们一开始以为...但实际上..." structure in section 3
-- Real file paths from the materials
-- Code block using the mentioned file paths
-- First principle in callout-insight, others in numbered list
-
-
-- CTA that connects to the specific technical problem being addressed
-
-I need to output only the HTML. Let me write this carefully.</think>
-
-```html
 <div class="tl-dr">
   <ul>
     <li>跨会话记忆靠结构化文件而非向量数据库</li>
@@ -124,4 +82,3 @@ tasks:
 <h2>结尾</h2>
 
 <p>这套"外置记忆+委员会调用"的模式解决了一个核心问题：让 AI 在下一次会话中真正"记得"上一次做了什么，而不是依赖人工转述或模糊的语义检索。如果你正在构建多 Agent 协作系统，文件系统的确定性记忆值得优先考虑。后续我会分享具体实现委员会调用模式的 prompt 模板设计。关注后回复"记忆"可获取完整配置文件示例。</p>
-```

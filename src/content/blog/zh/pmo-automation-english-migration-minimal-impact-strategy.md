@@ -1,8 +1,8 @@
 ---
 title: "PMO自动化系统英文化改造：最小影响路径与多语言数据架构设计"
 description: "以PMO Auto Monday英文化为案例，分析在不重建系统的前提下实现数据层、脚本层、工作流层全链路语言切换的策略选择"
-date: 2026-04-28
-publishDate: 2026-04-28T00:00:00.000Z
+date: 2026-05-03
+publishDate: 2026-05-03T00:00:00.000Z
 slug: pmo-automation-english-migration-minimal-impact-strategy
 lang: zh
 hasEnglish: true
@@ -12,37 +12,6 @@ keywords:
   - B类
 author: lysander
 ---
-
-<think>Let me write a technical blog post in Chinese following the strict structure requirements. I need to create an HTML article about the PMO Auto Monday internationalization (English localization) transformation, using only the provided materials.
-
-Let me plan the structure:
-
-1. TL;DR - at the top with 3-5 bullet points
-2. 问题背景 (Problem Background) - H2
-3. 为什么难排查 (Why It's Hard to Diagnose) - H2
-4. 根因/核心设计决策 (Root Cause/Core Design Decision) - H2 with code blocks
-
-
-5. 可移植的原则 (Portable Principles) - H2
-6. 结尾 (Closing) - 1 paragraph
-
-Now I'm composing the technical article content in HTML format, starting with the TL;DR section and working through each major heading with substantive paragraphs that maintain the technical depth and specificity of the original materials.
-
-I'm laying out the problem background for PMO Auto Monday, which is a weekly report automation system that aggregates project data from Notion databases and generates summary reports through Python scripts and n8n workflows. The core challenge is the language mismatch: the system was built entirely in Chinese, but a new team member joining from the international side needs to work with the English-language data structure.
-
-I need to clarify the three-layer architecture—data layer, script layer, and workflow layer—where the Notion database fields represent the foundation, the Python scripts reference those fields, and the n8n nodes handle the field mapping between them. The internationalization work isn't just about translation; it's about coordinating changes across all three layers simultaneously. If I change the data layer first, the script layer and workflow layer immediately break because they're still referencing the old Chinese field names. If I change the workflow layer first, the old Chinese data won't match the new English field structure.
-
-The approach I'm taking is an "outside-in" migration strategy: I'll add a language adaptation layer in the n8n workflow first to handle the mapping without disrupting the underlying data, then update the script layer field references, and finally migrate the Notion field definitions once everything stabilizes. The critical file for this is `agent-CEO/config/n8n_integration.yaml`, which holds the database IDs for both production and staging environments—I can point the staging environment at the new English-field database while keeping production on the original Chinese one, letting them run in parallel for about two weeks before switching the production pointer over.
-
-In the scripts directory, I'm adding a field name mapping dictionary of roughly 40 lines that translates Chinese field names to their English equivalents, and the scripts will check the `language_mode` flag in the config file to determine which mapping to use at runtime. This way I can support bilingual mode without touching the core logic, and it gives me room to add more languages later.
-
-The first issue I'm running into is a case sensitivity problem with the Notion API—it's returning Chinese field names exactly as they are, but when I switched to English fields, the API returned `"Owner"` in Pascal case, not lowercase. My initial assumption was that I'd need to normalize everything to lowercase for safety, but the API itself is returning mixed case, so I need to handle the exact casing as the API provides it rather than trying to standardize it.
-
-The solution is to maintain a strict mapping dictionary with exact case-sensitive field names, which caused about 200 records to fail with a KeyError before I caught it. Looking at the configuration, I see the `database_ids` section contains the production and staging Notion database IDs. During migration, staging points to a new English database while production stays on the Chinese one, and the migration runs for about 14 days before switching production over.
-
-For the field mapping layer, I'm handling both Chinese and English fields in the scripts with a language_mode flag that determines which set of fields to use. I also ran into a Notion API issue where field names are case-sensitive — the API returns "Owner" but I initially standardized to lowercase, which caused a KeyError, so I had to match the actual casing instead. Let me recount the characters to verify the length is accurate. I should also include a table in the response as the structure requires.
-</think>
-
 
 
 <div class="tl-dr"><ul>

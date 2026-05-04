@@ -1,8 +1,8 @@
 ---
 title: "Blog Content Quality Regression Systematic Fix"
-description: "The user wants me to write an English abstract version of the provided Chinese technical blog post. Let me analyze the o"
-date: 2026-04-28
-publishDate: 2026-04-28T00:00:00.000Z
+description: "structural_qa threshold dropped from 75 to 30 during a visual redesign, silently degrading blog content quality for 6 weeks with no errors raised."
+date: 2026-05-03
+publishDate: 2026-05-03T00:00:00.000Z
 slug: blog-content-quality-regression-systematic-fix
 lang: en
 keywords:
@@ -11,24 +11,6 @@ keywords:
   - B类
 author: lysander
 ---
-
-<think>The user wants me to write an English abstract version of the provided Chinese technical blog post. Let me analyze the original article carefully and then create a proper English abstract following all the specified constraints.
-
-**Original article summary:**
-- A blog content quality degradation issue caused by a temporary threshold change in `scripts/auto-publish-blog.py`
-- The `structural_qa()` function threshold was lowered from 75 to 30
-- This caused 6 weeks of blog posts to bypass quality checks
-- LLM generates complete-looking but shallow content when input structure is missing
-- Technical vocabulary density dropped ~40%
-- The fix: restore threshold to 75 + add CI validation in `.github/workflows/blog-publish.yml`
-
-
-- Key files involved are `scripts/auto-publish-blog.py`, `obs/04-content-pipeline/_inbox/`, and `.github/workflows/blog-publish.yml`
-
-Now I'm structuring the English abstract with the title "The Silent Threshold That Broke Six Weeks of Blog Quality" and organizing the content into sections covering the problem, why it matters, and how we resolved it. I need to keep the body between 350-500 words with the TL;DR section, key takeaways, and a reference to the original Chinese article.
-</think>
-
-
 
 TITLE: How a Low Threshold Degraded Six Weeks of Blog Quality
 

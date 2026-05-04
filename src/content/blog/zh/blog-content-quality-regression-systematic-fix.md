@@ -1,8 +1,8 @@
 ---
 title: "博客内容质量为什么会在改版后悄悄变差——以及如何系统性修复"
 description: "视觉改版与内容规范脱钩是常见陷阱，修复不是一次性操作而是需要固化标准"
-date: 2026-04-28
-publishDate: 2026-04-28T00:00:00.000Z
+date: 2026-05-03
+publishDate: 2026-05-03T00:00:00.000Z
 slug: blog-content-quality-regression-systematic-fix
 lang: zh
 hasEnglish: true
@@ -13,34 +13,7 @@ keywords:
 author: lysander
 ---
 
-<think>Let me write this technical blog post following all the constraints precisely.
 
-Let me plan the structure:
-1. TL;DR (at the very top)
-2. 问题背景
-3. 为什么难排查
-4. 根因/核心设计决策 (with code block)
-5. 可移植的原则
-6. 结尾
-
-I need to:
-- Use only the specific details from the material
-- No banned words
-- No generic paths not mentioned
-- 1200-2000 characters
-- HTML format
-- Show reasoning process, not just conclusions
-- Include at least 1 code block
-
-
-- Include TL;DR and callout-insight at minimum
-
-Writing the post now...
-</think>
-
-
-
-```html
 <div class="tl-dr">
 <ul>
   <li>structural_qa 阈值从 75 降至 30，导致 6 周文章绕过了质量门禁</li>
@@ -123,4 +96,3 @@ THRESHOLD = 75  # 原值
 <h2>结尾</h2>
 
 <p>这次质量退化没有造成任何报错或投诉，但 6 周的低质量文章对读者信任的侵蚀是真实的。视觉改版与内容规范脱钩是常见陷阱——修复不是一次性操作，它需要固化标准、将质量门禁阈值纳入版本控制。如果你的 pipeline 中也存在类似的"可随意调整的阈值"，建议现在就去 review 一次，而不是等到人工发现退化后再补救。</p>
-```
