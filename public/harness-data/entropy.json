@@ -1,6 +1,7 @@
 {
-  "lines": 185,
-  "budget": 280,
-  "remaining": 95,
-  "pct_used": 66
+  "claude_md_lines": 334,
+  "limit": 280,
+  "headroom": -54,
+  "status": "critical",
+  "generated_at": "2026-05-05T10:03:32.000Z"
 }
