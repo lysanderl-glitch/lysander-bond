@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harness 运营仪表盘 — Synapse</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d1117;
+      --card:      #161b22;
+      --border:    #30363d;
+      --text:      #e6edf3;
+      --muted:     #8b949e;
+      --green:     #3fb950;
+      --yellow:    #d29922;
+      --red:       #f85149;
+      --blue:      #58a6ff;
+      --radius:    8px;
+      --gap:       16px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      padding: 24px;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    header h1 span {
+      color: var(--blue);
+    }
+
+    #last-updated {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    #refresh-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: var(--radius);
+      padding: 5px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    #refresh-btn:hover { border-color: var(--blue); color: var(--blue); }
+    #refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--gap);
+    }
+
+    /* Pulse card spans full width */
+    .card-pulse { grid-column: 1 / -1; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      flex-shrink: 0;
+    }
+    .status-dot.green  { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .status-dot.yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); }
+    .status-dot.red    { background: var(--red);    box-shadow: 0 0 6px var(--red); }
+
+    /* ---- Big number metric ---- */
+    .metric-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .metric-value {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .metric-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .metric-value.green  { color: var(--green); }
+    .metric-value.yellow { color: var(--yellow); }
+    .metric-value.red    { color: var(--red); }
+
+    /* ---- Progress bar ---- */
+    .progress-wrap {
+      margin-top: 16px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--green);
+      transition: width 0.4s ease;
+    }
+    .progress-bar-fill.yellow { background: var(--yellow); }
+    .progress-bar-fill.red    { background: var(--red); }
+
+    /* ---- Lists ---- */
+    .item-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .item-list li {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-list li.blocked  { border-left: 3px solid var(--red); }
+    .item-list li.progress { border-left: 3px solid var(--blue); }
+    .item-list li.decision { border-left: 3px solid var(--blue); }
+    .item-list li.log      { border-left: 3px solid var(--yellow); color: var(--muted); }
+
+    .empty-state {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* ---- Pulse grid ---- */
+    .pulse-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .pulse-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .pulse-item-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+    }
+
+    .pulse-item-value {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    /* ---- Loading skeleton ---- */
+    .skeleton {
+      background: linear-gradient(90deg, var(--border) 25%, #21262d 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s infinite;
+      border-radius: 4px;
+      height: 16px;
+      width: 60%;
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .error-msg {
+      color: var(--red);
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+      .card-pulse { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Harness <span>运营仪表盘</span></h1>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span id="last-updated">加载中…</span>
+      <button id="refresh-btn" onclick="loadAll()">刷新</button>
+      <span id="mode-badge" style="background:#21262d;border:1px solid #30363d;color:#8b949e;padding:3px 8px;border-radius:4px;font-size:0.75rem;margin-left:0.5rem"></span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <!-- System Pulse — full width -->
+    <div class="card card-pulse" id="card-pulse">
+      <div class="card-header">
+        <span class="card-title">系统脉冲</span>
+        <span class="status-dot" id="dot-pulse"></span>
+      </div>
+      <div id="content-pulse"><div class="skeleton"></div></div>
+    </div>
+
+    <!-- Tasks -->
+    <div class="card" id="card-tasks">
+      <div class="card-header">
+        <span class="card-title">活跃任务</span>
+        <span class="status-dot" id="dot-tasks"></span>
+      </div>
+      <div id="content-tasks"><div class="skeleton"></div></div>
+    </div>
+
+    <!-- Guard Violations -->
+    <div class="card" id="card-violations">
+      <div class="card-header">
+        <span class="card-title">CEO Guard 违规</span>
+        <span class="status-dot" id="dot-violations"></span>
+      </div>
+      <div id="content-violations"><div class="skeleton"></div></div>
+    </div>
+
+    <!-- CLAUDE.md Entropy -->
+    <div class="card" id="card-entropy">
+      <div class="card-header">
+        <span class="card-title">CLAUDE.md 熵值</span>
+        <span class="status-dot" id="dot-entropy"></span>
+      </div>
+      <div id="content-entropy"><div class="skeleton"></div></div>
+    </div>
+
+    <!-- Recent Decisions -->
+    <div class="card" id="card-decisions">
+      <div class="card-header">
+        <span class="card-title">近期决策</span>
+        <span class="status-dot" id="dot-decisions"></span>
+      </div>
+      <div id="content-decisions"><div class="skeleton"></div></div>
+    </div>
+  </div>
+
+  <script>
+    // Auto-detect mode: remote = static snapshot, local = live API
+    const isRemote = !(window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    function apiUrl(endpoint) {
+      return isRemote
+        ? '/harness-data/' + endpoint + '.json'
+        : '/api/harness/' + endpoint;
+    }
+
+    // Set mode badge (script is at bottom of body, element already exists)
+    document.getElementById('mode-badge').textContent =
+      isRemote ? '📡 服務器快照' : '🟢 本地實時';
+
+    // ---- Helpers ----
+    function colorClass(val, warnThreshold, alertThreshold) {
+      if (val >= alertThreshold) return 'red';
+      if (val >= warnThreshold)  return 'yellow';
+      return 'green';
+    }
+
+    function setDot(id, cls) {
+      const el = document.getElementById(id);
+      if (el) { el.className = 'status-dot ' + cls; }
+    }
+
+    function setContent(id, html) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = html;
+    }
+
+    async function fetchJson(url) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    }
+
+    // ---- Pulse ----
+    async function loadPulse() {
+      try {
+        const d = await fetchJson(apiUrl('pulse'));
+        const data = d.data ?? d;
+        const inProgress = data.tasks?.in_progress ?? 0;
+        const blocked    = data.tasks?.blocked ?? 0;
+        const lines      = data.claude_md_lines ?? 0;
+        const highRisk   = data.guard?.high_risk_count ?? 0;
+
+        const overallBad = blocked > 3 || highRisk > 5;
+        const overallWarn = blocked > 1 || highRisk > 2;
+        setDot('dot-pulse', overallBad ? 'red' : overallWarn ? 'yellow' : 'green');
+
+        setContent('content-pulse', `
+          <div class="pulse-grid">
+            <div class="pulse-item">
+              <span class="pulse-item-label">进行中任务</span>
+              <span class="pulse-item-value ${colorClass(inProgress, 5, 10)}">${inProgress}</span>
+            </div>
+            <div class="pulse-item">
+              <span class="pulse-item-label">阻塞任务</span>
+              <span class="pulse-item-value ${colorClass(blocked, 2, 4)}">${blocked}</span>
+            </div>
+            <div class="pulse-item">
+              <span class="pulse-item-label">高风险事件</span>
+              <span class="pulse-item-value ${colorClass(highRisk, 3, 6)}">${highRisk}</span>
+            </div>
+            <div class="pulse-item">
+              <span class="pulse-item-label">CLAUDE.md 行数</span>
+              <span class="pulse-item-value ${colorClass(lines, 240, 270)}">${lines}</span>
+            </div>
+            <div class="pulse-item">
+              <span class="pulse-item-label">数据来源</span>
+              <span class="pulse-item-value" style="font-size:14px;font-weight:500;color:var(--muted)">${d.source ?? '—'}</span>
+            </div>
+          </div>
+        `);
+      } catch (e) {
+        setDot('dot-pulse', 'red');
+        setContent('content-pulse', `<p class="error-msg">加载失败：${e.message}</p>`);
+      }
+    }
+
+    // ---- Tasks ----
+    async function loadTasks() {
+      try {
+        const d = await fetchJson(apiUrl('tasks'));
+        const { in_progress = [], blocked = [] } = d;
+        const total = in_progress.length + blocked.length;
+        const cls = colorClass(blocked.length, 2, 4);
+        setDot('dot-tasks', cls);
+
+        let html = `
+          <div class="metric-row" style="margin-bottom:16px;">
+            <div class="metric">
+              <span class="metric-value">${total}</span>
+              <span class="metric-label">总活跃</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value" style="color:var(--blue)">${in_progress.length}</span>
+              <span class="metric-label">进行中</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value ${colorClass(blocked.length, 2, 4)}">${blocked.length}</span>
+              <span class="metric-label">阻塞</span>
+            </div>
+          </div>`;
+
+        if (in_progress.length || blocked.length) {
+          html += '<ul class="item-list">';
+          for (const id of in_progress) html += `<li class="progress">▶ ${id}</li>`;
+          for (const id of blocked)     html += `<li class="blocked">⚠ ${id}</li>`;
+          html += '</ul>';
+        } else {
+          html += '<p class="empty-state">暂无活跃任务</p>';
+        }
+
+        setContent('content-tasks', html);
+      } catch (e) {
+        setDot('dot-tasks', 'red');
+        setContent('content-tasks', `<p class="error-msg">加载失败：${e.message}</p>`);
+      }
+    }
+
+    // ---- Violations ----
+    async function loadViolations() {
+      try {
+        const d = await fetchJson(apiUrl('violations'));
+        const { today = 0, this_week = 0, high_risk = 0, recent = [] } = d;
+        const cls = colorClass(high_risk, 3, 6);
+        setDot('dot-violations', cls);
+
+        let html = `
+          <div class="metric-row" style="margin-bottom:16px;">
+            <div class="metric">
+              <span class="metric-value ${colorClass(today, 1, 3)}">${today}</span>
+              <span class="metric-label">今日</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value ${colorClass(this_week, 3, 8)}">${this_week}</span>
+              <span class="metric-label">本周</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value ${colorClass(high_risk, 3, 6)}">${high_risk}</span>
+              <span class="metric-label">高风险</span>
+            </div>
+          </div>`;
+
+        if (recent.length) {
+          html += '<ul class="item-list">';
+          for (const line of recent) html += `<li class="log">${escapeHtml(line)}</li>`;
+          html += '</ul>';
+        } else {
+          html += '<p class="empty-state">暂无审计日志</p>';
+        }
+
+        setContent('content-violations', html);
+      } catch (e) {
+        setDot('dot-violations', 'red');
+        setContent('content-violations', `<p class="error-msg">加载失败：${e.message}</p>`);
+      }
+    }
+
+    // ---- Entropy ----
+    async function loadEntropy() {
+      try {
+        const d = await fetchJson(apiUrl('entropy'));
+        const { lines = 0, budget = 280, remaining = 280, pct_used = 0 } = d;
+        const cls = colorClass(pct_used, 80, 90);
+        setDot('dot-entropy', cls);
+
+        setContent('content-entropy', `
+          <div class="metric-row" style="margin-bottom:16px;">
+            <div class="metric">
+              <span class="metric-value ${cls}">${lines}</span>
+              <span class="metric-label">当前行数</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">${budget}</span>
+              <span class="metric-label">预算上限</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value ${remaining < 20 ? 'red' : remaining < 50 ? 'yellow' : 'green'}">${remaining}</span>
+              <span class="metric-label">剩余行数</span>
+            </div>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-meta">
+              <span>使用率</span>
+              <span>${pct_used}%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill ${cls}" style="width:${Math.min(pct_used, 100)}%"></div>
+            </div>
+          </div>
+        `);
+      } catch (e) {
+        setDot('dot-entropy', 'red');
+        setContent('content-entropy', `<p class="error-msg">加载失败：${e.message}</p>`);
+      }
+    }
+
+    // ---- Decisions ----
+    async function loadDecisions() {
+      try {
+        const d = await fetchJson(apiUrl('decisions'));
+        const { recent = [] } = d;
+        setDot('dot-decisions', 'green');
+
+        if (recent.length === 0) {
+          setContent('content-decisions', '<p class="empty-state">暂无决策记录</p>');
+          return;
+        }
+
+        let html = '<ul class="item-list">';
+        for (const dec of recent) {
+          const label = dec.title
+            ? `${dec.id} — ${dec.title}`
+            : dec.id;
+          const date = dec.date ? `<span style="color:var(--muted);margin-left:8px;">${dec.date}</span>` : '';
+          html += `<li class="decision">${escapeHtml(label)}${date}</li>`;
+        }
+        html += '</ul>';
+        setContent('content-decisions', html);
+      } catch (e) {
+        setDot('dot-decisions', 'red');
+        setContent('content-decisions', `<p class="error-msg">加载失败：${e.message}</p>`);
+      }
+    }
+
+    // ---- Escape HTML ----
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // ---- Load all ----
+    let refreshTimer = null;
+
+    async function loadAll() {
+      const btn = document.getElementById('refresh-btn');
+      if (btn) btn.disabled = true;
+
+      await Promise.allSettled([
+        loadPulse(),
+        loadTasks(),
+        loadViolations(),
+        loadEntropy(),
+        loadDecisions(),
+      ]);
+
+      const ts = new Date().toLocaleString('zh-CN', { hour12: false });
+      const el = document.getElementById('last-updated');
+      if (el) el.textContent = '上次更新：' + ts;
+
+      if (btn) btn.disabled = false;
+
+      // Reset 30-second auto-refresh
+      if (refreshTimer) clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(loadAll, 30000);
+    }
+
+    // Initial load
+    loadAll();
+  </script>
+</body>
+</html>

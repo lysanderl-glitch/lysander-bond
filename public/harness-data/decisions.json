@@ -1,0 +1,14 @@
+{
+  "recent": [
+    { "id": "D-2026-0505-002", "title": "decision system v3 activation", "date": "2026-05-05" },
+    { "id": "D-2026-0505-001", "title": "decision system v3 analysis", "date": "2026-05-05" },
+    { "id": "D-2026-0504-003", "title": "p2 execution authorization", "date": "2026-05-04" },
+    { "id": "D-2026-0504-002", "title": "km phase3 authorization", "date": "2026-05-04" },
+    { "id": "D-2026-0504-001", "title": "synapse p2 capabilities", "date": "2026-05-04" },
+    { "id": "D-2026-0503-003", "title": "pmo auto ssot governance", "date": "2026-05-03" },
+    { "id": "D-2026-0503-002", "title": "pmo auto product line independent management", "date": "2026-05-03" },
+    { "id": "D-2026-0503-001", "title": "pmo auto v2 ga verification", "date": "2026-05-03" },
+    { "id": "D-2026-0501-001", "title": "phoenix workspace switch blocker", "date": "2026-05-01" },
+    { "id": "D-2026-0430-002", "title": "pqg v2 activation", "date": "2026-04-30" }
+  ]
+}

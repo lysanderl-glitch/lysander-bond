@@ -1,0 +1,17 @@
+{
+  "source": "static_snapshot",
+  "data": {
+    "tasks": {
+      "in_progress": 5,
+      "blocked": 2,
+      "pending": 0
+    },
+    "guard": {
+      "high_risk_count": 0,
+      "session": "static"
+    },
+    "claude_md_lines": 185,
+    "generated_at": "2026-05-05T00:00:00.000Z"
+  },
+  "note": "Static snapshot — updated daily"
+}

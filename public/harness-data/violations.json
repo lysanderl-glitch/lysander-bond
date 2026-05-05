@@ -1,0 +1,12 @@
+{
+  "today": 0,
+  "this_week": 0,
+  "high_risk": 0,
+  "recent": [
+    "[2026-05-05 09:24:40] POST session=307c1c75 context=sub_agent tool=Bash",
+    "[2026-05-05 09:24:19] POST session=307c1c75 context=sub_agent tool=Bash",
+    "[2026-05-05 09:24:13] POST session=307c1c75 context=sub_agent tool=Bash",
+    "[2026-05-05 09:17:04] POST session=307c1c75 context=sub_agent tool=Bash",
+    "[2026-05-05 09:16:59] POST session=307c1c75 context=sub_agent tool=Bash"
+  ]
+}

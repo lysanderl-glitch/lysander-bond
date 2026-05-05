@@ -1,0 +1,18 @@
+{
+  "in_progress": [
+    "INTEL-20260419-003",
+    "KM-PHASE3-001",
+    "SYNAPSE-P2-001",
+    "PMO-AUTO-V27-001",
+    "LYSANDER-AI-HUB-001"
+  ],
+  "blocked": [
+    "PHX-WORKSPACE-SWITCH-001",
+    "SITE-20260502-001"
+  ],
+  "count": {
+    "in_progress": 5,
+    "blocked": 2,
+    "total": 7
+  }
+}
