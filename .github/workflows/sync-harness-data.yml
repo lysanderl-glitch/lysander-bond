@@ -1,0 +1,94 @@
+name: Sync Harness Dashboard Data
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 02:00 UTC = 06:00 Dubai
+  workflow_dispatch:      # allow manual trigger from GitHub Actions UI
+
+jobs:
+  sync-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout lysander-bond
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout synapse-ops
+        uses: actions/checkout@v4
+        with:
+          repository: lysanderl-glitch/synapse-ops
+          token: ${{ secrets.SYNAPSE_OPS_PAT || github.token }}
+          path: synapse-ops
+        continue-on-error: true
+        id: checkout_ops
+
+      - name: Generate harness data JSON
+        run: |
+          set -e
+          mkdir -p public/harness-data
+          TODAY=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
+          DATE=$(date -u +"%Y-%m-%d")
+
+          # Read CLAUDE.md line count from synapse-ops (fallback to cached)
+          if [ -f synapse-ops/CLAUDE.md ]; then
+            LINES=$(wc -l < synapse-ops/CLAUDE.md | tr -d ' ')
+            echo "Read CLAUDE.md from synapse-ops: $LINES lines"
+          else
+            LINES=$(python3 -c "import json; d=json.load(open('public/harness-data/entropy.json')); print(d.get('claude_md_lines', d.get('lines', 185)))" 2>/dev/null || echo "185")
+            echo "synapse-ops not available, using cached CLAUDE.md lines: $LINES"
+          fi
+
+          LIMIT=280
+          HEADROOM=$((LIMIT - LINES))
+          if [ "$LINES" -le 250 ]; then
+            STATUS="ok"
+          elif [ "$LINES" -le 270 ]; then
+            STATUS="warning"
+          else
+            STATUS="critical"
+          fi
+
+          # entropy.json
+          cat > public/harness-data/entropy.json << ENDJSON
+          {
+            "claude_md_lines": $LINES,
+            "limit": $LIMIT,
+            "headroom": $HEADROOM,
+            "status": "$STATUS",
+            "generated_at": "$TODAY"
+          }
+          ENDJSON
+
+          # pulse.json — update timestamp + entropy; preserve other fields via python3
+          python3 - << ENDPY
+          import json, os
+          path = "public/harness-data/pulse.json"
+          try:
+              d = json.load(open(path))
+          except Exception:
+              d = {}
+          d["generated_at"] = "$TODAY"
+          d["claude_md_lines"] = $LINES
+          d["health"] = "green"
+          d["note"] = "Auto-synced by GitHub Actions"
+          json.dump(d, open(path, "w"), indent=2, ensure_ascii=False)
+          print(f"pulse.json updated: {path}")
+          ENDPY
+
+          echo "Sync complete: CLAUDE.md=$LINES lines ($STATUS), $DATE"
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "lysander-bot"
+          git config user.email "bot@lysander.bond"
+          git add public/harness-data/
+          if git diff --cached --quiet; then
+            echo "No data changes — skipping commit"
+          else
+            git commit -m "chore(dash): daily harness data sync $(date -u +%Y-%m-%d) [no-decision]"
+            git push
+          fi
