@@ -1,8 +1,7 @@
 ---
 title: "Chinese Token Optimization in Multi-Agent Systems"
 description: "Chinese Token Optimization in Multi-Agent Systems"
-date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-04-30T00:00:00.000Z
 slug: claude-code-chinese-vs-english-token-cost
 lang: en
 keywords:

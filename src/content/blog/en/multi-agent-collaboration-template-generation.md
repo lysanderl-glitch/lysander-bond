@@ -1,7 +1,6 @@
 ---
 title: "Multi-Agent Collaboration for Project Template Standardization"
 description: "Multi-Agent Collaboration for Project Template Standardization"
-date: 2026-05-07
 publishDate: 2026-05-01T00:00:00.000Z
 slug: multi-agent-collaboration-template-generation
 lang: en

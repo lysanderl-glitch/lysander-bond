@@ -1,7 +1,6 @@
 ---
 title: "Synapse知识体系升级复盘：10人智囊圆桌如何驱动KM优化决策"
 description: "从行业KM最佳实践调研到智囊圆桌评审再到Phase执行的全流程公开"
-date: 2026-05-07
 publishDate: 2026-05-05T00:00:00.000Z
 slug: synapse-km-upgrade-brainstorm-review
 lang: zh

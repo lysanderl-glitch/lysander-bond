@@ -1,8 +1,7 @@
 ---
 title: "中文 vs 英文：Claude Code Token 消耗差异实测与工程级降本方案"
 description: "用真实数据（1.7x）拆解中文 token 膨胀原因，并给出在多 Agent 长任务场景下可落地的翻译中转架构"
-date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-04-30T00:00:00.000Z
 slug: claude-code-chinese-vs-english-token-cost
 lang: zh
 hasEnglish: true

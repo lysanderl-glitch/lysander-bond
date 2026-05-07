@@ -1,8 +1,7 @@
 ---
 title: "Multilingual PMO Automation: Architecture-First i18n Strategy"
 description: "Multilingual PMO Automation: Architecture-First i18n Strategy"
-date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-04-28T00:00:00.000Z
 slug: pmo-automation-english-migration-minimal-impact-strategy
 lang: en
 keywords:

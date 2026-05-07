@@ -1,7 +1,6 @@
 ---
 title: "GitHub Actions Pipeline故障排查与自动修复实践"
 description: "从心跳告警触发到完整修复的端到端DevOps故障处理流程"
-date: 2026-05-07
 publishDate: 2026-05-01T00:00:00.000Z
 slug: github-actions-pipeline-debugging-autofix
 lang: zh

@@ -1,8 +1,7 @@
 ---
 title: "AI 体系对内推广的第一步：如何把个人 Prompt 工程变成团队可用的协作框架"
 description: "以 Synapse 体系为案例，拆解哪些内容该共享、哪些该隔离、如何设计 onboarding 引导让 3-5 人小团队真正用起来"
-date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-04-30T00:00:00.000Z
 slug: synapse-internal-sharing-playbook
 lang: zh
 hasEnglish: true

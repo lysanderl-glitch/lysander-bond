@@ -1,7 +1,6 @@
 ---
 title: "SSOT Pattern Solves Multilingual AI Workflow Maintenance"
 description: "SSOT Pattern Solves Multilingual AI Workflow Maintenance"
-date: 2026-05-07
 publishDate: 2026-05-03T00:00:00.000Z
 slug: ssot-i18n-knowledge-management
 lang: en

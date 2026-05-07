@@ -1,7 +1,6 @@
 ---
 title: "n8n工作流治理实践：如何识别和清理沉睡工作流"
 description: "通过API审计扫描21个工作流的使用场景和使用价值，建立工作流生命周期管理机制"
-date: 2026-05-07
 publishDate: 2026-05-05T00:00:00.000Z
 slug: n8n-workflow-governance-slumber-cleanup
 lang: zh

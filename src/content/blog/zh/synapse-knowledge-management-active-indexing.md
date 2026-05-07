@@ -1,7 +1,6 @@
 ---
 title: "Synapse Multi-Agent System:从被动存储到主动索引的知识管理实践"
 description: "将OBS知识库升级为每2天主动更新的索引模式，实现知识从存储到应用的质变"
-date: 2026-05-07
 publishDate: 2026-05-04T00:00:00.000Z
 slug: synapse-knowledge-management-active-indexing
 lang: zh

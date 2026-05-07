@@ -1,8 +1,7 @@
 ---
 title: "PMO自动化系统英文化改造：最小影响路径与多语言数据架构设计"
 description: "以PMO Auto Monday英文化为案例，分析在不重建系统的前提下实现数据层、脚本层、工作流层全链路语言切换的策略选择"
-date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-04-28T00:00:00.000Z
 slug: pmo-automation-english-migration-minimal-impact-strategy
 lang: zh
 hasEnglish: true

@@ -1,7 +1,6 @@
 ---
 title: "Task Topology Design for Stateful Agent Pipelines"
 description: "Task Topology Design for Stateful Agent Pipelines"
-date: 2026-05-07
 publishDate: 2026-05-06T00:00:00.000Z
 slug: synapse-autonomous-development-scenarios
 lang: en

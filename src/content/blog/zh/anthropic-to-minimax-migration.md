@@ -1,7 +1,6 @@
 ---
 title: "从Anthropic到MiniMax：AI平台迁移的实战经验"
 description: "API兼容性封装实现零成本迁移"
-date: 2026-05-07
 publishDate: 2026-05-03T00:00:00.000Z
 slug: anthropic-to-minimax-migration
 lang: zh

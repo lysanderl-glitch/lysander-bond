@@ -1,7 +1,6 @@
 ---
 title: "n8n Cross-Environment Migration: Credentials and Variables"
 description: "n8n Cross-Environment Migration: Credentials and Variables"
-date: 2026-05-07
 publishDate: 2026-05-03T00:00:00.000Z
 slug: n8n-automation-workflow-architecture
 lang: en

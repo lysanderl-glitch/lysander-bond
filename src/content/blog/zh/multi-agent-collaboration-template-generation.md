@@ -1,7 +1,6 @@
 ---
 title: "多Agent协作模式在项目模板生成中的应用"
 description: "智囊团+PM agent+QA agent的分工协作实现业务模板标准化"
-date: 2026-05-07
 publishDate: 2026-05-01T00:00:00.000Z
 slug: multi-agent-collaboration-template-generation
 lang: zh

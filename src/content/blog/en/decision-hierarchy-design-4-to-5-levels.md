@@ -1,7 +1,6 @@
 ---
 title: "Why L4-to-L5 Agent Upgrades Fail Without Value Frameworks"
 description: "Why L4-to-L5 Agent Upgrades Fail Without Value Frameworks"
-date: 2026-05-07
 publishDate: 2026-05-05T00:00:00.000Z
 slug: decision-hierarchy-design-4-to-5-levels
 lang: en

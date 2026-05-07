@@ -1,7 +1,6 @@
 ---
 title: "AI Platform Migration: Adapter Pattern for Seamless Switching"
 description: "AI Platform Migration: Adapter Pattern for Seamless Switching"
-date: 2026-05-07
 publishDate: 2026-05-03T00:00:00.000Z
 slug: anthropic-to-minimax-migration
 lang: en
