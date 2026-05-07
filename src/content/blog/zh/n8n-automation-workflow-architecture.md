@@ -2,7 +2,7 @@
 title: "How We Built a Multi-Workflow Automation System: n8n at Scale"
 description: "从版本锁定、工作流导出到跨团队协作的完整工程实践"
 date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-05-03T00:00:00.000Z
 slug: n8n-automation-workflow-architecture
 lang: zh
 hasEnglish: true

@@ -2,7 +2,7 @@
 title: "从PMO Auto v2.6.0看产品管线健康度管理实践"
 description: "如何通过结构化诊断与根因侦察持续保障产品管线质量"
 date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-05-01T00:00:00.000Z
 slug: pmo-auto-v260-product-pipeline-health
 lang: zh
 hasEnglish: true

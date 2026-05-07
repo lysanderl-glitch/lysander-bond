@@ -2,7 +2,7 @@
 title: "SSOT+i18n策略：AI工作流知识管理的降本增效实践"
 description: "单一信息源+多语言版本如何显著降低token消耗"
 date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-05-03T00:00:00.000Z
 slug: ssot-i18n-knowledge-management
 lang: zh
 hasEnglish: true

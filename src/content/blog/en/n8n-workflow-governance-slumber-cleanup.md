@@ -2,7 +2,7 @@
 title: "Detecting Dormant n8n Workflows with REST API"
 description: "Detecting Dormant n8n Workflows with REST API"
 date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-05-05T00:00:00.000Z
 slug: n8n-workflow-governance-slumber-cleanup
 lang: en
 keywords:

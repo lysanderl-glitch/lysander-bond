@@ -2,7 +2,7 @@
 title: "China vs UAE Interest Rate Arbitrage in Financial Leasing"
 description: "解析国内1%利率与UAE 5-6%利率差的成因及融资租赁套利机会"
 date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-05-02T00:00:00.000Z
 slug: china-uae-financial-leasing-rate-arbitrage
 lang: zh
 hasEnglish: true

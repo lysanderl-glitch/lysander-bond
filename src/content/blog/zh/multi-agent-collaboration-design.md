@@ -2,7 +2,7 @@
 title: "AI工作流中的Multi-Agent协作设计：从Synapse实践看大规模AI团队协调"
 description: "执行链与决策链体系如何支撑复杂业务场景"
 date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-05-03T00:00:00.000Z
 slug: multi-agent-collaboration-design
 lang: zh
 hasEnglish: true

@@ -2,7 +2,7 @@
 title: "Dual-Layer Tag Model for Cross-Domain Knowledge Retrieval"
 description: "Dual-Layer Tag Model for Cross-Domain Knowledge Retrieval"
 date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-05-05T00:00:00.000Z
 slug: synapse-km-upgrade-brainstorm-review
 lang: en
 keywords:

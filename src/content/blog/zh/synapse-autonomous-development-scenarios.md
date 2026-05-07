@@ -2,7 +2,7 @@
 title: "Synapse案例设计：从0到1完全自主完成的研发场景"
 description: "展示Synapse相比直接使用Claude Code的差异化能力"
 date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-05-06T00:00:00.000Z
 slug: synapse-autonomous-development-scenarios
 lang: zh
 hasEnglish: true

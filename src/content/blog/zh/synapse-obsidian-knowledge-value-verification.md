@@ -2,7 +2,7 @@
 title: "Obsidian知识管理在Synapse体系中的价值验证方法论"
 description: "知识管理工具如何真正产生业务价值的评估框架"
 date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-05-01T00:00:00.000Z
 slug: synapse-obsidian-knowledge-value-verification
 lang: zh
 hasEnglish: true

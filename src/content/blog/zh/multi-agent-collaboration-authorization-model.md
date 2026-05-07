@@ -2,7 +2,7 @@
 title: "AI工作流中的多智能体协同授权模型"
 description: "如何在AI工作流中实现专业事项专业授权与审批层级设计"
 date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-05-01T00:00:00.000Z
 slug: multi-agent-collaboration-authorization-model
 lang: zh
 hasEnglish: true

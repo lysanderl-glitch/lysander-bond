@@ -2,7 +2,7 @@
 title: "Cross-Border Lease Arbitrage: Why Simple Interest Rate Gaps Fail"
 description: "Cross-Border Lease Arbitrage: Why Simple Interest Rate Gaps Fail"
 date: 2026-05-07
-publishDate: 2026-05-07T00:00:00.000Z
+publishDate: 2026-05-02T00:00:00.000Z
 slug: china-uae-financial-leasing-rate-arbitrage
 lang: en
 keywords:
