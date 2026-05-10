@@ -119,7 +119,7 @@ Production rollback procedure:
 
 | Field | Value |
 |-------|-------|
-| Current Baseline | `1.2.0-intelligence-hub` | 2026-05-09 | Auto-updated by pipeline-daily-sync |
+| Current Baseline | `1.2.0-intelligence-hub` | 2026-05-10 | Auto-updated by pipeline-daily-sync |
 | Prior Stable | v1.1.0-strategic-overhaul (2026-04-26) |
 | Next Planned | TBD |
 | Pipeline Owner | Lysander (AI CEO) + product_manager + ai_systems_dev + integration_qa |
