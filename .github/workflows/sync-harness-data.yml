@@ -236,30 +236,52 @@ jobs:
           print(f"decisions.json updated: {len(recent)} recent (of {len(decisions)} total)")
           ENDPY
 
-      - name: Refresh violations.json timestamp
+      - name: Update violations.json from synapse-ops summary
         run: |
           set -e
+          SUMMARY="synapse-ops/harness-data/violations-summary.json"
 
-          python3 - << 'ENDPY'
-          import json, os
+          if [ -f "$SUMMARY" ]; then
+            TODAY_COUNT=$(python3 -c "import json; d=json.load(open('$SUMMARY')); print(d.get('today_count',0))")
+            WEEK_COUNT=$(python3 -c "import json; d=json.load(open('$SUMMARY')); print(d.get('week_count',0))")
+            HIGH_RISK=$(python3 -c "import json; d=json.load(open('$SUMMARY')); print(d.get('high_risk_count',0))")
+            SUMMARY_GENERATED=$(python3 -c "import json; d=json.load(open('$SUMMARY')); print(d.get('generated_at','unknown'))")
+            echo "violations summary loaded: today=$TODAY_COUNT, week=$WEEK_COUNT, high_risk=$HIGH_RISK (summary_at=$SUMMARY_GENERATED)"
+          else
+            TODAY_COUNT=0; WEEK_COUNT=0; HIGH_RISK=0; SUMMARY_GENERATED="not_available"
+            echo "WARNING: violations-summary.json not found in synapse-ops — using zeros"
+          fi
 
-          out_path = "public/harness-data/violations.json"
-          import subprocess
-          generated_at = subprocess.check_output(["date", "-u", "+%Y-%m-%dT%H:%M:%S.000Z"]).decode().strip()
+          python3 - << ENDPY
+import json, os
+from datetime import datetime, timezone
 
-          try:
-              d = json.load(open(out_path))
-          except Exception:
-              d = {"today": 0, "this_week": 0, "high_risk": 0, "recent": []}
+out_path = "public/harness-data/violations.json"
+generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
-          d["generated_at"] = generated_at
-          # Note: violations data sourced from local ceo-guard-audit.log (not in synapse-ops).
-          # Counts are not updated here; only timestamp is refreshed to confirm daily run.
-          d["source"] = "local_log_not_available_in_gha"
+try:
+    existing = json.load(open(out_path))
+except Exception:
+    existing = {"recent": []}
 
-          json.dump(d, open(out_path, "w"), indent=2, ensure_ascii=False)
-          print(f"violations.json timestamp refreshed: {generated_at}")
-          ENDPY
+data = {
+    **existing,
+    "today": int(os.environ.get("TODAY_COUNT", 0)),
+    "this_week": int(os.environ.get("WEEK_COUNT", 0)),
+    "high_risk": int(os.environ.get("HIGH_RISK", 0)),
+    "generated_at": generated_at,
+    "summary_source_generated_at": os.environ.get("SUMMARY_GENERATED", "unknown"),
+    "source": "synapse-ops/harness-data/violations-summary.json",
+    "note": "Raw log not synced. Counts extracted locally and pushed to synapse-ops."
+}
+json.dump(data, open(out_path, "w"), indent=2, ensure_ascii=False)
+print(f"violations.json updated: today={data['today']}, this_week={data['this_week']}, high_risk={data['high_risk']}")
+ENDPY
+        env:
+          TODAY_COUNT: ${{ env.TODAY_COUNT }}
+          WEEK_COUNT: ${{ env.WEEK_COUNT }}
+          HIGH_RISK: ${{ env.HIGH_RISK }}
+          SUMMARY_GENERATED: ${{ env.SUMMARY_GENERATED }}
 
       - name: Business assertion — verify all files updated today
         run: |
