@@ -1,0 +1,96 @@
+name: Activate SSL — synapsehd.com (one-shot)
+
+# ONE-SHOT workflow — run once after ICP filing approved to issue Let's Encrypt cert.
+# After SSL is active, this workflow is no longer needed (deploy-volcano.yml takes over).
+# Trigger: manual dispatch only (never runs automatically)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  activate-ssl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VOLCANO_SSH_KEY }}
+
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 118.196.41.252 >> ~/.ssh/known_hosts
+
+      - name: Verify HTTP 200 (ICP must be active before certbot)
+        run: |
+          echo "=== Checking http://synapsehd.com/ ==="
+          HTTP=$(curl -sIL --max-time 20 http://synapsehd.com/ | grep "^HTTP" | tail -1 | awk '{print $2}')
+          echo "HTTP status: $HTTP"
+          if [ "$HTTP" != "200" ]; then
+            echo "ERROR: synapsehd.com returns $HTTP (expected 200)."
+            echo "ICP filing may not be propagated yet. Wait and retry."
+            exit 1
+          fi
+          echo "OK — HTTP 200 confirmed, safe to proceed with certbot."
+
+      - name: Install certbot on server (if not present)
+        run: |
+          ssh -o StrictHostKeyChecking=no root@118.196.41.252 \
+            "which certbot || apt-get install -y certbot python3-certbot-nginx"
+
+      - name: Apply Let's Encrypt certificate via certbot
+        run: |
+          ssh -o StrictHostKeyChecking=no root@118.196.41.252 \
+            "certbot --nginx \
+              -d synapsehd.com \
+              -d www.synapsehd.com \
+              --non-interactive \
+              --agree-tos \
+              --email lysanderl@janusd.io \
+              --redirect 2>&1"
+
+      - name: Reload nginx
+        run: |
+          ssh -o StrictHostKeyChecking=no root@118.196.41.252 \
+            "nginx -t && systemctl reload nginx"
+
+      - name: Verify HTTPS — synapsehd.com
+        run: |
+          echo "=== Verifying https://synapsehd.com/ ==="
+          sleep 5
+          HTTP=$(curl -sIL --max-time 20 https://synapsehd.com/ | grep "^HTTP" | tail -1 | awk '{print $2}')
+          echo "HTTPS status: $HTTP"
+          if [ "$HTTP" != "200" ]; then
+            echo "ERROR: https://synapsehd.com/ returned $HTTP (expected 200)"
+            exit 1
+          fi
+          echo "PASS — https://synapsehd.com/ is live."
+
+      - name: Verify HTTPS — www.synapsehd.com
+        run: |
+          echo "=== Verifying https://www.synapsehd.com/ ==="
+          HTTP=$(curl -sIL --max-time 20 https://www.synapsehd.com/ | grep "^HTTP" | tail -1 | awk '{print $2}')
+          echo "HTTPS status: $HTTP"
+          if [ "$HTTP" != "200" ]; then
+            echo "ERROR: https://www.synapsehd.com/ returned $HTTP (expected 200)"
+            exit 1
+          fi
+          echo "PASS — https://www.synapsehd.com/ is live."
+
+      - name: Verify certbot auto-renewal timer
+        run: |
+          ssh -o StrictHostKeyChecking=no root@118.196.41.252 \
+            "systemctl is-active certbot.timer || systemctl is-active snap.certbot.renew.timer || \
+             (certbot renew --dry-run 2>&1 | tail -5)"
+
+      - name: Summary
+        run: |
+          echo "======================================"
+          echo "SSL Activation Complete"
+          echo "  https://synapsehd.com/     — LIVE"
+          echo "  https://www.synapsehd.com/ — LIVE"
+          echo "  Certificate: Let's Encrypt (auto-renew configured)"
+          echo "======================================"
+          echo "Next step: trigger deploy-volcano.yml to push latest build with SITE_URL=https://synapsehd.com"
