@@ -69,7 +69,7 @@ if (isEn) {
   zhPath = currentPath;
   enPath = currentPath === '/' ? '/en/' : `/en${currentPath}`;
 }
-const baseUrl = 'https://lysander.bond';
+const baseUrl = Astro.site ? Astro.site.origin : 'https://lysander.bond';
 const zhHref = `${baseUrl}${zhPath}`;
 const enHref = `${baseUrl}${enPath}`;
 const canonicalHref = isEn ? enHref : zhHref;
