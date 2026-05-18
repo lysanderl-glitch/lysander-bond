@@ -48,4 +48,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            printf 'add_header Cache-Control "no-cache, must-revalidate" always;\n' > /etc/nginx/conf.d/cache-headers.conf && nginx -t && systemctl reload nginx
+            printf 'add_header Cache-Control "no-cache, must-revalidate" always;\n' | sudo tee /etc/nginx/conf.d/cache-headers.conf && sudo nginx -t && sudo systemctl reload nginx
