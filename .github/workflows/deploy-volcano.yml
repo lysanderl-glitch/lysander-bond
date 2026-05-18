@@ -50,11 +50,10 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no root@118.196.41.252 "nginx -t && systemctl reload nginx"
 
-      - name: Set Cache-Control no-cache for HTML pages in nginx
+      - name: Set Cache-Control headers via nginx conf.d snippet
         run: |
-          ssh -o StrictHostKeyChecking=no root@118.196.41.252 "grep -q 'Cache-Control' /etc/nginx/sites-available/synapsehd.com || \
-            sed -i '/location \/ {/a\\    add_header Cache-Control \"no-cache, must-revalidate\";' \
-            /etc/nginx/sites-available/synapsehd.com && nginx -t && systemctl reload nginx"
+          ssh -o StrictHostKeyChecking=no root@118.196.41.252 \
+            "printf 'add_header Cache-Control \"no-cache, must-revalidate\" always;\n' > /etc/nginx/conf.d/cache-headers.conf && nginx -t && systemctl reload nginx"
 
       - name: Verify deployment
         run: |
