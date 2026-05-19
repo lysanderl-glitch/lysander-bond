@@ -6,12 +6,12 @@ const results = (await getCollection('intelligence-results'))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
 ---
 
-<Layout title="执行结果档案 | Lysander" description="AI 团队每日行动报告，从任务到交付的完整过程记录" lang="zh" darkContent={true}>
+<Layout title="自我进化档案 | Lysander" description="Synapse AI 团队自我进化管线——每日发现、评估、执行、验证、改进的完整记录" lang="zh" darkContent={true}>
   <section class="pt-24 pb-16 px-6">
     <div class="max-w-3xl mx-auto">
-      <a href="/intelligence" class="text-sm text-white/40 hover:text-white/70 mb-6 inline-block">← 情报中枢</a>
-      <h1 class="text-3xl font-bold text-white mb-2">执行结果档案</h1>
-      <p class="text-white/50 mb-10">AI 团队每日行动报告，从任务到交付的完整过程记录</p>
+      <a href="/intelligence" class="text-sm text-white/40 hover:text-white/70 mb-6 inline-block">← 自我进化中枢</a>
+      <h1 class="text-3xl font-bold text-white mb-2">自我进化档案</h1>
+      <p class="text-white/50 mb-10">Synapse AI 团队自我进化管线 — 发现 · 评估 · 执行 · 验证 · 改进</p>
 
       {results.length === 0 ? (
         <div class="text-center py-20 text-white/30">行动报告生成后自动出现在这里</div>
@@ -27,9 +27,21 @@ const results = (await getCollection('intelligence-results'))
               <div class="flex-1 min-w-0">
                 <h2 class="font-semibold text-white group-hover:text-green-400 mb-1">{r.data.title}</h2>
                 <p class="text-sm text-white/50 line-clamp-2">{r.data.summary}</p>
-                <div class="flex gap-3 mt-2 text-xs text-white/30">
-                  <span>{r.data.actionsCount} 项行动</span>
-                  <span class="text-green-400">{r.data.completedCount} 项完成</span>
+                <div class="flex gap-3 mt-2 text-xs text-white/30 flex-wrap">
+                  {r.data.discoveredCount !== undefined ? (
+                    <>
+                      <span>发现 {r.data.discoveredCount}</span>
+                      <span class="text-sky-400">评估 {r.data.evaluatedCount ?? 0}</span>
+                      {(r.data.executedCount ?? 0) > 0 && <span class="text-green-400">执行 {r.data.executedCount}</span>}
+                      {(r.data.verifiedCount ?? 0) > 0 && <span class="text-purple-400">验证 {r.data.verifiedCount}</span>}
+                      {(r.data.improvedCount ?? 0) > 0 && <span class="text-yellow-400">改进 {r.data.improvedCount}</span>}
+                    </>
+                  ) : (
+                    <>
+                      <span>{r.data.actionsCount} 项行动</span>
+                      <span class="text-green-400">{r.data.completedCount} 项完成</span>
+                    </>
+                  )}
                   {r.data.tags.slice(0,3).map(t => <span class="bg-green-500/10 text-green-400 px-1.5 py-0.5 rounded">{t}</span>)}
                 </div>
               </div>

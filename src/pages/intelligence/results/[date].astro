@@ -12,16 +12,31 @@ export async function getStaticPaths() {
 
 const { item } = Astro.props;
 const { Content } = await render(item);
+
+// 5-dimension Self-improve Pipeline metrics
+// Falls back to legacy 2-field display for old files that lack the new fields
+const has5Dim = item.data.discoveredCount !== undefined;
+const discoveredCount = item.data.discoveredCount ?? item.data.actionsCount ?? 0;
+const evaluatedCount  = item.data.evaluatedCount  ?? item.data.completedCount ?? 0;
+const executedCount   = item.data.executedCount   ?? 0;
+const verifiedCount   = item.data.verifiedCount   ?? 0;
+const improvedCount   = item.data.improvedCount   ?? 0;
 ---
 
-<Layout title={`${item.data.title} | 执行结果`} description={item.data.summary} lang="zh" darkContent={true}>
+<Layout title={`${item.data.title} | 自我进化管线`} description={item.data.summary} lang="zh" darkContent={true}>
   <article class="pt-24 pb-16 px-6">
     <div class="max-w-3xl mx-auto">
-      <a href="/intelligence/results" class="text-sm text-white/40 hover:text-white/70 mb-6 inline-block">← 执行结果档案</a>
+      <a href="/intelligence/results" class="text-sm text-white/40 hover:text-white/70 mb-6 inline-block">← 自我进化档案</a>
       <header class="mb-10">
         <div class="flex items-center gap-3 mb-4">
           <span class="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full font-mono">{item.data.date}</span>
-          <span class="text-xs text-white/40">{item.data.actionsCount} 项情报评估 · {item.data.completedCount} 项进入行动队列</span>
+          {has5Dim ? (
+            <span class="text-xs text-white/40">
+              发现 {discoveredCount} · 评估 {evaluatedCount} · 执行 {executedCount} · 验证 {verifiedCount} · 改进 {improvedCount}
+            </span>
+          ) : (
+            <span class="text-xs text-white/40">{item.data.actionsCount} 项情报评估 · {item.data.completedCount} 项进入行动队列</span>
+          )}
         </div>
         <h1 class="text-3xl font-bold text-white mb-3">{item.data.title}</h1>
         <p class="text-white/60">{item.data.summary}</p>
@@ -31,7 +46,7 @@ const { Content } = await render(item);
       </div>
       <footer class="mt-12 pt-6 border-t border-white/10 flex justify-between items-center">
         <a href="/intelligence/results" class="text-sm text-white/40 hover:text-white">← 查看全部档案</a>
-        <a href="/intelligence" class="text-sm text-green-400 hover:text-green-300">情报中枢 →</a>
+        <a href="/intelligence" class="text-sm text-green-400 hover:text-green-300">自我进化中枢 →</a>
       </footer>
     </div>
   </article>
