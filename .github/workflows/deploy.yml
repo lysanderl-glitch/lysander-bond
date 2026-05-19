@@ -38,6 +38,6 @@ jobs:
             git clean -fd
             npm ci
             npm run build
-            printf 'add_header Cache-Control "no-cache, must-revalidate" always;\n' | sudo tee /etc/nginx/conf.d/cache-headers.conf > /dev/null
+            sudo grep -q 'Cache-Control' /etc/nginx/sites-available/lysander.bond || sudo sed -i '/add_header Permissions-Policy/a\    add_header Cache-Control "no-cache, must-revalidate" always;' /etc/nginx/sites-available/lysander.bond
             sudo nginx -t && sudo systemctl reload nginx
             echo "Deployment completed successfully"
