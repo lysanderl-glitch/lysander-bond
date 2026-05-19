@@ -4,33 +4,36 @@ import { getCollection } from 'astro:content';
 
 const decisions = (await getCollection('intelligence-decisions'))
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-
-const levelColor = (l: string) => ({
-  'L4': 'bg-red-500/20 text-red-400',
-  'L3': 'bg-orange-500/20 text-orange-400',
-  'L2': 'bg-yellow-500/20 text-yellow-400',
-  'L1': 'bg-white/10 text-white/40',
-})[l] || 'bg-white/10 text-white/40';
 ---
 
-<Layout title="Decision Log | Lysander" description="Synapse AI team L3/L4 decision archive — full decision context and expert review." lang="en" darkContent={true}>
+<Layout title="Decision Scoring | Lysander" description="Synapse AI team daily intel evaluation scoring — which items were executed, tracked, or deferred." lang="en" darkContent={true}>
   <section class="pt-24 pb-16 px-6">
     <div class="max-w-3xl mx-auto">
       <a href="/en/intelligence" class="text-sm text-white/40 hover:text-white/70 mb-6 inline-block">← Intelligence Hub</a>
-      <h1 class="text-3xl font-bold text-white mb-2">Decision Log</h1>
-      <p class="text-white/50 mb-10">L3 Lysander decisions / L4 President decisions — full context and expert review process.</p>
+      <h1 class="text-3xl font-bold text-white mb-2">Decision Scoring</h1>
+      <p class="text-white/50 mb-10">Daily intel evaluation matrix — which items scored high enough to execute, track, or defer.</p>
       {decisions.length === 0 ? (
-        <div class="text-center py-20 text-white/30">No decisions yet. Decisions will appear here automatically once archived.</div>
+        <div class="text-center py-20 text-white/30">No scoring records yet. Reports will appear here automatically.</div>
       ) : (
         <div class="space-y-4">
           {decisions.map(d => (
-            <a href={`/en/intelligence/decisions/${d.data.id}`}
+            <a href={`/en/intelligence/decisions/${d.data.date}`}
                class="flex items-start gap-4 p-5 rounded-xl bg-white/5 border border-white/10 hover:border-purple-500/40 transition-colors group">
-              <span class={`flex-shrink-0 text-xs px-2 py-1 rounded font-mono ${levelColor(d.data.decisionLevel)}`}>{d.data.decisionLevel}</span>
+              <div class="flex-shrink-0 flex flex-col gap-1 items-center pt-1">
+                {d.data.executeCount > 0 && (
+                  <span class="text-xs px-2 py-0.5 rounded font-mono bg-purple-500/20 text-purple-400">⚡ {d.data.executeCount}</span>
+                )}
+                {d.data.inboxCount > 0 && (
+                  <span class="text-xs px-2 py-0.5 rounded font-mono bg-sky-500/20 text-sky-400">📥 {d.data.inboxCount}</span>
+                )}
+              </div>
               <div class="flex-1 min-w-0">
-                <div class="text-xs text-white/40 mb-1">{d.data.date} · {d.data.decidedBy}</div>
-                <h2 class="font-semibold text-white group-hover:text-purple-400 mb-1">{d.data.title}</h2>
-                <p class="text-sm text-white/50 line-clamp-2">{d.data.summary}</p>
+                <div class="text-xs text-white/40 mb-1">{d.data.date} · {d.data.totalCount} items evaluated</div>
+                <h2 class="font-semibold text-white group-hover:text-purple-400 mb-1 line-clamp-1">{d.data.topIntel}</h2>
+                <p class="text-sm text-white/50 line-clamp-2">{d.data.title}</p>
+                {d.data.topScore && (
+                  <div class="mt-1 text-xs text-white/30">Top score {d.data.topScore}/20</div>
+                )}
               </div>
             </a>
           ))}

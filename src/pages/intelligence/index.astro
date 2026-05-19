@@ -74,17 +74,17 @@ const results = (await getCollection('intelligence-results'))
         </div>
         <div class="space-y-3">
           {decisions.length === 0 ? (
-            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-white/40 text-sm text-center">决策归档后自动展示</div>
+            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-white/40 text-sm text-center">评分裁定后自动展示</div>
           ) : decisions.map(d => (
-            <a href={`/intelligence/decisions/${d.data.id}`}
+            <a href={`/intelligence/decisions/${d.data.date}`}
                class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-purple-500/40 transition-colors group">
-              <div class="flex items-center gap-2 mb-1">
-                <time class="text-xs text-white/40">{d.data.date}</time>
-                <span class={`text-xs px-1.5 py-0.5 rounded font-mono ${d.data.decisionLevel === 'L4' ? 'bg-red-500/20 text-red-400' : d.data.decisionLevel === 'L3' ? 'bg-orange-500/20 text-orange-400' : 'bg-white/10 text-white/40'}`}>
-                  {d.data.decisionLevel}
-                </span>
+              <time class="text-xs text-white/40">{d.data.date}</time>
+              <h3 class="text-sm font-medium text-white group-hover:text-purple-400 mt-1 line-clamp-2">{d.data.topIntel}</h3>
+              <div class="flex gap-2 mt-2 flex-wrap">
+                {d.data.executeCount > 0 && <span class="text-xs text-purple-400">⚡ {d.data.executeCount} 执行</span>}
+                {d.data.inboxCount > 0 && <span class="text-xs text-sky-400">📥 {d.data.inboxCount} 跟踪</span>}
+                {d.data.topScore && <span class="text-xs text-white/40">最高 {d.data.topScore}</span>}
               </div>
-              <h3 class="text-sm font-medium text-white group-hover:text-purple-400 line-clamp-2">{d.data.title}</h3>
             </a>
           ))}
         </div>

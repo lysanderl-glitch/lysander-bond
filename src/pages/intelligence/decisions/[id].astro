@@ -4,10 +4,12 @@ import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const items = await getCollection('intelligence-decisions');
-  return items.map(item => ({
-    params: { id: item.data.date },
-    props: { item },
-  }));
+  return items
+    .filter(item => item.data.date)
+    .map(item => ({
+      params: { id: item.data.date },
+      props: { item },
+    }));
 }
 
 const { item } = Astro.props;
