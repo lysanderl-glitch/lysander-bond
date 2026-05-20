@@ -16,31 +16,42 @@ const results = (await getCollection('intelligence-results'))
 ---
 
 <Layout
-  title="Intelligence Hub | Lysander"
-  description="Synapse AI team's public operations log — daily intel, decisions, and execution results."
+  title="Self-improve Pipeline | Lysander"
+  description="Synapse's evolution layer. A daily 5-step closed loop that turns external signals into verified capability improvements."
   lang="en"
   darkContent={true}
 >
   <!-- Hero -->
   <section class="pt-24 pb-12 px-6">
-    <div class="max-w-4xl mx-auto text-center">
+    <div class="max-w-4xl mx-auto text-center hero-stagger">
       <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-sm font-medium mb-6">
         <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
-        Updated Daily
+        Synapse Evolution Layer · Daily Cycle
       </div>
-      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">Intelligence Hub</h1>
+      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4" style="font-family: var(--font-display, 'Fraunces', Georgia, serif); letter-spacing: -0.02em;">Self-improve Pipeline</h1>
       <p class="text-lg text-white/60 max-w-2xl mx-auto">
-        Synapse AI team's public operations log.
+        Synapse's evolution layer. A daily 5-step closed loop that turns external signals into verified capability improvements. Not a newsletter — a system upgrade log.
       </p>
     </div>
   </section>
 
-  <!-- Language notice banner -->
-  <section class="px-6 pb-4">
+  <!-- 5-Step Self-improve Cycle -->
+  <section class="py-4 px-6">
     <div class="max-w-4xl mx-auto">
-      <div class="flex items-start gap-3 px-5 py-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300/80 text-sm leading-relaxed">
-        <span class="shrink-0 mt-0.5 text-amber-400">ℹ</span>
-        <p>The Intelligence Hub is our operational record system — intelligence reports, decisions, and execution results, maintained in Chinese as our primary working language. An English-summarized version is on our roadmap.</p>
+      <div class="grid grid-cols-5 gap-2 md:gap-3">
+        {[
+          { step: '01', en: 'Scan', sub: 'Capture signals' },
+          { step: '02', en: 'Bulletin', sub: 'Daily report' },
+          { step: '03', en: 'Decision', sub: 'VACE scoring' },
+          { step: '04', en: 'Track', sub: 'Dispatch & log' },
+          { step: '05', en: 'Evolve', sub: 'Close the loop' },
+        ].map(s => (
+          <div class="flex flex-col items-center text-center p-3 rounded-lg bg-white/5 border border-white/10">
+            <span class="text-xs text-white/30 mb-1">{s.step}</span>
+            <span class="text-sm font-semibold text-[#fcad2a]">{s.en}</span>
+            <span class="text-xs text-white/50 mt-0.5">{s.sub}</span>
+          </div>
+        ))}
       </div>
     </div>
   </section>
@@ -50,7 +61,7 @@ const results = (await getCollection('intelligence-results'))
     <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
 
       <!-- Daily Intel -->
-      <div>
+      <div data-reveal="left">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold text-white flex items-center gap-2">
             <span class="text-sky-400">📡</span> Daily Intel
@@ -75,7 +86,7 @@ const results = (await getCollection('intelligence-results'))
       </div>
 
       <!-- Decisions -->
-      <div>
+      <div data-reveal>
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold text-white flex items-center gap-2">
             <span class="text-[#e9b94a]">⚖️</span> Decisions
@@ -101,10 +112,10 @@ const results = (await getCollection('intelligence-results'))
       </div>
 
       <!-- Results -->
-      <div>
+      <div data-reveal="right">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-            <span class="text-green-400">✅</span> Results
+            <span class="text-green-400">🔄</span> Outcomes
           </h2>
           <a href="/en/intelligence/results" class="text-sm text-green-400 hover:text-green-300">All results →</a>
         </div>

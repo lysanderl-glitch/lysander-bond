@@ -25,40 +25,45 @@ import CTABanner from '../../components/synapse/CTABanner.astro';
 const pipeline = [
   {
     step: 1,
-    title: '迪拜时间 6:00 — 任务恢复',
-    body: '读取 active_tasks.yaml，续接阻塞已解除的未完成工作。',
+    title: 'Scan — 信号扫描',
+    body: '采集 AI 前沿与市场信号，过滤出可落地价值，生成原始情报条目。',
   },
   {
     step: 2,
-    title: '迪拜时间 8:00 — 情报扫描',
-    body: '采集 AI 与市场信号，过滤出可落地价值，渲染为 HTML 并提交到 git。',
+    title: 'Bulletin — 情报快报',
+    body: '将当日信号渲染为 HTML 情报快报，08:00 Dubai 自动提交到 git，公开归档。',
   },
   {
     step: 3,
-    title: '迪拜时间 10:00 — 行动评估',
-    body: '日报中的建议通过四位专家评审，批准项派单到 Harness Ops 执行。',
+    title: 'Decision — 执行决策',
+    body: '四维 VACE 专家评分 + WSCORE 行动分级，每条情报标注执行/跟踪/搁置。',
   },
   {
     step: 4,
-    title: '完成 — Slack 通知',
-    body: '总裁收到一行字：已完成、被阻塞、或待审阅。',
+    title: 'Track — 追踪落地',
+    body: '批准项派单到执行团队，写入 active_tasks.yaml 跨会话持续追踪。',
+  },
+  {
+    step: 5,
+    title: 'Evolve — 能力演进',
+    body: '行动完成形成能力提升，归档决策记录，管线健康检查，准备下一个循环。',
   },
 ];
 ---
 
 <SynapseLayout
-  title="情报闭环"
-  description="每天早晨，AI 团队自动上岗。一条闭合的日常管线：扫描、过滤、决策、行动、上报。"
+  title="自进化管线"
+  description="Synapse 系统演进层。每日 5 步闭合循环，将外部信号转化为系统能力的实质提升。"
   subNavActive="intelligence"
   currentLang="zh"
   altLang={{ lang: 'en', href: '/en/synapse/intelligence' }}
 >
   <Hero
-    eyebrow="Intelligence / 情报闭环"
-    title="每天早晨，AI 团队自动上岗"
-    subtitle="Synapse 运转一条日常情报管线：扫描 AI 前沿 → 过滤信号 → 评估行动 → 交付报告。无人工介入。产出公开——管线本身即是产品的一部分。"
+    eyebrow="Self-improve Pipeline / 自进化管线"
+    title="每个循环结束，Synapse 比昨天更强"
+    subtitle="Synapse 演进层：每日自动运行 5 步闭合循环——扫描信号、生成快报、专家决策、派单追踪、能力演进。无人工介入。每个循环的输出公开归档——管线本身即是产品能力的证明。"
     primaryCta={{ label: '订阅情报日报', href: '#subscribe' }}
-    secondaryCta={{ label: '查看每日快报', href: '/intelligence' }}
+    secondaryCta={{ label: '查看自进化档案', href: '/intelligence' }}
   />
 
   <!-- 情报档案入口卡片 -->
@@ -82,20 +87,20 @@ const pipeline = [
           <div class="text-sky-400 text-sm font-medium mt-auto">查看决策 →</div>
         </a>
         <a href="/intelligence/results" class="group flex flex-col gap-3 p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-sky-500/50 transition-all">
-          <div class="text-2xl">✅</div>
+          <div class="text-2xl">🔄</div>
           <div>
-            <div class="text-white font-semibold mb-1">执行结果</div>
-            <div class="text-white/50 text-sm">行动项完成率与复盘，闭合每个情报周期</div>
+            <div class="text-white font-semibold mb-1">演进成果</div>
+            <div class="text-white/50 text-sm">行动完成形成的能力提升，每个循环的演进闭环</div>
           </div>
-          <div class="text-sky-400 text-sm font-medium mt-auto">查看结果 →</div>
+          <div class="text-sky-400 text-sm font-medium mt-auto">查看演进 →</div>
         </a>
       </div>
     </div>
   </section>
 
   <PillarSection
-    eyebrow="The Daily Pipeline / 日常管线"
-    title="四步。在大多数团队开始上班之前。"
+    eyebrow="The Self-improve Pipeline / 自进化管线"
+    title="五步。每天自动完成一次系统升级。"
     bordered={true}
   >
     <div class="max-w-3xl mx-auto space-y-8">
@@ -107,14 +112,14 @@ const pipeline = [
 
   <PillarSection
     eyebrow="What makes it different / 与众不同之处"
-    title="闭合的情报回路——不是一封新闻简报"
+    title="自进化管线——不是一封新闻简报"
   >
     <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
       <p>
-        这不是一封每日新闻简报。它是一条闭合的情报回路。信号进来，决策出去，行动发生，结果回流。
+        这不是一封每日新闻简报。它是 Synapse 系统的自我升级机制。信号进来，决策出去，能力提升，系统变强。
       </p>
       <p>
-        每份日报都归档并附带结果——学到了什么、改了什么、没做什么以及为什么。几个月后，档案本身就成为一份复利式的记录：一个组织究竟是如何跟上 AI 前沿的。
+        每个循环都留下可验证的痕迹——学到了什么、改了什么、演进了哪里。几个月后，这份档案变成一条清晰的能力增长曲线：一个 AI 系统究竟如何持续自我迭代。
       </p>
     </div>
   </PillarSection>
@@ -186,8 +191,8 @@ const pipeline = [
   </script>
 
   <CTABanner
-    heading="跑一条属于你的情报回路"
-    body="Synapse 自带这条日常管线。你的回路，从你第一次打开 Claude Code 的那个清晨开始。"
+    heading="搭建属于你的自进化管线"
+    body="Synapse 自带这条演进机制。你的第一个循环，从你第一次打开 Claude Code 的那个清晨开始。"
     primaryCta={{ label: '立即上手', href: '/synapse/get-started' }}
     secondaryCta={{ label: '了解学院', href: '/academy' }}
   />

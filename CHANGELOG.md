@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.1.0-self-improve-pipeline — 2026-05-20
+
+情报管线→自进化管线系统改版，双语 Hub 全面升级
+
+### Feature
+- **Self-improve Pipeline Hub ZH** (`/intelligence/`): H1 改为"自进化管线"，新增 5 步流程可视化组件（Scan/Bulletin/Decision/Track/Evolve），叙事从"情报中枢"升级为"系统演进层"
+- **Self-improve Pipeline Hub EN** (`/en/intelligence/`): H1 改为"Self-improve Pipeline"，5 步组件英文版，移除语言 disclaimer banner（LB-P3 合规）
+- **EN Hub 路由解锁**: 删除 `astro.config.mjs` 中劫持 `/en/intelligence` 的 301 重定向，EN Hub 现为真实独立页面
+- **Synapse 子页双语更新**: `/synapse/intelligence/` + `/en/synapse/intelligence/` 管线步骤 4→5，叙事改为"自进化管线"定位
+
+### Fix
+- **LB-P3**: `/en/intelligence/` 移除 301 重定向，EN Hub 现为真实落地页，双语路由完整覆盖
+- **语言 notice banner 移除**: EN Hub 和 EN Synapse 子页删除过时的"维护中"提示横幅
+- **页脚文案同步**: Layout 全站页脚"情报闭环/Intelligence Loop"→"自进化管线/Self-improve Pipeline"
+
+### Governance
+- **版本治理**: 对齐 product-profile v2.x 系列，MINOR 版本（新增 EN Hub + 概念重命名）
+- **LB-P1**: MINOR 变更，打 tag `v2.1.0-self-improve-pipeline`
+- **LB-P2**: 双轮 UAT（构建验证 + Cloudflare 生产验证）
+
+---
+
 ## v1.2.0-intelligence-hub — 2026-04-29
 
 情报闭环管线可视化上线，管线质量治理体系建立

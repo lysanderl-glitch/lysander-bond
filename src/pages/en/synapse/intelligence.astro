@@ -25,51 +25,46 @@ import CTABanner from '../../../components/synapse/CTABanner.astro';
 const pipeline = [
   {
     step: 1,
-    title: '6:00am Dubai — Task recovery.',
-    body: 'Reads active_tasks.yaml. Picks up anything left unblocked.',
+    title: 'Scan — Signal capture',
+    body: 'AI frontier and market signals are collected, filtered for actionable value, and staged as raw intel entries.',
   },
   {
     step: 2,
-    title: '8:00am Dubai — Intelligence scan.',
-    body: 'AI and market signals collected, filtered for practical relevance, rendered as HTML, committed to git.',
+    title: 'Bulletin — Daily intel report',
+    body: 'Signals are rendered as an HTML intelligence report, auto-committed to git at 08:00 Dubai and publicly archived.',
   },
   {
     step: 3,
-    title: '10:00am Dubai — Action evaluation.',
-    body: 'Report recommendations pass a four-expert panel. Approved items dispatch to Harness Ops for execution.',
+    title: 'Decision — Expert scoring',
+    body: 'Four-dimension VACE scoring and WSCORE action grading — each intel item is labelled execute, track, or defer.',
   },
   {
     step: 4,
-    title: 'Completion — Slack notification.',
-    body: 'The president gets one line: done, blocked, or awaiting review.',
+    title: 'Track — Dispatch and follow-up',
+    body: 'Approved items dispatch to execution teams, written to active_tasks.yaml for cross-session tracking.',
+  },
+  {
+    step: 5,
+    title: 'Evolve — Capability gain',
+    body: 'Completed actions become capability improvements. Decisions are archived, pipeline health is checked, next cycle begins.',
   },
 ];
 ---
 
 <SynapseLayout
-  title="Intelligence"
-  description="Every morning, your AI team reports for work. A closed daily pipeline: scan, filter, decide, act, report."
+  title="Self-improve Pipeline"
+  description="Synapse's evolution layer. A daily 5-step closed loop that turns external signals into verified capability improvements."
   subNavActive="intelligence"
   currentLang="en"
   altLang={{ lang: 'zh', href: '/synapse/intelligence' }}
 >
   <Hero
-    eyebrow="Intelligence"
-    title="Every morning, your AI team reports for work."
-    subtitle="Synapse runs a daily intelligence pipeline: scan the AI frontier, filter for signal, evaluate for action, ship the report. No human in the loop. The output is public — and the pipeline itself is part of the product."
+    eyebrow="Self-improve Pipeline"
+    title="Every cycle ends with Synapse measurably better than yesterday."
+    subtitle="Synapse's evolution layer: a daily 5-step closed loop — scan signals, publish bulletin, score decisions, dispatch actions, evolve capabilities. No human in the loop. Every cycle's output is publicly archived — the pipeline itself is proof of the system's capability."
     primaryCta={{ label: 'Subscribe to Intelligence Daily', href: '#subscribe' }}
-    secondaryCta={{ label: 'View Daily Intel', href: '/en/intelligence' }}
+    secondaryCta={{ label: 'View the Archive', href: '/en/intelligence' }}
   />
-
-  <!-- Language notice banner -->
-  <section class="px-6 pb-4">
-    <div class="max-w-4xl mx-auto">
-      <div class="flex items-start gap-3 px-5 py-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300/80 text-sm leading-relaxed">
-        <span class="shrink-0 mt-0.5 text-amber-400">ℹ</span>
-        <p>The Intelligence Hub is our operational record system — intelligence reports, decisions, and execution results, maintained in Chinese as our primary working language. An English-summarized version is on our roadmap.</p>
-      </div>
-    </div>
-  </section>
 
   <!-- Intelligence archive entry cards -->
   <section class="py-12 px-6 border-t border-white/10">
@@ -92,20 +87,20 @@ const pipeline = [
           <div class="text-sky-400 text-sm font-medium mt-auto">Browse Decisions →</div>
         </a>
         <a href="/en/intelligence/results" class="group flex flex-col gap-3 p-6 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-sky-500/50 transition-all">
-          <div class="text-2xl">✅</div>
+          <div class="text-2xl">🔄</div>
           <div>
-            <div class="text-white font-semibold mb-1">Results</div>
-            <div class="text-white/50 text-sm">Action completion rates and retrospectives</div>
+            <div class="text-white font-semibold mb-1">Outcomes</div>
+            <div class="text-white/50 text-sm">Capability gains from completed actions, closing each cycle</div>
           </div>
-          <div class="text-sky-400 text-sm font-medium mt-auto">See Results →</div>
+          <div class="text-sky-400 text-sm font-medium mt-auto">See Outcomes →</div>
         </a>
       </div>
     </div>
   </section>
 
   <PillarSection
-    eyebrow="The Daily Pipeline"
-    title="Four steps. Before most teams start the day."
+    eyebrow="The Self-improve Pipeline"
+    title="Five steps. One system upgrade, every day."
     bordered={true}
   >
     <div class="max-w-3xl mx-auto space-y-8">
@@ -117,14 +112,14 @@ const pipeline = [
 
   <PillarSection
     eyebrow="What makes it different"
-    title="A closed intelligence loop — not a newsletter"
+    title="A self-improve pipeline — not a newsletter"
   >
     <div class="max-w-3xl mx-auto text-white/70 text-base md:text-lg leading-relaxed space-y-5">
       <p>
-        This is not a daily newsletter. It is a closed intelligence loop. Signals come in, decisions come out, actions happen, results return.
+        This is not a daily newsletter. It is Synapse's self-improvement mechanism. Signals come in, decisions come out, actions happen, capabilities improve.
       </p>
       <p>
-        Every daily report is archived with an outcome — what we learned, what we changed, what we didn't act on and why. Over months, the archive becomes a compounding record of how an organization actually keeps up with AI.
+        Every cycle leaves a verifiable trace — what we learned, what changed, what evolved. Over months, the archive becomes a compounding capability curve: proof of how an AI system continuously improves itself.
       </p>
     </div>
   </PillarSection>
@@ -196,8 +191,8 @@ const pipeline = [
   </script>
 
   <CTABanner
-    heading="Run your own intelligence loop."
-    body="Synapse ships with the daily pipeline included. Yours starts the first morning you open Claude Code."
+    heading="Build your own self-improve pipeline."
+    body="Synapse ships with the evolution layer included. Your first cycle starts the morning you open Claude Code."
     primaryCta={{ label: 'Get Started', href: '/en/synapse/get-started' }}
     secondaryCta={{ label: 'Visit Academy', href: '/en/academy' }}
   />

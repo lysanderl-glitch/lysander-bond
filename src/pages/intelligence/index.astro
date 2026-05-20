@@ -16,8 +16,8 @@ const results = (await getCollection('intelligence-results'))
 ---
 
 <Layout
-  title="情报中枢 | Lysander"
-  description="Synapse AI 团队每日情报快报、执行决策与行动结果的公开档案。"
+  title="自进化管线 | Lysander"
+  description="Synapse 系统演进层。每日 5 步闭合循环，将外部信号转化为系统能力的实质提升。"
   lang="zh"
   darkContent={true}
 >
@@ -26,12 +26,33 @@ const results = (await getCollection('intelligence-results'))
     <div class="max-w-4xl mx-auto text-center hero-stagger">
       <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-sm font-medium mb-6">
         <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
-        每日自动更新
+        Synapse 演进层 · 每日循环
       </div>
-      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4" style="font-family: var(--font-display, 'Fraunces', Georgia, serif); letter-spacing: -0.02em;">自我进化中枢</h1>
+      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4" style="font-family: var(--font-display, 'Fraunces', Georgia, serif); letter-spacing: -0.02em;">自进化管线</h1>
       <p class="text-lg text-white/60 max-w-2xl mx-auto">
-        Synapse AI 团队的公开运营账本。每日情报、每条决策、每次执行的完整记录。
+        Synapse 系统演进层。每日执行 5 步闭合循环，将外部信号转化为系统能力的实质提升。不是新闻简报——是系统的自我升级日志。
       </p>
+    </div>
+  </section>
+
+  <!-- 5步自进化循环 -->
+  <section class="py-4 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="grid grid-cols-5 gap-2 md:gap-3">
+        {[
+          { step: '01', en: 'Scan', zh: '扫描' },
+          { step: '02', en: 'Bulletin', zh: '快报' },
+          { step: '03', en: 'Decision', zh: '决策' },
+          { step: '04', en: 'Track', zh: '追踪' },
+          { step: '05', en: 'Evolve', zh: '演进' },
+        ].map(s => (
+          <div class="flex flex-col items-center text-center p-3 rounded-lg bg-white/5 border border-white/10">
+            <span class="text-xs text-white/30 mb-1">{s.step}</span>
+            <span class="text-sm font-semibold text-[#fcad2a]">{s.en}</span>
+            <span class="text-xs text-white/50 mt-0.5">{s.zh}</span>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 
@@ -94,7 +115,7 @@ const results = (await getCollection('intelligence-results'))
       <div data-reveal="right">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-            <span class="text-green-400">🔄</span> 自我进化
+            <span class="text-green-400">🔄</span> 演进成果
           </h2>
           <a href="/intelligence/results" class="text-sm text-green-400 hover:text-green-300">全部档案 →</a>
         </div>

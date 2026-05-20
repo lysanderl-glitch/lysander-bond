@@ -40,7 +40,6 @@ export default defineConfig({
     '/training': '/academy',
     '/en/services': '/en/academy',
     '/en/training': '/en/academy',
-    '/en/intelligence': '/en/synapse/intelligence',
     // Pricing pages removed (2026-04-28): redirect to academy.
     '/synapse/pricing': '/academy',
     '/en/synapse/pricing': '/en/academy',
