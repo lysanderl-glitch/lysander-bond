@@ -29,7 +29,7 @@ const formatDate = (d: Date) =>
           <div class="flex items-center gap-3 mb-3 flex-wrap">
             <time class="text-white/40 text-sm">{formatDate(post.data.publishDate)}</time>
             {post.data.priority && (
-              <span class="px-2 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">{post.data.priority}</span>
+              <span class="px-2 py-0.5 bg-sky-500/15 text-sky-400 border border-sky-500/20 rounded text-xs">{post.data.priority}</span>
             )}
             {post.data.pillar && (
               <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 rounded text-xs">{post.data.pillar}</span>

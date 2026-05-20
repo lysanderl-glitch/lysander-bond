@@ -12,16 +12,17 @@ const { title, body, accent = 'amber', icon, href, lang } = Astro.props;
 const isEn = lang ? lang === 'en' : Astro.url.pathname.startsWith('/en/');
 const ctaText = isEn ? 'Learn more' : '了解更多';
 
+// Phase 4: purple → terracotta
 const accentClass = {
   amber: 'forge-card-amber',
   sky: 'forge-card-sky',
-  purple: 'forge-card-purple',
+  purple: 'forge-card-terracotta',
 }[accent];
 
 const badgeClass = {
   amber: 'bg-[#FCAD2A]/10 text-[#FCAD2A]',
   sky: 'bg-sky-500/10 text-sky-400',
-  purple: 'bg-purple-500/10 text-purple-400',
+  purple: 'bg-[#c96442]/10 text-[#c96442]',
 }[accent];
 
 const Tag = href ? 'a' : 'div';

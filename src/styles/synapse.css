@@ -37,6 +37,8 @@
 .forge-card-amber:hover { border-color: rgba(252, 173, 42, 0.4) !important; }
 .forge-card-sky:hover { border-color: rgba(56, 189, 248, 0.4) !important; }
 .forge-card-purple:hover { border-color: rgba(168, 85, 247, 0.4) !important; }
+/* Phase 4: terracotta replaces purple as Warm Editorial accent */
+.forge-card-terracotta:hover { border-color: rgba(201, 100, 66, 0.4) !important; }
 
 /* Timeline number circle */
 .forge-timeline-num {

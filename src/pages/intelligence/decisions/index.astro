@@ -18,10 +18,10 @@ const decisions = (await getCollection('intelligence-decisions'))
         <div class="space-y-4">
           {decisions.map(d => (
             <a href={`/intelligence/decisions/${d.data.date}`}
-               class="flex items-start gap-4 p-5 rounded-xl bg-white/5 border border-white/10 hover:border-purple-500/40 transition-colors group">
+               class="flex items-start gap-4 p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#e9b94a]/40 transition-colors group">
               <div class="flex-shrink-0 flex flex-col gap-1 items-center pt-1">
                 {d.data.executeCount > 0 && (
-                  <span class="text-xs px-2 py-0.5 rounded font-mono bg-purple-500/20 text-purple-400">⚡ {d.data.executeCount}</span>
+                  <span class="text-xs px-2 py-0.5 rounded font-mono bg-[#e9b94a]/15 text-[#e9b94a]">⚡ {d.data.executeCount}</span>
                 )}
                 {d.data.inboxCount > 0 && (
                   <span class="text-xs px-2 py-0.5 rounded font-mono bg-sky-500/20 text-sky-400">📥 {d.data.inboxCount}</span>
@@ -29,7 +29,7 @@ const decisions = (await getCollection('intelligence-decisions'))
               </div>
               <div class="flex-1 min-w-0">
                 <div class="text-xs text-white/40 mb-1">{d.data.date} · {d.data.totalCount} 条情报评估</div>
-                <h2 class="font-semibold text-white group-hover:text-purple-400 mb-1 line-clamp-1">{d.data.topIntel}</h2>
+                <h2 class="font-semibold text-white group-hover:text-[#e9b94a] mb-1 line-clamp-1">{d.data.topIntel}</h2>
                 <p class="text-sm text-white/50 line-clamp-2">{d.data.title}</p>
                 {d.data.topScore && (
                   <div class="mt-1 text-xs text-white/30">最高评分 {d.data.topScore}/20</div>

@@ -23,12 +23,12 @@ const results = (await getCollection('intelligence-results'))
 >
   <!-- Hero -->
   <section class="pt-24 pb-12 px-6">
-    <div class="max-w-4xl mx-auto text-center">
+    <div class="max-w-4xl mx-auto text-center hero-stagger">
       <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-sm font-medium mb-6">
         <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
         每日自动更新
       </div>
-      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">自我进化中枢</h1>
+      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4" style="font-family: var(--font-display, 'Fraunces', Georgia, serif); letter-spacing: -0.02em;">自我进化中枢</h1>
       <p class="text-lg text-white/60 max-w-2xl mx-auto">
         Synapse AI 团队的公开运营账本。每日情报、每条决策、每次执行的完整记录。
       </p>
@@ -40,7 +40,7 @@ const results = (await getCollection('intelligence-results'))
     <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
 
       <!-- 情报快报 -->
-      <div>
+      <div data-reveal="left">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold text-white flex items-center gap-2">
             <span class="text-sky-400">📡</span> 情报快报
@@ -65,23 +65,23 @@ const results = (await getCollection('intelligence-results'))
       </div>
 
       <!-- 执行决策 -->
-      <div>
+      <div data-reveal>
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-            <span class="text-purple-400">⚖️</span> 执行决策
+            <span class="text-[#e9b94a]">⚖️</span> 执行决策
           </h2>
-          <a href="/intelligence/decisions" class="text-sm text-purple-400 hover:text-purple-300">全部档案 →</a>
+          <a href="/intelligence/decisions" class="text-sm text-[#e9b94a] hover:text-[#c96442] transition-colors">全部档案 →</a>
         </div>
         <div class="space-y-3">
           {decisions.length === 0 ? (
             <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-white/40 text-sm text-center">评分裁定后自动展示</div>
           ) : decisions.map(d => (
             <a href={`/intelligence/decisions/${d.data.date}`}
-               class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-purple-500/40 transition-colors group">
+               class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-[#e9b94a]/40 transition-colors group">
               <time class="text-xs text-white/40">{d.data.date}</time>
-              <h3 class="text-sm font-medium text-white group-hover:text-purple-400 mt-1 line-clamp-2">{d.data.topIntel}</h3>
+              <h3 class="text-sm font-medium text-white group-hover:text-[#e9b94a] mt-1 line-clamp-2">{d.data.topIntel}</h3>
               <div class="flex gap-2 mt-2 flex-wrap">
-                {d.data.executeCount > 0 && <span class="text-xs text-purple-400">⚡ {d.data.executeCount} 执行</span>}
+                {d.data.executeCount > 0 && <span class="text-xs text-[#e9b94a]">⚡ {d.data.executeCount} 执行</span>}
                 {d.data.inboxCount > 0 && <span class="text-xs text-sky-400">📥 {d.data.inboxCount} 跟踪</span>}
                 {d.data.topScore && <span class="text-xs text-white/40">最高 {d.data.topScore}</span>}
               </div>
@@ -91,7 +91,7 @@ const results = (await getCollection('intelligence-results'))
       </div>
 
       <!-- 自我进化 -->
-      <div>
+      <div data-reveal="right">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-semibold text-white flex items-center gap-2">
             <span class="text-green-400">🔄</span> 自我进化

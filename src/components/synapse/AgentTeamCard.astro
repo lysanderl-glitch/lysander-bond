@@ -8,16 +8,17 @@ interface Props {
 }
 const { team, memberCount, description, members = [], accent = 'amber' } = Astro.props;
 
+// Phase 4: purple replaced with terracotta (#c96442) — anti-pattern elimination
 const accentBar = {
   amber: 'text-[#FCAD2A]',
   sky: 'text-sky-400',
-  purple: 'text-purple-400',
+  purple: 'text-[#c96442]',
 }[accent];
 
 const accentClass = {
   amber: 'forge-card-amber',
   sky: 'forge-card-sky',
-  purple: 'forge-card-purple',
+  purple: 'forge-card-terracotta',
 }[accent];
 ---
 

@@ -33,7 +33,7 @@ const results = (await getCollection('intelligence-results'))
                       <span>发现 {r.data.discoveredCount}</span>
                       <span class="text-sky-400">评估 {r.data.evaluatedCount ?? 0}</span>
                       {(r.data.executedCount ?? 0) > 0 && <span class="text-green-400">执行 {r.data.executedCount}</span>}
-                      {(r.data.verifiedCount ?? 0) > 0 && <span class="text-purple-400">验证 {r.data.verifiedCount}</span>}
+                      {(r.data.verifiedCount ?? 0) > 0 && <span class="text-[#c96442]">验证 {r.data.verifiedCount}</span>}
                       {(r.data.improvedCount ?? 0) > 0 && <span class="text-yellow-400">改进 {r.data.improvedCount}</span>}
                     </>
                   ) : (

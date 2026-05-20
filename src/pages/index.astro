@@ -27,21 +27,21 @@ import Layout from '../layouts/Layout.astro';
     </svg>
 
     <div class="max-w-5xl mx-auto px-6 pt-24 pb-20 relative z-10 text-white">
-      <div class="max-w-2xl">
+      <div class="max-w-2xl hero-stagger">
         <p class="text-sm font-semibold tracking-widest text-[#FCAD2A] uppercase mb-6">Synapse Framework</p>
-        <h1 class="text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-[1.1] tracking-tight">
+        <h1 class="text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-[1.1] tracking-tight" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">
           构建可靠的<br>
-          <span class="bg-gradient-to-r from-[#FCAD2A] to-[#028CDC] bg-clip-text text-transparent">AI 智能体团队</span>
+          <span class="text-[#FCAD2A]">AI 智能体团队</span>
         </h1>
-        <p class="text-lg text-white/50 mt-6 leading-relaxed max-w-lg">
+        <p class="text-lg text-white/55 mt-6 leading-relaxed max-w-lg">
           基于 Harness Engineering 的 AI 协作运营体系。<br>13 个功能模块、53 个 Agent、24/7 自主运转。
         </p>
         <div class="flex flex-wrap gap-4 mt-8">
-          <a href="/academy" class="px-7 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-lg font-bold hover:opacity-90 transition-opacity text-sm">了解学院</a>
-          <a href="/synapse" class="px-7 py-3 border border-[#FCAD2A]/40 bg-[#FCAD2A]/10 text-[#FCAD2A] rounded-lg font-semibold hover:bg-[#FCAD2A]/20 transition-colors text-sm">了解 Synapse →</a>
-          <a href="/blog" class="px-7 py-3 border border-white/15 rounded-lg font-medium hover:bg-white/5 transition-colors text-sm text-white/70">阅读博客</a>
+          <a href="/academy" class="btn-primary px-7 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-md font-bold text-sm inline-block">了解学院</a>
+          <a href="/synapse" class="btn-outline px-7 py-3 border border-[#FCAD2A]/40 bg-[#FCAD2A]/10 text-[#FCAD2A] rounded-md font-semibold text-sm inline-block">了解 Synapse →</a>
+          <a href="/blog" class="btn-outline px-7 py-3 border border-white/15 rounded-md font-medium text-sm text-white/70 inline-block hover:bg-white/5 transition-colors">阅读博客</a>
         </div>
-        <p class="text-sm font-mono text-[#FCAD2A]/80 mt-4">13 模块 · 53 个 Agent · 93.8 审计分数 · 7×24 全时在线</p>
+        <p class="text-sm font-mono text-[#FCAD2A]/70 mt-4">13 模块 · 53 个 Agent · 93.8 审计分数 · 7×24 全时在线</p>
       </div>
     </div>
   </section>
@@ -56,12 +56,12 @@ import Layout from '../layouts/Layout.astro';
   </section>
 
   <!-- ════ Guides + Sensors ════ -->
-  <section class="max-w-5xl mx-auto px-6 py-16">
+  <section class="max-w-5xl mx-auto px-6 py-16" data-reveal>
     <div class="text-center mb-10">
       <h2 class="text-2xl font-bold text-[var(--color-text)]">Harness 的两大控制机制</h2>
       <p class="text-[var(--color-muted)] mt-2 text-sm">前馈引导 + 反馈检验，让 AI Agent 可靠运转</p>
     </div>
-    <div class="grid md:grid-cols-2 gap-6">
+    <div class="grid md:grid-cols-2 gap-6" data-stagger>
       <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #013A7D;">
         <div class="flex items-center gap-3 mb-4">
           <div class="w-8 h-8 rounded-md bg-[#013A7D]/8 flex items-center justify-center text-sm font-bold text-[#013A7D]">G</div>
@@ -94,13 +94,13 @@ import Layout from '../layouts/Layout.astro';
   <div class="glow-line max-w-5xl mx-auto"></div>
 
   <!-- ════ Services ════ -->
-  <section class="bg-[#F7F8FA] py-16">
+  <section class="bg-[#F7F8FA] py-16" data-reveal>
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-10">
         <h2 class="text-2xl font-bold text-[var(--color-text)]">服务</h2>
         <p class="text-[var(--color-muted)] mt-2 text-sm">从诊断到落地到持续进化</p>
       </div>
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="grid md:grid-cols-3 gap-6" data-stagger>
         <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #FCAD2A;">
           <div class="text-xs font-bold text-[#FCAD2A] tracking-wider uppercase mb-3">Assessment</div>
           <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Synapse Assessment</h3>
@@ -124,7 +124,7 @@ import Layout from '../layouts/Layout.astro';
   </section>
 
   <!-- ════ Trust: Product preview + data ════ -->
-  <section class="max-w-5xl mx-auto px-6 py-16">
+  <section class="max-w-5xl mx-auto px-6 py-16" data-reveal>
     <div class="text-center mb-10">
       <h2 class="text-2xl font-bold text-[var(--color-text)]">真实数据，不只是概念</h2>
       <p class="text-[var(--color-muted)] mt-2 text-sm">来自 Synapse 体系真实运行环境的数据</p>
@@ -193,13 +193,13 @@ import Layout from '../layouts/Layout.astro';
   <div class="glow-line max-w-5xl mx-auto"></div>
 
   <!-- ════ Automation Pipeline ════ -->
-  <section class="bg-[#F7F8FA] py-16">
+  <section class="bg-[#F7F8FA] py-16" data-reveal>
     <div class="max-w-5xl mx-auto px-6">
       <div class="text-center mb-10">
         <h2 class="text-2xl font-bold text-[var(--color-text)]">全天候运行，无需人工触发</h2>
         <p class="text-[var(--color-muted)] mt-2 text-sm">总裁只在 Slack 上收到最终结果</p>
       </div>
-      <div class="grid md:grid-cols-4 gap-4">
+      <div class="grid md:grid-cols-4 gap-4" data-stagger>
         <div class="group relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center card-glow">
           <div class="text-xs font-mono font-bold text-[#FCAD2A] mb-3">06:00</div>
           <h4 class="font-semibold text-[var(--color-text)] text-sm">任务恢复</h4>
@@ -233,7 +233,7 @@ import Layout from '../layouts/Layout.astro';
       <div class="rounded-2xl p-10 text-center" style="background: linear-gradient(135deg, #0A1628 0%, #013A7D 100%);">
         <h2 class="text-2xl font-bold text-white mb-3">准备好构建你的 AI 团队了吗？</h2>
         <p class="text-white/40 mb-6 text-sm max-w-md mx-auto">从 2 天评估开始。理解你的 AI 管理成熟度，获取定制化的 Synapse 路线图。</p>
-        <a href="mailto:lysanderl@janusd.io?subject=Synapse%20Inquiry" class="inline-block px-8 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-lg font-bold hover:opacity-90 transition-opacity text-sm">立即联系</a>
+        <a href="mailto:lysanderl@janusd.io?subject=Synapse%20Inquiry" class="btn-primary inline-block px-8 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-md font-bold text-sm">立即联系</a>
       </div>
     </div>
   </section>
