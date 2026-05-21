@@ -3,14 +3,17 @@ import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 const dailyPosts = (await getCollection('intelligence-daily'))
+  .filter(p => p.data.lang === 'zh')
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 5);
 
 const decisions = (await getCollection('intelligence-decisions'))
+  .filter(d => d.data.lang === 'zh')
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 5);
 
 const results = (await getCollection('intelligence-results'))
+  .filter(r => r.data.lang === 'zh')
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 5);
 ---

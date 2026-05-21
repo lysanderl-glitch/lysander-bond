@@ -3,14 +3,17 @@ import Layout from '../../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
 const dailyPosts = (await getCollection('intelligence-daily'))
+  .filter(p => p.data.lang === 'en')
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 5);
 
 const decisions = (await getCollection('intelligence-decisions'))
+  .filter(d => d.data.lang === 'en')
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 5);
 
 const results = (await getCollection('intelligence-results'))
+  .filter(r => r.data.lang === 'en')
   .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
   .slice(0, 5);
 ---
@@ -70,7 +73,10 @@ const results = (await getCollection('intelligence-results'))
         </div>
         <div class="space-y-3">
           {dailyPosts.length === 0 ? (
-            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-white/40 text-sm text-center">No reports yet.</div>
+            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-sm text-center">
+              <p class="text-white/40 mb-2">English intel summaries launching —</p>
+              <a href="/intelligence/" class="text-sky-400 hover:text-sky-300">read today's full report in Chinese now →</a>
+            </div>
           ) : dailyPosts.map(post => (
             <a href={`/en/intelligence/daily/${post.data.date}`}
                class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-sky-500/40 transition-colors group">
@@ -95,7 +101,10 @@ const results = (await getCollection('intelligence-results'))
         </div>
         <div class="space-y-3">
           {decisions.length === 0 ? (
-            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-white/40 text-sm text-center">No decisions yet.</div>
+            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-sm text-center">
+              <p class="text-white/40 mb-2">English decisions archive coming soon —</p>
+              <a href="/intelligence/decisions" class="text-[#e9b94a] hover:text-[#c96442]">view Chinese archive →</a>
+            </div>
           ) : decisions.map(d => (
             <a href={`/en/intelligence/decisions/${d.data.date}`}
                class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-[#e9b94a]/40 transition-colors group">
@@ -121,7 +130,10 @@ const results = (await getCollection('intelligence-results'))
         </div>
         <div class="space-y-3">
           {results.length === 0 ? (
-            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-white/40 text-sm text-center">No results yet.</div>
+            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-sm text-center">
+              <p class="text-white/40 mb-2">English outcomes launching —</p>
+              <a href="/intelligence/results" class="text-green-400 hover:text-green-300">view Chinese archive →</a>
+            </div>
           ) : results.map(r => (
             <a href={`/en/intelligence/results/${r.data.date}`}
                class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-green-500/40 transition-colors group">
