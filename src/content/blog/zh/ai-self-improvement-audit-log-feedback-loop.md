@@ -5,6 +5,7 @@ date: 2026-04-30
 publishDate: 2026-04-30T00:00:00.000Z
 slug: ai-self-improvement-audit-log-feedback-loop
 lang: zh
+hasEnglish: true
 keywords:
   - AI工程
   - Synapse
