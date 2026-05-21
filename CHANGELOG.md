@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.2.0] — 2026-05-21 — EN Architecture
+
+### Changed
+- Nav labels: "Intel"/"情报" → "Pipeline"/"自进化" (brand alignment with Self-improve Pipeline hub)
+- EN Hub (`/en/intelligence/`): lang=en filter on all 3 collections; English transition placeholder UI
+- ZH Hub (`/intelligence/`): lang=zh filter on all 3 collections (future-proof)
+- `publish_to_bond.py`: Added EN content generation with Minimax translation + template fallback; BOND_ROOT + SYNAPSE_OPS_ROOT env var support
+
+### Added
+- `publish-to-bond.yml`: Fallback cron workflow (UTC 01:30) with business assertion + WF-09 Slack alert
+- `intel-action.yml`: Primary auto-publish trigger (runs after intel generation)
+- EN file naming convention: `{date}-en.md` alongside ZH `{date}.md`
+
+### Fixed
+- EN Hub no longer shows Chinese content (P0 regression resolved)
+- Intel content publishing is now fully automated (manual gap closed)
+
+### Governance
+- Silent Fail defense: publish-to-bond.yml asserts file existence, exits 1 on failure
+- WF-09 Slack exclusive path: all failure alerts route through SLACK_WEBHOOK_N8N
+
+---
+
 ## v2.1.0-self-improve-pipeline — 2026-05-20
 
 情报管线→自进化管线系统改版，双语 Hub 全面升级
