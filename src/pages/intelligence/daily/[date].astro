@@ -4,7 +4,13 @@ import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const posts = await getCollection('intelligence-daily');
-  return posts.map(post => ({
+  // Only ZH entries own the /intelligence/daily/[date] canonical route.
+  // EN stub files share the same `date` frontmatter field and would overwrite
+  // the ZH entry when both are mapped to params:{date}, because the glob loader
+  // processes files alphabetically and "2026-05-21-en.md" sorts after
+  // "2026-05-21.md", causing Astro to keep the EN entry as the winner.
+  const zhPosts = posts.filter(post => post.data.lang !== 'en');
+  return zhPosts.map(post => ({
     params: { date: post.data.date },
     props: { post },
   }));
