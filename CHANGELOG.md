@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.1] — 2026-05-22 — Pipeline Structural Fix
+
+### Fixed
+- **A1:** LangToggle `/intelligence` missing from `HAS_EN_VERSION` whitelist — EN switch button was disabled despite `/en/intelligence/` being live. Root cause: path listed in comment but never inserted in code.
+- **B1:** `extract_html_intel()` regex patterns matched old v1 HTML template only. Added v2 class names (`intel-item-title`, `intel-item`, `score-num`). May 20+ daily reports now show correct item count.
+- **B3:** `intel-action.yml` results publish used `$(date +%Y-%m-%d)` but `action_agent.py` outputs `{target_date+1}-action-report.md`. Off-by-one meant results were NEVER auto-published since pipeline design. Fixed to `$(date -d "+1 day" +%Y-%m-%d)`.
+- **B4:** `gen_eval_summaries.py` (correct decisions generator) was never wired into GHA. Old `--type decisions` step wrote governance-format files incompatible with collection schema. Decisions NEVER auto-published since schema change. Fixed by removing old step and adding `gen_eval_summaries.py` invocation.
+- **B5:** `action_agent.py` wrote raw `<think>...</think>` LLM reasoning blocks to output files. Added stripping before file write.
+
+### Diagnostic methodology note
+B3 and B4 were not regressions — structural gaps present since original pipeline design. Discovered via 3-layer diagnostic (code + runtime + user layer).
+
+---
+
 ## [2.2.0] — 2026-05-21 — EN Architecture
 
 ### Changed
