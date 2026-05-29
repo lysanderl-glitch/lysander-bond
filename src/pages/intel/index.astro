@@ -43,6 +43,11 @@ const { Content } = await render(latest);
         <span class="text-xs font-semibold text-[#28a745]">窗口内 {latest.data.fresh_count} 条</span>
         <span class="text-xs font-semibold text-[var(--color-muted)]">窗口外剔除 {latest.data.historical_count} 条</span>
       </div>
+      <!-- Cross-link: distinguish from daily intelligence pipeline -->
+      <p class="text-xs text-[var(--color-muted)] mt-4 leading-relaxed">
+        本页：<span class="font-semibold text-[var(--color-text-light)]">外部能力雷达 · 周扫 · 能力吸收</span>。
+        找每日 AI 资讯？<a href="/intelligence" class="text-[#028CDC] hover:underline">📰 每日资讯情报 → /intelligence（每日 AI 资讯·评分执行）</a>
+      </p>
     </div>
   </section>
 
