@@ -131,10 +131,25 @@ const intelResultsCollection = defineCollection({
   }),
 });
 
+// 每周快报 — versioned weekly update entries for /this-week and /weekly/[slug]
+// Each file = one week's PLS (Plain-Language Surface) snapshot
+// Naming convention: YYYY-MM-DD.md (the Sunday of that week)
+const weeklyCollection = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/weekly' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.string(),          // YYYY-MM-DD (week ending date)
+    summary: z.string().optional(),
+    health_score: z.number().optional(), // 0–100 composite health
+    window_label: z.string().optional(), // e.g. "2026-05-17 → 2026-05-28"
+  }),
+});
+
 export const collections = {
   blog: blogCollection,
   'synapse-core': synapseCoreCollection,
   'intelligence-daily': intelDailyCollection,
   'intelligence-decisions': intelDecisionsCollection,
   'intelligence-results': intelResultsCollection,
+  weekly: weeklyCollection,
 };

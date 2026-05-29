@@ -1,102 +1,20 @@
 ---
+// PLS (Plain-Language Surface) — versioned content collection host.
+// Shows the latest weekly entry in full; links to historical archive below.
+// Each week's content lives in src/content/weekly/YYYY-MM-DD.md
+// History URL pattern: /weekly/YYYY-MM-DD/
+import { getCollection, render } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
-// PLS (Plain-Language Surface) v1 — 三栏目首版
-// 数据时间窗：2026-05-17 → 2026-05-28（含 W20 周审查 + 本周进展）
-// 发布日期：2026-05-28（Lysander 加速版，原定 2026-05-31 周日）
-// 关联决策：D-2026-05-28-001（CIP + Loop Closure Patch）
-// 编辑路径：直接修改本文件即可；下一版会迁移到内容集合自动生成。
+const allEntries = await getCollection('weekly');
 
-const updatedAt = '2026-05-28';
-const windowLabel = '2026-05-17 → 2026-05-28';
+// Sort descending by date string (YYYY-MM-DD lexicographic sort is safe)
+allEntries.sort((a, b) => b.data.date.localeCompare(a.data.date));
 
-// ── 栏目 1：这周更新了什么（5–10 句质朴语言）─────────────────
-const weeklyChanges = [
-  {
-    title: '把"决定了但没真做"这件事制度化堵住了',
-    body: '过去经常出现：开会拍板做某事，文档里写"已通过"，但真正上线没做完。这周我们给每条决定加了三个必填项——谁负责、做完没、证据在哪。没真做完的决定，会自动浮到下周审查桌上，不再悄悄烂掉。',
-  },
-  {
-    title: '总裁您的两个价值方向已经定下来了',
-    body: '一个是您要以实名出现在所有公开内容里，不再用化名；另一个是我们这套系统封顶做成"够您一个人体面运转"，不追求扩张成公司。这两条已经写进档案，后面所有规划都按这两个方向走。',
-  },
-  {
-    title: '换机迁移走完了，资料一份没丢',
-    body: '从旧电脑搬到新机器，桌面 54 个文件清到 28 个，13 个代码仓库和 9 套密码全部点过一遍，打了 6 个加密包共 1.93GB，新机解开验证完全一致。换机这种事过去一拖几周，这次三天落地。',
-  },
-  {
-    title: '情报评估的尺子换了一把更紧的',
-    body: '过去判断一条情报"值不值得做"凭直觉，常常漏掉跟我们核心能力相关的好东西，又花时间在不重要的事上。这周换成了 7 个学术框架支撑的新评分尺，明确写出"必须能强化 Synapse 自身能力才上桌"。本周这把尺已经在用。',
-  },
-  {
-    title: '给您看的网页（就是您正在看的这个）有了固定栏目',
-    body: '过去这个网站要么没东西要么塞满术语。从本页开始固定三个您能读懂的栏目：这周更新了什么、现在能让 Synapse 做什么、上周运行得怎么样。每周日晚自动刷新，下周一早您打开就是新的。',
-  },
-  {
-    title: '通知通道收回到唯一一条线',
-    body: '过去 Slack 通知有好几条路径并存，偶尔会漏发或重复发。这周锁定只走一条线（n8n 编排），并且设了硬规则——没经过这条线的 Slack 调用一律不允许。意味着您收到的提醒不会重复，也不会无声漏掉。',
-  },
-  {
-    title: '能力继承管线（CIP）启动',
-    body: '过去 Synapse 学到的新方法、踩过的坑，靠人脑记，换人或换会话就丢。本周启动了一条管线，把这些经验自动沉淀成 Agent 能调用的"记忆卡"。这周做的是底座，下周开始有第一批可用记忆。',
-  },
-];
+const latest = allEntries[0];
+const historical = allEntries.slice(1);
 
-// ── 栏目 2：现在我能让 Synapse 做什么（按场景列举）─────────────
-const capabilities = [
-  {
-    scene: '把一段会议笔记整理成可发邮件的简报',
-    example: '丢一段录音转写或散记给 Lysander，半小时内拿回一封可以直接转发的简报，开头一句话结论、后面三段背景+建议。',
-    backed_by: 'executive_briefer + Fireflies 转写',
-  },
-  {
-    scene: '判断一条外部新方法/工具值不值得 Synapse 学进来',
-    example: '看到 X 上有人推某个新 AI 框架，一句话扔给 Lysander："这个值不值得我们看？"半天内拿回带证据的判断（值得/不值得/边际），含 7 项学术维度评分。',
-    backed_by: 'INTEL Eval Framework v3 + ai_tech_researcher',
-  },
-  {
-    scene: '每周日晚自动给您一份系统体检报告',
-    example: '不用您主动问，周日 23:00（迪拜时间）自动跑完审查，周一早 Slack 推给您。上周做对了什么、做错了什么、下周关注什么——四段话，不超过 500 字。',
-    backed_by: 'harness_engineer + execution_auditor（SRS 周审查）',
-  },
-  {
-    scene: '一个决定下来后自动跟踪它有没有真落地',
-    example: '任何 L3 以上决定（比如"上线某功能"），自动绑定负责人、证据要求、超时上报时钟。7 天没落地自动上桌，14 天没落地自动通知您。',
-    backed_by: 'active_tasks.yaml ELA 强制字段（本周新生效）',
-  },
-  {
-    scene: '把一份文档同时输出中英双语，且术语对齐',
-    example: '比如一份方法论文档，写完中文 Lysander 自动翻译英文，并保证关键术语全站统一。lysander.bond 英文站点已是这样运行。',
-    backed_by: 'MiniMax-M2.7 + content_strategist + LangToggle',
-  },
-  {
-    scene: '随手拍一个 idea 上来，两小时内拿到可点击的原型',
-    example: '比如"做一个番茄钟，但每 25 分钟提示喝水"。Lysander 调专家组出方案、写代码、生成单文件 HTML，您可以直接打开看效果。已沉淀 2 个真实案例（天气查询、番茄钟）。',
-    backed_by: 'Synapse Multi-Agent 快速原型管线',
-  },
-  {
-    scene: '看一份每天发现的"值得关注的 AI 进展"清单',
-    example: '每天迪拜时间晚 23:00 自动跑一遍，第二天早您打开 lysander.bond/intelligence 就能看到当天 3-5 条精选 + 评分。',
-    backed_by: 'intel-daily + intel-action + publish_to_bond.py',
-  },
-];
-
-// ── 栏目 3：上周运行得怎么样（SRS plain 四段叙事）─────────────
-const srs = {
-  did_right: '周审查机制连续第 5 周稳定产出了体检报告（W16 一直到 W20 一周不漏），这是过去半年最稳定的一段。INTEL 情报评估的尺子升级到 v3，靠 7 个学术框架打底，第一次有了"明确写出来的判断标准"，不再凭感觉。同期换机迁移闭环完成，资料一份没丢。',
-  did_wrong: 'CEO 主对话上周累计绕过治理护栏 3646 次，其中 1965 次属于高风险（直接调危险工具而非派单给团队）——治理规则在文档里写得很清楚，但执行端没人挡住。另外上周发布的整改方案 v1，关键一项"英文站点不能透传中文"的修复，文档写了"已通过"，一周后查发现根本没真上线——这正是本周新机制要根治的"决定了但没真做"模式。',
-  learned: '只写在文档里的规则没用，要么有自动拦截、要么有"做完没"的硬证据要求。这周给每条决定加的三个必填项（谁负责、做完没、证据在哪），就是这一课的产物。',
-  next_week: '能力继承管线（CIP）的首批 4 个工作包要真正落地有证据，其中第一份证据就是您现在读到的本页。',
-  // 六维健康分（数字简表）
-  metrics: [
-    { label: '治理合规率', value: '71.6%', note: '6920 次调用中 3646 次违规' },
-    { label: '工具调用量', value: '6920', note: '上周总量' },
-    { label: '高风险违规', value: '1965', note: '需本周新机制压下来' },
-    { label: '周审查产出', value: '5/5', note: 'W16–W20 全产出' },
-    { label: '决策归档', value: '+3', note: '本周新增 D-record' },
-    { label: '关键阻塞', value: '0', note: '当前无 L5 上桌待裁' },
-  ],
-};
+const { Content } = await render(latest);
 ---
 
 <Layout
@@ -110,7 +28,7 @@ const srs = {
     <div class="max-w-4xl mx-auto">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FCAD2A]/10 border border-[#FCAD2A]/30 text-[#FCAD2A] text-xs font-semibold mb-5">
         <span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] animate-pulse"></span>
-        本周快报 · 更新于 {updatedAt}
+        本周快报 · 更新于 {latest.data.date}
       </div>
       <h1 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-3" style="font-family: var(--font-display, 'Fraunces', Georgia, serif); letter-spacing: -0.02em;">
         这周怎么样
@@ -118,125 +36,110 @@ const srs = {
       <p class="text-base md:text-lg text-[var(--color-text-light)] leading-relaxed max-w-2xl">
         给总裁的一页质朴汇报：这周改了什么、现在您能让 Synapse 做哪些事、上周整体跑得怎么样。
       </p>
-      <p class="text-xs text-[var(--color-muted)] mt-3 font-mono">
-        数据窗口 {windowLabel} · 每周日晚自动刷新
-      </p>
-    </div>
-  </section>
-
-  <!-- 栏目 1：这周更新了什么 -->
-  <section class="py-14 px-6">
-    <div class="max-w-4xl mx-auto">
-      <div class="flex items-baseline gap-3 mb-8">
-        <span class="text-xs font-mono font-bold text-[#FCAD2A] tracking-wider">01</span>
-        <h2 class="text-2xl font-bold text-[var(--color-text)]">这周更新了什么</h2>
-      </div>
-      <div class="space-y-6">
-        {weeklyChanges.map((c, idx) => (
-          <article class="pb-6 border-b border-[var(--color-border)] last:border-b-0">
-            <h3 class="text-lg font-semibold text-[var(--color-text)] mb-2">
-              <span class="text-[#FCAD2A] font-mono text-sm mr-2">{String(idx + 1).padStart(2, '0')}</span>
-              {c.title}
-            </h3>
-            <p class="text-[var(--color-text-light)] leading-relaxed text-[15px]">
-              {c.body}
-            </p>
-          </article>
-        ))}
+      <div class="flex items-center gap-4 mt-3 flex-wrap">
+        {latest.data.window_label && (
+          <p class="text-xs text-[var(--color-muted)] font-mono">
+            数据窗口 {latest.data.window_label} · 每周日晚自动刷新
+          </p>
+        )}
+        {latest.data.health_score && (
+          <span class="text-xs font-semibold text-[#28a745]">健康分 {latest.data.health_score}/100</span>
+        )}
       </div>
     </div>
   </section>
 
-  <!-- 分隔 -->
-  <div class="border-t border-[var(--color-border)] bg-[#F7F8FA]">
-    <!-- 栏目 2：现在我能让 Synapse 做什么 -->
-    <section class="py-14 px-6">
+  <!-- Latest entry content -->
+  <article class="py-14 px-6">
+    <div class="max-w-4xl mx-auto weekly-content">
+      <Content />
+    </div>
+  </article>
+
+  <!-- Historical archive -->
+  {historical.length > 0 && (
+    <section class="py-10 px-6 border-t border-[var(--color-border)] bg-[#F7F8FA]">
       <div class="max-w-4xl mx-auto">
-        <div class="flex items-baseline gap-3 mb-8">
-          <span class="text-xs font-mono font-bold text-[#028CDC] tracking-wider">02</span>
-          <h2 class="text-2xl font-bold text-[var(--color-text)]">现在我能让 Synapse 做什么</h2>
-        </div>
-        <p class="text-sm text-[var(--color-muted)] mb-8 max-w-2xl">
-          按场景列举。每一条都是今天就能调起来的能力，不是 roadmap。
-        </p>
-        <div class="grid md:grid-cols-2 gap-5">
-          {capabilities.map((cap, idx) => (
-            <div class="p-5 bg-white rounded-xl border border-[var(--color-border)] card-glow">
-              <div class="text-xs font-mono font-bold text-[#028CDC] mb-2">
-                场景 {String(idx + 1).padStart(2, '0')}
-              </div>
-              <h3 class="text-base font-semibold text-[var(--color-text)] mb-3 leading-snug">
-                {cap.scene}
-              </h3>
-              <p class="text-sm text-[var(--color-text-light)] leading-relaxed mb-3">
-                {cap.example}
-              </p>
-              <p class="text-xs text-[var(--color-muted)] border-t border-[var(--color-border)] pt-2 mt-2">
-                <span class="text-[var(--color-muted)]">背后由</span>
-                <span class="font-mono text-[var(--color-text-light)]">{cap.backed_by}</span>
-                <span class="text-[var(--color-muted)]">支撑</span>
-              </p>
-            </div>
+        <h2 class="text-sm font-bold uppercase tracking-wider text-[var(--color-muted)] mb-5">往期快报</h2>
+        <ul class="space-y-3">
+          {historical.map((entry) => (
+            <li class="flex items-baseline gap-4">
+              <span class="text-xs font-mono text-[var(--color-muted)] w-24 shrink-0">{entry.data.date}</span>
+              <a
+                href={`/weekly/${entry.data.date}/`}
+                class="text-sm text-[#028CDC] hover:underline leading-snug"
+              >
+                {entry.data.summary ?? entry.data.title}
+              </a>
+              {entry.data.health_score && (
+                <span class="text-xs text-[#28a745] font-mono shrink-0">{entry.data.health_score}/100</span>
+              )}
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
-  </div>
-
-  <!-- 栏目 3：上周运行得怎么样 -->
-  <section class="py-14 px-6">
-    <div class="max-w-4xl mx-auto">
-      <div class="flex items-baseline gap-3 mb-8">
-        <span class="text-xs font-mono font-bold text-[#013A7D] tracking-wider">03</span>
-        <h2 class="text-2xl font-bold text-[var(--color-text)]">上周运行得怎么样</h2>
-      </div>
-
-      <!-- 四段叙事 -->
-      <div class="space-y-6 mb-10">
-        <div class="border-l-2 border-[#28a745] pl-5">
-          <h3 class="text-sm font-bold uppercase tracking-wider text-[#28a745] mb-2">做对了什么</h3>
-          <p class="text-[var(--color-text-light)] leading-relaxed text-[15px]">{srs.did_right}</p>
-        </div>
-        <div class="border-l-2 border-[#dc3545] pl-5">
-          <h3 class="text-sm font-bold uppercase tracking-wider text-[#dc3545] mb-2">做错了什么</h3>
-          <p class="text-[var(--color-text-light)] leading-relaxed text-[15px]">{srs.did_wrong}</p>
-        </div>
-        <div class="border-l-2 border-[#FCAD2A] pl-5">
-          <h3 class="text-sm font-bold uppercase tracking-wider text-[#FCAD2A] mb-2">学到了什么</h3>
-          <p class="text-[var(--color-text-light)] leading-relaxed text-[15px]">{srs.learned}</p>
-        </div>
-        <div class="border-l-2 border-[#028CDC] pl-5">
-          <h3 class="text-sm font-bold uppercase tracking-wider text-[#028CDC] mb-2">下周关注什么</h3>
-          <p class="text-[var(--color-text-light)] leading-relaxed text-[15px]">{srs.next_week}</p>
-        </div>
-      </div>
-
-      <!-- 六维健康分简表 -->
-      <div class="bg-[#0A1628] rounded-xl p-6 md:p-8">
-        <div class="flex items-baseline justify-between mb-5">
-          <h3 class="text-sm font-bold uppercase tracking-wider text-white/60">六维健康分</h3>
-          <span class="text-xs text-white/30 font-mono">W20 · {windowLabel}</span>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {srs.metrics.map(m => (
-            <div class="p-3 bg-white/[0.04] rounded-lg border border-white/5">
-              <div class="text-xs text-white/40 mb-1">{m.label}</div>
-              <div class="text-xl font-black text-[#FCAD2A] mb-1">{m.value}</div>
-              <div class="text-[10px] text-white/30 leading-tight">{m.note}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
+  )}
 
   <!-- Footer note -->
   <section class="py-10 px-6 border-t border-[var(--color-border)] bg-[#F7F8FA]">
     <div class="max-w-4xl mx-auto text-center">
       <p class="text-xs text-[var(--color-muted)] leading-relaxed">
-        本页是 PLS（质朴呈现层）首版，关联决策 <span class="font-mono">D-2026-05-28-001</span>。<br>
-        从下周起，本页每周日 23:00（迪拜时间）自动刷新，刷新依据是 SRS 周审查产出。
+        每周一条 dated entry，历史永久保留。<br>
+        本周 <span class="font-mono">{latest.data.date}</span> — <a href={`/weekly/${latest.data.date}/`} class="text-[#028CDC] hover:underline">固定链接</a>
       </p>
     </div>
   </section>
 </Layout>
+
+<style>
+  .weekly-content h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .weekly-content h2:first-child {
+    margin-top: 0;
+  }
+  .weekly-content strong {
+    color: var(--color-text);
+  }
+  .weekly-content p {
+    color: var(--color-text-light);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .weekly-content em {
+    color: var(--color-muted);
+    font-style: normal;
+    font-size: 0.875rem;
+  }
+  .weekly-content hr {
+    border-color: var(--color-border);
+    margin: 2rem 0;
+  }
+  .weekly-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin: 1.5rem 0;
+  }
+  .weekly-content th,
+  .weekly-content td {
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+  .weekly-content th {
+    background: #F7F8FA;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .weekly-content td {
+    color: var(--color-text-light);
+  }
+</style>
