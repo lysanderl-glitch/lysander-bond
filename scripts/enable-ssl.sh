@@ -34,7 +34,7 @@ certbot --nginx \
   -d www.synapsehd.com \
   --non-interactive \
   --agree-tos \
-  --email lysanderl@janusd.io \
+  --email lysanderl@janusd.com \
   --redirect
 
 echo "=== Step 6: Verify HTTPS ==="

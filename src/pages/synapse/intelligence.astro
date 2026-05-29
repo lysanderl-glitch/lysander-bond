@@ -61,7 +61,7 @@ const pipeline = [
   <Hero
     eyebrow="Self-improve Pipeline / 自进化管线"
     title="每个循环结束，Synapse 比昨天更强"
-    subtitle="Synapse 演进层：每日自动运行 5 步闭合循环——扫描信号、生成快报、专家决策、派单追踪、能力演进。无人工介入。每个循环的输出公开归档——管线本身即是产品能力的证明。"
+    subtitle="Synapse 演进层：每日自动运行 5 步循环——扫描信号 → 生成快报 → 专家评分 → Lysander 派单追踪 → 能力演进。L3 项 Lysander 自主决策，L4 项总裁知会，L5 项总裁裁决；每个循环的输出公开归档。"
     primaryCta={{ label: '订阅情报日报', href: '#subscribe' }}
     secondaryCta={{ label: '查看自进化档案', href: '/intelligence' }}
   />
@@ -180,7 +180,7 @@ const pipeline = [
         }
       } catch {
         if (msg) {
-          msg.textContent = '⚠️ 提交暂时失败，请通过 lysanderl@janusd.io 联系我们完成订阅。';
+          msg.textContent = '⚠️ 提交暂时失败，请通过 lysanderl@janusd.com 联系我们完成订阅。';
           msg.className = 'mt-4 text-sm text-yellow-400';
         }
       } finally {

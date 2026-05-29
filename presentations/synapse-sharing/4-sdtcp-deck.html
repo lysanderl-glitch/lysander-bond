@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synapse Digital Twin Collaboration Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1c2128;
+    --border: #30363d;
+    --cyan: #00d4ff;
+    --cyan2: #00a8cc;
+    --purple: #7c3aed;
+    --purple2: #a855f7;
+    --green: #00ff88;
+    --orange: #ff8c00;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --text3: #6e7681;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans SC', 'Inter', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── Slide Container ── */
+  #deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 48px 64px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    overflow: hidden;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ── Navigation ── */
+  #nav {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 100;
+    background: rgba(22,27,34,0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 40px;
+    padding: 10px 24px;
+  }
+
+  #nav button {
+    background: none;
+    border: none;
+    color: var(--text2);
+    cursor: pointer;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+    line-height: 1;
+  }
+  #nav button:hover { color: var(--cyan); background: rgba(0,212,255,0.08); }
+
+  #counter {
+    font-size: 13px;
+    color: var(--text3);
+    font-family: 'Inter', monospace;
+    min-width: 44px;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  #dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .dot.active { background: var(--cyan); transform: scale(1.4); }
+
+  /* ── Background Decorations ── */
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none;
+  }
+
+  .bg-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+  }
+
+  /* ── Common Components ── */
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-family: 'Inter', monospace;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .tag-cyan { background: rgba(0,212,255,0.1); color: var(--cyan); border: 1px solid rgba(0,212,255,0.2); }
+  .tag-purple { background: rgba(124,58,237,0.15); color: var(--purple2); border: 1px solid rgba(124,58,237,0.25); }
+  .tag-green { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+
+  h1.hero {
+    font-size: clamp(36px, 5.5vw, 72px);
+    font-weight: 900;
+    line-height: 1.1;
+    text-align: center;
+    letter-spacing: -1px;
+  }
+
+  h2.section-title {
+    font-size: clamp(28px, 3.5vw, 48px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, var(--cyan), var(--purple2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-green {
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--cyan); }
+
+  .card-cyan {
+    background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(0,212,255,0.02));
+    border-color: rgba(0,212,255,0.2);
+  }
+
+  .card-purple {
+    background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(124,58,237,0.03));
+    border-color: rgba(124,58,237,0.25);
+  }
+
+  /* ── SLIDE 1: Title ── */
+  #slide-1 .bg-glow-1 {
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,212,255,0.12) 0%, transparent 70%);
+    top: -200px; left: -100px;
+  }
+  #slide-1 .bg-glow-2 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+    bottom: -150px; right: -50px;
+  }
+
+  #slide-1 .logo-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .synapse-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text2);
+    text-transform: uppercase;
+  }
+
+  .synapse-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 12px var(--cyan); transform: scale(1); }
+    50% { box-shadow: 0 0 24px var(--cyan), 0 0 40px rgba(0,212,255,0.4); transform: scale(1.15); }
+  }
+
+  .title-sub {
+    font-size: clamp(14px, 1.8vw, 22px);
+    color: var(--text2);
+    text-align: center;
+    max-width: 640px;
+    margin-top: 20px;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .title-en {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(11px, 1.2vw, 15px);
+    letter-spacing: 3px;
+    color: var(--text3);
+    margin-top: 12px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .title-cta {
+    margin-top: 48px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--cyan), var(--purple2));
+    color: #000;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 12px 28px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-outline {
+    background: none;
+    color: var(--text2);
+    font-size: 13px;
+    padding: 12px 28px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+  }
+
+  /* ── SLIDE 2: Problem ── */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 32px;
+  }
+
+  .problem-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .problem-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #ff4444, #ff8c00);
+  }
+
+  .problem-icon { font-size: 28px; margin-bottom: 12px; }
+  .problem-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+  .problem-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .stat-row {
+    display: flex;
+    gap: 32px;
+    margin-top: 32px;
+  }
+
+  .stat-block {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 48px;
+    font-weight: 900;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #ff4444, #ff8c00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text2);
+    margin-top: 6px;
+  }
+
+  /* ── SLIDE 3: Vision ── */
+  .vision-compare {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: start;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 28px;
+  }
+
+  .vision-col-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid;
+  }
+
+  .vision-col-title.before { color: var(--text3); border-color: var(--border); }
+  .vision-col-title.after { color: var(--cyan); border-color: var(--cyan); }
+
+  .vision-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .vision-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    padding-top: 40px;
+    color: var(--cyan);
+  }
+
+  /* ── SLIDE 4: Core Concept ── */
+  .twin-diagram {
+    position: relative;
+    width: 100%;
+    max-width: 820px;
+    margin-top: 24px;
+  }
+
+  .org-row {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .person-twin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .person-node {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    border: 2px solid;
+    position: relative;
+  }
+
+  .person-node.human { border-color: var(--border); background: var(--bg3); }
+  .person-node.twin {
+    border-color: var(--cyan);
+    background: rgba(0,212,255,0.08);
+    box-shadow: 0 0 16px rgba(0,212,255,0.2);
+    animation: glow-pulse 3s infinite;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 16px rgba(0,212,255,0.2); }
+    50% { box-shadow: 0 0 28px rgba(0,212,255,0.4), 0 0 48px rgba(0,212,255,0.15); }
+  }
+
+  .connector-v {
+    width: 2px; height: 20px;
+    background: linear-gradient(180deg, var(--border), var(--cyan));
+    margin: 0 auto;
+  }
+
+  .person-label { font-size: 11px; color: var(--text2); text-align: center; }
+  .twin-label { font-size: 10px; color: var(--cyan); text-align: center; font-family: 'Inter', monospace; }
+
+  .connector-h-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 8px 0;
+    position: relative;
+  }
+
+  .h-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    max-width: 80px;
+  }
+
+  .collab-label {
+    font-size: 11px;
+    color: var(--cyan);
+    padding: 4px 10px;
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 20px;
+    font-family: 'Inter', monospace;
+    background: rgba(0,212,255,0.06);
+    white-space: nowrap;
+  }
+
+  .four-pillars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 24px;
+    width: 100%;
+    max-width: 820px;
+  }
+
+  .pillar-card {
+    background: var(--bg2);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .pillar-icon { font-size: 22px; margin-bottom: 8px; }
+  .pillar-title { font-size: 12px; font-weight: 700; color: var(--cyan); margin-bottom: 4px; }
+  .pillar-desc { font-size: 11px; color: var(--text2); line-height: 1.4; }
+
+  /* ── SLIDE 5: Memory Architecture ── */
+  .memory-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 760px;
+    margin-top: 24px;
+  }
+
+  .memory-layer {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 20px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .memory-layer:hover { border-color: var(--cyan); transform: translateX(4px); }
+
+  .layer-badge {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    font-family: 'Inter', monospace;
+  }
+
+  .l1 { background: rgba(0,212,255,0.15); color: var(--cyan); }
+  .l2 { background: rgba(168,85,247,0.15); color: var(--purple2); }
+  .l3 { background: rgba(0,255,136,0.12); color: var(--green); }
+  .l4 { background: rgba(255,140,0,0.15); color: var(--orange); }
+
+  .layer-info {}
+  .layer-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .layer-desc { font-size: 12px; color: var(--text2); line-height: 1.4; }
+
+  .layer-status {
+    font-size: 11px;
+    font-family: 'Inter', monospace;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .status-auto { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+  .status-train { background: rgba(255,140,0,0.1); color: var(--orange); border: 1px solid rgba(255,140,0,0.2); }
+  .status-live { background: rgba(0,212,255,0.1); color: var(--cyan); border: 1px solid rgba(0,212,255,0.2); }
+  .status-evolve { background: rgba(168,85,247,0.1); color: var(--purple2); border: 1px solid rgba(168,85,247,0.2); }
+
+  .memory-arrow {
+    text-align: center;
+    color: var(--text3);
+    font-size: 16px;
+    margin: 2px 0;
+  }
+
+  /* ── SLIDE 6: Live Scenario ── */
+  .flow-container {
+    width: 100%;
+    max-width: 860px;
+    margin-top: 20px;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 8px;
+  }
+
+  .flow-node {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    min-width: 180px;
+    flex-shrink: 0;
+  }
+
+  .flow-node.boss-node { border-color: rgba(255,140,0,0.4); background: rgba(255,140,0,0.06); }
+  .flow-node.agent-node { border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.06); }
+  .flow-node.pm-node { border-color: rgba(168,85,247,0.4); background: rgba(168,85,247,0.06); }
+  .flow-node.result-node { border-color: rgba(0,255,136,0.4); background: rgba(0,255,136,0.06); }
+
+  .flow-node-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .flow-avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .flow-role { font-size: 11px; font-weight: 700; font-family: 'Inter', monospace; letter-spacing: 0.5px; }
+  .flow-action { font-size: 12px; color: var(--text2); line-height: 1.4; }
+  .flow-action span { color: var(--text); font-weight: 500; }
+
+  .flow-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    color: var(--text3);
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .flow-arrow.down {
+    flex-direction: column;
+    padding: 4px 0;
+    width: 28px;
+    height: 28px;
+    justify-content: center;
+    margin: 0 auto;
+    color: var(--text3);
+    font-size: 16px;
+  }
+
+  .flow-main-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .flow-vertical-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+  }
+
+  /* ── SLIDE 7: Multi-Agent ── */
+  .agent-network {
+    position: relative;
+    width: 100%;
+    max-width: 860px;
+    height: 380px;
+    margin-top: 16px;
+  }
+
+  .agent-network svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .agent-bubble {
+    position: absolute;
+    background: var(--bg2);
+    border: 2px solid;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    transition: transform 0.2s;
+    cursor: default;
+  }
+
+  .agent-bubble:hover { transform: scale(1.08); z-index: 10; }
+
+  .agent-bubble.center {
+    width: 90px; height: 90px;
+    border-color: var(--cyan);
+    box-shadow: 0 0 24px rgba(0,212,255,0.3);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .agent-bubble.center:hover { transform: translate(-50%, -50%) scale(1.08); }
+
+  .agent-bubble.outer {
+    width: 72px; height: 72px;
+    border-color: var(--purple2);
+    box-shadow: 0 0 12px rgba(168,85,247,0.2);
+  }
+
+  .agent-bubble .ab-icon { font-size: 20px; line-height: 1; }
+  .agent-bubble .ab-name { font-size: 9px; font-family: 'Inter', monospace; margin-top: 4px; line-height: 1.3; color: var(--text2); }
+
+  .agent-task-stream {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .task-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+
+  .task-from {
+    font-size: 10px;
+    font-family: 'Inter', monospace;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .task-auto { background: rgba(0,212,255,0.1); color: var(--cyan); }
+  .task-review { background: rgba(168,85,247,0.1); color: var(--purple2); }
+  .task-done { background: rgba(0,255,136,0.1); color: var(--green); }
+
+  .task-desc { flex: 1; color: var(--text2); }
+  .task-time { font-family: 'Inter', monospace; font-size: 10px; color: var(--text3); }
+
+  /* ── SLIDE 8: Institutional Knowledge ── */
+  .knowledge-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 24px;
+  }
+
+  .kg-visual {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    min-height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kg-node {
+    position: absolute;
+    background: var(--bg3);
+    border: 1px solid;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .knowledge-points {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .kp-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .kp-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.15);
+  }
+
+  .kp-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .kp-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+  /* ── SLIDE 9: Growth Curve ── */
+  .growth-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 24px;
+    align-items: start;
+  }
+
+  .growth-chart {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    height: 260px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .growth-chart svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .growth-milestones {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .milestone {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .milestone-marker {
+    width: 36px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .milestone-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--cyan);
+    margin: 4px auto 0;
+    box-shadow: 0 0 8px rgba(0,212,255,0.4);
+  }
+
+  .milestone-week {
+    font-size: 10px;
+    font-family: 'Inter', monospace;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+
+  .milestone-content {}
+  .milestone-title { font-size: 13px; font-weight: 700; }
+  .milestone-desc { font-size: 12px; color: var(--text2); line-height: 1.4; margin-top: 2px; }
+
+  /* ── SLIDE 10: Governance ── */
+  .gov-compare {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    gap: 16px;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 24px;
+    align-items: start;
+  }
+
+  .gov-col { }
+
+  .gov-col-head {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+  }
+
+  .gov-head-before { background: rgba(100,100,100,0.1); color: var(--text3); }
+  .gov-head-after { background: rgba(0,212,255,0.1); color: var(--cyan); }
+
+  .gov-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .gov-row.before { background: rgba(255,68,68,0.04); border: 1px solid rgba(255,68,68,0.1); color: var(--text2); }
+  .gov-row.after { background: rgba(0,212,255,0.04); border: 1px solid rgba(0,212,255,0.1); }
+
+  .gov-arrow-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding-top: 56px;
+  }
+
+  .gov-arrow-item {
+    font-size: 20px;
+    color: var(--cyan);
+    line-height: 1;
+    height: 46px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ── SLIDE 11: Tech Foundation ── */
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 100%;
+    max-width: 900px;
+    margin-top: 28px;
+  }
+
+  .tech-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .tech-card:hover { border-color: var(--cyan); transform: translateY(-2px); }
+
+  .tech-logo {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+  }
+
+  .tech-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .tech-role { font-size: 11px; color: var(--cyan); font-family: 'Inter', monospace; font-weight: 600; margin-bottom: 8px; }
+  .tech-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+
+  /* ── SLIDE 12: Roadmap ── */
+  .roadmap-timeline {
+    width: 100%;
+    max-width: 860px;
+    margin-top: 28px;
+    position: relative;
+  }
+
+  .roadmap-spine {
+    position: absolute;
+    left: 110px;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--cyan), var(--purple2), var(--border));
+  }
+
+  .roadmap-phase {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin-bottom: 24px;
+    padding-left: 0;
+  }
+
+  .phase-label {
+    width: 96px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .phase-period {
+    font-size: 10px;
+    font-family: 'Inter', monospace;
+    color: var(--text3);
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .phase-name {
+    font-size: 12px;
+    font-weight: 700;
+    display: block;
+  }
+
+  .phase-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid;
+    flex-shrink: 0;
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+    background: var(--bg);
+  }
+
+  .phase-dot.done { border-color: var(--green); background: rgba(0,255,136,0.2); }
+  .phase-dot.current { border-color: var(--cyan); background: rgba(0,212,255,0.15); box-shadow: 0 0 10px rgba(0,212,255,0.4); }
+  .phase-dot.next { border-color: var(--purple2); background: rgba(168,85,247,0.1); }
+  .phase-dot.future { border-color: var(--border); }
+
+  .phase-content {
+    flex: 1;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .phase-content.done { border-color: rgba(0,255,136,0.2); }
+  .phase-content.current { border-color: rgba(0,212,255,0.3); background: rgba(0,212,255,0.04); }
+  .phase-content.next { border-color: rgba(168,85,247,0.2); }
+
+  .phase-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .phase-items { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .phase-tag {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .ptag-done { background: rgba(0,255,136,0.1); color: var(--green); }
+  .ptag-active { background: rgba(0,212,255,0.1); color: var(--cyan); }
+  .ptag-next { background: rgba(168,85,247,0.1); color: var(--purple2); }
+  .ptag-future { background: rgba(100,100,100,0.1); color: var(--text3); }
+
+  /* ── SLIDE 13: CTA ── */
+  #slide-13 .bg-glow-1 {
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(0,212,255,0.1) 0%, transparent 70%);
+    top: -200px; right: -100px;
+  }
+  #slide-13 .bg-glow-2 {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+    bottom: -200px; left: -100px;
+  }
+
+  .contact-cards {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .contact-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 28px;
+    text-align: center;
+    min-width: 180px;
+    transition: border-color 0.2s;
+  }
+  .contact-card:hover { border-color: var(--cyan); }
+  .contact-card .cc-icon { font-size: 28px; margin-bottom: 8px; }
+  .contact-card .cc-label { font-size: 11px; color: var(--text3); font-family: 'Inter', monospace; text-transform: uppercase; letter-spacing: 1px; }
+  .contact-card .cc-value { font-size: 14px; font-weight: 600; margin-top: 4px; color: var(--text); }
+
+  .tagline-final {
+    font-size: clamp(18px, 2.5vw, 30px);
+    font-weight: 800;
+    text-align: center;
+    max-width: 700px;
+    line-height: 1.3;
+    margin-top: 16px;
+  }
+
+  /* ── Slide Header (for non-title slides) ── */
+  .slide-header {
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 4px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .slide { padding: 32px 24px; }
+    .problem-grid { grid-template-columns: 1fr; }
+    .vision-compare { grid-template-columns: 1fr; }
+    .vision-arrow { display: none; }
+    .four-pillars { grid-template-columns: repeat(2, 1fr); }
+    .tech-grid { grid-template-columns: repeat(2, 1fr); }
+    .gov-compare { grid-template-columns: 1fr; }
+    .gov-arrow-col { display: none; }
+    .growth-layout { grid-template-columns: 1fr; }
+    .knowledge-layout { grid-template-columns: 1fr; }
+    .contact-cards { flex-direction: column; align-items: center; }
+    .stat-row { gap: 16px; }
+    .roadmap-spine { left: 88px; }
+  }
+
+  /* ── Scan line animation ── */
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+
+  .scanline {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0,212,255,0.3), transparent);
+    animation: scanline 6s linear infinite;
+    pointer-events: none;
+    z-index: 200;
+    opacity: 0.4;
+  }
+
+  /* ── Animated connection line ── */
+  @keyframes dash {
+    to { stroke-dashoffset: -20; }
+  }
+
+  .animated-line {
+    stroke-dasharray: 6 6;
+    animation: dash 1s linear infinite;
+  }
+
+  /* ── Number counter animation ── */
+  .num-highlight {
+    font-family: 'Inter', monospace;
+    font-weight: 900;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<div id="deck">
+
+  <!-- ══════════════════════════════════════
+       SLIDE 1 · TITLE
+  ══════════════════════════════════════ -->
+  <section class="slide active" id="slide-1">
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="logo-line">
+      <div class="synapse-logo">
+        <div class="synapse-dot"></div>
+        SYNAPSE
+      </div>
+    </div>
+
+    <div class="tag tag-cyan">Digital Twin Collaboration Platform · 数字孪生协作平台</div>
+
+    <h1 class="hero">
+      每一位员工，<br>
+      都有一个<span class="gradient-text">永不离职的</span><br>
+      AI 数字孪生
+    </h1>
+
+    <p class="title-sub">
+      让 AI 不只是工具 —— 而是真正懂你的数字分身。<br>
+      组织的协作方式，从此改变。
+    </p>
+
+    <p class="title-en">SDTCP · Synapse Digital Twin Collaboration Platform</p>
+
+    <div class="title-cta">
+      <button class="btn-primary" onclick="goTo(1)">开始演示 →</button>
+      <button class="btn-outline" onclick="goTo(12)">快速跳转至联系方式</button>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 2 · THE PROBLEM
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-2">
+    <div class="bg-grid"></div>
+
+    <div class="slide-header">
+      <div class="tag tag-purple">The Problem · 现实痛点</div>
+      <h2 class="section-title">组织运营的<span class="gradient-text"> 结构性困境</span></h2>
+    </div>
+
+    <div class="problem-grid">
+      <div class="problem-card">
+        <div class="problem-icon">🧩</div>
+        <div class="problem-title">知识锁在人的脑子里</div>
+        <div class="problem-desc">关键经验随员工离职流失，无法沉淀为组织资产。每次人员变动，都是一次知识清零。</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">⏳</div>
+        <div class="problem-title">跨团队协作摩擦极高</div>
+        <div class="problem-desc">信息在不同工具、语言、时区之间流转时严重衰减。一个决策需要多轮确认和等待。</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🌐</div>
+        <div class="problem-title">时区与语言造成隔离</div>
+        <div class="problem-desc">Dubai 的老板、北京的 PM、新加坡的工程师，同步协作成本高到令人窒息。</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">📋</div>
+        <div class="problem-title">重复性工作消耗精力</div>
+        <div class="problem-desc">高价值人才将大量时间用于格式转换、状态同步、信息传递这类低价值工作。</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">🔄</div>
+        <div class="problem-title">AI 工具不了解你</div>
+        <div class="problem-desc">现有 AI 每次对话都从零开始。它不知道你的偏好、你的风格、你的决策模式。</div>
+      </div>
+      <div class="problem-card">
+        <div class="problem-icon">📊</div>
+        <div class="problem-title">治理靠人工，无法规模化</div>
+        <div class="problem-desc">随着组织规模扩大，管理复杂度指数级上升。传统治理模式在规模化面前失效。</div>
+      </div>
+    </div>
+
+    <div class="stat-row" style="margin-top:20px;">
+      <div class="stat-block">
+        <div class="stat-num">43%</div>
+        <div class="stat-label">员工时间浪费在低效协调</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">2.3×</div>
+        <div class="stat-label">人员流失带走的知识资产倍数</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-num">67%</div>
+        <div class="stat-label">跨时区决策延误超过 24 小时</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 3 · THE VISION
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-3">
+    <div class="bg-grid"></div>
+    <div class="bg-glow" style="width:500px;height:500px;background:radial-gradient(circle,rgba(0,212,255,0.08) 0%,transparent 70%);top:-100px;right:-100px;"></div>
+
+    <div class="slide-header">
+      <div class="tag tag-cyan">The Vision · 愿景</div>
+      <h2 class="section-title">一个<span class="gradient-text"> 永不停歇</span>的组织神经系统</h2>
+    </div>
+
+    <div class="vision-compare">
+      <div>
+        <div class="vision-col-title before">传统组织</div>
+        <div class="vision-item"><span style="color:#ff4444;flex-shrink:0;">✗</span><span style="color:var(--text2);">知识分散在个人，无法共享</span></div>
+        <div class="vision-item"><span style="color:#ff4444;flex-shrink:0;">✗</span><span style="color:var(--text2);">协作依赖会议、邮件、Slack 消息堆积</span></div>
+        <div class="vision-item"><span style="color:#ff4444;flex-shrink:0;">✗</span><span style="color:var(--text2);">AI 工具通用，不懂你的上下文</span></div>
+        <div class="vision-item"><span style="color:#ff4444;flex-shrink:0;">✗</span><span style="color:var(--text2);">时区导致决策链断裂</span></div>
+        <div class="vision-item"><span style="color:#ff4444;flex-shrink:0;">✗</span><span style="color:var(--text2);">信息在传递中失真、衰减</span></div>
+        <div class="vision-item"><span style="color:#ff4444;flex-shrink:0;">✗</span><span style="color:var(--text2);">管理靠人力，无法规模化</span></div>
+      </div>
+
+      <div class="vision-arrow">→</div>
+
+      <div>
+        <div class="vision-col-title after">SDTCP 组织</div>
+        <div class="vision-item"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>每人拥有专属 AI 孪生，知识实时结构化沉淀</span></div>
+        <div class="vision-item"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Agent 自主协调，人只处理真正需要决策的事</span></div>
+        <div class="vision-item"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>孪生深度学习你的模式，越用越懂你</span></div>
+        <div class="vision-item"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>7×24 运营，时区不再是障碍</span></div>
+        <div class="vision-item"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>Agent 层翻译、摘要、适配，信息零损耗</span></div>
+        <div class="vision-item"><span style="color:var(--cyan);flex-shrink:0;">✓</span><span>治理内化于 Agent 系统，人数翻倍成本不变</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top:24px;padding:16px 24px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.2);border-radius:10px;max-width:680px;text-align:center;">
+      <p style="font-size:16px;font-weight:700;color:var(--cyan);">核心洞察</p>
+      <p style="font-size:14px;color:var(--text2);margin-top:6px;line-height:1.6;">这不是给组织添加一个 AI 工具。<br>这是<strong style="color:var(--text);">重新定义组织的运行机制</strong> —— 以 Agent 为神经元，构建真正的数字神经系统。</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 4 · CORE CONCEPT
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-4">
+    <div class="bg-grid"></div>
+
+    <div class="slide-header">
+      <div class="tag tag-cyan">Core Concept · 核心理念</div>
+      <h2 class="section-title">每一个人，<span class="gradient-text">一个孪生</span></h2>
+    </div>
+
+    <div class="twin-diagram">
+      <div style="text-align:center;font-size:12px;color:var(--text3);margin-bottom:12px;font-family:'Inter',monospace;">HUMAN LAYER · 人员层</div>
+      <div class="org-row" style="margin-bottom:6px;">
+        <div class="person-twin">
+          <div class="person-node human">👔</div>
+          <div class="person-label">CEO</div>
+        </div>
+        <div class="person-twin">
+          <div class="person-node human">👩‍💼</div>
+          <div class="person-label">产品总监</div>
+        </div>
+        <div class="person-twin">
+          <div class="person-node human">👨‍💻</div>
+          <div class="person-label">工程师</div>
+        </div>
+        <div class="person-twin">
+          <div class="person-node human">🎨</div>
+          <div class="person-label">设计师</div>
+        </div>
+        <div class="person-twin">
+          <div class="person-node human">📊</div>
+          <div class="person-label">运营</div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:center;gap:80px;margin:4px 0;">
+        <div class="connector-v"></div>
+        <div class="connector-v"></div>
+        <div class="connector-v"></div>
+        <div class="connector-v"></div>
+        <div class="connector-v"></div>
+      </div>
+
+      <div style="text-align:center;font-size:12px;color:var(--cyan);margin:4px 0 8px;font-family:'Inter',monospace;letter-spacing:1px;">DIGITAL TWIN LAYER · 数字孪生层</div>
+
+      <div class="org-row" style="margin-bottom:10px;">
+        <div class="person-twin">
+          <div class="person-node twin">🤖</div>
+          <div class="twin-label">CEOAgent</div>
+        </div>
+        <div class="person-twin">
+          <div class="person-node twin">🤖</div>
+          <div class="twin-label">PMAgent</div>
+        </div>
+        <div class="person-twin">
+          <div class="person-node twin">🤖</div>
+          <div class="twin-label">DevAgent</div>
+        </div>
+        <div class="person-twin">
+          <div class="person-node twin">🤖</div>
+          <div class="twin-label">DesignAgent</div>
+        </div>
+        <div class="person-twin">
+          <div class="person-node twin">🤖</div>
+          <div class="twin-label">OpsAgent</div>
+        </div>
+      </div>
+
+      <div class="connector-h-row">
+        <div class="h-line"></div>
+        <div class="collab-label">⚡ Autonomous Collaboration · 自主协作</div>
+        <div class="h-line"></div>
+      </div>
+    </div>
+
+    <div class="four-pillars">
+      <div class="pillar-card">
+        <div class="pillar-icon">🎯</div>
+        <div class="pillar-title">专属身份</div>
+        <div class="pillar-desc">不是通用 AI，是你的 AI — 了解你的专业、风格、判断方式</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🧠</div>
+        <div class="pillar-title">渐进记忆</div>
+        <div class="pillar-desc">每次交互都是训练信号，孪生随时间持续进化</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🔗</div>
+        <div class="pillar-title">自主协作</div>
+        <div class="pillar-desc">Agent 间直接传递任务，无需人工中转和协调</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon">🕐</div>
+        <div class="pillar-title">永不下线</div>
+        <div class="pillar-desc">你离开时孪生代替你工作，时区不再是边界</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 5 · PROGRESSIVE MEMORY
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-5">
+    <div class="bg-grid"></div>
+    <div class="bg-glow" style="width:600px;height:400px;background:radial-gradient(ellipse,rgba(124,58,237,0.08) 0%,transparent 70%);bottom:0;left:0;"></div>
+
+    <div class="slide-header">
+      <div class="tag tag-purple">Progressive Memory · 渐进记忆架构</div>
+      <h2 class="section-title">四层知识体系：<span class="gradient-text">越用越聪明</span></h2>
+    </div>
+
+    <div class="memory-layers">
+      <div class="memory-layer">
+        <div class="layer-badge l1">L1</div>
+        <div class="layer-info">
+          <div class="layer-name">领域语料库 <span style="font-size:12px;color:var(--text3);font-weight:400;">(Domain Corpus)</span></div>
+          <div class="layer-desc">行业知识、专业背景、公司上下文 —— 孪生的「先验知识」基础层</div>
+        </div>
+        <div class="layer-status status-auto">自动加载</div>
+      </div>
+
+      <div style="text-align:center;color:var(--text3);font-size:14px;">↓ 叠加</div>
+
+      <div class="memory-layer">
+        <div class="layer-badge l2">L2</div>
+        <div class="layer-info">
+          <div class="layer-name">黄金样本库 <span style="font-size:12px;color:var(--text3);font-weight:400;">(Golden Examples)</span></div>
+          <div class="layer-desc">每次 Approve/Edit 操作自动成为训练信号 —— 人工验收即模型微调</div>
+        </div>
+        <div class="layer-status status-train">持续训练</div>
+      </div>
+
+      <div style="text-align:center;color:var(--text3);font-size:14px;">↓ 叠加</div>
+
+      <div class="memory-layer">
+        <div class="layer-badge l3">L3</div>
+        <div class="layer-info">
+          <div class="layer-name">规则与偏好 <span style="font-size:12px;color:var(--text3);font-weight:400;">(Rules & Preferences)</span></div>
+          <div class="layer-desc">显式沉淀的工作原则、格式规范、决策框架 —— 知识的结构化表达</div>
+        </div>
+        <div class="layer-status status-live">实时检索</div>
+      </div>
+
+      <div style="text-align:center;color:var(--text3);font-size:14px;">↓ 叠加</div>
+
+      <div class="memory-layer">
+        <div class="layer-badge l4">L4</div>
+        <div class="layer-info">
+          <div class="layer-name">渐进上下文 <span style="font-size:12px;color:var(--text3);font-weight:400;">(Progressive Memory)</span></div>
+          <div class="layer-desc">每次交互的语义压缩、关键决策的向量索引 —— 真正的「记忆」积累层</div>
+        </div>
+        <div class="layer-status status-evolve">持续进化</div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;padding:12px 20px;background:rgba(255,140,0,0.06);border:1px solid rgba(255,140,0,0.2);border-radius:8px;max-width:760px;width:100%;display:flex;align-items:center;gap:12px;">
+      <span style="font-size:20px;">💡</span>
+      <p style="font-size:13px;color:var(--text2);line-height:1.5;"><strong style="color:var(--orange);">核心机制：</strong>每一次「批准」或「编辑后批准」操作，都自动成为 L2 层训练数据。<br>人的判断，变成孪生的进化燃料。无需额外标注工作。</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 6 · LIVE SCENARIO
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-6">
+    <div class="bg-grid"></div>
+
+    <div class="slide-header">
+      <div class="tag tag-green">Live Scenario · 真实场景演示</div>
+      <h2 class="section-title">一个任务，<span class="gradient-text-green">全程 Agent 自主完成</span></h2>
+    </div>
+
+    <div class="flow-container">
+
+      <!-- Row 1: Boss sends request -->
+      <div class="flow-main-row" style="gap:8px;margin-bottom:8px;">
+        <div class="flow-node boss-node" style="flex:0 0 auto;min-width:200px;">
+          <div class="flow-node-header">
+            <div class="flow-avatar" style="background:rgba(255,140,0,0.15);">👔</div>
+            <div class="flow-role" style="color:var(--orange);">BOSS · EN</div>
+          </div>
+          <div class="flow-action">发出需求：<span>"帮我整理一下这季度增长数据"</span></div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node agent-node" style="flex:0 0 auto;min-width:200px;">
+          <div class="flow-node-header">
+            <div class="flow-avatar" style="background:rgba(0,212,255,0.15);">🤖</div>
+            <div class="flow-role" style="color:var(--cyan);">BossAgent · AI</div>
+          </div>
+          <div class="flow-action">理解意图 → 拆解任务 → <span>派单给 PMAgent</span></div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node pm-node" style="flex:0 0 auto;min-width:200px;">
+          <div class="flow-node-header">
+            <div class="flow-avatar" style="background:rgba(168,85,247,0.15);">🤖</div>
+            <div class="flow-role" style="color:var(--purple2);">PMAgent · AI</div>
+          </div>
+          <div class="flow-action">按 PM 风格<span>生成中文草稿</span>，推送给 PM 审核</div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div style="display:flex;align-items:center;gap:12px;margin:6px 0;padding:0 20px;">
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+        <div style="font-size:11px;color:var(--text3);font-family:'Inter',monospace;white-space:nowrap;">HUMAN DECISION POINT · 人工介入点</div>
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+      </div>
+
+      <!-- Row 2: PM reviews -->
+      <div class="flow-main-row" style="gap:8px;margin-bottom:8px;">
+        <div class="flow-node pm-node" style="flex:1;">
+          <div class="flow-node-header">
+            <div class="flow-avatar" style="background:rgba(168,85,247,0.15);">👩‍💼</div>
+            <div class="flow-role" style="color:var(--purple2);">PM · Human</div>
+          </div>
+          <div class="flow-action">Slack 收到草稿 → 选择：<span>✓ Approve</span> 或 <span>✏️ Edit & Approve</span></div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node agent-node" style="flex:1;">
+          <div class="flow-node-header">
+            <div class="flow-avatar" style="background:rgba(0,212,255,0.15);">🤖</div>
+            <div class="flow-role" style="color:var(--cyan);">BossAgent · AI</div>
+          </div>
+          <div class="flow-action">approve_handoff 触发 → <span>中文→英文</span>，自动适配 Boss 语气风格</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node result-node" style="flex:1;">
+          <div class="flow-node-header">
+            <div class="flow-avatar" style="background:rgba(0,255,136,0.15);">✅</div>
+            <div class="flow-role" style="color:var(--green);">BOSS · Result</div>
+          </div>
+          <div class="flow-action">收到<span>完整英文成果</span>，风格完全符合，无需任何跟进</div>
+        </div>
+      </div>
+
+      <!-- Benefits row -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px;">
+        <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">人工介入</div>
+          <div style="font-size:18px;font-weight:800;font-family:'Inter',sans-serif;color:var(--cyan);">1次</div>
+          <div style="font-size:10px;color:var(--text3);">仅 PM 审核</div>
+        </div>
+        <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">跨语言</div>
+          <div style="font-size:18px;font-weight:800;font-family:'Inter',sans-serif;color:var(--cyan);">全自动</div>
+          <div style="font-size:10px;color:var(--text3);">EN→CN→EN</div>
+        </div>
+        <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">审核即训练</div>
+          <div style="font-size:18px;font-weight:800;font-family:'Inter',sans-serif;color:var(--cyan);">自动</div>
+          <div style="font-size:10px;color:var(--text3);">L2 更新</div>
+        </div>
+        <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:8px;padding:10px 12px;text-align:center;">
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">协调会议</div>
+          <div style="font-size:18px;font-weight:800;font-family:'Inter',sans-serif;color:var(--cyan);">零</div>
+          <div style="font-size:10px;color:var(--text3);">无需协调</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 7 · MULTI-AGENT COLLABORATION
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-7">
+    <div class="bg-grid"></div>
+    <div class="bg-glow" style="width:500px;height:500px;background:radial-gradient(circle,rgba(0,212,255,0.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+
+    <div class="slide-header">
+      <div class="tag tag-cyan">Multi-Agent · 多 Agent 自主协作</div>
+      <h2 class="section-title">无需人工中转，<span class="gradient-text">Agent 自主驱动任务</span></h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:340px 1fr;gap:28px;width:100%;max-width:900px;margin-top:20px;align-items:start;">
+
+      <!-- Network visualization -->
+      <div class="agent-network" style="height:300px;">
+        <svg viewBox="0 0 340 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Connection lines -->
+          <line x1="170" y1="150" x2="80" y2="70" stroke="rgba(0,212,255,0.25)" stroke-width="1.5" stroke-dasharray="5,4" class="animated-line"/>
+          <line x1="170" y1="150" x2="260" y2="70" stroke="rgba(0,212,255,0.25)" stroke-width="1.5" stroke-dasharray="5,4" class="animated-line"/>
+          <line x1="170" y1="150" x2="290" y2="170" stroke="rgba(168,85,247,0.3)" stroke-width="1.5" stroke-dasharray="5,4" class="animated-line"/>
+          <line x1="170" y1="150" x2="50" y2="200" stroke="rgba(168,85,247,0.3)" stroke-width="1.5" stroke-dasharray="5,4" class="animated-line"/>
+          <line x1="170" y1="150" x2="130" y2="260" stroke="rgba(0,212,255,0.2)" stroke-width="1.5" stroke-dasharray="5,4" class="animated-line"/>
+          <line x1="170" y1="150" x2="220" y2="250" stroke="rgba(0,212,255,0.2)" stroke-width="1.5" stroke-dasharray="5,4" class="animated-line"/>
+        </svg>
+
+        <!-- Center node -->
+        <div class="agent-bubble center" style="transform:translate(-50%,-50%);">
+          <div class="ab-icon">🌐</div>
+          <div class="ab-name" style="color:var(--cyan);font-size:10px;">任务路由<br>中枢</div>
+        </div>
+
+        <!-- Outer nodes -->
+        <div class="agent-bubble outer" style="top:10px;left:56px;">
+          <div class="ab-icon">👔</div>
+          <div class="ab-name">CEO<br>Agent</div>
+        </div>
+        <div class="agent-bubble outer" style="top:10px;right:56px;">
+          <div class="ab-icon">👩‍💼</div>
+          <div class="ab-name">PM<br>Agent</div>
+        </div>
+        <div class="agent-bubble outer" style="top:118px;right:10px;">
+          <div class="ab-icon">👨‍💻</div>
+          <div class="ab-name">Dev<br>Agent</div>
+        </div>
+        <div class="agent-bubble outer" style="top:118px;left:10px;">
+          <div class="ab-icon">📊</div>
+          <div class="ab-name">Ops<br>Agent</div>
+        </div>
+        <div class="agent-bubble outer" style="bottom:10px;left:88px;">
+          <div class="ab-icon">🎨</div>
+          <div class="ab-name">Design<br>Agent</div>
+        </div>
+        <div class="agent-bubble outer" style="bottom:10px;right:88px;">
+          <div class="ab-icon">💹</div>
+          <div class="ab-name">Finance<br>Agent</div>
+        </div>
+      </div>
+
+      <!-- Task stream -->
+      <div>
+        <div style="font-size:12px;color:var(--text3);font-family:'Inter',monospace;margin-bottom:12px;letter-spacing:1px;">LIVE TASK STREAM · 实时任务流</div>
+
+        <div class="task-item">
+          <span class="task-from task-auto">AUTO</span>
+          <span class="task-desc">CEOAgent → PMAgent：Q2 增长报告需要中文版本</span>
+          <span class="task-time">即时</span>
+        </div>
+        <div style="margin:6px 0;"></div>
+        <div class="task-item">
+          <span class="task-from task-review">REVIEW</span>
+          <span class="task-desc">PMAgent → PM 人工：草稿就绪，请审核批准</span>
+          <span class="task-time">+3m</span>
+        </div>
+        <div style="margin:6px 0;"></div>
+        <div class="task-item">
+          <span class="task-from task-done">DONE</span>
+          <span class="task-desc">PMAgent → CEOAgent：已批准，handoff 触发</span>
+          <span class="task-time">+8m</span>
+        </div>
+        <div style="margin:6px 0;"></div>
+        <div class="task-item">
+          <span class="task-from task-auto">AUTO</span>
+          <span class="task-desc">DevAgent → OpsAgent：监控数据聚合请求</span>
+          <span class="task-time">同步</span>
+        </div>
+        <div style="margin:6px 0;"></div>
+        <div class="task-item">
+          <span class="task-from task-done">DONE</span>
+          <span class="task-desc">CEOAgent → Boss：英文成果交付</span>
+          <span class="task-time">+11m</span>
+        </div>
+
+        <div style="margin-top:16px;padding:12px 16px;background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.2);border-radius:8px;">
+          <p style="font-size:12px;color:var(--text2);line-height:1.5;"><span style="color:var(--green);font-weight:700;">关键能力：</span>跨职能任务通过强制派单表 + 子 Agent 隔离上下文流转。L1–L3 由 Lysander 自主调度，L4+ 进入总裁知会/裁决 —— 治理边界写在执行链里。</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 8 · INSTITUTIONAL KNOWLEDGE
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-8">
+    <div class="bg-grid"></div>
+
+    <div class="slide-header">
+      <div class="tag tag-purple">Institutional Knowledge · 组织知识资产</div>
+      <h2 class="section-title">知识<span class="gradient-text">永不流失</span>，沉淀为组织资产</h2>
+    </div>
+
+    <div class="knowledge-layout">
+
+      <!-- Knowledge graph visual -->
+      <div class="kg-visual">
+        <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 400 240">
+          <!-- Lines -->
+          <line x1="200" y1="120" x2="100" y2="60" stroke="rgba(0,212,255,0.2)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="200" y1="120" x2="300" y2="60" stroke="rgba(0,212,255,0.2)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="200" y1="120" x2="80" y2="165" stroke="rgba(168,85,247,0.25)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="200" y1="120" x2="320" y2="165" stroke="rgba(168,85,247,0.25)" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="200" y1="120" x2="150" y2="200" stroke="rgba(0,212,255,0.15)" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="200" y1="120" x2="250" y2="200" stroke="rgba(0,212,255,0.15)" stroke-width="1" stroke-dasharray="4,3"/>
+          <line x1="100" y1="60" x2="60" y2="30" stroke="rgba(0,212,255,0.1)" stroke-width="1" stroke-dasharray="3,4"/>
+          <line x1="300" y1="60" x2="350" y2="30" stroke="rgba(0,212,255,0.1)" stroke-width="1" stroke-dasharray="3,4"/>
+        </svg>
+
+        <!-- Center -->
+        <div class="kg-node" style="border-color:var(--cyan);color:var(--cyan);top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,212,255,0.1);">🧠 组织知识图谱</div>
+        <!-- Nodes -->
+        <div class="kg-node" style="border-color:rgba(0,212,255,0.3);color:var(--text2);top:12px;left:42px;">产品决策</div>
+        <div class="kg-node" style="border-color:rgba(0,212,255,0.3);color:var(--text2);top:12px;right:38px;">技术规范</div>
+        <div class="kg-node" style="border-color:rgba(168,85,247,0.3);color:var(--text2);top:60%;left:10px;">流程手册</div>
+        <div class="kg-node" style="border-color:rgba(168,85,247,0.3);color:var(--text2);top:60%;right:10px;">客户洞察</div>
+        <div class="kg-node" style="border-color:rgba(0,212,255,0.2);color:var(--text3);bottom:8px;left:24%;font-size:10px;">设计原则</div>
+        <div class="kg-node" style="border-color:rgba(0,212,255,0.2);color:var(--text3);bottom:8px;right:20%;font-size:10px;">增长策略</div>
+        <div class="kg-node" style="border-color:rgba(0,212,255,0.15);color:var(--text3);top:5px;left:14%;font-size:10px;">Q1 复盘</div>
+        <div class="kg-node" style="border-color:rgba(0,212,255,0.15);color:var(--text3);top:5px;right:10%;font-size:10px;">API 规范</div>
+      </div>
+
+      <!-- Knowledge benefits -->
+      <div class="knowledge-points">
+        <div class="kp-item">
+          <div class="kp-icon">🔒</div>
+          <div>
+            <div class="kp-title">知识不再依附于人</div>
+            <div class="kp-desc">每次交互、每个决策、每份文档都自动结构化入库。员工离职，知识留下。</div>
+          </div>
+        </div>
+        <div class="kp-item">
+          <div class="kp-icon" style="background:rgba(168,85,247,0.08);border-color:rgba(168,85,247,0.15);">🔍</div>
+          <div>
+            <div class="kp-title">语义检索，秒级定位</div>
+            <div class="kp-desc">pgvector 向量数据库支持语义相似搜索。问 "上次怎么处理这类客诉？" 即时召回。</div>
+          </div>
+        </div>
+        <div class="kp-item">
+          <div class="kp-icon" style="background:rgba(0,255,136,0.08);border-color:rgba(0,255,136,0.15);">📈</div>
+          <div>
+            <div class="kp-title">集体智慧，可量化增长</div>
+            <div class="kp-desc">知识图谱随组织成长持续扩展。组织的 AI 能力可以像代码一样版本化管理。</div>
+          </div>
+        </div>
+        <div class="kp-item">
+          <div class="kp-icon" style="background:rgba(255,140,0,0.08);border-color:rgba(255,140,0,0.15);">⚡</div>
+          <div>
+            <div class="kp-title">新员工 0 天上手</div>
+            <div class="kp-desc">新人的孪生自动加载公司知识库，Day 1 就能以完整的组织上下文开展工作。</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 9 · CAPABILITY GROWTH
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-9">
+    <div class="bg-grid"></div>
+    <div class="bg-glow" style="width:600px;height:400px;background:radial-gradient(ellipse,rgba(0,212,255,0.06) 0%,transparent 70%);bottom:-100px;right:-100px;"></div>
+
+    <div class="slide-header">
+      <div class="tag tag-cyan">Capability Growth · 能力增长曲线</div>
+      <h2 class="section-title">不是工具，是<span class="gradient-text">持续进化的合伙人</span></h2>
+    </div>
+
+    <div class="growth-layout">
+
+      <!-- Growth chart -->
+      <div class="growth-chart">
+        <svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+          <!-- Grid lines -->
+          <line x1="40" y1="20" x2="40" y2="170" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <line x1="40" y1="170" x2="290" y2="170" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+          <line x1="40" y1="130" x2="290" y2="130" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4"/>
+          <line x1="40" y1="90" x2="290" y2="90" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4"/>
+          <line x1="40" y1="50" x2="290" y2="50" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4"/>
+
+          <!-- Generic AI line (flat/slow) -->
+          <polyline points="40,155 100,148 160,140 220,135 290,130" fill="none" stroke="rgba(100,100,100,0.4)" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+          <!-- SDTCP growth curve (exponential) -->
+          <polyline points="40,160 70,150 100,138 130,118 165,88 200,55 240,32 290,18"
+            fill="none"
+            stroke="url(#growthGrad)"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+          <!-- Fill under curve -->
+          <polygon points="40,160 70,150 100,138 130,118 165,88 200,55 240,32 290,18 290,170 40,170"
+            fill="url(#growthFill)" opacity="0.35"/>
+
+          <!-- Milestone dots -->
+          <circle cx="70" cy="150" r="4" fill="var(--cyan)" opacity="0.7"/>
+          <circle cx="130" cy="118" r="4" fill="var(--cyan)" opacity="0.8"/>
+          <circle cx="200" cy="55" r="4" fill="var(--cyan)"/>
+          <circle cx="290" cy="18" r="5" fill="var(--cyan)" filter="url(#glow)"/>
+
+          <!-- Labels -->
+          <text x="42" y="188" fill="rgba(255,255,255,0.3)" font-size="8" font-family="Inter">W1</text>
+          <text x="100" y="188" fill="rgba(255,255,255,0.3)" font-size="8" font-family="Inter">W4</text>
+          <text x="160" y="188" fill="rgba(255,255,255,0.3)" font-size="8" font-family="Inter">W8</text>
+          <text x="230" y="188" fill="rgba(255,255,255,0.3)" font-size="8" font-family="Inter">W16</text>
+          <text x="44" y="167" fill="rgba(255,255,255,0.2)" font-size="7" font-family="Inter">基线</text>
+          <text x="44" y="127" fill="rgba(255,255,255,0.2)" font-size="7" font-family="Inter">2×</text>
+          <text x="44" y="87" fill="rgba(255,255,255,0.2)" font-size="7" font-family="Inter">5×</text>
+          <text x="44" y="47" fill="rgba(255,255,255,0.2)" font-size="7" font-family="Inter">10×</text>
+
+          <!-- Legend -->
+          <line x1="48" y1="10" x2="72" y2="10" stroke="rgba(100,100,100,0.5)" stroke-width="1.5" stroke-dasharray="5,3"/>
+          <text x="76" y="13" fill="rgba(255,255,255,0.35)" font-size="7" font-family="Inter">通用 AI</text>
+          <line x1="140" y1="10" x2="164" y2="10" stroke="url(#growthGrad)" stroke-width="2"/>
+          <text x="168" y="13" fill="rgba(0,212,255,0.8)" font-size="7" font-family="Inter">SDTCP 孪生</text>
+
+          <defs>
+            <linearGradient id="growthGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#00d4ff"/>
+              <stop offset="100%" stop-color="#a855f7"/>
+            </linearGradient>
+            <linearGradient id="growthFill" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#00d4ff" stop-opacity="0"/>
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+        </svg>
+      </div>
+
+      <!-- Milestones -->
+      <div class="growth-milestones">
+        <div class="milestone">
+          <div class="milestone-marker">
+            <div class="milestone-dot" style="background:rgba(0,255,136,0.4);border-color:var(--green);"></div>
+            <div class="milestone-week">Week 1</div>
+          </div>
+          <div class="milestone-content">
+            <div class="milestone-title">孪生激活</div>
+            <div class="milestone-desc">加载领域知识，完成初始人设校准。可以开始工作。</div>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="milestone-marker">
+            <div class="milestone-dot"></div>
+            <div class="milestone-week">Week 4</div>
+          </div>
+          <div class="milestone-content">
+            <div class="milestone-title">风格对齐</div>
+            <div class="milestone-desc">累计 50+ 次审核，孪生的输出风格与真人高度对齐。</div>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="milestone-marker">
+            <div class="milestone-dot"></div>
+            <div class="milestone-week">Week 8</div>
+          </div>
+          <div class="milestone-content">
+            <div class="milestone-title">判断预测</div>
+            <div class="milestone-desc">开始预判用户偏好，95% 的任务无需修改直接批准。</div>
+          </div>
+        </div>
+        <div class="milestone">
+          <div class="milestone-marker">
+            <div class="milestone-dot" style="background:rgba(0,212,255,0.3);box-shadow:0 0 12px rgba(0,212,255,0.5);"></div>
+            <div class="milestone-week">Week 16+</div>
+          </div>
+          <div class="milestone-content">
+            <div class="milestone-title" style="color:var(--cyan);">真正的数字分身</div>
+            <div class="milestone-desc">主动驱动任务，代理决策，成为不可或缺的组织成员。</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 10 · GOVERNANCE TRANSFORMATION
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-10">
+    <div class="bg-grid"></div>
+
+    <div class="slide-header">
+      <div class="tag tag-purple">Governance · 治理变革</div>
+      <h2 class="section-title">从「人工治理」到<span class="gradient-text">「可审计治理」</span></h2>
+    </div>
+
+    <div class="gov-compare">
+      <div class="gov-col">
+        <div class="gov-col-head gov-head-before">传统组织治理</div>
+        <div class="gov-row before"><span style="flex-shrink:0;">📋</span> 信息在人与人之间流转，经常失真</div>
+        <div class="gov-row before"><span style="flex-shrink:0;">🔒</span> 知识孤岛，部门壁垒严重</div>
+        <div class="gov-row before"><span style="flex-shrink:0;">⏰</span> 决策链长，响应周期以天计</div>
+        <div class="gov-row before"><span style="flex-shrink:0;">💸</span> 管理成本随规模线性增长</div>
+        <div class="gov-row before"><span style="flex-shrink:0;">🌙</span> 非工作时间，组织基本停摆</div>
+        <div class="gov-row before"><span style="flex-shrink:0;">👤</span> 能力高度依赖核心个体</div>
+      </div>
+
+      <div class="gov-arrow-col">
+        <div class="gov-arrow-item">→</div>
+        <div class="gov-arrow-item">→</div>
+        <div class="gov-arrow-item">→</div>
+        <div class="gov-arrow-item">→</div>
+        <div class="gov-arrow-item">→</div>
+        <div class="gov-arrow-item">→</div>
+      </div>
+
+      <div class="gov-col">
+        <div class="gov-col-head gov-head-after">SDTCP 可审计治理</div>
+        <div class="gov-row after"><span style="flex-shrink:0;color:var(--cyan);">🔗</span> Agent 层实时同步，信息精准传递</div>
+        <div class="gov-row after"><span style="flex-shrink:0;color:var(--cyan);">🌐</span> 统一知识图谱，跨部门透明协作</div>
+        <div class="gov-row after"><span style="flex-shrink:0;color:var(--cyan);">⚡</span> L1 自动执行，决策分钟级闭环</div>
+        <div class="gov-row after"><span style="flex-shrink:0;color:var(--cyan);">📉</span> 边际成本趋近于零，规模化无代价</div>
+        <div class="gov-row after"><span style="flex-shrink:0;color:var(--cyan);">🌍</span> 7×24 全球运营，时区透明化</div>
+        <div class="gov-row after"><span style="flex-shrink:0;color:var(--cyan);">🏛️</span> 能力内化于系统，人员变动不影响连续性</div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;display:flex;gap:24px;justify-content:center;">
+      <div style="text-align:center;padding:12px 24px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:10px;">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">决策速度</div>
+        <div style="font-size:28px;font-weight:900;font-family:'Inter',sans-serif;" class="gradient-text">10×</div>
+        <div style="font-size:11px;color:var(--text2);">更快</div>
+      </div>
+      <div style="text-align:center;padding:12px 24px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:10px;">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">协调成本</div>
+        <div style="font-size:28px;font-weight:900;font-family:'Inter',sans-serif;" class="gradient-text">-70%</div>
+        <div style="font-size:11px;color:var(--text2);">减少</div>
+      </div>
+      <div style="text-align:center;padding:12px 24px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:10px;">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">知识留存率</div>
+        <div style="font-size:28px;font-weight:900;font-family:'Inter',sans-serif;" class="gradient-text">100%</div>
+        <div style="font-size:11px;color:var(--text2);">人员变动无影响</div>
+      </div>
+      <div style="text-align:center;padding:12px 24px;background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.15);border-radius:10px;">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">运营时长</div>
+        <div style="font-size:28px;font-weight:900;font-family:'Inter',sans-serif;" class="gradient-text">24/7</div>
+        <div style="font-size:11px;color:var(--text2);">无间断</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 11 · TECH FOUNDATION
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-11">
+    <div class="bg-grid"></div>
+
+    <div class="slide-header">
+      <div class="tag tag-cyan">Technology · 技术底座</div>
+      <h2 class="section-title">OPC 级<span class="gradient-text">技术栈</span>，自有可审计</h2>
+    </div>
+
+    <div class="tech-grid">
+      <div class="tech-card card-cyan">
+        <div class="tech-logo">🧠</div>
+        <div class="tech-name">Claude AI</div>
+        <div class="tech-role">大脑 · 推理引擎</div>
+        <div class="tech-desc">Anthropic 最新 Claude 模型驱动每一个 Agent 的理解、推理和生成能力。支持超长上下文，适合复杂企业场景。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo">🗄️</div>
+        <div class="tech-name">pgvector RAG</div>
+        <div class="tech-role">记忆 · 语义检索</div>
+        <div class="tech-desc">PostgreSQL + pgvector 构建向量数据库。语义相似搜索（实际响应分布由部署环境决定；本系统当前嵌入条目数依实际值标注）。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo">💬</div>
+        <div class="tech-name">Slack Integration</div>
+        <div class="tech-role">通道 · 人机协作界面</div>
+        <div class="tech-desc">人类与孪生的主要交互界面。Approve/Edit 操作在 Slack 中一键完成，无缝融入现有工作流。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo">📚</div>
+        <div class="tech-name">Obsidian Knowledge</div>
+        <div class="tech-role">知识库 · 第二大脑</div>
+        <div class="tech-desc">结构化知识存储与双向链接图谱。组织的集体智慧以 Markdown + 向量双重索引形式永久沉淀。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo">⚙️</div>
+        <div class="tech-name">Harness Engineering</div>
+        <div class="tech-role">控制层 · 行为约束</div>
+        <div class="tech-desc">Agent = Model + Harness。可配置的规则引擎定义每个孪生的行为边界、决策权限和执行流程。</div>
+      </div>
+      <div class="tech-card">
+        <div class="tech-logo">🔄</div>
+        <div class="tech-name">n8n Automation</div>
+        <div class="tech-role">编排 · 自动化管线</div>
+        <div class="tech-desc">可视化工作流编排，连接所有外部系统。定时任务、事件触发、状态驱动的全自动化管线。</div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;padding:12px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;max-width:900px;width:100%;display:flex;gap:24px;align-items:center;flex-wrap:wrap;justify-content:center;">
+      <span style="font-size:12px;color:var(--text3);">DEPLOYMENT · 部署方式</span>
+      <span style="font-size:12px;padding:4px 12px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:20px;color:var(--cyan);">☁️ Cloud SaaS</span>
+      <span style="font-size:12px;padding:4px 12px;background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.2);border-radius:20px;color:var(--purple2);">🏢 Private Deployment 私有化部署</span>
+      <span style="font-size:12px;padding:4px 12px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);border-radius:20px;color:var(--green);">🔒 On-Premise 本地化</span>
+      <span style="font-size:12px;color:var(--text3);">数据主权完全归客户所有</span>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 12 · ROADMAP
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-12">
+    <div class="bg-grid"></div>
+
+    <div class="slide-header">
+      <div class="tag tag-green">Roadmap · 产品路线图</div>
+      <h2 class="section-title">已落地，<span class="gradient-text-green">持续进化中</span></h2>
+    </div>
+
+    <div class="roadmap-timeline">
+      <div class="roadmap-spine"></div>
+
+      <div class="roadmap-phase">
+        <div class="phase-label">
+          <span class="phase-period">已完成</span>
+          <span class="phase-name" style="color:var(--green);">Phase 1</span>
+        </div>
+        <div class="phase-dot done"></div>
+        <div class="phase-content done">
+          <div class="phase-title">核心基础设施 — 生产运行中 ✓</div>
+          <div class="phase-items">
+            <span class="phase-tag ptag-done">CEO Digital Twin</span>
+            <span class="phase-tag ptag-done">4 层记忆架构</span>
+            <span class="phase-tag ptag-done">Slack 双向集成</span>
+            <span class="phase-tag ptag-done">Approve/Edit 训练闭环</span>
+            <span class="phase-tag ptag-done">n8n 自动化管线</span>
+            <span class="phase-tag ptag-done">Obsidian 知识库</span>
+            <span class="phase-tag ptag-done">多语言协作 (EN/CN)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="roadmap-phase">
+        <div class="phase-label">
+          <span class="phase-period">进行中</span>
+          <span class="phase-name" style="color:var(--cyan);">Phase 2</span>
+        </div>
+        <div class="phase-dot current"></div>
+        <div class="phase-content current">
+          <div class="phase-title">多 Agent 协作网络 — 开发中 ⚡</div>
+          <div class="phase-items">
+            <span class="phase-tag ptag-active">PMAgent 全自动流水线</span>
+            <span class="phase-tag ptag-active">跨 Agent handoff 协议</span>
+            <span class="phase-tag ptag-active">任务路由中枢</span>
+            <span class="phase-tag ptag-active">能力评分体系</span>
+            <span class="phase-tag ptag-next">DevAgent / OpsAgent</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="roadmap-phase">
+        <div class="phase-label">
+          <span class="phase-period">规划中</span>
+          <span class="phase-name" style="color:var(--purple2);">Phase 3</span>
+        </div>
+        <div class="phase-dot next"></div>
+        <div class="phase-content next">
+          <div class="phase-title">OPC 自有可审计化</div>
+          <div class="phase-items">
+            <span class="phase-tag ptag-next">多租户 SaaS 平台</span>
+            <span class="phase-tag ptag-next">可视化孪生管理后台</span>
+            <span class="phase-tag ptag-next">企业 SSO 集成</span>
+            <span class="phase-tag ptag-next">孪生能力分析仪表盘</span>
+            <span class="phase-tag ptag-next">API 生态开放</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="roadmap-phase">
+        <div class="phase-label">
+          <span class="phase-period">未来</span>
+          <span class="phase-name" style="color:var(--text3);">Phase 4</span>
+        </div>
+        <div class="phase-dot future"></div>
+        <div class="phase-content">
+          <div class="phase-title" style="color:var(--text2);">组织操作系统</div>
+          <div class="phase-items">
+            <span class="phase-tag ptag-future">全员孪生网络</span>
+            <span class="phase-tag ptag-future">孪生间自主谈判</span>
+            <span class="phase-tag ptag-future">组织 AI 能力指数</span>
+            <span class="phase-tag ptag-future">跨企业协作协议</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════
+       SLIDE 13 · CALL TO ACTION
+  ══════════════════════════════════════ -->
+  <section class="slide" id="slide-13">
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <div class="synapse-logo" style="margin-bottom:24px;">
+      <div class="synapse-dot"></div>
+      SYNAPSE DIGITAL TWIN COLLABORATION PLATFORM
+    </div>
+
+    <div class="tag tag-cyan">Ready to Start · 立即开始</div>
+
+    <h1 class="hero" style="font-size:clamp(28px,4.5vw,56px);">
+      你的组织，正在等待<br>
+      <span class="gradient-text">下一个操作系统</span>
+    </h1>
+
+    <p class="tagline-final" style="color:var(--text2);font-weight:400;font-size:clamp(14px,1.6vw,18px);margin-top:12px;">
+      不是 AI 工具升级 —— 是组织运作方式的根本性重构。<br>
+      每位员工拥有专属数字孪生，组织获得永不停歇的集体智慧。
+    </p>
+
+    <div class="contact-cards">
+      <div class="contact-card">
+        <div class="cc-icon">🚀</div>
+        <div class="cc-label">Pilot Program</div>
+        <div class="cc-value">申请试点项目</div>
+      </div>
+      <div class="contact-card">
+        <div class="cc-icon">💬</div>
+        <div class="cc-label">Demo</div>
+        <div class="cc-value">预约产品演示</div>
+      </div>
+      <div class="contact-card">
+        <div class="cc-icon">📧</div>
+        <div class="cc-label">Contact</div>
+        <div class="cc-value">lysanderl@janusd.com</div>
+      </div>
+    </div>
+
+    <div style="margin-top:36px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;">
+      <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text3);">
+        <div class="synapse-dot" style="width:6px;height:6px;flex-shrink:0;"></div>
+        现已在生产环境运行
+      </div>
+      <div style="width:1px;height:14px;background:var(--border);"></div>
+      <div style="font-size:12px;color:var(--text3);">Powered by Claude AI · pgvector · Slack · Obsidian</div>
+      <div style="width:1px;height:14px;background:var(--border);"></div>
+      <div style="font-size:12px;color:var(--text3);">© 2026 Synapse-PJ</div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ── Navigation UI ── -->
+<div id="nav">
+  <button id="btn-prev" onclick="prevSlide()" title="上一张 (←)">‹</button>
+  <div id="dots"></div>
+  <span id="counter">1 / 13</span>
+  <button id="btn-next" onclick="nextSlide()" title="下一张 (→)">›</button>
+</div>
+
+<script>
+  const TOTAL = 13;
+  let current = 0;
+
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('counter');
+  const dotsEl = document.getElementById('dots');
+
+  // Build dots
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  }
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= TOTAL) return;
+    slides[current].classList.remove('active');
+    document.querySelectorAll('.dot')[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    document.querySelectorAll('.dot')[current].classList.add('active');
+    counter.textContent = (current + 1) + ' / ' + TOTAL;
+    document.getElementById('btn-prev').style.opacity = current === 0 ? '0.3' : '1';
+    document.getElementById('btn-next').style.opacity = current === TOTAL - 1 ? '0.3' : '1';
+  }
+
+  function nextSlide() { goTo(current + 1); }
+  function prevSlide() { goTo(current - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    if (e.key === 'Home') goTo(0);
+    if (e.key === 'End') goTo(TOTAL - 1);
+  });
+
+  // Touch support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) { dx < 0 ? nextSlide() : prevSlide(); }
+  });
+
+  // Initialize
+  goTo(0);
+</script>
+</body>
+</html>

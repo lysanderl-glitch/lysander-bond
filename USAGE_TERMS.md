@@ -74,9 +74,9 @@ Use the placeholder mechanism (CLAUDE.md tokens) to keep instances clean.
 ## 7. Contact / 联系
 
 For licensing, commercial use, or partnership inquiries:
-**lysanderl@janusd.io**
+**lysanderl@janusd.com**
 
-商业许可、合作咨询：**lysanderl@janusd.io**
+商业许可、合作咨询：**lysanderl@janusd.com**
 
 ---
 

@@ -49,7 +49,7 @@ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
 
 ### Contact
-For commercial licensing inquiries: lysanderl@janusd.io
+For commercial licensing inquiries: lysanderl@janusd.com
 
 ---
 

@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Powered Product Capability Overview · Synapse-PJ 2026</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --teal:   #00d4aa;
+  --teal2:  #00ffcc;
+  --indigo: #6366f1;
+  --amber:  #f59e0b;
+  --red:    #ef4444;
+  --bg:     #080c10;
+  --bg2:    #0d1117;
+  --glass:  rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --text:   #f0f4f8;
+  --muted:  rgba(255,255,255,0.45);
+}
+.reveal {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; height: 100%; width: 100%; }
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: 'Inter', sans-serif;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.15;
+}
+.reveal p, .reveal li { line-height: 1.65; }
+.reveal ul { list-style: none; padding: 0; }
+
+/* ── SLIDE WRAPPER ── */
+.slide {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 48px 68px;
+  position: relative; overflow: hidden;
+}
+.slide::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% -10%, rgba(0,212,170,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at -5% 80%, rgba(99,102,241,0.10) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* ── SLIDE HEADER ── */
+.slide-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+.slide-label { font-size: 0.58em; font-weight: 700; color: var(--teal); letter-spacing: 0.14em; text-transform: uppercase; }
+.slide-label-amber { color: var(--amber); }
+.slide-label-indigo { color: var(--indigo); }
+.slide-title { font-size: 1.5em; font-weight: 800; color: var(--text); }
+.slide-title span { color: var(--teal); }
+.divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(0,212,170,0.5), transparent); margin-left: 4px; }
+.divider-line-amber { background: linear-gradient(90deg, rgba(245,158,11,0.5), transparent); }
+.divider-line-indigo { background: linear-gradient(90deg, rgba(99,102,241,0.5), transparent); }
+
+/* ── GRADIENT TEXT ── */
+.grad { background: linear-gradient(135deg, var(--teal), var(--indigo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.grad-amber { background: linear-gradient(135deg, var(--amber), #ff6b35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.grad-indigo { background: linear-gradient(135deg, var(--indigo), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+/* ── CARDS ── */
+.card { background: var(--glass); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; backdrop-filter: blur(8px); }
+.card-teal { border-color: rgba(0,212,170,0.3); background: rgba(0,212,170,0.06); }
+.card-indigo { border-color: rgba(99,102,241,0.3); background: rgba(99,102,241,0.06); }
+.card-amber { border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.06); }
+.card-amber-strong { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.07); }
+.card-indigo-strong { border-color: rgba(99,102,241,0.4); background: rgba(99,102,241,0.07); }
+
+/* ── BADGE / TAG ── */
+.badge { display: inline-flex; align-items: center; gap: 6px; background: var(--teal); color: #000; font-weight: 700; font-size: 0.58em; padding: 3px 10px; border-radius: 6px; letter-spacing: 0.05em; }
+.badge-amber { background: var(--amber); }
+.badge-indigo { background: var(--indigo); color: #fff; }
+.tag { display: inline-block; border: 1px solid rgba(0,212,170,0.4); color: var(--teal); font-size: 0.56em; padding: 2px 10px; border-radius: 20px; font-weight: 600; }
+.tag-amber { border-color: rgba(245,158,11,0.4); color: var(--amber); }
+.tag-indigo { border-color: rgba(99,102,241,0.4); color: var(--indigo); }
+
+/* ── GRIDS ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.g5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; }
+
+/* ── METRIC BOX ── */
+.metric { text-align: center; padding: 16px 12px; background: var(--glass); border: 1px solid var(--border); border-radius: 12px; border-top: 3px solid var(--teal); }
+.metric-amber { border-top-color: var(--amber); }
+.metric-indigo { border-top-color: var(--indigo); }
+.metric-val { font-size: 2.2em; font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+.metric-lbl { font-size: 0.58em; color: var(--muted); margin-top: 5px; line-height: 1.5; }
+
+/* ── TIMELINE ── */
+.timeline { display: flex; gap: 5px; }
+.tl-item { flex: 1; background: rgba(0,212,170,0.06); border-top: 3px solid var(--teal); border-radius: 0 0 8px 8px; padding: 8px 5px; font-size: 0.46em; text-align: center; line-height: 1.4; }
+.tl-date { color: var(--teal); font-weight: 800; display: block; margin-bottom: 3px; font-size: 1.1em; }
+
+/* ── TABLE ── */
+table.t { width: 100%; border-collapse: collapse; font-size: 0.7em; }
+table.t th { background: rgba(0,212,170,0.12); color: var(--teal); padding: 8px 12px; text-align: left; font-weight: 700; font-size: 0.88em; letter-spacing: 0.04em; }
+table.t th.amber { background: rgba(245,158,11,0.12); color: var(--amber); }
+table.t td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+table.t tr:last-child td { border-bottom: none; }
+table.t .good { color: var(--teal); font-weight: 600; }
+table.t .good-amber { color: var(--amber); font-weight: 600; }
+table.t .bad { color: var(--muted); }
+
+/* ── LIST ── */
+.list li { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; font-size: 0.74em; }
+.list li::before { content: '▸'; color: var(--teal); flex-shrink: 0; margin-top: 1px; }
+.list-amber li::before { color: var(--amber); }
+.list-indigo li::before { color: var(--indigo); }
+
+/* ── COVER ELEMENTS ── */
+.cover-bg { position: absolute; inset: 0; pointer-events: none; }
+.cover-grid { position: absolute; inset: 0; opacity: 0.035; background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px); background-size: 64px 64px; }
+
+/* ── SECTION DIVIDER ── */
+.section-bg-amber { background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(245,158,11,0.2) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 10% 50%, rgba(245,158,11,0.08) 0%, transparent 55%); }
+.section-bg-teal { background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(0,212,170,0.2) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 10% 50%, rgba(0,212,170,0.08) 0%, transparent 55%); }
+.section-bg-indigo { background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(99,102,241,0.22) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 10% 50%, rgba(99,102,241,0.09) 0%, transparent 55%); }
+
+/* ── REVEAL OVERRIDES ── */
+.reveal .progress { color: var(--teal); }
+.reveal .controls button { color: var(--teal); }
+.reveal .slide-number { color: var(--muted); font-size: 0.5em; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ═══════════════════ 01 COVER ═══════════════════ -->
+<section>
+<div class="slide" style="justify-content:center; padding:56px 80px;">
+  <div class="cover-bg" style="background: radial-gradient(ellipse 70% 60% at 85% 50%, rgba(0,212,170,0.18) 0%, transparent 50%), radial-gradient(ellipse 50% 50% at 15% 30%, rgba(99,102,241,0.14) 0%, transparent 50%), radial-gradient(ellipse 40% 40% at 50% 90%, rgba(245,158,11,0.10) 0%, transparent 45%);"></div>
+  <div class="cover-grid"></div>
+  <div style="position:relative; z-index:1;">
+    <div style="display:inline-flex; align-items:center; gap:10px; background:rgba(0,212,170,0.1); border:1px solid rgba(0,212,170,0.25); border-radius:8px; padding:5px 14px; font-size:0.58em; color:var(--teal); font-weight:700; letter-spacing:0.12em; margin-bottom:24px;">
+      SYNAPSE-PJ &nbsp;·&nbsp; PRODUCT CAPABILITY OVERVIEW &nbsp;·&nbsp; 2026
+    </div>
+    <div style="font-size:3.2em; font-weight:900; line-height:1.05; letter-spacing:-0.03em; margin-bottom:18px;">
+      <span class="grad">AI-Powered</span><br>
+      <span class="grad">Product Capability Overview</span>
+    </div>
+    <div style="font-size:0.88em; color:rgba(255,255,255,0.55); margin-bottom:36px; font-weight:300; letter-spacing:0.02em;">
+      Three Product Lines &nbsp;·&nbsp; Automation Capabilities &amp; Efficiency Strategies
+    </div>
+    <div style="display:flex; gap:12px; margin-bottom:48px;">
+      <span style="display:inline-flex; align-items:center; gap:6px; background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.35); border-radius:20px; padding:5px 14px; font-size:0.6em; color:var(--amber); font-weight:700;">PM PMO Auto</span>
+      <span style="display:inline-flex; align-items:center; gap:6px; background:rgba(0,212,170,0.12); border:1px solid rgba(0,212,170,0.35); border-radius:20px; padding:5px 14px; font-size:0.6em; color:var(--teal); font-weight:700;">AI Synapse Multi-Agents</span>
+      <span style="display:inline-flex; align-items:center; gap:6px; background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.35); border-radius:20px; padding:5px 14px; font-size:0.6em; color:var(--indigo); font-weight:700;">SP Synapse Platform</span>
+    </div>
+    <div style="position:absolute; bottom:-20px; right:0; font-size:0.58em; color:var(--muted);">Synapse-PJ &nbsp;·&nbsp; 2026-05-04</div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 02 AGENDA ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label">OVERVIEW</div>
+      <div class="slide-title">Three Product Lines <span>at a Glance</span></div>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+  <div class="g3">
+    <!-- PMO Auto -->
+    <div class="card card-amber-strong" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.4);display:flex;align-items:center;justify-content:center;font-size:0.72em;font-weight:800;color:var(--amber);">PM</div>
+        <div>
+          <div style="font-size:0.88em;font-weight:800;color:var(--amber);">PMO Auto</div>
+          <div style="font-size:0.6em;color:var(--muted);">Project Management Automation</div>
+        </div>
+      </div>
+      <div style="font-size:0.65em;color:rgba(255,255,255,0.6);line-height:1.6;">One Notion entry. Full project infrastructure, fully automated.</div>
+      <div style="border-top:1px solid rgba(245,158,11,0.2);padding-top:10px;">
+        <div style="font-size:2em;font-weight:900;color:var(--amber);line-height:1;">96%</div>
+        <div style="font-size:0.58em;color:var(--muted);">Efficiency Gain</div>
+      </div>
+      <div style="font-size:0.56em;color:var(--muted);">Slides 3–7 &nbsp;·&nbsp; 5 slides</div>
+    </div>
+    <!-- Synapse Multi-Agents -->
+    <div class="card card-teal" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,212,170,0.2);border:1px solid rgba(0,212,170,0.4);display:flex;align-items:center;justify-content:center;font-size:0.72em;font-weight:800;color:var(--teal);">AI</div>
+        <div>
+          <div style="font-size:0.88em;font-weight:800;color:var(--teal);">Synapse Multi-Agents</div>
+          <div style="font-size:0.6em;color:var(--muted);">Multi-Agent Collaboration System</div>
+        </div>
+      </div>
+      <div style="font-size:0.65em;color:rgba(255,255,255,0.6);line-height:1.6;">Business experts drive AI with business language — auditable, accumulative, replicable.</div>
+      <div style="border-top:1px solid rgba(0,212,170,0.2);padding-top:10px;">
+        <div style="font-size:2em;font-weight:900;color:var(--teal);line-height:1;">69</div>
+        <div style="font-size:0.58em;color:var(--muted);">Specialized Agents</div>
+      </div>
+      <div style="font-size:0.56em;color:var(--muted);">Slides 8–11 &nbsp;·&nbsp; 4 slides</div>
+    </div>
+    <!-- Synapse Platform -->
+    <div class="card card-indigo-strong" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);display:flex;align-items:center;justify-content:center;font-size:0.72em;font-weight:800;color:var(--indigo);">SP</div>
+        <div>
+          <div style="font-size:0.88em;font-weight:800;color:var(--indigo);">Synapse Platform</div>
+          <div style="font-size:0.6em;color:var(--muted);">AI Digital Twin Collaboration</div>
+        </div>
+      </div>
+      <div style="font-size:0.65em;color:rgba(255,255,255,0.6);line-height:1.6;">Built on Slack. Zero tool switching. AI generates, humans approve.</div>
+      <div style="border-top:1px solid rgba(99,102,241,0.2);padding-top:10px;">
+        <div style="font-size:2em;font-weight:900;color:var(--indigo);line-height:1;">20</div>
+        <div style="font-size:0.58em;color:var(--muted);">Core Capabilities</div>
+      </div>
+      <div style="font-size:0.56em;color:var(--muted);">Slides 12–15 &nbsp;·&nbsp; 4 slides</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 03 PMO SECTION DIVIDER ═══════════════════ -->
+<section>
+<div class="slide" style="justify-content:center;">
+  <div class="cover-bg section-bg-amber"></div>
+  <div class="cover-grid"></div>
+  <div style="position:absolute; left:60px; top:50%; transform:translateY(-50%); font-size:9em; font-weight:900; line-height:1; opacity:0.08; color:var(--amber); pointer-events:none; user-select:none;">01</div>
+  <div style="position:relative; z-index:1; max-width:700px;">
+    <div class="tag tag-amber" style="margin-bottom:16px; font-size:0.62em; letter-spacing:0.12em;">PMO AUTO</div>
+    <div style="font-size:3em; font-weight:900; line-height:1.1; margin-bottom:14px;">
+      <span class="grad-amber">Project Management Automation</span>
+    </div>
+    <div style="font-size:0.82em; color:rgba(255,255,255,0.55); margin-bottom:28px; line-height:1.7;">
+      One Notion entry. Full project infrastructure, fully automated.
+    </div>
+    <div style="display:flex; gap:8px; align-items:center; margin-bottom:18px;">
+      <span class="badge badge-amber">v2.6.3-EN</span>
+      <span class="badge badge-amber">GA</span>
+    </div>
+    <div style="display:flex; gap:24px;">
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--amber);">96%</div>
+        <div style="font-size:0.55em; color:var(--muted);">Efficiency Gain</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--amber);">≤60s</div>
+        <div style="font-size:0.55em; color:var(--muted);">Notification SLA P99</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--amber);">$300K+</div>
+        <div style="font-size:0.55em; color:var(--muted);">Annual ROI</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 04 PMO EXECUTIVE SUMMARY ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-amber">PMO AUTO · EXECUTIVE SUMMARY</div>
+      <div class="slide-title">Half a Day of PM Work, <span style="color:var(--amber);">Compressed to 10 Minutes</span></div>
+    </div>
+    <div class="divider-line divider-line-amber"></div>
+  </div>
+  <div style="display:flex; gap:24px; flex:1;">
+    <!-- LEFT 60% -->
+    <div style="flex:1.5; display:flex; flex-direction:column; gap:14px;">
+      <div style="font-size:0.64em; font-weight:700; color:var(--amber); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Core Thesis</div>
+      <div style="font-size:0.76em; color:rgba(255,255,255,0.7); line-height:1.75; padding:14px 18px; background:rgba(245,158,11,0.06); border-left:3px solid var(--amber); border-radius:0 8px 8px 0;">
+        The bottleneck in project management is not decision-making — it is data entry. Launching a standard project from initiation to full system readiness requires a PM to spend <strong style="color:var(--amber);">4 to 5 hours</strong> on system entry, task creation, notification dispatch, and documentation scaffolding. None of this work requires judgment — until PMO Auto.
+      </div>
+      <div style="font-size:0.92em; font-weight:800; color:var(--text); line-height:1.5; padding:14px 18px; background:rgba(245,158,11,0.1); border-radius:10px; border:1px solid rgba(245,158,11,0.25);">
+        PMO Auto compresses the PM's data entry workload to <span class="grad-amber">10 minutes</span> of structured input. Everything else is fully automated.
+      </div>
+    </div>
+    <!-- RIGHT 40% -->
+    <div style="width:260px; display:flex; flex-direction:column; gap:8px;">
+      <div style="font-size:0.58em; font-weight:700; color:var(--amber); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Outcomes</div>
+      <div class="card" style="border-left:3px solid var(--amber); padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:0.6em; color:var(--muted);">Onboarding time reduction</div>
+        <div style="font-size:1.3em; font-weight:900; color:var(--amber);">96%</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--amber); padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:0.6em; color:var(--muted);">WBS entry reduction</div>
+        <div style="font-size:1.3em; font-weight:900; color:var(--amber);">99%</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--amber); padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:0.6em; color:var(--muted);">Notification SLA P99</div>
+        <div style="font-size:1.3em; font-weight:900; color:var(--amber);">≤60s</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--teal); padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:0.6em; color:var(--muted);">Auto-created tasks</div>
+        <div style="font-size:1.3em; font-weight:900; color:var(--teal);">80+</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--amber); padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:0.6em; color:var(--muted);">Annual ROI</div>
+        <div style="font-size:1.3em; font-weight:900; color:var(--amber);">$300K+</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 05 PMO AUTOMATION MATRIX ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-amber">PMO AUTO · CAPABILITY MATRIX</div>
+      <div class="slide-title">Automation Capability Matrix</div>
+    </div>
+    <div class="divider-line divider-line-amber"></div>
+  </div>
+  <table class="t">
+    <thead>
+      <tr>
+        <th class="amber">Capability</th>
+        <th class="amber">Manual Baseline</th>
+        <th class="amber">PMO Auto</th>
+        <th class="amber">Time Saved</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Project initiation &amp; metadata entry</td><td class="bad">60–90 minutes</td><td class="good-amber">10 min (human form fill)</td><td class="good-amber">~80%</td></tr>
+      <tr><td>WBS task system creation (80+ tasks)</td><td class="bad">3–4 hours</td><td class="good-amber">30–90 seconds</td><td class="good-amber">99%</td></tr>
+      <tr><td>Notion Hub documentation (17 pages)</td><td class="bad">2–3 hours</td><td class="good-amber">Fully automated</td><td class="good-amber">100%</td></tr>
+      <tr><td>Member notifications &amp; Slack push</td><td class="bad">30–60 minutes</td><td class="good-amber">≤60s SLA</td><td class="good-amber">~98%</td></tr>
+      <tr><td>Asana project structure sync</td><td class="bad">1–2 hours</td><td class="good-amber">Automated on trigger</td><td class="good-amber">100%</td></tr>
+      <tr><td>Quality assurance (E2E testing)</td><td class="bad">Manual review</td><td class="good-amber">12 PASS / 0 FAIL</td><td class="good">Systematically guaranteed</td></tr>
+    </tbody>
+  </table>
+  <div class="g2" style="margin-top:14px;">
+    <div class="card card-amber-strong" style="padding:12px 16px;">
+      <div style="font-size:0.62em; font-weight:700; color:var(--amber); margin-bottom:4px;">WBS Template Library — Strategic Moat</div>
+      <div style="font-size:0.62em; color:var(--muted); line-height:1.6;">21-field encoding of Janus methodology · Accumulated knowledge asset · Value compounds with every project delivered</div>
+    </div>
+    <div class="card card-teal" style="padding:12px 16px;">
+      <div style="font-size:0.62em; font-weight:700; color:var(--teal); margin-bottom:4px;">SSOT Design Principle</div>
+      <div style="font-size:0.62em; color:var(--muted); line-height:1.6;">Notion as single source of truth · Eliminates multi-system drift · One trigger activates full automation pipeline</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 06 PMO ARCHITECTURE + KPI ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-amber">PMO AUTO · ARCHITECTURE &amp; KPI</div>
+      <div class="slide-title">System Architecture + KPI Dashboard</div>
+    </div>
+    <div class="divider-line divider-line-amber"></div>
+  </div>
+  <!-- Architecture Flow -->
+  <div style="margin-bottom:16px;">
+    <div style="font-size:0.6em; font-weight:700; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;">Data Flow</div>
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:nowrap;">
+      <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:8px;padding:10px 14px;font-size:0.62em;text-align:center;flex:1;">
+        <div style="font-weight:800;color:var(--amber);">Project Manager</div>
+        <div style="color:var(--muted);font-size:0.85em;margin-top:2px;">10 min data entry</div>
+      </div>
+      <div style="color:var(--amber);font-size:1.2em;">→</div>
+      <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:8px;padding:10px 14px;font-size:0.62em;text-align:center;flex:1;">
+        <div style="font-weight:800;color:var(--amber);">Notion SSOT</div>
+        <div style="color:var(--muted);font-size:0.85em;margin-top:2px;">Single source of truth</div>
+      </div>
+      <div style="color:var(--amber);font-size:1.2em;">→</div>
+      <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.3);border-radius:8px;padding:10px 14px;font-size:0.62em;text-align:center;flex:1;">
+        <div style="font-weight:800;color:var(--teal);">n8n Workflow</div>
+        <div style="color:var(--muted);font-size:0.85em;margin-top:2px;">Orchestration layer</div>
+      </div>
+      <div style="color:var(--teal);font-size:1.2em;">→</div>
+      <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.3);border-radius:8px;padding:10px 14px;font-size:0.62em;text-align:center;flex:1;">
+        <div style="font-weight:800;color:var(--teal);">pmo-api</div>
+        <div style="color:var(--muted);font-size:0.85em;margin-top:2px;">API middleware</div>
+      </div>
+      <div style="color:var(--teal);font-size:1.2em;">→</div>
+      <div style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:10px 14px;font-size:0.62em;text-align:center;flex:1;">
+        <div style="font-weight:800;color:var(--indigo);">Asana + Slack</div>
+        <div style="color:var(--muted);font-size:0.85em;margin-top:2px;">Dual-channel execution</div>
+      </div>
+    </div>
+  </div>
+  <!-- KPI Row -->
+  <div style="font-size:0.6em; font-weight:700; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;">KPI Dashboard</div>
+  <div class="g5">
+    <div class="metric metric-amber">
+      <div class="metric-val grad-amber">96%</div>
+      <div class="metric-lbl">Onboarding<br>Efficiency</div>
+    </div>
+    <div class="metric metric-amber">
+      <div class="metric-val grad-amber">≤60s</div>
+      <div class="metric-lbl">Notification<br>SLA P99</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val grad">80+</div>
+      <div class="metric-lbl">Auto-Created<br>Tasks</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val grad">17</div>
+      <div class="metric-lbl">Standard Hub<br>Pages</div>
+    </div>
+    <div class="metric metric-amber">
+      <div class="metric-val grad-amber">$300K+</div>
+      <div class="metric-lbl">Annual<br>ROI</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 07 PMO N8N WORKFLOWS ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-amber">PMO AUTO · AUTOMATION ENGINE</div>
+      <div class="slide-title">n8n Workflow Directory <span style="font-size:0.65em;font-weight:400;color:var(--muted);">— 14 Workflows · 12 Active</span></div>
+    </div>
+    <div class="divider-line divider-line-amber"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+
+    <!-- LEFT: Project Lifecycle Workflows -->
+    <div>
+      <div style="font-size:0.58em;font-weight:700;color:var(--amber);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Project Lifecycle — Initialization &amp; Configuration</div>
+      <table class="t" style="font-size:0.68em;">
+        <thead>
+          <tr>
+            <th style="width:52px;">WF</th>
+            <th style="width:80px;">Trigger</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span style="font-weight:800;color:var(--amber);">WF-01</span></td>
+            <td><span class="tag tag-amber" style="font-size:0.85em;">5-min poll</span></td>
+            <td>
+              <div style="font-weight:600;">Project Initialization</div>
+              <div style="color:var(--muted);font-size:0.88em;">Notion status flip → auto-create Asana project + invite 5 role members + generate 17 Hub pages</div>
+            </td>
+          </tr>
+          <tr>
+            <td><span style="font-weight:800;color:var(--amber);">WF-11</span></td>
+            <td><span class="tag tag-amber" style="font-size:0.85em;">5-min poll</span></td>
+            <td>
+              <div style="font-weight:600;">WBS Import Trigger</div>
+              <div style="color:var(--muted);font-size:0.88em;">Detects projects awaiting import → calls pmo-api to run wbs_to_asana.py and batch-create 80+ tasks</div>
+            </td>
+          </tr>
+          <tr>
+            <td><span style="font-weight:800;color:var(--amber);">WF-12</span></td>
+            <td><span class="tag tag-amber" style="font-size:0.85em;">Fallback path</span></td>
+            <td>
+              <div style="font-weight:600;">WBS Task Import <span style="color:var(--red);font-size:0.85em;">⚠ Must stay active</span></div>
+              <div style="color:var(--muted);font-size:0.88em;">Fallback to WF-11; reads directly from Notion WBS DB and writes to Asana; supports WBS &gt;100 rows</div>
+            </td>
+          </tr>
+          <tr>
+            <td><span style="font-weight:800;color:var(--amber);">WF-14</span></td>
+            <td><span class="tag tag-amber" style="font-size:0.85em;">5-min poll</span></td>
+            <td>
+              <div style="font-weight:600;">Role Assignee Sync</div>
+              <div style="color:var(--muted);font-size:0.88em;">Reads role emails from Registry → 100% L2/L3 task coverage; hard fail on unmapped roles (no silent skips)</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- RIGHT: Notification Workflows -->
+    <div>
+      <div style="font-size:0.58em;font-weight:700;color:var(--teal);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">Execution Notifications — Real-Time Team Response</div>
+      <table class="t" style="font-size:0.68em;margin-bottom:12px;">
+        <thead>
+          <tr>
+            <th style="width:52px;">WF</th>
+            <th style="width:80px;">Trigger</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span style="font-weight:800;color:var(--teal);">WF-08</span></td>
+            <td><span class="tag" style="font-size:0.85em;">Webhook</span></td>
+            <td>
+              <div style="font-weight:600;">Task Completion Notification</div>
+              <div style="color:var(--muted);font-size:0.88em;">Listens for Asana task-complete events → identifies downstream dependents → notifies responsible owners</div>
+            </td>
+          </tr>
+          <tr>
+            <td><span style="font-weight:800;color:var(--teal);">WF-09</span></td>
+            <td><span class="tag" style="font-size:0.85em;">Internal call</span></td>
+            <td>
+              <div style="font-weight:600;">Unified Notification Egress</div>
+              <div style="color:var(--muted);font-size:0.88em;">Central Slack DM dispatch hub for all notifications; P99 SLA ≤60s; decoupled from WF-08 for independent reuse</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Data flow summary box -->
+      <div class="card card-teal" style="font-size:0.64em;padding:12px 16px;">
+        <div style="font-weight:700;color:var(--teal);margin-bottom:6px;">End-to-End Automation Chain</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:var(--muted);">
+          <span style="color:var(--text);font-weight:600;">Notion</span>
+          <span>→ WF-01 →</span>
+          <span style="color:var(--text);font-weight:600;">Asana + Hub</span>
+          <span>→ WF-11/12 →</span>
+          <span style="color:var(--text);font-weight:600;">80+ Tasks</span>
+          <span>→ WF-14 →</span>
+          <span style="color:var(--text);font-weight:600;">Role Assignments</span>
+          <span>→ WF-08/09 →</span>
+          <span style="color:var(--amber);font-weight:600;">≤60s Slack DM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer note -->
+  <div style="display:flex;align-items:center;gap:12px;font-size:0.58em;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;">
+    <span><span style="color:var(--amber);font-weight:700;">14</span> workflows total</span>
+    <span>·</span>
+    <span><span style="color:var(--teal);font-weight:700;">12</span> currently active</span>
+    <span>·</span>
+    <span>n8n production: <span style="color:var(--text);">n8n.lysander.bond</span></span>
+    <span>·</span>
+    <span>Backend API: <span style="color:var(--text);">pmo-api.lysander.bond</span></span>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 08 PMO ROADMAP ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-amber">PMO AUTO · ROADMAP</div>
+      <div class="slide-title">Product Roadmap &amp; Current Status</div>
+    </div>
+    <div class="divider-line divider-line-amber"></div>
+  </div>
+  <!-- Status Bar -->
+  <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+    <span class="badge badge-amber">GA v2.6.3-EN</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:6px;padding:3px 10px;font-size:0.55em;color:var(--amber);font-weight:600;">STABILITY-001 Monitoring · through 2026-05-10</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:6px;padding:3px 10px;font-size:0.55em;color:var(--teal);font-weight:600;">12 PASS / 0 FAIL</span>
+  </div>
+  <!-- Roadmap Columns -->
+  <div class="g3">
+    <div class="card card-amber-strong" style="position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--amber);"></div>
+      <div style="padding-top:6px;">
+        <div style="font-size:1.6em;font-weight:900;color:var(--amber);line-height:1;">v2.7</div>
+        <div style="font-size:0.68em;font-weight:700;color:var(--amber);margin:6px 0 10px;">Quality Guardrails</div>
+        <ul class="list list-amber" style="gap:4px;">
+          <li>WBS integrity validation</li>
+          <li>Anomaly auto-alerting</li>
+          <li>State machine formalization</li>
+          <li>Input validation hardening</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card card-teal" style="position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);"></div>
+      <div style="padding-top:6px;">
+        <div style="font-size:1.6em;font-weight:900;color:var(--teal);line-height:1;">v3.0</div>
+        <div style="font-size:0.68em;font-weight:700;color:var(--teal);margin:6px 0 10px;">Event-Driven Architecture</div>
+        <ul class="list" style="gap:4px;">
+          <li>Notion Webhook replaces polling</li>
+          <li>pmo-api becomes SSOT core</li>
+          <li>Real-time drift detection</li>
+          <li>Bidirectional data write-back</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card card-indigo-strong" style="position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--indigo);"></div>
+      <div style="padding-top:6px;">
+        <div style="font-size:1.6em;font-weight:900;color:var(--indigo);line-height:1;">v4.0</div>
+        <div style="font-size:0.68em;font-weight:700;color:var(--indigo);margin:6px 0 10px;">Multi-Tenant Platform</div>
+        <ul class="list list-indigo" style="gap:4px;">
+          <li>Tenant isolation</li>
+          <li>Custom WBS template library</li>
+          <li>White-label capability</li>
+          <li>SaaS delivery model</li>
+        </ul>
+        <div style="margin-top:10px;font-size:0.56em;color:var(--muted);border-top:1px solid rgba(99,102,241,0.2);padding-top:8px;">Requires L4 President decision</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 08 SYNAPSE MULTI-AGENTS SECTION DIVIDER ═══════════════════ -->
+<section>
+<div class="slide" style="justify-content:center;">
+  <div class="cover-bg section-bg-teal"></div>
+  <div class="cover-grid"></div>
+  <div style="position:absolute; left:60px; top:50%; transform:translateY(-50%); font-size:9em; font-weight:900; line-height:1; opacity:0.08; color:var(--teal); pointer-events:none; user-select:none;">02</div>
+  <div style="position:relative; z-index:1; max-width:700px;">
+    <div class="tag" style="margin-bottom:16px; font-size:0.62em; letter-spacing:0.12em;">SYNAPSE MULTI-AGENTS</div>
+    <div style="font-size:3em; font-weight:900; line-height:1.1; margin-bottom:14px;">
+      <span class="grad">Multi-Agent Collaborative Operations</span>
+    </div>
+    <div style="font-size:0.82em; color:rgba(255,255,255,0.55); margin-bottom:28px; line-height:1.7;">
+      Business experts drive AI in business language — auditable, accumulative, replicable
+    </div>
+    <div style="display:flex; gap:24px;">
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--teal);">69</div>
+        <div style="font-size:0.55em; color:var(--muted);">Agents</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--teal);">≥85</div>
+        <div style="font-size:0.55em; color:var(--muted);">QA Gate Score</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--teal);">0%</div>
+        <div style="font-size:0.55em; color:var(--muted);">Owner Involvement</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 09 SYNAPSE ARCHITECTURE + FORMULA ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label">SYNAPSE MULTI-AGENTS · ARCHITECTURE</div>
+      <div class="slide-title">Core Formula &amp; <span>Five-Layer Architecture</span></div>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="display:flex; gap:20px; flex:1;">
+    <!-- LEFT 45% -->
+    <div style="width:42%; display:flex; flex-direction:column; gap:12px;">
+      <div style="text-align:center; padding:16px; background:rgba(0,212,170,0.08); border:1px solid rgba(0,212,170,0.2); border-radius:12px;">
+        <div style="font-size:1.4em; font-weight:900; letter-spacing:-0.02em;" class="grad">Agent = Model + Harness</div>
+        <div style="font-size:0.58em; color:var(--muted); margin-top:8px; line-height:1.6;">Model = Large language model (Claude claude-sonnet-4-6)<br>Harness = Rules + Constraints + Workflow + Memory + Role</div>
+      </div>
+      <!-- 5 Layer Stack -->
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:8px;padding:8px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--teal);">Knowledge Layer · OBS Second Brain</div>
+          <div style="font-size:0.52em;color:var(--muted);">35 memories · 50+ decisions · Product KB</div>
+        </div>
+        <div style="text-align:center;font-size:0.5em;color:var(--muted);">←synapse→</div>
+        <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:8px;padding:8px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--teal);">Control Layer · Harness Engineering</div>
+          <div style="font-size:0.52em;color:var(--muted);">Rules · Constraints · QA gates · Role routing</div>
+        </div>
+        <div style="text-align:center;font-size:0.5em;color:var(--muted);">←synapse→</div>
+        <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:8px;padding:8px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--teal);">Execution Layer · Multi-Agent Teams</div>
+          <div style="font-size:0.52em;color:var(--muted);">69 agents · 58 core · 13 specialized teams</div>
+        </div>
+        <div style="text-align:center;font-size:0.5em;color:var(--muted);">←synapse→</div>
+        <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:8px;padding:8px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--teal);">Decision Layer · 4-Tier Decision System</div>
+          <div style="font-size:0.52em;color:var(--muted);">L1 Auto → L2 Expert → L3 CEO → L4 Owner</div>
+        </div>
+        <div style="text-align:center;font-size:0.5em;color:var(--muted);">←synapse→</div>
+        <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:8px;padding:8px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--teal);">Evolution Layer · Intelligence Pipeline</div>
+          <div style="font-size:0.52em;color:var(--muted);">Discover → Assess → Execute → Report → Self-improve</div>
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT 55% -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+      <div style="font-size:0.62em; font-weight:700; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase;">Why Harness Is the Competitive Moat</div>
+      <div class="card" style="border-left:3px solid var(--red); padding:12px 16px;">
+        <div style="font-size:0.62em;font-weight:700;color:#ef4444;margin-bottom:4px;">Traditional AI Deployment</div>
+        <div style="font-size:0.6em;color:var(--muted);line-height:1.6;">Starts from zero each session · Requires prompt engineering expertise · Knowledge doesn't accumulate · Outputs unpredictable</div>
+      </div>
+      <div class="card card-teal" style="padding:12px 16px;">
+        <div style="font-size:0.62em;font-weight:700;color:var(--teal);margin-bottom:4px;">Synapse Approach</div>
+        <div style="font-size:0.6em;color:rgba(255,255,255,0.7);line-height:1.6;">Persistent cross-session memory · 13 specialized teams with expert routing · Decisions compound over time · Weekly self-review &amp; optimization</div>
+      </div>
+      <div style="background:linear-gradient(135deg, rgba(0,212,170,0.1), rgba(99,102,241,0.1));border:1px solid rgba(0,212,170,0.2);border-radius:10px;padding:14px 16px;text-align:center;">
+        <div style="font-size:0.62em;color:var(--muted);margin-bottom:6px;">Owner Involvement Shift</div>
+        <div style="font-size:1.4em;font-weight:900;">
+          <span style="color:var(--muted);">100%</span>
+          <span style="color:var(--teal);margin:0 12px;">→</span>
+          <span class="grad">0%</span>
+        </div>
+        <div style="font-size:0.54em;color:var(--muted);margin-top:4px;">Receives Slack result notifications only — zero execution involvement</div>
+      </div>
+      <div class="g2" style="gap:8px;">
+        <div class="card" style="padding:10px 14px;text-align:center;border-top:2px solid var(--teal);">
+          <div style="font-size:1.5em;font-weight:900;color:var(--teal);">13</div>
+          <div style="font-size:0.54em;color:var(--muted);">Specialist Teams</div>
+        </div>
+        <div class="card" style="padding:10px 14px;text-align:center;border-top:2px solid var(--teal);">
+          <div style="font-size:1.5em;font-weight:900;color:var(--teal);">69</div>
+          <div style="font-size:0.54em;color:var(--muted);">Specialist Agents</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 10 SYNAPSE 6 CAPABILITIES ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label">SYNAPSE MULTI-AGENTS · CAPABILITIES</div>
+      <div class="slide-title">Six Core Capability Matrix</div>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+    <div class="card card-teal" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--teal);margin-bottom:4px;">Harness Engineering</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">Engineered AI behavior boundaries — not prompt hacks</div>
+      <div style="display:inline-block;background:rgba(0,212,170,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--teal);font-weight:700;">4-Layer Control Mechanism</div>
+    </div>
+    <div class="card card-teal" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--teal);margin-bottom:4px;">OBS Knowledge System</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">Persistent cross-session memory — decisions &amp; projects structured</div>
+      <div style="display:inline-block;background:rgba(0,212,170,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--teal);font-weight:700;">35 Memories · 50+ Decisions</div>
+    </div>
+    <div class="card card-teal" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--teal);margin-bottom:4px;">Multi-Agent Specialist Teams</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">Expert routing — tasks auto-dispatched to the right specialist</div>
+      <div style="display:inline-block;background:rgba(0,212,170,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--teal);font-weight:700;">55 Active Core Agents · 12 Teams</div>
+    </div>
+    <div class="card card-amber" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--amber);margin-bottom:4px;">4-Tier Decision System</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">Vast majority of decisions resolved internally — Owner rarely contacted</div>
+      <div style="display:inline-block;background:rgba(245,158,11,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--amber);font-weight:700;">L4 Escalation Rate &lt;5%</div>
+    </div>
+    <div class="card card-amber" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--amber);margin-bottom:4px;">Self-Evolution Mechanism</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">Weekly 6-dimension Harness review — system continuously refines rules</div>
+      <div style="display:inline-block;background:rgba(245,158,11,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--amber);font-weight:700;">Eliminated 40+ Unnecessary Interrupts</div>
+    </div>
+    <div class="card card-indigo-strong" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--indigo);margin-bottom:4px;">Intelligence Pipeline</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">Daily 3-pulse automation — Owner receives Slack summaries only</div>
+      <div style="display:inline-block;background:rgba(99,102,241,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--indigo);font-weight:700;">8am Report · 10am Action · Slack Push</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 11 SYNAPSE PROVEN RESULTS ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label">SYNAPSE MULTI-AGENTS · PROVEN RESULTS</div>
+      <div class="slide-title">PDCA Achievement Timeline &amp; <span>Quantified Outcomes</span></div>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+  <!-- Timeline -->
+  <div class="timeline" style="margin-bottom:16px;">
+    <div class="tl-item"><span class="tl-date">D-0412</span>Harness v1<br>Base Constraints</div>
+    <div class="tl-item"><span class="tl-date">D-0424</span>Expanded<br>Lysander Auth</div>
+    <div class="tl-item"><span class="tl-date">D-0427</span>Weekly Audit<br>System Live</div>
+    <div class="tl-item"><span class="tl-date">D-0428(1)</span>Agent Memory<br>Collab v1</div>
+    <div class="tl-item"><span class="tl-date">D-0428(2)</span>PMO Auto<br>EN Migration</div>
+    <div class="tl-item"><span class="tl-date">D-0430(PQG)</span>PQG v2.0<br>141 events</div>
+    <div class="tl-item"><span class="tl-date">D-0430(Arch)</span>Phoenix<br>Deploy Arch</div>
+    <div class="tl-item"><span class="tl-date">D-0501</span>Token Opt.<br>Method C</div>
+    <div class="tl-item"><span class="tl-date">D-0503</span>PMO Auto<br>GA v2.6.3-EN</div>
+  </div>
+  <!-- Result Cards -->
+  <div class="g2">
+    <div class="card card-teal" style="padding:16px 20px;">
+      <div style="font-size:0.62em;font-weight:700;color:var(--teal);margin-bottom:10px;">Phoenix Proof — 4-Day Multi-Session Continuous Execution</div>
+      <div style="display:flex; gap:16px;">
+        <div style="text-align:center;">
+          <div style="font-size:1.8em;font-weight:900;color:var(--teal);">3</div>
+          <div style="font-size:0.52em;color:var(--muted);">Owner Touchpoints</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:1.8em;font-weight:900;color:var(--teal);">99.7%</div>
+          <div style="font-size:0.52em;color:var(--muted);">Test Pass Rate<br>294/295</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:1.8em;font-weight:900;color:var(--teal);">4 Days</div>
+          <div style="font-size:0.52em;color:var(--muted);">Continuous Execution</div>
+        </div>
+      </div>
+    </div>
+    <div class="card card-amber-strong" style="padding:16px 20px;">
+      <div style="font-size:0.62em;font-weight:700;color:var(--amber);margin-bottom:10px;">Quantified Outcomes</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <div style="text-align:center;padding:8px;background:rgba(245,158,11,0.08);border-radius:6px;">
+          <div style="font-size:1.2em;font-weight:900;color:var(--amber);">0%</div>
+          <div style="font-size:0.5em;color:var(--muted);">Owner involvement (execution)</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:rgba(245,158,11,0.08);border-radius:6px;">
+          <div style="font-size:1.2em;font-weight:900;color:var(--amber);">50+</div>
+          <div style="font-size:0.5em;color:var(--muted);">D-numbered decisions archived</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:rgba(0,212,170,0.08);border-radius:6px;">
+          <div style="font-size:1.2em;font-weight:900;color:var(--teal);">35</div>
+          <div style="font-size:0.5em;color:var(--muted);">Persistent cross-session memories</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:rgba(0,212,170,0.08);border-radius:6px;">
+          <div style="font-size:1.2em;font-weight:900;color:var(--teal);">141</div>
+          <div style="font-size:0.5em;color:var(--muted);">PQG interruption events analyzed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 12 SYNAPSE PLATFORM SECTION DIVIDER ═══════════════════ -->
+<section>
+<div class="slide" style="justify-content:center;">
+  <div class="cover-bg section-bg-indigo"></div>
+  <div class="cover-grid"></div>
+  <div style="position:absolute; left:60px; top:50%; transform:translateY(-50%); font-size:9em; font-weight:900; line-height:1; opacity:0.08; color:var(--indigo); pointer-events:none; user-select:none;">03</div>
+  <div style="position:relative; z-index:1; max-width:700px;">
+    <div class="tag tag-indigo" style="margin-bottom:16px; font-size:0.62em; letter-spacing:0.12em;">SYNAPSE PLATFORM</div>
+    <div style="font-size:3em; font-weight:900; line-height:1.1; margin-bottom:14px;">
+      <span class="grad-indigo">AI Digital Twin Collaboration System</span>
+    </div>
+    <div style="font-size:0.82em; color:rgba(255,255,255,0.55); margin-bottom:28px; line-height:1.7;">
+      Built on Slack. Zero tool switching. AI generates at full power. Humans approve every step.
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+      <span class="badge badge-indigo">v0.5.0</span>
+      <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);border-radius:6px;padding:3px 10px;font-size:0.55em;color:var(--indigo);font-weight:600;">Phase 1–4 Complete</span>
+    </div>
+    <div style="display:flex; gap:24px;">
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--indigo);">20</div>
+        <div style="font-size:0.55em; color:var(--muted);">Core Capabilities</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--indigo);">294/295</div>
+        <div style="font-size:0.55em; color:var(--muted);">Tests Passing 99.7%</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--indigo);">~2 Days</div>
+        <div style="font-size:0.55em; color:var(--muted);">Phase 1–4 Delivery</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 13 SYNAPSE PLATFORM OVERVIEW + PDCA ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-indigo">SYNAPSE PLATFORM · OVERVIEW</div>
+      <div class="slide-title">Product Overview &amp; <span style="color:var(--indigo);">PDCA Self-Improvement Loop</span></div>
+    </div>
+    <div class="divider-line divider-line-indigo"></div>
+  </div>
+  <div style="display:flex; gap:20px; flex:1;">
+    <!-- LEFT 50% -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+      <div style="font-size:0.6em; font-weight:700; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">Three Core Values</div>
+      <div class="card card-indigo-strong" style="padding:12px 16px; border-left:3px solid var(--indigo);">
+        <div style="font-size:0.66em;font-weight:700;color:var(--indigo);margin-bottom:3px;">Zero Tool Migration Cost</div>
+        <div style="font-size:0.6em;color:var(--muted);">Built entirely on Slack — no new interfaces, no platform switching</div>
+      </div>
+      <div class="card card-teal" style="padding:12px 16px; border-left:3px solid var(--teal);">
+        <div style="font-size:0.66em;font-weight:700;color:var(--teal);margin-bottom:3px;">AI Generation + Mandatory Human Approval</div>
+        <div style="font-size:0.6em;color:var(--muted);">Technical hard constraint — cannot be bypassed or disabled at any level</div>
+      </div>
+      <div class="card card-amber" style="padding:12px 16px; border-left:3px solid var(--amber);">
+        <div style="font-size:0.66em;font-weight:700;color:var(--amber);margin-bottom:3px;">Every Use = Training Data</div>
+        <div style="font-size:0.6em;color:var(--muted);">Slack inline edits auto-captured — AI continuously aligns to your style</div>
+      </div>
+      <div style="display:flex; gap:8px; margin-top:4px; flex-wrap:wrap;">
+        <span class="badge badge-indigo">v0.5.0 LIVE</span>
+        <span style="display:inline-flex;align-items:center;background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:6px;padding:3px 8px;font-size:0.52em;color:var(--teal);font-weight:600;">294/295 Tests · 99.7%</span>
+        <span style="display:inline-flex;align-items:center;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);border-radius:6px;padding:3px 8px;font-size:0.52em;color:var(--indigo);font-weight:600;">E2E: 2026-04-28</span>
+      </div>
+    </div>
+    <!-- RIGHT 50% PDCA -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+      <div style="font-size:0.6em; font-weight:700; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">PDCA Self-Improvement Loop</div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:0; flex:1; justify-content:center;">
+        <div style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:8px 24px;font-size:0.62em;font-weight:700;color:var(--indigo);text-align:center;width:80%;">Plan — Business intent input via Slack</div>
+        <div style="color:var(--muted);font-size:0.8em;margin:2px 0;">↓</div>
+        <div style="background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.3);border-radius:8px;padding:8px 24px;font-size:0.62em;font-weight:700;color:var(--teal);text-align:center;width:80%;">Do — AI parses &amp; generates deliverable</div>
+        <div style="color:var(--muted);font-size:0.8em;margin:2px 0;">↓</div>
+        <div style="background:rgba(245,158,11,0.12);border:2px solid rgba(245,158,11,0.4);border-radius:8px;padding:8px 24px;font-size:0.62em;font-weight:800;color:var(--amber);text-align:center;width:80%;">Check — Human Approval Gate (MANDATORY)</div>
+        <div style="color:var(--muted);font-size:0.8em;margin:2px 0;">↓</div>
+        <div style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:8px 24px;font-size:0.62em;font-weight:700;color:var(--indigo);text-align:center;width:80%;">Act — Auto-captured as training sample</div>
+        <div style="color:var(--muted);font-size:0.8em;margin:2px 0;">↺</div>
+        <div style="font-size:0.56em;color:var(--muted);text-align:center;max-width:300px;line-height:1.5;">AI continuously adapts to your style with zero additional effort</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 14 SYNAPSE PLATFORM 20 CAPABILITIES ═══════════════════ -->
+<section>
+<div class="slide" style="padding:40px 60px;">
+  <div class="slide-header" style="margin-bottom:18px;">
+    <div>
+      <div class="slide-label slide-label-indigo">SYNAPSE PLATFORM · CAPABILITIES</div>
+      <div class="slide-title">20 Core Capabilities · <span style="color:var(--indigo);">Four-Layer Architecture</span></div>
+    </div>
+    <div class="divider-line divider-line-indigo"></div>
+  </div>
+  <table class="t" style="font-size:0.62em;">
+    <thead>
+      <tr><th style="background:rgba(99,102,241,0.15);color:var(--indigo);">Layer</th><th style="background:rgba(99,102,241,0.15);color:var(--indigo);">Capability</th><th style="background:rgba(99,102,241,0.15);color:var(--indigo);">Description</th></tr>
+    </thead>
+    <tbody>
+      <tr style="background:rgba(99,102,241,0.08);">
+        <td rowspan="3" style="color:var(--indigo);font-weight:700;border-right:2px solid rgba(99,102,241,0.3);white-space:nowrap;">Layer 1<br>Intake &amp;<br>Understanding</td>
+        <td style="font-weight:600;">Slack Socket Mode real-time intake</td><td style="color:var(--muted);">No public port required — secure bidirectional real-time communication</td>
+      </tr>
+      <tr style="background:rgba(99,102,241,0.04);"><td style="font-weight:600;">Dual-layer intent parsing (NL + context)</td><td style="color:var(--muted);">Business language drives AI directly — no prompt engineering required</td></tr>
+      <tr style="background:rgba(99,102,241,0.08);"><td style="font-weight:600;">Auto-knowledge ingestion from documents</td><td style="color:var(--muted);">pgvector + Voyage AI semantic vector storage</td></tr>
+      <tr style="background:rgba(0,212,170,0.06);">
+        <td rowspan="7" style="color:var(--teal);font-weight:700;border-right:2px solid rgba(0,212,170,0.3);white-space:nowrap;">Layer 2<br>Execution &amp;<br>Collaboration</td>
+        <td style="font-weight:600;">High-quality deliverable generation</td><td style="color:var(--muted);">Weekly reports · Meeting prep · Content drafts · Analysis reports</td>
+      </tr>
+      <tr style="background:rgba(0,212,170,0.03);"><td style="font-weight:600;">Multi-agent coordination</td><td style="color:var(--muted);">Multiple specialist AI roles collaborating on complex tasks</td></tr>
+      <tr style="background:rgba(0,212,170,0.06);"><td style="font-weight:600;">Async task queue</td><td style="color:var(--muted);">Long-running tasks execute in background without blocking interaction</td></tr>
+      <tr style="background:rgba(0,212,170,0.03);"><td style="font-weight:600;">Bilingual collaboration (EN↔ZH)</td><td style="color:var(--muted);">Unified handling of English and Chinese inputs</td></tr>
+      <tr style="background:rgba(0,212,170,0.06);"><td style="font-weight:600;">Service request handling</td><td style="color:var(--muted);">Structured business service request management</td></tr>
+      <tr style="background:rgba(0,212,170,0.03);"><td style="font-weight:600;">Slack inline edit capture + training</td><td style="color:var(--muted);">Edits auto-recorded as training samples — zero extra workflow</td></tr>
+      <tr style="background:rgba(0,212,170,0.06);"><td style="font-weight:600;">Jina AI content enrichment</td><td style="color:var(--muted);">Search quality and content depth improvement</td></tr>
+      <tr style="background:rgba(245,158,11,0.06);">
+        <td rowspan="5" style="color:var(--amber);font-weight:700;border-right:2px solid rgba(245,158,11,0.3);white-space:nowrap;">Layer 3<br>Governance &amp;<br>Quality</td>
+        <td style="font-weight:600;">Deterministic FSM engine (self-built, not LangGraph)</td><td style="color:var(--muted);">Fully auditable state transitions — no external framework dependency</td>
+      </tr>
+      <tr style="background:rgba(245,158,11,0.03);"><td style="font-weight:600;color:var(--amber);">Mandatory Human Approval Gate (hard constraint)</td><td style="color:var(--amber);font-weight:500;">All AI outputs require approval — cannot be bypassed or disabled</td></tr>
+      <tr style="background:rgba(245,158,11,0.06);"><td style="font-weight:600;">SLA monitoring &amp; alerting</td><td style="color:var(--muted);">Automated detection and response latency alerts</td></tr>
+      <tr style="background:rgba(245,158,11,0.03);"><td style="font-weight:600;">Immutable audit log</td><td style="color:var(--muted);">Every action fully logged — traceable and auditable</td></tr>
+      <tr style="background:rgba(245,158,11,0.06);"><td style="font-weight:600;">CI/CD automated testing</td><td style="color:var(--muted);">294/295 passing · 49 test files across full codebase</td></tr>
+      <tr style="background:rgba(0,212,170,0.04);">
+        <td rowspan="5" style="color:#4ade80;font-weight:700;border-right:2px solid rgba(74,222,128,0.3);white-space:nowrap;">Layer 4<br>Intelligent<br>Evolution</td>
+        <td style="font-weight:600;">Enterprise RAG semantic retrieval</td><td style="color:var(--muted);">pgvector semantic search — not keyword matching</td>
+      </tr>
+      <tr style="background:rgba(0,212,170,0.02);"><td style="font-weight:600;">4-layer personal training system</td><td style="color:var(--muted);">Style · Domain · Feedback · Standards — full alignment</td></tr>
+      <tr style="background:rgba(0,212,170,0.04);"><td style="font-weight:600;">Web management dashboard</td><td style="color:var(--muted);">Platform status and training data management</td></tr>
+      <tr style="background:rgba(0,212,170,0.02);"><td style="font-weight:600;">Slack query commands</td><td style="color:var(--muted);">Query history and status directly from Slack</td></tr>
+      <tr style="background:rgba(0,212,170,0.04);"><td style="font-weight:600;">RBAC access control (ready, Phase 5)</td><td style="color:var(--muted);">Role-based access control (role × resource × action triple isolation)</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:10px;padding:8px 14px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:8px;font-size:0.56em;color:rgba(255,255,255,0.65);">
+    <strong style="color:var(--indigo);">ADR-0001:</strong> Deliberately rejected LangGraph — self-built FSM ensures determinism, testability, and full auditability
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 15 SYNAPSE PLATFORM QUALITY + ROADMAP ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-indigo">SYNAPSE PLATFORM · QUALITY &amp; ROADMAP</div>
+      <div class="slide-title">Quality Evidence + <span style="color:var(--indigo);">v1.0.0 GA Path</span></div>
+    </div>
+    <div class="divider-line divider-line-indigo"></div>
+  </div>
+  <div style="display:flex; gap:20px; flex:1;">
+    <!-- LEFT 45% -->
+    <div style="width:42%; display:flex; flex-direction:column; gap:10px;">
+      <div style="text-align:center;padding:18px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);border-radius:12px;">
+        <div style="font-size:2.8em;font-weight:900;line-height:1;" class="grad-indigo">294/295</div>
+        <div style="font-size:0.64em;color:var(--indigo);font-weight:700;margin:4px 0;">99.7% Test Pass Rate</div>
+        <div style="font-size:0.56em;color:var(--muted);">49 test files across full codebase</div>
+      </div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;">
+        <span style="background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.3);border-radius:4px;padding:3px 8px;font-size:0.52em;color:var(--teal);font-weight:700;">Unit PASS</span>
+        <span style="background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.3);border-radius:4px;padding:3px 8px;font-size:0.52em;color:var(--teal);font-weight:700;">Integration PASS</span>
+        <span style="background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.3);border-radius:4px;padding:3px 8px;font-size:0.52em;color:var(--teal);font-weight:700;">Acceptance PASS</span>
+        <span style="background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.3);border-radius:4px;padding:3px 8px;font-size:0.52em;color:var(--teal);font-weight:700;">E2E PASS</span>
+      </div>
+      <div class="card card-indigo-strong" style="padding:12px 16px;">
+        <div style="font-size:0.6em;font-weight:700;color:var(--indigo);margin-bottom:4px;">Live E2E Verification</div>
+        <div style="font-size:0.56em;color:var(--muted);line-height:1.6;">
+          2026-04-28<br>
+          AUD-20260428-0001 through 0066+<br>
+          66+ real interaction scenarios verified in production
+        </div>
+      </div>
+      <div class="card" style="padding:10px 16px;border-left:3px solid var(--amber);">
+        <div style="font-size:0.58em;font-weight:700;color:var(--amber);margin-bottom:2px;">Development Velocity</div>
+        <div style="font-size:0.56em;color:var(--muted);">Phase 1–4 fully implemented in ~2 days (2026-04-28 → 04-29)</div>
+      </div>
+    </div>
+    <!-- RIGHT 55% -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+      <div style="font-size:0.6em;font-weight:700;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">Phase 5 Roadmap</div>
+      <div class="g3" style="gap:8px;">
+        <div class="card card-indigo-strong" style="padding:10px 12px;">
+          <div style="font-size:0.56em;font-weight:800;color:var(--indigo);margin-bottom:4px;">[P0] RBAC Activation</div>
+          <div style="font-size:0.52em;color:var(--muted);">Multi-role, multi-team access management</div>
+        </div>
+        <div class="card card-indigo-strong" style="padding:10px 12px;">
+          <div style="font-size:0.56em;font-weight:800;color:var(--indigo);margin-bottom:4px;">[P1] n8n Webhook</div>
+          <div style="font-size:0.52em;color:var(--muted);">Event-driven external integration</div>
+        </div>
+        <div class="card card-indigo-strong" style="padding:10px 12px;">
+          <div style="font-size:0.56em;font-weight:800;color:var(--indigo);margin-bottom:4px;">[P1] Multi-Workspace</div>
+          <div style="font-size:0.52em;color:var(--muted);">Scale deployment across workspaces</div>
+        </div>
+      </div>
+      <div style="font-size:0.6em;font-weight:700;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:6px;margin-bottom:6px;">v1.0.0 GA Gate Conditions</div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);border-radius:8px;">
+          <span style="width:16px;height:16px;border:1px solid rgba(99,102,241,0.5);border-radius:3px;flex-shrink:0;"></span>
+          <span style="font-size:0.62em;color:rgba(255,255,255,0.7);">30-day production stability — zero P0 incidents</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);border-radius:8px;">
+          <span style="width:16px;height:16px;border:1px solid rgba(99,102,241,0.5);border-radius:3px;flex-shrink:0;"></span>
+          <span style="font-size:0.62em;color:rgba(255,255,255,0.7);">All Phase 1–4 technical debt cleared — P0/P1 items resolved</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);border-radius:8px;">
+          <span style="width:16px;height:16px;border:1px solid rgba(99,102,241,0.5);border-radius:3px;flex-shrink:0;"></span>
+          <span style="font-size:0.62em;color:rgba(255,255,255,0.7);">PMC L3 review passed + Phase 5 capabilities shipped</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 16 CLOSING ═══════════════════ -->
+<section>
+<div class="slide" style="justify-content:center;">
+  <div class="cover-bg" style="background: radial-gradient(ellipse 60% 50% at 80% -10%, rgba(0,212,170,0.14) 0%, transparent 55%), radial-gradient(ellipse 45% 45% at -5% 80%, rgba(99,102,241,0.12) 0%, transparent 50%), radial-gradient(ellipse 40% 40% at 50% 110%, rgba(245,158,11,0.10) 0%, transparent 45%);"></div>
+  <div class="cover-grid"></div>
+  <div style="position:relative;z-index:1;width:100%;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="font-size:0.58em;font-weight:700;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;">Three Product Lines · Current Status</div>
+    </div>
+    <div class="g3" style="margin-bottom:28px;">
+      <div class="card card-amber-strong" style="text-align:center;padding:18px 14px;">
+        <div style="font-size:0.7em;font-weight:800;color:var(--amber);margin-bottom:6px;">PMO Auto</div>
+        <div style="font-size:0.56em;color:var(--muted);line-height:1.8;">v2.6.3-EN GA<br>96% Efficiency Gain<br>$300K+ Annual ROI</div>
+      </div>
+      <div class="card card-teal" style="text-align:center;padding:18px 14px;">
+        <div style="font-size:0.7em;font-weight:800;color:var(--teal);margin-bottom:6px;">Synapse Multi-Agents</div>
+        <div style="font-size:0.56em;color:var(--muted);line-height:1.8;">55 Active Core Agents · 12 Teams<br>Owner intervenes at 3 governance gates only<br>29 D-numbered Decisions</div>
+      </div>
+      <div class="card card-indigo-strong" style="text-align:center;padding:18px 14px;">
+        <div style="font-size:0.7em;font-weight:800;color:var(--indigo);margin-bottom:6px;">Synapse Platform</div>
+        <div style="font-size:0.56em;color:var(--muted);line-height:1.8;">v0.5.0 · 20 Capabilities<br>294/295 Tests Passing<br>~2 Days Phase 1–4 Delivery</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:20px 32px;background:linear-gradient(135deg, rgba(0,212,170,0.08), rgba(99,102,241,0.08));border:1px solid rgba(0,212,170,0.2);border-radius:14px;">
+      <div style="font-size:0.9em;font-weight:700;line-height:1.7;" class="grad">
+        AI Collaborative Operations System
+      </div>
+      <div style="font-size:0.7em;color:rgba(255,255,255,0.6);margin-top:6px;">
+        Business experts driving AI through business intent — starting today
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px;font-size:0.56em;color:var(--muted);">Synapse-PJ &nbsp;·&nbsp; 2026-05-04</div>
+  </div>
+</div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  transition: 'slide',
+  transitionSpeed: 'fast',
+  backgroundTransition: 'fade',
+  controls: true,
+  progress: true,
+  center: false,
+  width: 1280,
+  height: 720,
+  margin: 0,
+  minScale: 0.2,
+  maxScale: 2.0,
+  slideNumber: 'c/t',
+  plugins: []
+});
+</script>
+</body>
+</html>

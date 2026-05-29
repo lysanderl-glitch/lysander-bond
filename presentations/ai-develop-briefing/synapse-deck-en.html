@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synapse System · AI-Driven Intelligent Collaboration Platform</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --teal:   #00d4aa;
+  --teal2:  #00ffcc;
+  --indigo: #6366f1;
+  --amber:  #f59e0b;
+  --red:    #ef4444;
+  --bg:     #080c10;
+  --bg2:    #0d1117;
+  --glass:  rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --text:   #f0f4f8;
+  --muted:  rgba(255,255,255,0.45);
+}
+.reveal {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; height: 100%; width: 100%; }
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: 'Inter', sans-serif;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.15;
+}
+.reveal p, .reveal li { line-height: 1.65; }
+.reveal ul { list-style: none; padding: 0; }
+
+.slide {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 52px 72px;
+  position: relative; overflow: hidden;
+}
+.slide::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% -10%, rgba(0,212,170,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at -5% 80%, rgba(99,102,241,0.10) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.slide-header { display: flex; align-items: center; gap: 14px; margin-bottom: 36px; }
+.slide-label { font-size: 0.58em; font-weight: 700; color: var(--teal); letter-spacing: 0.14em; text-transform: uppercase; }
+.slide-title { font-size: 1.6em; font-weight: 800; color: var(--text); }
+.slide-title span { color: var(--teal); }
+.divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(0,212,170,0.5), transparent); margin-left: 4px; }
+
+.grad {
+  background: linear-gradient(135deg, var(--teal), var(--indigo));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.metric {
+  text-align: center; padding: 20px 14px;
+  background: var(--glass); border: 1px solid var(--border);
+  border-radius: 12px; border-top: 3px solid var(--teal);
+}
+.metric-val { font-size: 2.6em; font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+.metric-lbl { font-size: 0.6em; color: var(--muted); margin-top: 6px; line-height: 1.5; }
+
+.card { background: var(--glass); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; backdrop-filter: blur(8px); }
+.card-teal   { border-color: rgba(0,212,170,0.3);  background: rgba(0,212,170,0.06); }
+.card-red    { border-color: rgba(239,68,68,0.3);   background: rgba(239,68,68,0.06); }
+.card-indigo { border-color: rgba(99,102,241,0.3);  background: rgba(99,102,241,0.06); }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--teal); color: #000; font-weight: 700;
+  font-size: 0.58em; padding: 3px 10px; border-radius: 6px; letter-spacing: 0.05em;
+}
+.tag {
+  display: inline-block; border: 1px solid rgba(0,212,170,0.4);
+  color: var(--teal); font-size: 0.58em; padding: 2px 10px; border-radius: 20px; font-weight: 600;
+}
+.num-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; background: var(--teal); color: #000;
+  font-weight: 800; font-size: 0.65em; border-radius: 50%; flex-shrink: 0;
+}
+
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+
+.arch-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 18px; background: var(--glass);
+  border: 1px solid var(--border); border-radius: 10px;
+  margin-bottom: 8px; border-left: 4px solid var(--teal);
+}
+.arch-icon { font-size: 1.4em; flex-shrink: 0; }
+.arch-name { font-size: 0.82em; font-weight: 700; color: var(--teal); min-width: 220px; }
+.arch-desc { font-size: 0.7em; color: var(--muted); }
+
+.list li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 5px 0; font-size: 0.8em;
+}
+.list li::before { content: '▸'; color: var(--teal); flex-shrink: 0; margin-top: 1px; }
+
+.chain { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 12px 0; }
+.chain-box {
+  background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.3);
+  border-radius: 6px; padding: 5px 10px; font-size: 0.63em; font-weight: 600;
+  color: var(--teal); white-space: nowrap;
+}
+.chain-arrow { color: var(--muted); font-size: 0.7em; }
+.chain-highlight { background: var(--teal); color: #000; font-weight: 800; }
+
+.timeline { display: flex; gap: 6px; }
+.tl-item {
+  flex: 1; background: rgba(0,212,170,0.06);
+  border-top: 3px solid var(--teal); border-radius: 0 0 8px 8px;
+  padding: 10px 6px; font-size: 0.5em; text-align: center; line-height: 1.5;
+}
+.tl-date { color: var(--teal); font-weight: 800; display: block; margin-bottom: 4px; font-size: 1.1em; }
+
+.psr-row { display: flex; align-items: stretch; gap: 12px; margin-bottom: 10px; }
+.psr-label {
+  writing-mode: vertical-rl; text-orientation: mixed;
+  font-size: 0.58em; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 10px 8px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; min-width: 32px;
+}
+.psr-content { flex: 1; padding: 12px 16px; border-radius: 8px; font-size: 0.78em; line-height: 1.6; }
+.psr-p .psr-label  { background: rgba(239,68,68,0.15);  color: #ef4444; }
+.psr-p .psr-content{ background: rgba(239,68,68,0.06);  border-left: 3px solid #ef4444; }
+.psr-s .psr-label  { background: rgba(0,212,170,0.12);  color: var(--teal); }
+.psr-s .psr-content{ background: rgba(0,212,170,0.06);  border-left: 3px solid var(--teal); }
+.psr-r .psr-label  { background: rgba(99,102,241,0.15); color: var(--indigo); }
+.psr-r .psr-content{ background: rgba(99,102,241,0.06); border-left: 3px solid var(--indigo); }
+
+.phase {
+  background: var(--glass); border: 1px solid var(--border);
+  border-radius: 14px; padding: 22px 20px;
+  position: relative; overflow: hidden;
+}
+.phase::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--teal), var(--indigo));
+}
+.phase-num { font-size: 3.2em; font-weight: 900; line-height: 1; margin-bottom: 6px; }
+.phase-title { font-size: 0.82em; font-weight: 700; margin-bottom: 12px; color: var(--teal); }
+.phase ul li { font-size: 0.7em; padding: 3px 0; }
+
+table.t { width: 100%; border-collapse: collapse; font-size: 0.74em; }
+table.t th { background: rgba(0,212,170,0.12); color: var(--teal); padding: 9px 14px; text-align: left; font-weight: 700; font-size: 0.88em; letter-spacing: 0.04em; }
+table.t td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+table.t tr:last-child td { border-bottom: none; }
+table.t .good { color: var(--teal); font-weight: 600; }
+table.t .bad  { color: var(--muted); }
+
+.cover-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 90% 50%, rgba(0,212,170,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 70% at 10% 30%, rgba(99,102,241,0.14) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 40% at 50% 100%, rgba(0,212,170,0.07) 0%, transparent 50%);
+}
+.cover-grid {
+  position: absolute; inset: 0; opacity: 0.04;
+  background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.reveal .progress { color: var(--teal); }
+.reveal .controls button { color: var(--teal); }
+.reveal .slide-number { color: var(--muted); font-size: 0.5em; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- 01 COVER -->
+<section>
+<div class="slide" style="justify-content:center; padding:60px 80px;">
+  <div class="cover-bg"></div>
+  <div class="cover-grid"></div>
+  <div style="position:relative; z-index:1;">
+    <div style="display:inline-flex; align-items:center; gap:10px; background:rgba(0,212,170,0.12); border:1px solid rgba(0,212,170,0.3); border-radius:8px; padding:5px 14px; font-size:0.6em; color:var(--teal); font-weight:700; letter-spacing:0.1em; margin-bottom:28px;">
+      INTERNAL BRIEFING &nbsp;·&nbsp; 2026-05-04
+    </div>
+    <div style="font-size:3.8em; font-weight:900; line-height:1.05; letter-spacing:-0.03em; margin-bottom:20px;">
+      <span class="grad">Synapse</span><br>
+      <span style="font-weight:300; font-size:0.48em; color:rgba(255,255,255,0.7);">AI-Driven Intelligent Collaboration Platform</span>
+    </div>
+    <div style="max-width:640px; font-size:0.86em; color:rgba(255,255,255,0.6); line-height:1.9; border-left:3px solid var(--teal); padding-left:18px;">
+      Enabling <strong style="color:var(--teal);">business experts (non-engineers)</strong> to manage AI teams<br>
+      using business language — auditable, accumulative, replicable
+    </div>
+    <div style="margin-top:40px; display:flex; gap:28px; font-size:0.6em; color:var(--muted);">
+      <span>📅 2026-05-04</span>
+      <span>🤖 Multi-Agents Joint Production</span>
+      <span>📋 v1.1</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 02 THE PROBLEM -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">CONTEXT</div><div class="slide-title">The <span>Real Problem</span> We Face</div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:14px;">
+    <div class="card card-red" style="display:flex; align-items:center; gap:20px;">
+      <div style="font-size:2.2em; flex-shrink:0;">🔇</div>
+      <div>
+        <div style="font-weight:700; font-size:0.9em; margin-bottom:4px;">AI Has No Memory</div>
+        <div style="font-size:0.76em; color:var(--muted);">Every session starts from scratch. Previous context, company rules, and work preferences all vanish. The same background gets re-explained over and over — efficiency is lost before work begins.</div>
+      </div>
+    </div>
+    <div class="card card-red" style="display:flex; align-items:center; gap:20px;">
+      <div style="font-size:2.2em; flex-shrink:0;">⚠️</div>
+      <div>
+        <div style="font-weight:700; font-size:0.9em; margin-bottom:4px;">AI Behavior Cannot Be Constrained</div>
+        <div style="font-size:0.76em; color:var(--muted);">No way to prevent AI from overstepping, no guarantee it follows company rules each time, and no audit trail when things go wrong.</div>
+      </div>
+    </div>
+    <div class="card card-red" style="display:flex; align-items:center; gap:20px;">
+      <div style="font-size:2.2em; flex-shrink:0;">🧩</div>
+      <div>
+        <div style="font-weight:700; font-size:0.9em; margin-bottom:4px;">AI Capability Cannot Accumulate in the Organization</div>
+        <div style="font-size:0.76em; color:var(--muted);">Business experts spend time "coaching AI" instead of solving business problems. Knowledge lives in people's heads — when they leave, the knowledge leaves with them.</div>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:20px; text-align:center; font-size:0.76em; color:var(--muted); font-style:italic;">
+    Result: Teams are "using AI" — but AI capability neither accumulates nor gets managed
+  </div>
+</div>
+</section>
+
+<!-- 03 WHAT IS SYNAPSE -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">SOLUTION</div><div class="slide-title">What <span>Synapse Solves</span></div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="font-size:1.1em; font-weight:700; line-height:1.7; margin-bottom:28px; padding:18px 24px; background:rgba(0,212,170,0.08); border-radius:12px; border-left:4px solid var(--teal);">
+    Enabling <span style="color:var(--teal);">business experts (non-engineers)</span> to drive AI<br>
+    using business-language instructions to complete complex professional tasks
+  </div>
+  <div class="g3">
+    <div class="card" style="text-align:center; padding:22px 16px;">
+      <div style="font-size:2em; margin-bottom:10px;">✅</div>
+      <div style="font-size:0.7em; font-weight:700; color:var(--teal); margin-bottom:8px;">Auditable Process</div>
+      <div style="font-size:0.63em; color:var(--muted);">Every action logged<br>AI cannot overstep</div>
+    </div>
+    <div class="card" style="text-align:center; padding:22px 16px;">
+      <div style="font-size:2em; margin-bottom:10px;">📦</div>
+      <div style="font-size:0.7em; font-weight:700; color:var(--teal); margin-bottom:8px;">Accumulated Results</div>
+      <div style="font-size:0.63em; color:var(--muted);">Knowledge, decisions, experience<br>all systematically retained</div>
+    </div>
+    <div class="card" style="text-align:center; padding:22px 16px;">
+      <div style="font-size:2em; margin-bottom:10px;">🔁</div>
+      <div style="font-size:0.7em; font-weight:700; color:var(--teal); margin-bottom:8px;">Replicable Capability</div>
+      <div style="font-size:0.63em; color:var(--muted);">Standardized templates<br>any team can adopt directly</div>
+    </div>
+  </div>
+  <div style="margin-top:22px; display:flex; gap:16px; font-size:0.74em;">
+    <div style="flex:1; display:flex; align-items:center; gap:10px; color:var(--muted);"><span style="color:var(--teal); font-size:1.2em;">✕</span> No Prompt Engineering required</div>
+    <div style="flex:1; display:flex; align-items:center; gap:10px; color:var(--muted);"><span style="color:var(--teal); font-size:1.2em;">✕</span> No re-explaining context every session</div>
+    <div style="flex:1; display:flex; align-items:center; gap:10px; color:var(--muted);"><span style="color:var(--teal); font-size:1.2em;">✕</span> No manual oversight of every step</div>
+  </div>
+</div>
+</section>
+
+<!-- 04 VALUE METRICS -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">PROVEN VALUE</div><div class="slide-title">Validated <span>Real-World Results</span></div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div class="g4" style="margin-bottom:24px;">
+    <div class="metric">
+      <div class="metric-val grad">0%</div>
+      <div class="metric-lbl">Synapse Owner<br>in-process involvement<br><span style="font-size:0.85em; color:rgba(255,255,255,0.3);">Slack result notifications only</span></div>
+    </div>
+    <div class="metric">
+      <div class="metric-val grad">50+</div>
+      <div class="metric-lbl">D-numbered decisions<br>fully archived & searchable<br><span style="font-size:0.85em; color:rgba(255,255,255,0.3);">Any decision in under 30s</span></div>
+    </div>
+    <div class="metric">
+      <div class="metric-val grad">3</div>
+      <div class="metric-lbl">Phoenix full-chain delivery<br>gate interventions<br><span style="font-size:0.85em; color:rgba(255,255,255,0.3);">Continuous execution over 4 days</span></div>
+    </div>
+    <div class="metric">
+      <div class="metric-val grad">~0</div>
+      <div class="metric-lbl">Unnecessary interruptions<br>per session<br><span style="font-size:0.85em; color:rgba(255,255,255,0.3);">Was ~20/session before PQG</span></div>
+    </div>
+  </div>
+  <div style="background:linear-gradient(135deg, rgba(0,212,170,0.1), rgba(99,102,241,0.1)); border:1px solid rgba(0,212,170,0.2); border-radius:12px; padding:18px 24px; text-align:center;">
+    <div style="font-size:0.7em; color:var(--muted); margin-bottom:6px;">The Fundamental Shift</div>
+    <div style="font-size:0.92em; font-weight:700;">
+      <span style="color:var(--muted);">Personal Productivity Tool</span>
+      <span style="color:var(--teal); margin:0 16px; font-size:1.3em;">→</span>
+      <span style="color:var(--teal);">Organizational Operations Infrastructure</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 05 ARCHITECTURE -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">ARCHITECTURE</div><div class="slide-title">Five-Layer <span>System Architecture</span></div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="text-align:center; font-size:0.7em; color:var(--muted); margin-bottom:16px; letter-spacing:0.06em;">
+    Knowledge <span style="color:var(--teal);">←synapse→</span> Decision <span style="color:var(--teal);">←synapse→</span> Execution &nbsp;·&nbsp; Complete information flow network
+  </div>
+  <div class="arch-row">
+    <div class="arch-icon">🧠</div>
+    <div class="arch-name">Knowledge Layer — OBS Second Brain</div>
+    <div class="arch-desc">Organizational memory externalized: 50+ archived decisions · 35 Memory entries · 7 knowledge domains · cross-session resume</div>
+  </div>
+  <div class="arch-row">
+    <div class="arch-icon">⚙️</div>
+    <div class="arch-name">Control Layer — Harness Engineering</div>
+    <div class="arch-desc">AI behavior engineered & constrained: 8-step execution chain · P0 exclusion zone · code-level PreToolUse interception · QA ≥85/100 gate</div>
+  </div>
+  <div class="arch-row">
+    <div class="arch-icon">🤖</div>
+    <div class="arch-name">Execution Layer — Multi-Agents</div>
+    <div class="arch-desc">Coordinated multi-agent execution: 55 active core Agents · 12 specialist teams · mandatory dispatch table · roundtable review</div>
+  </div>
+  <div class="arch-row">
+    <div class="arch-icon">⚖️</div>
+    <div class="arch-name">Decision Layer — 4-Level System</div>
+    <div class="arch-desc">Clear tiered authority: L1 auto → L2 expert review → L3 Synapse decides → L4 Synapse Owner (results only)</div>
+  </div>
+  <div class="arch-row">
+    <div class="arch-icon">🔄</div>
+    <div class="arch-name">Evolution Layer — Intelligence Loop</div>
+    <div class="arch-desc">Continuous self-improvement: daily intelligence sensing · weekly 6-dimension review · PQG self-refinement · gets smarter over time</div>
+  </div>
+</div>
+</section>
+
+<!-- 06 CAP1 HARNESS -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">CAPABILITY 1 / 5</div><div class="slide-title"><span>Harness Engineering</span></div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="text-align:center; margin:0 0 22px; padding:16px 24px; background:linear-gradient(135deg,rgba(0,212,170,0.12),rgba(99,102,241,0.12)); border-radius:12px; border:1px solid rgba(0,212,170,0.25);">
+    <div style="font-size:1.4em; font-weight:900; letter-spacing:-0.01em;">
+      Agent &nbsp;<span style="color:var(--muted); font-weight:300;">=</span>&nbsp; <span class="grad">Model</span> &nbsp;<span style="color:var(--muted); font-weight:300;">+</span>&nbsp; <span class="grad">Harness</span>
+    </div>
+    <div style="font-size:0.67em; color:var(--muted); margin-top:8px;">Competitive advantage lies not in the largest model — but in the most effective Harness</div>
+  </div>
+  <div class="g2" style="margin-bottom:16px;">
+    <div>
+      <div class="tag" style="margin-bottom:10px;">Guides — Feedforward Controls</div>
+      <ul class="list">
+        <li>CLAUDE.md master config (322 lines / 350-line hard cap)</li>
+        <li>organization.yaml: 75 keyword-to-specialist routing rules</li>
+        <li>.claude/harness/ module library: 18 specialized rule files</li>
+      </ul>
+    </div>
+    <div>
+      <div class="tag" style="margin-bottom:10px;">Constraints — Enforcement System</div>
+      <ul class="list">
+        <li>P0 exclusion zone: AI cannot bypass dispatch to execute directly</li>
+        <li>PreToolUse hook intercepts unauthorized actions at code level</li>
+        <li>Audit log auto-records every tool call — full traceability</li>
+      </ul>
+    </div>
+  </div>
+  <div>
+    <div style="font-size:0.6em; color:var(--muted); margin-bottom:8px; font-weight:700; letter-spacing:0.08em;">8-STEP MANDATORY EXECUTION CHAIN</div>
+    <div class="chain">
+      <div class="chain-box">Identity</div><div class="chain-arrow">→</div>
+      <div class="chain-box">Intake</div><div class="chain-arrow">→</div>
+      <div class="chain-box">Grade S/M/L</div><div class="chain-arrow">→</div>
+      <div class="chain-box">Dispatch</div><div class="chain-arrow">→</div>
+      <div class="chain-box">Execute</div><div class="chain-arrow">→</div>
+      <div class="chain-box chain-highlight">QA ≥85/100</div><div class="chain-arrow">→</div>
+      <div class="chain-box">PQG Filter</div><div class="chain-arrow">→</div>
+      <div class="chain-box">Deliver</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 07 CAP2 OBS -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">CAPABILITY 2 / 5</div><div class="slide-title"><span>OBS Second Brain</span> — Knowledge System</div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="font-size:0.8em; color:var(--muted); margin-bottom:20px;">Move team memory from human heads to a system — knowledge that accumulates, searches, and transfers</div>
+  <div class="g4" style="margin-bottom:20px;">
+    <div class="metric"><div class="metric-val" style="color:var(--teal);">50+</div><div class="metric-lbl">D-numbered decisions<br>fully archived</div></div>
+    <div class="metric"><div class="metric-val" style="color:var(--teal);">35</div><div class="metric-lbl">Memory entries<br>cross-session experience</div></div>
+    <div class="metric"><div class="metric-val" style="color:var(--teal);">7</div><div class="metric-lbl">Knowledge domains<br>full coverage</div></div>
+    <div class="metric"><div class="metric-val" style="color:var(--teal);">30s</div><div class="metric-lbl">Any historical decision<br>retrieval time</div></div>
+  </div>
+  <ul class="list">
+    <li><strong style="color:var(--text);">Cross-session state persistence</strong>: active_tasks.yaml stores breakpoints; new sessions auto-resume — no re-explaining context</li>
+    <li><strong style="color:var(--text);">Mandatory decision archiving (P0)</strong>: CI blocks decision-related commits without D-number; 100% archiving rate enforced automatically</li>
+    <li><strong style="color:var(--text);">Auto-updating Memory</strong>: 21 work preference entries + 14 project state entries; new patterns captured immediately, effective next session</li>
+    <li><strong style="color:var(--text);">7-domain knowledge graph</strong>: Product / Process / Decision / Team / Content / Intelligence / Analysis — complete organizational memory</li>
+  </ul>
+</div>
+</section>
+
+<!-- 08 CAP3 PRODUCT LINE -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">CAPABILITY 3 / 5</div><div class="slide-title"><span>Product Pipeline Management</span> — Phoenix Case</div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="display:flex; gap:20px; margin-bottom:20px;">
+    <div style="flex:1; background:linear-gradient(135deg,rgba(0,212,170,0.1),rgba(0,212,170,0.04)); border:1px solid rgba(0,212,170,0.25); border-radius:14px; padding:20px 22px;">
+      <div style="font-size:0.63em; color:var(--muted); margin-bottom:8px;">Phoenix PMO Automation · Continuous cross-session execution over 4 days</div>
+      <div style="font-size:2.8em; font-weight:900; line-height:1; margin-bottom:4px;" class="grad">3 gates</div>
+      <div style="font-size:0.78em; color:var(--teal); font-weight:600;">Synapse Owner intervened → Full product delivered</div>
+      <div style="font-size:0.64em; color:var(--muted); margin-top:10px; line-height:1.7;">
+        ① Product plan approval (D8)<br>
+        ② Deployment architecture (R3)<br>
+        ③ Stage 2 pause (2 hours)
+      </div>
+    </div>
+    <div style="flex:2;">
+      <div class="g3" style="gap:10px; height:100%;">
+        <div class="card" style="padding:14px 16px;">
+          <div style="font-size:0.58em; color:var(--teal); font-weight:700; margin-bottom:8px; letter-spacing:0.06em;">D8 PLANNING</div>
+          <ul class="list" style="font-size:0.68em;">
+            <li>BRD: 30 requirements</li>
+            <li>PRD v1.1.0 · 1,446 lines</li>
+            <li>14 P0 requirements</li>
+            <li style="color:var(--teal); font-weight:600;">L3-level autonomous · Lysander dispatched · 3 governance gates intervened by Synapse Owner</li>
+          </ul>
+        </div>
+        <div class="card" style="padding:14px 16px;">
+          <div style="font-size:0.58em; color:var(--teal); font-weight:700; margin-bottom:8px; letter-spacing:0.06em;">R-PROCESS REVIEW</div>
+          <ul class="list" style="font-size:0.68em;">
+            <li>10 architectures compared</li>
+            <li>10-person roundtable</li>
+            <li style="color:var(--teal); font-weight:600;">9 / 9 unanimous pass</li>
+          </ul>
+        </div>
+        <div class="card" style="padding:14px 16px;">
+          <div style="font-size:0.58em; color:var(--teal); font-weight:700; margin-bottom:8px; letter-spacing:0.06em;">STAGE GATE QA</div>
+          <ul class="list" style="font-size:0.68em;">
+            <li>3-phase acceptance</li>
+            <li>11/11 must-fix closed</li>
+            <li style="color:var(--teal); font-weight:600;">Gate PASSED ✓</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:0.72em; color:var(--muted); padding:10px 16px; background:rgba(255,255,255,0.03); border-radius:8px; border-left:3px solid var(--indigo);">
+    Key outcome: Deployment time dropped from 30+ minutes of manual steps → <strong style="color:var(--teal);">5-minute fully automated pipeline</strong>. All 7 D-numbered decisions archived. End-to-end proof artifacts verified live.
+  </div>
+</div>
+</section>
+
+<!-- 09 CAP4 MULTI-AGENT -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">CAPABILITY 4 / 5</div><div class="slide-title"><span>Multi-Agent Collaboration</span> — Professional Team System</div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div class="g4" style="margin-bottom:20px;">
+    <div class="metric"><div class="metric-val" style="color:var(--teal);">55</div><div class="metric-lbl">Active Core Agents<br>(12 specialist teams)</div></div>
+    <div class="metric"><div class="metric-val" style="color:var(--teal);">13</div><div class="metric-lbl">Specialist teams<br>advisory/eng/product…</div></div>
+    <div class="metric"><div class="metric-val" style="color:var(--teal);">≥85</div><div class="metric-lbl">QA delivery gate<br>out of 100</div></div>
+    <div class="metric"><div class="metric-val" style="color:var(--teal);">9/9</div><div class="metric-lbl">Major decision<br>unanimous roundtable</div></div>
+  </div>
+  <div class="g2">
+    <div>
+      <div style="font-size:0.63em; color:var(--teal); font-weight:700; letter-spacing:0.08em; margin-bottom:10px;">DISPATCH SYSTEM</div>
+      <ul class="list" style="font-size:0.76em;">
+        <li>Dispatch table required before any execution — prevents AI role confusion</li>
+        <li>Each execution block labeled with specialist ID — fully traceable</li>
+        <li>Missing dispatch auto-logged as violation by execution_auditor</li>
+      </ul>
+    </div>
+    <div>
+      <div style="font-size:0.63em; color:var(--teal); font-weight:700; letter-spacing:0.08em; margin-bottom:10px;">ROUNDTABLE REVIEW</div>
+      <ul class="list" style="font-size:0.76em;">
+        <li>3-party independent: integration_qa + execution_auditor + advisory council</li>
+        <li>Major architecture: 9-10 person roundtable majority vote</li>
+        <li>QA ≥85/100 required for delivery — not subjective judgment</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 10 CAP5 EVOLUTION -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">CAPABILITY 5 / 5</div><div class="slide-title"><span>Self-Evolution</span> — Gets Smarter Over Time</div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="font-size:0.8em; color:var(--muted); margin-bottom:18px;">The system continuously improves its own rules, processes, and knowledge — no manual intervention required</div>
+  <div class="g2" style="margin-bottom:16px;">
+    <div class="card card-teal" style="padding:18px 20px;">
+      <div style="font-size:0.63em; color:var(--teal); font-weight:700; letter-spacing:0.08em; margin-bottom:10px;">PQG SELF-IMPROVEMENT</div>
+      <div style="display:flex; gap:16px; margin-bottom:12px;">
+        <div style="text-align:center;">
+          <div style="font-size:2em; font-weight:900; color:var(--teal); line-height:1;">8.4</div>
+          <div style="font-size:0.58em; color:var(--muted);">score / 10</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:2em; font-weight:900; color:var(--teal); line-height:1;">141</div>
+          <div style="font-size:0.58em; color:var(--muted);">real interruption samples</div>
+        </div>
+      </div>
+      <ul class="list" style="font-size:0.7em;">
+        <li>6 high-frequency patterns auto-intercepted</li>
+        <li>Interruptions: ~20/session → near zero</li>
+        <li>Rules updated weekly from new session data</li>
+      </ul>
+    </div>
+    <div class="card card-teal" style="padding:18px 20px;">
+      <div style="font-size:0.63em; color:var(--teal); font-weight:700; letter-spacing:0.08em; margin-bottom:10px;">WEEKLY HARNESS REVIEW</div>
+      <ul class="list" style="font-size:0.7em; margin-bottom:12px;">
+        <li>Every Sunday 23:00 Dubai — fully automated</li>
+        <li>6 dimensions: line count / scores / compliance / drift / stale tasks / chain integrity</li>
+        <li>Dual independent reviewers (no self-evaluator trap)</li>
+      </ul>
+      <div style="font-size:0.64em; color:var(--muted); padding:8px 12px; background:rgba(0,0,0,0.2); border-radius:6px;">
+        Entropy budget: CLAUDE.md ≤ 350 lines hard cap · Rules unreferenced 180+ days auto-deprecated
+        <br><span style="color:var(--teal);">→ System grows leaner with use, not bloated</span>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 11 TIMELINE -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">GROWTH HISTORY</div><div class="slide-title">System <span>Growth Timeline</span></div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div class="timeline" style="margin-bottom:18px;">
+    <div class="tl-item"><span class="tl-date">Apr 12</span>Foundation<br>SPE approach<br><span style="color:rgba(255,255,255,0.35);">0→1 launch</span></div>
+    <div class="tl-item"><span class="tl-date">Apr 24</span>SSOT+i18n<br>strategy<br><span style="color:rgba(255,255,255,0.35);">L4 decision</span></div>
+    <div class="tl-item"><span class="tl-date">Apr 27</span>Weekly review<br>D-number<br><span style="color:rgba(255,255,255,0.35);">governance</span></div>
+    <div class="tl-item"><span class="tl-date">Apr 28</span>Memory collab<br>mechanism v1<br><span style="color:rgba(255,255,255,0.35);">smarter over time</span></div>
+    <div class="tl-item"><span class="tl-date">Apr 28</span>Synapse<br>Platform<br><span style="color:rgba(255,255,255,0.35);">independent launch</span></div>
+    <div class="tl-item"><span class="tl-date">Apr 30</span>PQG v2.0<br>activated<br><span style="color:var(--teal);">8.4/10</span></div>
+    <div class="tl-item"><span class="tl-date">Apr 30</span>Phoenix<br>deploy arch<br><span style="color:rgba(255,255,255,0.35);">approved L4</span></div>
+    <div class="tl-item"><span class="tl-date">May 1</span>Content pipeline<br>dual-path<br><span style="color:rgba(255,255,255,0.35);">hardened</span></div>
+    <div class="tl-item"><span class="tl-date">May 3</span>v1.1.0<br>released<br><span style="color:var(--teal);">cost optimized</span></div>
+  </div>
+  <div class="g3" style="gap:12px;">
+    <div class="card" style="padding:14px 18px; border-top:3px solid var(--teal);">
+      <div style="font-size:0.63em; font-weight:800; color:var(--teal); margin-bottom:4px;">Phase 1 · Usable (Apr 12–24)</div>
+      <div style="font-size:0.7em; color:var(--muted);">Single Agent → Multi-team framework<br>Harness foundation established</div>
+    </div>
+    <div class="card" style="padding:14px 18px; border-top:3px solid var(--indigo);">
+      <div style="font-size:0.63em; font-weight:800; color:var(--indigo); margin-bottom:4px;">Phase 2 · Trustworthy (Apr 25–28)</div>
+      <div style="font-size:0.7em; color:var(--muted);">Constraints + traceable decisions<br>governance mechanisms mature</div>
+    </div>
+    <div class="card" style="padding:14px 18px; border-top:3px solid var(--amber);">
+      <div style="font-size:0.63em; font-weight:800; color:var(--amber); margin-bottom:4px;">Phase 3 · Efficient (Apr 29–May 3)</div>
+      <div style="font-size:0.7em; color:var(--muted);">Minimum owner involvement<br>maximum automation + cost optimization</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 12 SPIKE -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">USE CASE 1 / 2</div><div class="slide-title">Deployment Scenario — <span>Spike</span>, Project Management Training</div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div class="psr-row psr-p">
+    <div class="psr-label">Pain</div>
+    <div class="psr-content">Every system update requires rewriting training materials. Business-language writing is difficult for technical teams. Spike reviews everything from scratch — high cost, low leverage. Knowledge stays in people's heads.</div>
+  </div>
+  <div class="psr-row psr-s">
+    <div class="psr-label">Solution</div>
+    <div class="psr-content">
+      <strong>Spike says one thing:</strong> "Chapter 3 of PMO onboarding needs updating — system now has Feature X"<br>
+      <span style="color:var(--muted);">OBS auto-tracks changes → Content Ops generates business-language draft → QA gate ≥85/100 → Spike reviews final output only · No AI interaction required</span>
+    </div>
+  </div>
+  <div class="psr-row psr-r">
+    <div class="psr-label">Outcome</div>
+    <div class="psr-content">
+      <strong style="color:var(--indigo);">From "manually writing materials" → "reviewing AI-delivered high-quality content"</strong><br>
+      <span style="color:var(--muted);">Versions auto-archived; historical materials searchable. Mirrors the Phoenix model: Spike only participates at requirements input and final acceptance.</span>
+    </div>
+  </div>
+  <div style="margin-top:14px; display:flex; gap:12px;">
+    <div class="card" style="flex:1; padding:12px 14px; text-align:center; font-size:0.68em;"><div style="color:var(--teal); font-weight:700;">Knowledge Capture</div><div style="color:var(--muted); font-size:0.9em; margin-top:4px;">Change log → structured entries</div></div>
+    <div class="card" style="flex:1; padding:12px 14px; text-align:center; font-size:0.68em;"><div style="color:var(--teal); font-weight:700;">Content Generation</div><div style="color:var(--muted); font-size:0.9em; margin-top:4px;">Business-language training draft</div></div>
+    <div class="card" style="flex:1; padding:12px 14px; text-align:center; font-size:0.68em;"><div style="color:var(--teal); font-weight:700;">Quality Assurance</div><div style="color:var(--muted); font-size:0.9em; margin-top:4px;">QA gate ≥85 + roundtable</div></div>
+    <div class="card" style="flex:1; padding:12px 14px; text-align:center; font-size:0.68em;"><div style="color:var(--teal); font-weight:700;">Version Control</div><div style="color:var(--muted); font-size:0.9em; margin-top:4px;">D-number archive + CI lock</div></div>
+  </div>
+</div>
+</section>
+
+<!-- 13 SUZY -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">USE CASE 2 / 2</div><div class="slide-title">Deployment Scenario — <span>Suzy</span>, QA Testing Standardization</div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div class="psr-row psr-p">
+    <div class="psr-label">Pain</div>
+    <div class="psr-content">Test cases are disconnected from business scenarios. Training materials don't match actual testing processes. High onboarding cost for new QA members — no standardized knowledge base exists.</div>
+  </div>
+  <div class="psr-row psr-s">
+    <div class="psr-label">Solution</div>
+    <div class="psr-content">
+      <strong>Suzy defines one thing:</strong> "Core business logic is X; edge cases are Y"<br>
+      <span style="color:var(--muted);">OBS bidirectional binding (test ↔ scenario) → Stage Gate 3 phases (case library / scripts / training) → training materials auto-generated from test cases → integration_qa ≥85/100</span>
+    </div>
+  </div>
+  <div class="psr-row psr-r">
+    <div class="psr-label">Outcome</div>
+    <div class="psr-content">
+      <strong style="color:var(--indigo);">Non-technical professional gains engineering-grade QA delivery capability</strong><br>
+      <span style="color:var(--muted);">Test matrix + scripts + training materials all delivered by Synapse. Stage Gate pass = quality proof. Phoenix-validated pattern directly reused.</span>
+    </div>
+  </div>
+  <div style="margin-top:14px; padding:12px 18px; background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.2); border-radius:10px; font-size:0.72em; color:var(--muted);">
+    Key differentiator: The <strong style="color:var(--indigo);">Stage Gate pattern</strong> validated in Phoenix is directly reused here — Stage 1: case library · Stage 2: automation scripts · Stage 3: training materials — each with clear acceptance criteria
+  </div>
+</div>
+</section>
+
+<!-- 14 COMPARISON -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">TRANSFORMATION</div><div class="slide-title">Raising the <span>Capability Ceiling</span> for Non-Technical Teams</div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="text-align:center; font-size:0.85em; margin:10px 0 20px;">
+    <span style="color:var(--muted);">Using an AI tool</span>
+    <span style="color:var(--teal); margin:0 18px; font-size:1.5em; font-weight:900;">→→→</span>
+    <span style="color:var(--teal); font-weight:700;">Managing an AI team</span>
+  </div>
+  <table class="t">
+    <thead>
+      <tr><th style="width:22%;">Dimension</th><th>Traditional AI Usage</th><th>Synapse System</th></tr>
+    </thead>
+    <tbody>
+      <tr><td style="font-weight:600;">Skill required</td><td class="bad">Prompt Engineering expertise</td><td class="good">Describe requirements in business language</td></tr>
+      <tr><td style="font-weight:600;">Each interaction</td><td class="bad">Re-explain context from scratch</td><td class="good">System memory accumulates continuously</td></tr>
+      <tr><td style="font-weight:600;">Quality control</td><td class="bad">Subjective user judgment</td><td class="good">≥85/100 numeric hard gate</td></tr>
+      <tr><td style="font-weight:600;">Decision traceability</td><td class="bad">No record, no accountability</td><td class="good">D-numbered archive, retrieved in 30s</td></tr>
+      <tr><td style="font-weight:600;">Capability ceiling</td><td class="bad">Limited by individual prompt skill</td><td class="good">69 Agents with professional specialization</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
+
+<!-- 15 ROADMAP -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div><div class="slide-label">NEXT STEPS</div><div class="slide-title">Recommended <span>Rollout Roadmap</span></div></div>
+    <div class="divider-line"></div>
+  </div>
+  <div class="g3">
+    <div class="phase">
+      <div class="phase-num grad">01</div>
+      <div class="phase-title">Project Management Pilot</div>
+      <ul class="list" style="font-size:0.7em;">
+        <li>Spike + Suzy first cohort</li>
+        <li>Stage 1: Create product profiles</li>
+        <li>Stage 2: Real task trial run</li>
+        <li>Stage 3: Quantified efficiency audit</li>
+      </ul>
+      <div style="margin-top:14px; padding:8px 12px; background:rgba(0,0,0,0.2); border-radius:6px; font-size:0.6em; color:var(--muted);">
+        Acceptance: No Prompt Engineering, QA ≥80/100
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num grad">02</div>
+      <div class="phase-title">Cross-Functional Templates</div>
+      <ul class="list" style="font-size:0.7em;">
+        <li>Extract reusable usage templates</li>
+        <li>Non-technical onboarding guide</li>
+        <li>3–5 typical scenario templates</li>
+        <li>"How to describe business requirements"</li>
+      </ul>
+      <div style="margin-top:14px; padding:8px 12px; background:rgba(0,0,0,0.2); border-radius:6px; font-size:0.6em; color:var(--muted);">
+        Goal: Any team can self-onboard
+      </div>
+    </div>
+    <div class="phase">
+      <div class="phase-num grad">03</div>
+      <div class="phase-title">Company-Wide AI Standard</div>
+      <ul class="list" style="font-size:0.7em;">
+        <li>Standardized methodology for enterprise</li>
+        <li>Harness Engineering consulting services</li>
+        <li>Founder-independent replicability</li>
+        <li>Synapse Platform as commercial vehicle</li>
+      </ul>
+      <div style="margin-top:14px; padding:8px 12px; background:rgba(0,0,0,0.2); border-radius:6px; font-size:0.6em; color:var(--muted);">
+        Strategy: Internal proof drives external adoption
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 16 CLOSING -->
+<section>
+<div class="slide" style="justify-content:center; padding:60px 80px;">
+  <div class="cover-bg"></div>
+  <div class="cover-grid"></div>
+  <div style="position:relative; z-index:1; text-align:center;">
+    <div style="font-size:0.65em; color:var(--muted); letter-spacing:0.14em; margin-bottom:28px;">NEXT ACTIONS</div>
+    <div style="max-width:700px; margin:0 auto;">
+      <div style="display:flex; align-items:center; gap:14px; background:var(--glass); border:1px solid var(--border); border-radius:10px; padding:14px 20px; margin-bottom:10px; text-align:left;">
+        <span class="num-badge">1</span>
+        <span style="font-size:0.82em;">Confirm pilot intent with Spike &amp; Suzy — Synapse organizes product profile creation (Stage 1)</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px; background:var(--glass); border:1px solid var(--border); border-radius:10px; padding:14px 20px; margin-bottom:10px; text-align:left;">
+        <span class="num-badge">2</span>
+        <span style="font-size:0.82em;">Select 1–2 real business tasks — complete first end-to-end Synapse collaboration acceptance</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:14px; background:var(--glass); border:1px solid var(--border); border-radius:10px; padding:14px 20px; margin-bottom:36px; text-align:left;">
+        <span class="num-badge">3</span>
+        <span style="font-size:0.82em;">Based on pilot results — assess priority and scope for Phase 2 cross-functional rollout</span>
+      </div>
+    </div>
+    <div style="font-size:2.2em; font-weight:900; letter-spacing:-0.02em; margin-bottom:12px;">
+      <span class="grad">Synapse</span>
+    </div>
+    <div style="font-size:0.86em; color:rgba(255,255,255,0.6);">Every business expert, managing an AI team</div>
+    <div style="font-size:0.6em; color:rgba(255,255,255,0.3); margin-top:20px;">lysanderl@janusd.com &nbsp;·&nbsp; Synapse Platform v1.1.0 &nbsp;·&nbsp; 2026-05-04</div>
+  </div>
+</div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  transition: 'slide',
+  transitionSpeed: 'default',
+  backgroundTransition: 'fade',
+  controls: true,
+  controlsTutorial: false,
+  progress: true,
+  slideNumber: 'c/t',
+  center: false,
+  width: 1280,
+  height: 720,
+  margin: 0.02,
+  minScale: 0.2,
+  maxScale: 2.0
+});
+</script>
+</body>
+</html>

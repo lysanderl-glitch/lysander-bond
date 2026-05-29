@@ -1,6 +1,6 @@
 ---
-title: "Synapse案例设计：从0到1完全自主完成的研发场景"
-description: "展示Synapse相比直接使用Claude Code的差异化能力"
+title: "Synapse 案例设计：把 Claude Code 接入有状态管线的研发场景"
+description: "用任务拓扑层 + 状态快照解决 Claude Code 在多步管线中的上下文断裂 —— 不是「完全自主」，是把人类不该做的环节交回机器"
 publishDate: 2026-05-06T00:00:00.000Z
 slug: synapse-autonomous-development-scenarios
 lang: zh

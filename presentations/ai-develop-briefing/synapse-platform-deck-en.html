@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synapse Platform v0.5.0 — Executive Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0f1e;
+    --primary: #4f8ef7;
+    --electric: #00d4ff;
+    --gold: #f5c842;
+    --green: #4ade80;
+    --orange: #ff9048;
+    --text-main: #f0f4ff;
+    --text-sub: #8899bb;
+    --card-bg: rgba(255,255,255,0.04);
+    --card-border: rgba(255,255,255,0.10);
+    --line: rgba(79,142,247,0.3);
+    --font: 'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--bg);
+    font-family: var(--font);
+    color: var(--text-main);
+    overflow: hidden;
+    user-select: none;
+  }
+
+  #progress-bar {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--electric));
+    transition: width 0.35s ease;
+    z-index: 1000;
+  }
+
+  #slide-counter {
+    position: fixed; bottom: 22px; right: 36px;
+    font-size: 13px; font-weight: 500; color: var(--text-sub);
+    letter-spacing: 0.05em; z-index: 1000;
+  }
+
+  #nav-left, #nav-right {
+    position: fixed; top: 0; height: 100%; width: 80px;
+    cursor: pointer; z-index: 500;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #nav-left { left: 0; }
+  #nav-right { right: 0; }
+  #nav-left:hover::after, #nav-right:hover::after {
+    opacity: 0.4;
+  }
+  #nav-left::after {
+    content: '◀';
+    font-size: 18px; color: var(--text-sub); opacity: 0.15;
+    transition: opacity 0.2s;
+  }
+  #nav-right::after {
+    content: '▶';
+    font-size: 18px; color: var(--text-sub); opacity: 0.15;
+    transition: opacity 0.2s;
+  }
+
+  #deck {
+    position: relative;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    padding: 48px 64px;
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+  .slide.exit {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  /* ─── Typography helpers ─── */
+  .slide-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--electric);
+  }
+  .slide-title {
+    font-size: 38px; font-weight: 800;
+    line-height: 1.15; color: var(--text-main);
+    margin-top: 10px; margin-bottom: 28px;
+  }
+  .slide-title span.gold { color: var(--gold); }
+  .slide-title span.blue { color: var(--electric); }
+
+  /* ─── Card ─── */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+
+  /* ─── Badge / pill ─── */
+  .badge {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .badge-blue { background: rgba(79,142,247,0.2); color: var(--electric); border: 1px solid rgba(0,212,255,0.3); }
+  .badge-gold { background: rgba(245,200,66,0.15); color: var(--gold); border: 1px solid rgba(245,200,66,0.3); }
+  .badge-green { background: rgba(74,222,128,0.15); color: var(--green); border: 1px solid rgba(74,222,128,0.3); }
+  .badge-orange { background: rgba(255,144,72,0.15); color: var(--orange); border: 1px solid rgba(255,144,72,0.3); }
+
+  /* ─── Big number ─── */
+  .big-num {
+    font-size: 80px; font-weight: 900; line-height: 1.0;
+    color: var(--gold);
+  }
+  .big-num.blue { color: var(--electric); }
+  .big-num.green { color: var(--green); }
+
+  /* ─── Divider ─── */
+  .h-line {
+    height: 1px;
+    background: var(--line);
+    margin: 20px 0;
+  }
+
+  /* ─────────────────────────────────────────
+     SLIDE 1 — COVER
+  ───────────────────────────────────────── */
+  #s1 {
+    flex-direction: row;
+    align-items: center;
+    padding: 0 64px;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  #s1 .glow {
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(79,142,247,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  #s1 .glow2 {
+    position: absolute;
+    bottom: -300px; left: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  #s1 .cover-left {
+    flex: 0 0 300px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #s1 .cover-right {
+    flex: 1;
+    padding-left: 48px;
+  }
+  #s1 .main-title {
+    font-size: 80px; font-weight: 800;
+    line-height: 1.0; color: var(--text-main);
+    margin: 10px 0 6px;
+  }
+  #s1 .sub-title {
+    font-size: 26px; font-weight: 300;
+    color: var(--text-sub);
+    margin-bottom: 22px;
+  }
+  #s1 .cover-divider {
+    width: 280px; height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--electric), transparent);
+    margin-bottom: 20px;
+  }
+  #s1 .meta {
+    font-size: 13px; color: var(--text-sub); letter-spacing: 0.05em;
+  }
+
+  /* neural SVG in cover */
+  .neural-node {
+    animation: nodePulse 3s ease-in-out infinite;
+  }
+  .neural-node:nth-child(2) { animation-delay: 0.5s; }
+  .neural-node:nth-child(3) { animation-delay: 1s; }
+  .neural-node:nth-child(4) { animation-delay: 1.5s; }
+  .neural-node:nth-child(5) { animation-delay: 2s; }
+  @keyframes nodePulse {
+    0%, 100% { opacity: 0.6; r: 6; }
+    50% { opacity: 1; r: 9; }
+  }
+  .neural-line {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: drawLine 2s ease forwards;
+  }
+  .neural-line:nth-child(6) { animation-delay: 0.2s; }
+  .neural-line:nth-child(7) { animation-delay: 0.5s; }
+  .neural-line:nth-child(8) { animation-delay: 0.8s; }
+  .neural-line:nth-child(9) { animation-delay: 1.1s; }
+  .neural-line:nth-child(10) { animation-delay: 1.4s; }
+  @keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* ─────────────────────────────────────────
+     SLIDE 2 — EXECUTIVE SUMMARY
+  ───────────────────────────────────────── */
+  #s2 .cards-row {
+    display: flex; gap: 22px; flex: 1;
+    align-items: stretch;
+  }
+  #s2 .ec {
+    flex: 1;
+    display: flex; flex-direction: column;
+  }
+  #s2 .ec-title {
+    font-size: 15px; font-weight: 700; color: var(--text-main);
+    margin-bottom: 12px;
+  }
+  #s2 .ec p, #s2 .ec li {
+    font-size: 14px; color: var(--text-sub); line-height: 1.65;
+  }
+  #s2 .ec ul { padding-left: 18px; }
+  #s2 .stat-row {
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  #s2 .stat-item { }
+  #s2 .stat-val { font-size: 36px; font-weight: 900; color: var(--electric); line-height: 1; }
+  #s2 .stat-lab { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
+
+  /* ─────────────────────────────────────────
+     SLIDE 3 — SCQA
+  ───────────────────────────────────────── */
+  #s3 .grid-2x2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 18px;
+    flex: 1;
+  }
+  #s3 .scqa-card {
+    border-radius: 12px;
+    padding: 20px 22px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    background: rgba(255,255,255,0.04);
+    position: relative;
+  }
+  #s3 .scqa-num {
+    font-size: 48px; font-weight: 900;
+    position: absolute; top: 12px; right: 18px;
+    opacity: 0.15;
+  }
+  #s3 .scqa-label {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+  #s3 .scqa-title {
+    font-size: 17px; font-weight: 700;
+    margin-bottom: 8px;
+  }
+  #s3 .scqa-body {
+    font-size: 13.5px; color: var(--text-sub); line-height: 1.6;
+  }
+  #s3 .card-s { border: 1px solid rgba(79,142,247,0.35); }
+  #s3 .card-c { border: 1px solid rgba(255,144,72,0.35); }
+  #s3 .card-q { border: 1px solid rgba(245,200,66,0.35); }
+  #s3 .card-a {
+    border: 1px solid rgba(74,222,128,0.35);
+    background: rgba(74,222,128,0.05);
+  }
+
+  /* ─────────────────────────────────────────
+     SLIDE 4 — DIGITAL TWIN
+  ───────────────────────────────────────── */
+  #s4 {
+    align-items: stretch;
+  }
+  #s4 .flow-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+  #s4 .flow-node {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  #s4 .node-human {
+    background: rgba(240,244,255,0.08);
+    border: 2px solid rgba(240,244,255,0.3);
+    color: var(--text-main);
+  }
+  #s4 .node-ai {
+    background: rgba(0,212,255,0.1);
+    border: 2px solid rgba(0,212,255,0.4);
+    color: var(--electric);
+  }
+  #s4 .flow-center {
+    background: linear-gradient(135deg, rgba(79,142,247,0.25), rgba(0,212,255,0.15));
+    border: 1px solid rgba(79,142,247,0.5);
+    border-radius: 16px;
+    padding: 20px 32px;
+    text-align: center;
+    min-width: 280px;
+    box-shadow: 0 0 40px rgba(79,142,247,0.2);
+  }
+  #s4 .flow-center-title {
+    font-size: 28px; font-weight: 800;
+    color: var(--electric);
+    margin-bottom: 8px;
+  }
+  #s4 .flow-step {
+    font-size: 13px; color: var(--text-sub);
+    line-height: 1.9;
+  }
+  #s4 .quote-block {
+    margin-top: 24px;
+    padding: 18px 28px;
+    border-left: 3px solid var(--gold);
+    background: rgba(245,200,66,0.06);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--gold);
+    text-align: center;
+  }
+
+  /* ─────────────────────────────────────────
+     SLIDE 5 — 20 CAPABILITIES
+  ───────────────────────────────────────── */
+  #s5 .layers {
+    display: flex; flex-direction: column; gap: 12px; flex: 1;
+  }
+  #s5 .layer-row {
+    display: flex; align-items: center;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    gap: 18px;
+    flex: 1;
+  }
+  #s5 .layer-meta {
+    min-width: 220px;
+    display: flex; flex-direction: column;
+  }
+  #s5 .layer-num {
+    font-size: 28px; font-weight: 900;
+    line-height: 1;
+  }
+  #s5 .layer-name {
+    font-size: 13px; font-weight: 600;
+    margin-top: 2px;
+  }
+  #s5 .layer-caps { display: flex; flex-wrap: wrap; gap: 7px; }
+  .cap-pill {
+    font-size: 11px; font-weight: 600;
+    padding: 4px 10px; border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* ─────────────────────────────────────────
+     SLIDE 6 — CORE CAPABILITIES
+  ───────────────────────────────────────── */
+  #s6 .three-cards {
+    display: flex; gap: 20px; flex: 1;
+  }
+  #s6 .cap-card {
+    flex: 1;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-top: 3px solid var(--primary);
+    border-radius: 0 0 12px 12px;
+    padding: 22px 20px;
+    display: flex; flex-direction: column;
+  }
+  #s6 .cap-card.highlight {
+    border-top: 3px solid var(--electric);
+    border-left: 4px solid var(--electric);
+    background: rgba(0,212,255,0.04);
+  }
+  #s6 .cap-icon { font-size: 28px; margin-bottom: 10px; }
+  #s6 .cap-title { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+  #s6 .cap-body { font-size: 13px; color: var(--text-sub); line-height: 1.65; flex: 1; }
+  #s6 .cap-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  #s6 .cap-tag {
+    font-size: 10px; font-weight: 600;
+    background: rgba(79,142,247,0.15);
+    color: var(--electric);
+    border: 1px solid rgba(79,142,247,0.25);
+    padding: 2px 8px; border-radius: 20px;
+    font-family: monospace;
+  }
+  #s6 .differentiator {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    background: var(--gold);
+    color: #000;
+    padding: 2px 8px; border-radius: 4px;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  #s6 .flow-mini {
+    font-size: 12px; color: var(--text-sub);
+    line-height: 2.0;
+    font-family: monospace;
+    background: rgba(0,0,0,0.3);
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin: 8px 0;
+  }
+
+  /* ─────────────────────────────────────────
+     SLIDE 7 — GOVERNANCE & EVOLUTION
+  ───────────────────────────────────────── */
+  #s7 .two-col {
+    display: flex; gap: 22px; flex: 1;
+  }
+  #s7 .gov-col {
+    flex: 1;
+    background: rgba(30,40,80,0.5);
+    border: 1px solid rgba(79,142,247,0.3);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  #s7 .evo-col {
+    flex: 1;
+    background: linear-gradient(135deg, rgba(79,142,247,0.12), rgba(0,212,255,0.06));
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 12px;
+    padding: 24px;
+  }
+  #s7 .col-title { font-size: 20px; font-weight: 800; margin-bottom: 20px; }
+  #s7 .gov-item { display: flex; gap: 14px; margin-bottom: 18px; }
+  #s7 .gov-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  #s7 .gov-label { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  #s7 .gov-desc { font-size: 13px; color: var(--text-sub); line-height: 1.55; }
+  #s7 .layer-stack {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-top: 10px;
+  }
+  #s7 .train-layer {
+    border-radius: 8px; padding: 10px 14px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  #s7 .tl-num { font-size: 11px; font-weight: 700; opacity: 0.8; min-width: 50px; }
+  #s7 .tl-name { font-size: 14px; font-weight: 700; }
+  #s7 .tl-desc { font-size: 12px; opacity: 0.7; margin-left: auto; }
+
+  /* ─────────────────────────────────────────
+     SLIDE 8 — ARCHITECTURE DECISION
+  ───────────────────────────────────────── */
+  #s8 .compare-table {
+    flex: 1;
+    display: flex; flex-direction: column;
+    gap: 0;
+  }
+  #s8 .ct-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px 8px 0 0;
+    border: 1px solid var(--card-border);
+    border-bottom: none;
+  }
+  #s8 .ct-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid var(--card-border);
+    border-top: none;
+  }
+  #s8 .ct-row:last-child { border-radius: 0 0 8px 8px; }
+  #s8 .ct-cell {
+    padding: 13px 18px;
+    font-size: 14px;
+    border-right: 1px solid var(--card-border);
+    display: flex; align-items: center;
+    line-height: 1.45;
+  }
+  #s8 .ct-cell:last-child { border-right: none; }
+  #s8 .ct-cell.header { font-weight: 700; font-size: 15px; color: var(--text-main); }
+  #s8 .ct-cell.lang { color: var(--orange); }
+  #s8 .ct-cell.synapse-cell { color: var(--green); }
+  #s8 .ct-cell.dim { color: var(--text-sub); font-weight: 500; }
+  #s8 .adr-quote {
+    margin-top: 20px;
+    padding: 16px 22px;
+    border-left: 3px solid var(--primary);
+    background: rgba(79,142,247,0.07);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    font-size: 14.5px;
+    color: var(--text-sub);
+    line-height: 1.6;
+  }
+  #s8 .adr-quote strong { color: var(--text-main); }
+
+  /* ─────────────────────────────────────────
+     SLIDE 9 — TECH STACK
+  ───────────────────────────────────────── */
+  #s9 .stack-body {
+    display: flex; gap: 24px; flex: 1;
+  }
+  #s9 .stack-list {
+    flex: 1;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  #s9 .stack-row {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 10px 16px;
+  }
+  #s9 .stack-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    margin-top: 6px; flex-shrink: 0;
+  }
+  #s9 .stack-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  #s9 .stack-tech { font-size: 13px; color: var(--electric); font-family: monospace; margin-bottom: 2px; }
+  #s9 .stack-reason { font-size: 12px; color: var(--text-sub); line-height: 1.5; }
+  #s9 .cost-card {
+    flex: 0 0 220px;
+    background: linear-gradient(135deg, rgba(245,200,66,0.08), rgba(79,142,247,0.06));
+    border: 1px solid rgba(245,200,66,0.25);
+    border-radius: 12px;
+    padding: 22px 18px;
+    align-self: flex-start;
+  }
+  #s9 .cost-title { font-size: 14px; font-weight: 700; color: var(--gold); margin-bottom: 12px; }
+  #s9 .cost-tech { font-size: 13px; color: var(--electric); font-family: monospace; margin-bottom: 8px; }
+  #s9 .cost-desc { font-size: 12.5px; color: var(--text-sub); line-height: 1.55; }
+
+  /* ─────────────────────────────────────────
+     SLIDE 10 — EVIDENCE DASHBOARD
+  ───────────────────────────────────────── */
+  #s10 .evidence-row {
+    display: flex; gap: 24px; flex: 1; align-items: center;
+  }
+  #s10 .ev-block {
+    flex: 1;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 32px 28px;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.4);
+  }
+  #s10 .ev-num { font-size: 92px; font-weight: 900; line-height: 1; }
+  #s10 .ev-label { font-size: 16px; font-weight: 700; color: var(--text-main); }
+  #s10 .ev-sub { font-size: 12px; color: var(--text-sub); line-height: 1.6; text-align: center; }
+  #s10 .ev-footer {
+    margin-top: 20px;
+    font-style: italic; font-size: 13.5px; color: var(--text-sub);
+    text-align: center; border-top: 1px solid var(--line); padding-top: 16px;
+  }
+
+  /* ─────────────────────────────────────────
+     SLIDE 11 — PDCA FLYWHEEL
+  ───────────────────────────────────────── */
+  #s11 .flywheel-body {
+    display: flex; gap: 32px; flex: 1; align-items: center;
+  }
+  #s11 .flywheel-svg-wrap {
+    flex: 0 0 380px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #s11 .flywheel-right {
+    flex: 1;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  #s11 .pdca-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  #s11 .pdca-icon {
+    font-size: 20px; flex-shrink: 0;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(79,142,247,0.15);
+  }
+  #s11 .pdca-step { font-size: 11px; font-weight: 700; color: var(--electric); letter-spacing: 0.12em; margin-bottom: 3px; }
+  #s11 .pdca-desc { font-size: 13px; color: var(--text-sub); line-height: 1.5; }
+  #s11 .flywheel-quote {
+    margin-top: 4px;
+    padding: 12px 16px;
+    background: rgba(245,200,66,0.06);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    font-style: italic;
+    font-size: 12.5px;
+    color: var(--text-sub);
+    line-height: 1.55;
+  }
+
+  /* ─────────────────────────────────────────
+     SLIDE 12 — AGENT MATRIX
+  ───────────────────────────────────────── */
+  #s12 .agent-flow {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 20px;
+    overflow-x: auto;
+  }
+  #s12 .af-node {
+    background: rgba(79,142,247,0.15);
+    border: 1px solid rgba(79,142,247,0.4);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px; font-weight: 600;
+    color: var(--electric);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  #s12 .af-boss {
+    background: rgba(240,244,255,0.08);
+    border-color: rgba(240,244,255,0.3);
+    color: var(--text-main);
+  }
+  #s12 .af-arrow {
+    font-size: 13px; color: var(--text-sub);
+    margin: 0 4px; flex-shrink: 0;
+  }
+  #s12 .agent-cards {
+    display: flex; gap: 14px;
+    flex: 1; align-items: stretch;
+  }
+  #s12 .agent-card {
+    flex: 1;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 16px 14px;
+    display: flex; flex-direction: column;
+  }
+  #s12 .agent-card.pm-card {
+    border-color: rgba(245,200,66,0.5);
+    background: rgba(245,200,66,0.05);
+    box-shadow: 0 0 20px rgba(245,200,66,0.1);
+  }
+  #s12 .agent-id { font-size: 10px; font-family: monospace; color: var(--electric); margin-bottom: 6px; letter-spacing: 0.05em; }
+  #s12 .agent-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  #s12 .agent-lang {
+    font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 10px;
+    display: inline-block; margin-bottom: 10px;
+  }
+  #s12 .lang-zh { background: rgba(79,142,247,0.2); color: var(--electric); }
+  #s12 .lang-en { background: rgba(74,222,128,0.15); color: var(--green); }
+  #s12 .train-bar { display: flex; gap: 4px; }
+  #s12 .tb-dot {
+    width: 18px; height: 6px; border-radius: 3px;
+    background: rgba(255,255,255,0.1);
+  }
+  #s12 .tb-dot.active { background: var(--gold); }
+  #s12 .train-label { font-size: 10px; color: var(--text-sub); margin-top: 4px; }
+
+  /* ─────────────────────────────────────────
+     SLIDE 13 — ROADMAP
+  ───────────────────────────────────────── */
+  #s13 .timeline-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+  }
+  #s13 .timeline-line-row {
+    display: flex; align-items: center;
+    padding: 0 20px;
+    position: relative;
+  }
+  #s13 .tl-node-col {
+    display: flex; flex-direction: column; align-items: center;
+    flex: 1;
+  }
+  #s13 .tl-dot {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    z-index: 2; position: relative;
+    margin-bottom: 0;
+  }
+  #s13 .tl-dot.done { background: var(--green); color: #000; box-shadow: 0 0 12px rgba(74,222,128,0.5); }
+  #s13 .tl-dot.active { background: var(--electric); color: #000; box-shadow: 0 0 12px rgba(0,212,255,0.5); width: 28px; height: 28px; }
+  #s13 .tl-dot.upcoming { background: transparent; border: 2px dashed rgba(255,255,255,0.3); }
+  #s13 .tl-connector {
+    flex: 1; height: 2px;
+    margin: 0 -2px;
+  }
+  #s13 .conn-green { background: linear-gradient(90deg, var(--green), var(--electric)); }
+  #s13 .conn-gray { background: linear-gradient(90deg, var(--electric), rgba(255,255,255,0.2)); }
+  #s13 .tl-cards-row {
+    display: flex; gap: 0;
+  }
+  #s13 .tl-card-wrap {
+    flex: 1;
+    display: flex; justify-content: center;
+  }
+  #s13 .tl-card {
+    width: 88%;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 18px 18px;
+  }
+  #s13 .tl-card.done-card { border-color: rgba(74,222,128,0.3); }
+  #s13 .tl-card.active-card { border-color: rgba(0,212,255,0.4); background: rgba(0,212,255,0.04); }
+  #s13 .tl-card.upcoming-card { border-style: dashed; border-color: rgba(255,255,255,0.2); opacity: 0.8; }
+  #s13 .tl-card-title { font-size: 16px; font-weight: 800; margin-bottom: 12px; }
+  #s13 .tl-card-title.done-title { color: var(--green); }
+  #s13 .tl-card-title.active-title { color: var(--electric); }
+  #s13 .tl-card-title.upcoming-title { color: var(--text-sub); }
+  #s13 .tl-item {
+    font-size: 13px; color: var(--text-sub);
+    line-height: 1.7;
+    display: flex; align-items: flex-start; gap: 7px;
+  }
+  #s13 .tl-item::before { content: '·'; color: var(--text-sub); flex-shrink: 0; margin-top: 1px; }
+  #s13 .tl-check::before { content: '✓'; color: var(--green); font-size: 11px; }
+
+  /* ─────────────────────────────────────────
+     SLIDE 14 — CLOSING
+  ───────────────────────────────────────── */
+  #s14 {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  #s14 .glow {
+    position: absolute;
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    width: 700px; height: 500px;
+    background: radial-gradient(ellipse, rgba(79,142,247,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  #s14 .closing-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--electric); margin-bottom: 18px;
+  }
+  #s14 .closing-line1 {
+    font-size: 46px; font-weight: 400;
+    color: var(--text-sub); line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  #s14 .closing-line2 {
+    font-size: 72px; font-weight: 800;
+    color: var(--text-main); line-height: 1.1;
+    margin-bottom: 36px;
+  }
+  #s14 .support-cards {
+    display: flex; gap: 18px; margin-top: 16px;
+    justify-content: center;
+  }
+  #s14 .sc {
+    background: rgba(74,222,128,0.08);
+    border: 1px solid rgba(74,222,128,0.3);
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 13px; font-weight: 500;
+    color: var(--green);
+    display: flex; gap: 8px; align-items: flex-start;
+    max-width: 260px; text-align: left;
+    line-height: 1.5;
+  }
+  #s14 .sig {
+    margin-top: 28px;
+    font-size: 12px; color: var(--text-sub);
+    opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+<div id="slide-counter"></div>
+<div id="nav-left"></div>
+<div id="nav-right"></div>
+
+<div id="deck">
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 1 — COVER
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s1">
+    <div class="glow"></div>
+    <div class="glow2"></div>
+
+    <div class="cover-left">
+      <svg width="260" height="300" viewBox="0 0 260 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow1">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- Lines first -->
+        <line class="neural-line" x1="130" y1="60" x2="60" y2="130" stroke="#4f8ef7" stroke-width="1.2" opacity="0.5"/>
+        <line class="neural-line" x1="130" y1="60" x2="200" y2="140" stroke="#4f8ef7" stroke-width="1.2" opacity="0.5"/>
+        <line class="neural-line" x1="60" y1="130" x2="100" y2="220" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+        <line class="neural-line" x1="200" y1="140" x2="160" y2="230" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+        <line class="neural-line" x1="100" y1="220" x2="160" y2="230" stroke="#4f8ef7" stroke-width="1" opacity="0.35"/>
+        <line class="neural-line" x1="130" y1="60" x2="220" y2="60" stroke="#4f8ef7" stroke-width="0.8" opacity="0.25"/>
+        <line class="neural-line" x1="40" y1="200" x2="60" y2="130" stroke="#00d4ff" stroke-width="0.8" opacity="0.3"/>
+        <!-- Nodes -->
+        <circle class="neural-node" cx="130" cy="60" r="8" fill="#4f8ef7" filter="url(#glow1)"/>
+        <circle class="neural-node" cx="60" cy="130" r="6" fill="#00d4ff" filter="url(#glow1)"/>
+        <circle class="neural-node" cx="200" cy="140" r="7" fill="#4f8ef7" filter="url(#glow1)"/>
+        <circle class="neural-node" cx="100" cy="220" r="6" fill="#00d4ff" filter="url(#glow1)"/>
+        <circle class="neural-node" cx="160" cy="230" r="5" fill="#4f8ef7" filter="url(#glow1)"/>
+        <circle cx="220" cy="60" r="4" fill="#4f8ef7" opacity="0.5"/>
+        <circle cx="40" cy="200" r="4" fill="#00d4ff" opacity="0.4"/>
+      </svg>
+    </div>
+
+    <div class="cover-right">
+      <div class="slide-label">AI-Powered Collaboration</div>
+      <div class="main-title">Synapse Platform</div>
+      <div class="sub-title">Digital Twin Collaboration System</div>
+      <div class="cover-divider"></div>
+      <div class="meta">v0.5.0 &nbsp;·&nbsp; Phase 1–4 Complete &nbsp;·&nbsp; 2026-05-04</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 2 — EXECUTIVE SUMMARY
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s2">
+    <div class="slide-title">Synapse: <span class="gold">Production-Validated.</span> Phase 5 Recommended.</div>
+    <div class="cards-row">
+
+      <div class="card ec">
+        <div class="badge badge-blue">WHAT</div>
+        <div class="ec-title">An AI Collaboration System</div>
+        <p>An AI system on Slack that drafts weekly reports, meeting briefs, and research — and delivers <strong>nothing</strong> without human approval.</p>
+      </div>
+
+      <div class="card ec">
+        <div class="badge badge-gold">WHY</div>
+        <div class="ec-title">Three Value Propositions</div>
+        <ul>
+          <li>Eliminate high-frequency PM workload</li>
+          <li>Knowledge compounds every use</li>
+          <li>Human authority preserved structurally</li>
+        </ul>
+      </div>
+
+      <div class="card ec">
+        <div class="badge badge-green">STATUS</div>
+        <div class="stat-row">
+          <div class="stat-item">
+            <div class="stat-val">v0.5.0</div>
+            <div class="stat-lab">Current version</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" style="color:var(--text-main);font-size:28px;">20</div>
+            <div class="stat-lab">Capabilities validated</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" style="color:var(--green);font-size:28px;">294<span style="font-size:16px;color:var(--text-sub)">/295</span></div>
+            <div class="stat-lab">Tests passing</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" style="color:var(--gold);font-size:20px;">2026-04-28</div>
+            <div class="stat-lab">Live E2E confirmed</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 3 — SCQA
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s3">
+    <div class="slide-title">The Problem Is Clear. <span class="gold">Synapse Is the Answer.</span></div>
+    <div class="grid-2x2">
+
+      <div class="scqa-card card-s">
+        <div class="scqa-num" style="color:#4f8ef7">S</div>
+        <div class="scqa-label" style="color:var(--electric)">Situation</div>
+        <div class="scqa-title">Daily Reality</div>
+        <div class="scqa-body">Teams communicate on Slack daily. PMs produce repetitive deliverables — weekly reports, meeting briefs, research summaries — week after week.</div>
+      </div>
+
+      <div class="scqa-card card-c">
+        <div class="scqa-num" style="color:var(--orange)">C</div>
+        <div class="scqa-label" style="color:var(--orange)">Complication</div>
+        <div class="scqa-title">The Friction</div>
+        <div class="scqa-body">AI without human control = risk. Knowledge stays siloed in Drive folders. Bilingual friction slows delivery. Repetitive work drains senior PM capacity.</div>
+      </div>
+
+      <div class="scqa-card card-q">
+        <div class="scqa-num" style="color:var(--gold)">Q</div>
+        <div class="scqa-label" style="color:var(--gold)">Question</div>
+        <div class="scqa-title">The Design Challenge</div>
+        <div class="scqa-body">How do we embed AI into daily operations — <em>controllable</em>, <em>traceable</em>, and <em>continuously improving</em>?</div>
+      </div>
+
+      <div class="scqa-card card-a">
+        <div class="scqa-num" style="color:var(--green)">A</div>
+        <div class="scqa-label" style="color:var(--green)">Answer</div>
+        <div class="scqa-title">Synapse Platform</div>
+        <div class="scqa-body">Deterministic FSM + mandatory approval gate + 4-layer training.<br><strong>AI drafts. Human decides. System learns.</strong></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 4 — DIGITAL TWIN
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s4">
+    <div class="slide-title">AI Amplifies the Boss. <span class="gold">Never Replaces.</span></div>
+
+    <div class="flow-area">
+      <!-- Human node -->
+      <div class="flow-node node-human">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" style="margin-bottom:4px">
+          <circle cx="16" cy="10" r="6" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M4 28c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <div style="font-size:12px;font-weight:700;">Boss / PM</div>
+      </div>
+
+      <!-- Arrow + flow center -->
+      <div style="display:flex;align-items:center;gap:0;">
+        <svg width="60" height="40" viewBox="0 0 60 40">
+          <defs>
+            <marker id="ah1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#4f8ef7"/>
+            </marker>
+          </defs>
+          <line x1="4" y1="20" x2="48" y2="20" stroke="#4f8ef7" stroke-width="1.5" marker-end="url(#ah1)" opacity="0.7">
+            <animate attributeName="stroke-dashoffset" values="50;0;50" dur="2s" repeatCount="indefinite"/>
+          </line>
+        </svg>
+
+        <div class="flow-center">
+          <div class="flow-center-title">Synapse</div>
+          <div class="flow-step">Request →<br>Draft + Approve →<br>Train + Improve</div>
+        </div>
+
+        <svg width="60" height="40" viewBox="0 0 60 40">
+          <defs>
+            <marker id="ah2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L8,3 z" fill="#00d4ff"/>
+            </marker>
+          </defs>
+          <line x1="12" y1="20" x2="56" y2="20" stroke="#00d4ff" stroke-width="1.5" marker-end="url(#ah2)" opacity="0.7">
+            <animate attributeName="stroke-dashoffset" values="50;0;50" dur="2s" repeatCount="indefinite" begin="1s"/>
+          </line>
+        </svg>
+      </div>
+
+      <!-- AI node -->
+      <div class="flow-node node-ai">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" style="margin-bottom:4px">
+          <rect x="6" y="8" width="20" height="16" rx="3" stroke="currentColor" stroke-width="1.8"/>
+          <circle cx="12" cy="16" r="2" fill="currentColor" opacity="0.7"/>
+          <circle cx="20" cy="16" r="2" fill="currentColor" opacity="0.7"/>
+          <line x1="16" y1="4" x2="16" y2="8" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="16" cy="3" r="2" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <div style="font-size:12px;font-weight:700;">AI Agent</div>
+      </div>
+    </div>
+
+    <div class="quote-block">
+      "Every approval is both a delivery and a training signal."
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 5 — 20 CAPABILITIES
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s5">
+    <div class="slide-title">20 Validated Capabilities. <span class="blue">4 Layers.</span> All Production-Tested.</div>
+    <div class="layers">
+
+      <div class="layer-row">
+        <div class="layer-meta">
+          <div class="layer-num" style="color:#64b5f6">Layer 1</div>
+          <div class="layer-name" style="color:#64b5f6">Intake &amp; Understanding</div>
+          <div class="badge badge-blue" style="margin-top:6px;">3 caps</div>
+        </div>
+        <div class="layer-caps">
+          <span class="cap-pill" style="background:rgba(100,181,246,0.15);color:#64b5f6;border:1px solid rgba(100,181,246,0.3);">Slack Integration</span>
+          <span class="cap-pill" style="background:rgba(100,181,246,0.15);color:#64b5f6;border:1px solid rgba(100,181,246,0.3);">Intent Classification</span>
+          <span class="cap-pill" style="background:rgba(100,181,246,0.15);color:#64b5f6;border:1px solid rgba(100,181,246,0.3);">Doc Knowledge Pipeline</span>
+        </div>
+      </div>
+
+      <div class="layer-row">
+        <div class="layer-meta">
+          <div class="layer-num" style="color:#1e88e5">Layer 2</div>
+          <div class="layer-name" style="color:#1e88e5">Execution &amp; Collaboration</div>
+          <div class="badge" style="background:rgba(30,136,229,0.2);color:#1e88e5;border:1px solid rgba(30,136,229,0.4);margin-top:6px;">7 caps</div>
+        </div>
+        <div class="layer-caps">
+          <span class="cap-pill" style="background:rgba(30,136,229,0.15);color:#64b5f6;border:1px solid rgba(30,136,229,0.3);">Weekly Report</span>
+          <span class="cap-pill" style="background:rgba(30,136,229,0.15);color:#64b5f6;border:1px solid rgba(30,136,229,0.3);">Meeting Brief</span>
+          <span class="cap-pill" style="background:rgba(30,136,229,0.15);color:#64b5f6;border:1px solid rgba(30,136,229,0.3);">Research</span>
+          <span class="cap-pill" style="background:rgba(30,136,229,0.15);color:#64b5f6;border:1px solid rgba(30,136,229,0.3);">Content Draft</span>
+          <span class="cap-pill" style="background:rgba(30,136,229,0.15);color:#64b5f6;border:1px solid rgba(30,136,229,0.3);">Service Req</span>
+          <span class="cap-pill" style="background:rgba(0,212,255,0.15);color:var(--electric);border:1px solid rgba(0,212,255,0.3);font-weight:700;">Bilingual Multi-Agent ★</span>
+          <span class="cap-pill" style="background:rgba(30,136,229,0.15);color:#64b5f6;border:1px solid rgba(30,136,229,0.3);">Edit &amp; Approve</span>
+        </div>
+      </div>
+
+      <div class="layer-row">
+        <div class="layer-meta">
+          <div class="layer-num" style="color:#90caf9">Layer 3</div>
+          <div class="layer-name" style="color:#90caf9">Governance &amp; Quality</div>
+          <div class="badge" style="background:rgba(144,202,249,0.15);color:#90caf9;border:1px solid rgba(144,202,249,0.3);margin-top:6px;">5 caps</div>
+        </div>
+        <div class="layer-caps">
+          <span class="cap-pill" style="background:rgba(144,202,249,0.1);color:#90caf9;border:1px solid rgba(144,202,249,0.25);">FSM 8-State</span>
+          <span class="cap-pill" style="background:rgba(144,202,249,0.1);color:#90caf9;border:1px solid rgba(144,202,249,0.25);">Approval Gate</span>
+          <span class="cap-pill" style="background:rgba(144,202,249,0.1);color:#90caf9;border:1px solid rgba(144,202,249,0.25);">SLA Alert</span>
+          <span class="cap-pill" style="background:rgba(144,202,249,0.1);color:#90caf9;border:1px solid rgba(144,202,249,0.25);">Audit Log</span>
+          <span class="cap-pill" style="background:rgba(144,202,249,0.1);color:#90caf9;border:1px solid rgba(144,202,249,0.25);">CI/CD</span>
+        </div>
+      </div>
+
+      <div class="layer-row">
+        <div class="layer-meta">
+          <div class="layer-num" style="color:#42a5f5">Layer 4</div>
+          <div class="layer-name" style="color:#42a5f5">Intelligent Evolution</div>
+          <div class="badge badge-blue" style="margin-top:6px;">5 caps</div>
+        </div>
+        <div class="layer-caps">
+          <span class="cap-pill" style="background:rgba(66,165,245,0.15);color:#42a5f5;border:1px solid rgba(66,165,245,0.3);">Semantic RAG</span>
+          <span class="cap-pill" style="background:rgba(66,165,245,0.15);color:#42a5f5;border:1px solid rgba(66,165,245,0.3);">4-Layer Training</span>
+          <span class="cap-pill" style="background:rgba(66,165,245,0.15);color:#42a5f5;border:1px solid rgba(66,165,245,0.3);">Web Dashboard</span>
+          <span class="cap-pill" style="background:rgba(66,165,245,0.15);color:#42a5f5;border:1px solid rgba(66,165,245,0.3);">Slack Commands</span>
+          <span class="cap-pill" style="background:rgba(66,165,245,0.15);color:#42a5f5;border:1px solid rgba(66,165,245,0.3);">RBAC Pre-wired</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 6 — CORE CAPABILITIES: EXECUTION
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s6">
+    <div class="slide-title">AI Drafts. Human Approves. <span class="gold">Bilingual Friction: Eliminated.</span></div>
+    <div class="three-cards">
+
+      <div class="cap-card">
+        <div class="cap-icon">📋</div>
+        <div class="cap-title">PM Deliverables</div>
+        <div style="font-size:15px;font-weight:600;color:var(--electric);margin-bottom:10px;">Weekly Report &amp; Meeting Brief</div>
+        <div class="cap-body">PM types one Slack message → PM Agent retrieves work history → Structured draft in Chinese (Pyramid Principle) → One-click approve. Time from request to draft: <strong>seconds</strong>.</div>
+        <div class="cap-tags">
+          <span class="cap-tag">PM Agent</span>
+          <span class="cap-tag">agent.pm_zh</span>
+          <span class="cap-tag">Layers 1–4 active</span>
+        </div>
+      </div>
+
+      <div class="cap-card highlight">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <div class="cap-icon" style="font-size:22px;">🌐</div>
+          <span class="differentiator">THE DIFFERENTIATOR</span>
+        </div>
+        <div class="cap-title">Zero Language Friction</div>
+        <div class="flow-mini">Boss EN → BossAgent decomposes<br>→ PMAgent drafts ZH<br>→ BossAgent translates<br>→ Boss receives EN</div>
+        <div class="cap-body">Language friction between an English-speaking executive and a Chinese PM team is eliminated at the system level. Each party communicates natively.</div>
+        <div class="cap-tags">
+          <span class="cap-tag" style="background:rgba(0,212,255,0.2);color:var(--electric);">Bilingual Bridge</span>
+          <span class="cap-tag" style="background:rgba(0,212,255,0.2);color:var(--electric);">System-Level</span>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-icon">✏️</div>
+        <div class="cap-title">Edit &amp; Approve Modal</div>
+        <div style="font-size:15px;font-weight:600;color:var(--gold);margin-bottom:10px;">Every Edit Is Training</div>
+        <div class="cap-body">Inline Slack modal to review and directly edit AI draft before approving. Each edit is automatically captured as a Layer 2 Golden training sample — teaching the system your exact preferences.</div>
+        <div class="cap-tags">
+          <span class="cap-tag" style="background:rgba(245,200,66,0.15);color:var(--gold);">Layer 2 Golden</span>
+          <span class="cap-tag" style="background:rgba(245,200,66,0.15);color:var(--gold);">Auto-capture</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 7 — GOVERNANCE & EVOLUTION
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s7">
+    <div class="slide-title">Control Built In. <span class="blue">Intelligence Grows Every Session.</span></div>
+    <div class="two-col">
+
+      <div class="gov-col">
+        <div class="col-title">🔒 Governance Foundation</div>
+        <div class="gov-item">
+          <div class="gov-icon">⚙️</div>
+          <div>
+            <div class="gov-label">FSM 8-State Workflow</div>
+            <div class="gov-desc">Execution is fully deterministic — 8 defined states, no AI can skip or shortcut. INTAKE → ROUTING → PROCESSING → PENDING_APPROVAL → APPROVED → COMPLETED.</div>
+          </div>
+        </div>
+        <div class="gov-item">
+          <div class="gov-icon">🔐</div>
+          <div>
+            <div class="gov-label">Mandatory Approval Gate</div>
+            <div class="gov-desc">Technical constraint, not a guideline. No output reaches COMPLETED without an approval record. Human authority is <em>structurally</em> preserved.</div>
+          </div>
+        </div>
+        <div class="gov-item">
+          <div class="gov-icon">📋</div>
+          <div>
+            <div class="gov-label">Immutable Audit Log</div>
+            <div class="gov-desc">30+ event types, tamper-proof Evidence Bundle. Records cannot be modified or deleted — compliance-ready by design.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="evo-col">
+        <div class="col-title">⚡ Intelligence Layer</div>
+        <div style="font-size:13px;color:var(--text-sub);margin-bottom:14px;">4-Layer Training System — Stacked by depth</div>
+        <div class="layer-stack">
+          <div class="train-layer" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);">
+            <div class="tl-num">Layer 1</div>
+            <div>
+              <div class="tl-name">Corpus</div>
+              <div class="tl-desc" style="font-size:12px;color:var(--text-sub);">Historical deliverables — breadth coverage</div>
+            </div>
+          </div>
+          <div class="train-layer" style="background:rgba(79,142,247,0.1);border:1px solid rgba(79,142,247,0.2);">
+            <div class="tl-num" style="color:#64b5f6;">Layer 2</div>
+            <div>
+              <div class="tl-name">Golden Samples</div>
+              <div class="tl-desc" style="font-size:12px;color:var(--text-sub);">Approved examples — style benchmark</div>
+            </div>
+          </div>
+          <div class="train-layer" style="background:rgba(79,142,247,0.15);border:1px solid rgba(79,142,247,0.3);">
+            <div class="tl-num" style="color:var(--primary);">Layer 3</div>
+            <div>
+              <div class="tl-name">Explicit Rules</div>
+              <div class="tl-desc" style="font-size:12px;color:var(--text-sub);">User-defined constraints — direct control</div>
+            </div>
+          </div>
+          <div class="train-layer" style="background:rgba(0,212,255,0.12);border:1px solid rgba(0,212,255,0.35);">
+            <div class="tl-num" style="color:var(--electric);">Layer 4</div>
+            <div>
+              <div class="tl-name" style="color:var(--electric);">Progressive Memory</div>
+              <div class="tl-desc" style="font-size:12px;color:var(--text-sub);">Auto-distilled preferences (max 50) — long-term alignment</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 8 — ARCHITECTURE DECISION
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s8">
+    <div class="slide-title">We Rejected LangGraph. We Chose Determinism. <span class="green">Right Call.</span></div>
+    <div class="compare-table">
+      <div class="ct-header">
+        <div class="ct-cell header">Dimension</div>
+        <div class="ct-cell header" style="color:var(--orange);">LangGraph</div>
+        <div class="ct-cell header" style="color:var(--green);">Synapse FSM</div>
+      </div>
+      <div class="ct-row">
+        <div class="ct-cell dim">Execution Path</div>
+        <div class="ct-cell lang">Dynamic graph, non-deterministic</div>
+        <div class="ct-cell synapse-cell">8 fixed states, deterministic</div>
+      </div>
+      <div class="ct-row" style="background:rgba(255,255,255,0.02);">
+        <div class="ct-cell dim">Testability</div>
+        <div class="ct-cell lang">Path-dependent, complex</div>
+        <div class="ct-cell synapse-cell">Each state independently testable</div>
+      </div>
+      <div class="ct-row">
+        <div class="ct-cell dim">Enterprise Fit</div>
+        <div class="ct-cell lang">Research-first</div>
+        <div class="ct-cell synapse-cell">Production-first</div>
+      </div>
+      <div class="ct-row" style="background:rgba(255,255,255,0.02);">
+        <div class="ct-cell dim">Audit Support</div>
+        <div class="ct-cell lang">Requires additional build</div>
+        <div class="ct-cell synapse-cell">Native, built-in</div>
+      </div>
+      <div class="ct-row">
+        <div class="ct-cell dim">Predictability</div>
+        <div class="ct-cell lang">❌ Low — context-dependent</div>
+        <div class="ct-cell synapse-cell">✅ High — guaranteed</div>
+      </div>
+    </div>
+    <div class="adr-quote">
+      <strong>ADR-0001:</strong> <em>"We reject LangGraph. In enterprise production, <strong>determinism is non-negotiable</strong>. Every execution path must be defined, testable, and auditable. The trade-off — reliability and auditability over flexibility — is deliberate and correct."</em>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 9 — TECH STACK
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s9">
+    <div class="slide-title">Production-Grade Stack — <span class="gold">Every Choice Has a Business Reason</span></div>
+    <div class="stack-body">
+      <div class="stack-list">
+        <div class="stack-row">
+          <div class="stack-dot" style="background:#4f8ef7;"></div>
+          <div>
+            <div class="stack-name">Message Integration</div>
+            <div class="stack-tech">Slack Bolt + Socket Mode</div>
+            <div class="stack-reason">No public endpoints required — enterprise security-compatible out of the box</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-dot" style="background:#ab47bc;"></div>
+          <div>
+            <div class="stack-name">AI Reasoning</div>
+            <div class="stack-tech">Anthropic Claude claude-sonnet-4-6</div>
+            <div class="stack-reason">Best-in-class bilingual reasoning + prompt caching support</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-dot" style="background:#4ade80;"></div>
+          <div>
+            <div class="stack-name">Vector Storage</div>
+            <div class="stack-tech">PostgreSQL + pgvector</div>
+            <div class="stack-reason">Production-grade durability — no additional infrastructure required</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-dot" style="background:#00d4ff;"></div>
+          <div>
+            <div class="stack-name">Semantic Encoding</div>
+            <div class="stack-tech">Voyage AI voyage-3</div>
+            <div class="stack-reason">Chinese-optimized embeddings, 1024-dim — leading accuracy in bilingual business context</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-dot" style="background:#f5c842;"></div>
+          <div>
+            <div class="stack-name">Reranking</div>
+            <div class="stack-tech">Jina AI Reranker</div>
+            <div class="stack-reason">Precision uplift on RAG retrieval results — materially improves knowledge accuracy</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-dot" style="background:#ef5350;"></div>
+          <div>
+            <div class="stack-name">Doc Ingestion</div>
+            <div class="stack-tech">Google Drive API</div>
+            <div class="stack-reason">Zero-change adoption of existing document workflows</div>
+          </div>
+        </div>
+        <div class="stack-row">
+          <div class="stack-dot" style="background:#bdbdbd;"></div>
+          <div>
+            <div class="stack-name">CI/CD</div>
+            <div class="stack-tech">GitHub Actions</div>
+            <div class="stack-reason">Automated test suite on every commit — 294/295 passing</div>
+          </div>
+        </div>
+      </div>
+      <div class="cost-card">
+        <div class="cost-title">💰 Cost Control</div>
+        <div class="cost-tech">Claude Prompt Cache</div>
+        <div class="cost-desc">cache_control on high-frequency, low-change content (system prompts, knowledge context). Cached blocks ≤ 4 — materially reduces per-request token spend without affecting output quality.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 10 — EVIDENCE DASHBOARD
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s10">
+    <div class="slide-title">Three Numbers <span class="gold">Prove Production Readiness</span></div>
+    <div class="evidence-row">
+
+      <div class="ev-block">
+        <div class="ev-num" style="color:var(--gold);">99.7%</div>
+        <div class="ev-label">Test Pass Rate</div>
+        <div class="ev-sub">294/295 passing · 49 test files<br>unit + integration + acceptance + e2e<br>All layers validated</div>
+      </div>
+
+      <div class="ev-block">
+        <div class="ev-num" style="color:var(--electric);">66+</div>
+        <div class="ev-label">Live E2E Audit Records</div>
+        <div class="ev-sub">AUD-20260428-0001 to 0066+<br>Real Slack environment · 2026-04-28<br>All core scenarios validated</div>
+      </div>
+
+      <div class="ev-block">
+        <div class="ev-num" style="color:var(--green);font-size:72px;">~2 days</div>
+        <div class="ev-label">Zero to v0.5.0</div>
+        <div class="ev-sub">Phase 1–4 complete<br>20 capabilities · Full test suite<br>2026-04-28 to 04-29</div>
+      </div>
+
+    </div>
+    <div class="ev-footer">
+      "Architecture quality compounds: clean design → fast iteration → validated output."
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 11 — PDCA FLYWHEEL
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s11">
+    <div class="slide-title">Using Synapse <span class="gold">IS</span> Training Synapse — The Flywheel Accelerates</div>
+    <div class="flywheel-body">
+
+      <div class="flywheel-svg-wrap">
+        <svg width="360" height="360" viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Outer circle -->
+          <circle cx="180" cy="180" r="140" stroke="rgba(79,142,247,0.3)" stroke-width="1.5" fill="none"/>
+          <!-- 4 arc segments (each ~80deg gap at 10deg each side) -->
+          <!-- PLAN (top, ~315-45 deg) -->
+          <path d="M 180 40 A 140 140 0 0 1 278.99 81.01" stroke="#4f8ef7" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.9"/>
+          <!-- DO (right, ~45-135 deg) -->
+          <path d="M 278.99 81.01 A 140 140 0 0 1 278.99 278.99" stroke="#00d4ff" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.9"/>
+          <!-- CHECK (bottom, ~135-225 deg) -->
+          <path d="M 278.99 278.99 A 140 140 0 0 1 81.01 278.99" stroke="#4ade80" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.9"/>
+          <!-- ACT (left, ~225-315 deg) -->
+          <path d="M 81.01 278.99 A 140 140 0 0 1 81.01 81.01" stroke="#f5c842" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.9"/>
+          <!-- Arrow at PLAN end (clockwise indicator) -->
+          <polygon points="278.99,81.01 266,74 272,94" fill="#00d4ff" opacity="0.9"/>
+
+          <!-- Inner circle -->
+          <circle cx="180" cy="180" r="70" fill="rgba(79,142,247,0.08)" stroke="rgba(79,142,247,0.3)" stroke-width="1"/>
+
+          <!-- Center text -->
+          <text x="180" y="173" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="#f0f4ff">The</text>
+          <text x="180" y="193" text-anchor="middle" font-family="Inter, sans-serif" font-size="16" font-weight="800" fill="#f0f4ff">Flywheel</text>
+          <text x="180" y="213" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#8899bb">accelerates</text>
+
+          <!-- 4 nodes on circle -->
+          <circle cx="180" cy="40" r="10" fill="#4f8ef7" stroke="#0a0f1e" stroke-width="2"/>
+          <circle cx="320" cy="180" r="10" fill="#00d4ff" stroke="#0a0f1e" stroke-width="2"/>
+          <circle cx="180" cy="320" r="10" fill="#4ade80" stroke="#0a0f1e" stroke-width="2"/>
+          <circle cx="40" cy="180" r="10" fill="#f5c842" stroke="#0a0f1e" stroke-width="2"/>
+
+          <!-- PLAN label (top) -->
+          <text x="180" y="22" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#4f8ef7">PLAN</text>
+          <!-- DO label (right) -->
+          <text x="340" y="185" text-anchor="start" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#00d4ff">DO</text>
+          <!-- CHECK label (bottom) -->
+          <text x="180" y="348" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#4ade80">CHECK</text>
+          <!-- ACT label (left) -->
+          <text x="20" y="185" text-anchor="end" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#f5c842">ACT</text>
+        </svg>
+      </div>
+
+      <div class="flywheel-right">
+        <div class="pdca-card">
+          <div class="pdca-icon" style="background:rgba(79,142,247,0.15);">📥</div>
+          <div>
+            <div class="pdca-step">PLAN</div>
+            <div class="pdca-desc">Boss / PM sends a business request in Slack</div>
+          </div>
+        </div>
+        <div class="pdca-card">
+          <div class="pdca-icon" style="background:rgba(0,212,255,0.12);">🤖</div>
+          <div>
+            <div class="pdca-step">DO</div>
+            <div class="pdca-desc">AI Agent generates a draft with RAG knowledge and reasoning</div>
+          </div>
+        </div>
+        <div class="pdca-card">
+          <div class="pdca-icon" style="background:rgba(74,222,128,0.12);">👤</div>
+          <div>
+            <div class="pdca-step">CHECK</div>
+            <div class="pdca-desc">Human reviews and edits directly in Slack (Edit &amp; Approve)</div>
+          </div>
+        </div>
+        <div class="pdca-card">
+          <div class="pdca-icon" style="background:rgba(245,200,66,0.12);">🔄</div>
+          <div>
+            <div class="pdca-step">ACT</div>
+            <div class="pdca-desc">Edit → training data → preferences updated → next request served better</div>
+          </div>
+        </div>
+        <div class="flywheel-quote">
+          "Unlike static AI tools deployed once and never changed, Synapse evolves with every use session."
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 12 — AGENT MATRIX
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s12">
+    <div class="slide-title">Five Specialized Agents — <span class="gold">PM Agent Is Fully Trained</span></div>
+
+    <div class="agent-flow">
+      <div class="af-node af-boss">Boss EN</div>
+      <div class="af-arrow">→</div>
+      <div class="af-node">BossAgent</div>
+      <div class="af-arrow">→ decompose →</div>
+      <div class="af-node">PMAgent</div>
+      <div class="af-arrow">→ ZH draft →</div>
+      <div class="af-node">BossAgent</div>
+      <div class="af-arrow">→ translate →</div>
+      <div class="af-node af-boss">Boss EN ✓</div>
+      <div style="flex:1;"></div>
+      <div style="display:flex;gap:6px;align-items:center;">
+        <div class="af-node" style="font-size:11px;background:rgba(255,255,255,0.04);">Research Agent</div>
+        <div class="af-node" style="font-size:11px;background:rgba(255,255,255,0.04);">Content Agent</div>
+        <div class="af-node" style="font-size:11px;background:rgba(255,255,255,0.04);">Service Agent</div>
+      </div>
+    </div>
+
+    <div class="agent-cards">
+
+      <div class="agent-card pm-card">
+        <div class="agent-id">agent.pm_zh</div>
+        <div class="agent-name">PM Agent</div>
+        <div class="agent-lang lang-zh">ZH</div>
+        <div style="font-size:12px;color:var(--text-sub);margin-bottom:10px;line-height:1.5;">Weekly reports, meeting materials, Chinese deliverables. Pyramid + SCQA methods.</div>
+        <div class="train-bar">
+          <div class="tb-dot active"></div>
+          <div class="tb-dot active"></div>
+          <div class="tb-dot active"></div>
+          <div class="tb-dot active"></div>
+        </div>
+        <div class="train-label" style="color:var(--gold);font-weight:600;">Layers 1–4 ● Full Training</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-id">agent.boss_en</div>
+        <div class="agent-name">Boss Agent</div>
+        <div class="agent-lang lang-en">EN</div>
+        <div style="font-size:12px;color:var(--text-sub);margin-bottom:10px;line-height:1.5;">Task decomposition, bilingual bridging, English delivery to executive.</div>
+        <div class="train-bar">
+          <div class="tb-dot" style="background:rgba(255,255,255,0.15);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.15);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.15);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.15);"></div>
+        </div>
+        <div class="train-label">Coordination layer — no training</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-id">agent.research</div>
+        <div class="agent-name">Research Agent</div>
+        <div class="agent-lang lang-en">EN</div>
+        <div style="font-size:12px;color:var(--text-sub);margin-bottom:10px;line-height:1.5;">Research, competitive analysis, data synthesis. MECE + hypothesis-driven.</div>
+        <div class="train-bar">
+          <div class="tb-dot active" style="background:rgba(79,142,247,0.6);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.1);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.1);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.1);"></div>
+        </div>
+        <div class="train-label">Layer 1 — extensible</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-id">agent.content</div>
+        <div class="agent-name">Content Agent</div>
+        <div class="agent-lang lang-en">EN</div>
+        <div style="font-size:12px;color:var(--text-sub);margin-bottom:10px;line-height:1.5;">Content drafts, decision briefs. SCQA + Amazon 6-pager format.</div>
+        <div class="train-bar">
+          <div class="tb-dot active" style="background:rgba(79,142,247,0.6);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.1);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.1);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.1);"></div>
+        </div>
+        <div class="train-label">Layer 1 — extensible</div>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-id">agent.ops</div>
+        <div class="agent-name">Service Agent</div>
+        <div class="agent-lang lang-en">EN</div>
+        <div style="font-size:12px;color:var(--text-sub);margin-bottom:10px;line-height:1.5;">Internal service requests, operational routing, standard workflows.</div>
+        <div class="train-bar">
+          <div class="tb-dot" style="background:rgba(255,255,255,0.1);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.1);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.1);"></div>
+          <div class="tb-dot" style="background:rgba(255,255,255,0.1);"></div>
+        </div>
+        <div class="train-label">Lightweight — no training layer</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 13 — ROADMAP
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s13">
+    <div class="slide-title">Phase 5 Next. <span class="gold">v1.0.0 GA Within Reach.</span></div>
+
+    <div class="timeline-wrap">
+      <!-- Node dots row -->
+      <div class="timeline-line-row">
+        <div class="tl-node-col">
+          <div class="tl-dot done">✓</div>
+        </div>
+        <div class="tl-connector conn-green"></div>
+        <div class="tl-node-col">
+          <div class="tl-dot active" style="font-size:14px;font-weight:900;">5</div>
+        </div>
+        <div class="tl-connector conn-gray"></div>
+        <div class="tl-node-col">
+          <div class="tl-dot upcoming"></div>
+        </div>
+      </div>
+
+      <!-- Cards row -->
+      <div class="tl-cards-row">
+        <div class="tl-card-wrap">
+          <div class="tl-card done-card">
+            <div class="tl-card-title done-title">v0.5.0 — NOW</div>
+            <div class="tl-item tl-check">Phase 1–4 Complete</div>
+            <div class="tl-item tl-check">20 capabilities validated</div>
+            <div class="tl-item tl-check">294/295 tests passing</div>
+            <div class="tl-item tl-check">Live E2E: 2026-04-28</div>
+          </div>
+        </div>
+        <div class="tl-card-wrap">
+          <div class="tl-card active-card">
+            <div class="tl-card-title active-title">Phase 5 — NEXT</div>
+            <div class="tl-item">RBAC Activation</div>
+            <div class="tl-item">n8n Webhook Integration</div>
+            <div class="tl-item">Multi-Workspace Isolation</div>
+            <div class="tl-item" style="color:var(--electric);">Target: Full enterprise deployment</div>
+          </div>
+        </div>
+        <div class="tl-card-wrap">
+          <div class="tl-card upcoming-card">
+            <div class="tl-card-title upcoming-title">v1.0.0 GA — AHEAD</div>
+            <div class="tl-item">① 30-day stability, zero P0/P1</div>
+            <div class="tl-item">② All tech debt resolved</div>
+            <div class="tl-item">③ PMC L3 review passed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SLIDE 14 — CLOSING
+  ══════════════════════════════════════════ -->
+  <div class="slide" id="s14">
+    <div class="glow"></div>
+
+    <svg style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;" viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <filter id="glow14">
+          <feGaussianBlur stdDeviation="3" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <line x1="100" y1="100" x2="300" y2="200" stroke="#4f8ef7" stroke-width="1" opacity="0.25"/>
+      <line x1="300" y1="200" x2="200" y2="350" stroke="#00d4ff" stroke-width="1" opacity="0.2"/>
+      <line x1="900" y1="80" x2="1100" y2="180" stroke="#4f8ef7" stroke-width="1" opacity="0.25"/>
+      <line x1="1100" y1="180" x2="1000" y2="340" stroke="#00d4ff" stroke-width="1" opacity="0.2"/>
+      <line x1="100" y1="540" x2="300" y2="460" stroke="#4f8ef7" stroke-width="1" opacity="0.2"/>
+      <circle cx="100" cy="100" r="5" fill="#4f8ef7" opacity="0.4" filter="url(#glow14)"/>
+      <circle cx="300" cy="200" r="7" fill="#00d4ff" opacity="0.5" filter="url(#glow14)"/>
+      <circle cx="200" cy="350" r="4" fill="#4f8ef7" opacity="0.3" filter="url(#glow14)"/>
+      <circle cx="900" cy="80" r="5" fill="#4f8ef7" opacity="0.4" filter="url(#glow14)"/>
+      <circle cx="1100" cy="180" r="7" fill="#00d4ff" opacity="0.5" filter="url(#glow14)"/>
+      <circle cx="1000" cy="340" r="4" fill="#4f8ef7" opacity="0.3" filter="url(#glow14)"/>
+      <circle cx="100" cy="540" r="5" fill="#00d4ff" opacity="0.35" filter="url(#glow14)"/>
+      <circle cx="300" cy="460" r="6" fill="#4f8ef7" opacity="0.4" filter="url(#glow14)"/>
+    </svg>
+
+    <div class="closing-label">The Recommendation</div>
+    <div class="closing-line1">Foundation Proven.</div>
+    <div class="closing-line2">Approve Phase 5.</div>
+
+    <div class="support-cards">
+      <div class="sc">✅ 20 capabilities validated across Phase 1–4</div>
+      <div class="sc">✅ 99.7% test coverage, Live E2E 2026-04-28 confirmed</div>
+      <div class="sc">✅ Architecture proven — built for enterprise scale</div>
+    </div>
+
+    <div class="sig">Synapse Platform Product Team &nbsp;·&nbsp; v0.5.0 &nbsp;·&nbsp; 2026-05-04</div>
+  </div>
+
+</div><!-- /deck -->
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+  let animating = false;
+
+  const bar = document.getElementById('progress-bar');
+  const counter = document.getElementById('slide-counter');
+
+  function updateUI() {
+    const pct = ((current + 1) / total) * 100;
+    bar.style.width = pct + '%';
+    counter.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+
+  function goTo(idx) {
+    if (animating) return;
+    if (idx < 0 || idx >= total) return;
+    animating = true;
+
+    const prev = slides[current];
+    const next = slides[idx];
+
+    prev.classList.add('exit');
+    prev.classList.remove('active');
+
+    // Reset next
+    next.style.transform = idx > current ? 'translateX(60px)' : 'translateX(-60px)';
+    next.style.opacity = '0';
+    next.style.transition = 'none';
+    next.classList.add('active');
+
+    // Force reflow
+    next.getBoundingClientRect();
+
+    next.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    next.style.transform = 'translateX(0)';
+    next.style.opacity = '1';
+
+    current = idx;
+    updateUI();
+
+    setTimeout(function() {
+      prev.classList.remove('exit');
+      prev.style.transform = '';
+      prev.style.opacity = '';
+      prev.style.transition = '';
+      animating = false;
+    }, 320);
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Keyboard
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault(); next();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault(); prev();
+    }
+  });
+
+  // Click zones
+  document.getElementById('nav-right').addEventListener('click', next);
+  document.getElementById('nav-left').addEventListener('click', prev);
+
+  // Touch support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+  document.addEventListener('touchend', function(e) {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) next(); else prev();
+    }
+  }, { passive: true });
+
+  // Init
+  slides[0].classList.add('active');
+  slides[0].style.opacity = '1';
+  slides[0].style.transform = 'translateX(0)';
+  updateUI();
+})();
+</script>
+</body>
+</html>

@@ -35,7 +35,7 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
     <div class="absolute inset-0 bg-gradient-to-br from-[#FCAD2A]/5 via-transparent to-sky-900/10 pointer-events-none"></div>
     <div class="max-w-5xl mx-auto px-6 py-24 text-center relative">
       <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FCAD2A]/10 border border-[#FCAD2A]/30 rounded-full text-[#FCAD2A] text-xs font-semibold mb-8 tracking-wider uppercase">
-        开源 · 生产验证 · 53 个 Agent
+        开源 · 生产验证 · 55 个核心 Agent
       </div>
       <h1 class="text-5xl md:text-6xl font-extrabold text-white leading-tight mb-6" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">
         Synapse
@@ -74,16 +74,16 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
     <div class="max-w-5xl mx-auto px-6 py-12">
       <div class="grid grid-cols-3 gap-8 text-center">
         <div>
-          <div class="text-4xl font-extrabold text-[#FCAD2A] mb-2">53</div>
-          <div class="text-white/50 text-sm">生产级 AI Agent<br/><span class="text-white/30 text-xs">Production AI Agents</span></div>
+          <div class="text-4xl font-extrabold text-[#FCAD2A] mb-2">55</div>
+          <div class="text-white/50 text-sm">核心 AI Agent<br/><span class="text-white/30 text-xs">Active Core AI Agents</span></div>
         </div>
         <div>
-          <div class="text-4xl font-extrabold text-sky-400 mb-2">13</div>
-          <div class="text-white/50 text-sm">功能模块<br/><span class="text-white/30 text-xs">Functional Modules</span></div>
+          <div class="text-4xl font-extrabold text-sky-400 mb-2">12</div>
+          <div class="text-white/50 text-sm">专业团队<br/><span class="text-white/30 text-xs">Specialist Teams</span></div>
         </div>
         <div>
-          <div class="text-4xl font-extrabold text-[#e9b94a] mb-2">5</div>
-          <div class="text-white/50 text-sm">预设模板，5 分钟激活<br/><span class="text-white/30 text-xs">Templates, Live in 5 min</span></div>
+          <div class="text-4xl font-extrabold text-[#e9b94a] mb-2">29</div>
+          <div class="text-white/50 text-sm">D 编号决策记录<br/><span class="text-white/30 text-xs">D-Records · 46 days</span></div>
         </div>
       </div>
     </div>
@@ -112,6 +112,7 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
           三层治理架构：Guides（前馈控制）× Workflow（结构化流程）× Constraints（约束系统）。
           让每个 Agent 不再反复犯同样的错误。
         </p>
+        <p class="text-xs text-white/30 mt-2">注：「三层治理」对应 CLAUDE.md 的 Guides + Workflow + Constraints；与 about 页「五层架构」（系统组件分层）不冲突。</p>
         <div class="mt-4 flex flex-wrap gap-2">
           <span class="px-2 py-1 bg-[#FCAD2A]/10 text-[#FCAD2A]/80 rounded text-xs">前馈控制</span>
           <span class="px-2 py-1 bg-[#FCAD2A]/10 text-[#FCAD2A]/80 rounded text-xs">反馈传感</span>
@@ -127,13 +128,12 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
           </svg>
         </div>
         <h3 class="text-lg font-bold text-white mb-2">CEO Guard 执行链</h3>
-        <p class="text-xs text-sky-400/80 font-mono mb-4">L1 → L2 → L3 → L4 Decision</p>
+        <p class="text-xs text-sky-400/80 font-mono mb-4">L1 → L2 → L3 → L4 → L5 Decision</p>
         <p class="text-white/50 text-sm leading-relaxed">
-          四级决策体系（L1 自动 → L4 总裁），每次工具调用全程可审计。
-          PreToolUse hook 实时拦截越权执行，执行链断裂零容忍。
+          五级决策框架（L1 自动 / L2 专家 / L3 Lysander / L4 战略对齐 / L5 价值裁决），每次工具调用 PreToolUse hook 拦截并写审计日志。
         </p>
         <div class="mt-4 flex flex-wrap gap-2">
-          <span class="px-2 py-1 bg-sky-500/10 text-sky-400/80 rounded text-xs">四级决策</span>
+          <span class="px-2 py-1 bg-sky-500/10 text-sky-400/80 rounded text-xs">五级决策</span>
           <span class="px-2 py-1 bg-sky-500/10 text-sky-400/80 rounded text-xs">全程可审计</span>
           <span class="px-2 py-1 bg-sky-500/10 text-sky-400/80 rounded text-xs">实时拦截</span>
         </div>
@@ -149,13 +149,12 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
         <h3 class="text-lg font-bold text-white mb-2">零代码启动</h3>
         <p class="text-xs text-[#c96442]/80 font-mono mb-4">Template → Configure → Launch</p>
         <p class="text-white/50 text-sm leading-relaxed">
-          5 套预设模板覆盖主流场景，模板选配后替换 3 个字段，
-          5 分钟内激活完整的 AI 团队管理体系。
+          fork 骨架 → 替换三个变量名（CEO 名 / 总裁名 / 公司名）→ 重启会话即激活完整的 AI 团队管理体系。
         </p>
         <div class="mt-4 flex flex-wrap gap-2">
-          <span class="px-2 py-1 bg-[#c96442]/10 text-[#c96442]/80 rounded text-xs">5 套模板</span>
-          <span class="px-2 py-1 bg-[#c96442]/10 text-[#c96442]/80 rounded text-xs">5 分钟激活</span>
-          <span class="px-2 py-1 bg-[#c96442]/10 text-[#c96442]/80 rounded text-xs">开箱即用</span>
+          <span class="px-2 py-1 bg-[#c96442]/10 text-[#c96442]/80 rounded text-xs">fork 骨架</span>
+          <span class="px-2 py-1 bg-[#c96442]/10 text-[#c96442]/80 rounded text-xs">三变量替换</span>
+          <span class="px-2 py-1 bg-[#c96442]/10 text-[#c96442]/80 rounded text-xs">首次会话即就绪</span>
         </div>
       </div>
 
@@ -217,8 +216,8 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
             <div class="mt-4 text-white/30"># 保存 → 重开会话 → 体系激活</div>
             <div class="mt-2 text-[#FCAD2A]">✓ CEO Guard 已就绪</div>
             <div class="text-[#FCAD2A]">✓ 执行链 v2.0 已就绪</div>
-            <div class="text-[#FCAD2A]">✓ 四级决策体系已就绪</div>
-            <div class="text-[#FCAD2A]">✓ 53 人 Agent 团队已就绪</div>
+            <div class="text-[#FCAD2A]">✓ 五级决策框架已就绪</div>
+            <div class="text-[#FCAD2A]">✓ 55 个核心 Agent / 12 个团队已就绪</div>
           </div>
         </div>
       </div>
@@ -236,7 +235,7 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
       <div class="grid md:grid-cols-2 gap-8">
         <div>
           <p class="text-white/70 leading-relaxed mb-6">
-            Synapse 不是理论产物。它从长期 Multi-Agent 生产实战中持续运行 53 个 AI Agent 之后，
+            Synapse 不是理论产物。它从长期 Multi-Agent 生产实战中持续运行 55 个核心 Agent / 12 个团队之后，
             从失败、迭代、修正中提炼出来的工程化方法论。
           </p>
           <p class="text-white/50 text-sm leading-relaxed">
@@ -260,7 +259,7 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
           </div>
           <div class="flex items-start gap-3">
             <div class="w-1.5 h-1.5 rounded-full bg-green-400 mt-2 flex-shrink-0"></div>
-            <p class="text-white/60 text-sm">13 个功能模块按需加载，Harness 文件保持精简可控</p>
+            <p class="text-white/60 text-sm">40 个 Harness 治理模块按需加载，CLAUDE.md 主配置控制在 281 行 / 320 行熵预算内。</p>
           </div>
         </div>
       </div>
@@ -306,14 +305,14 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
     <div class="max-w-5xl mx-auto px-6 py-20 text-center">
       <h2 class="text-3xl font-bold text-white mb-4">准备装备你的 AI 团队？</h2>
       <p class="text-white/50 mb-10 max-w-lg mx-auto">
-        开源免费。Star 一下，5 分钟后你的 AI 团队就能上岗。
+        开源免费。把骨架 fork 下来，按 about 页的 12 团队 / 55 Agent 清单替换三个变量名，自己装一套。
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
           href="/synapse/get-started"
           class="inline-flex items-center gap-2 px-8 py-4 bg-[#FCAD2A] text-gray-900 font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all shadow-lg shadow-[#FCAD2A]/20 text-base"
         >
-          立即上手——5 分钟激活
+          立即上手 —— 三变量替换
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
           </svg>
@@ -336,7 +335,7 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
       <FeatureCard
         title="能力"
-        body="十三个功能模块，覆盖现代企业的完整运营面。"
+        body="十二个专业团队，覆盖现代企业的完整运营面。"
         accent="amber"
         href="/synapse/capabilities"
       />
@@ -348,7 +347,7 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
       />
       <FeatureCard
         title="团队"
-        body="53 位专家，13 个模块。每位都有机器可读的能力卡，A/B/C 分级。"
+        body="55 位核心专家，12 个团队。每位都有机器可读的能力卡，A/B/C 分级。"
         accent="purple"
         href="/synapse/team"
       />
@@ -366,7 +365,7 @@ import FeatureCard from '../../components/synapse/FeatureCard.astro';
       />
       <FeatureCard
         title="快速上手"
-        body="三步。五分钟。你的 AI CEO 上岗。"
+        body="三步：clone → 改三个变量名 → 重启会话。"
         accent="purple"
         href="/synapse/get-started"
       />

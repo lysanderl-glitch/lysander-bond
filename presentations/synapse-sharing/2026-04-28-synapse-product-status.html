@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synapse Digital Twin Collaboration Platform — 产品状态文档</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #4F46E5;
+    --primary-light: #EEF2FF;
+    --primary-dark: #3730A3;
+    --bg: #F9FAFB;
+    --surface: #FFFFFF;
+    --text: #111827;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+    --success: #10B981;
+    --success-light: #ECFDF5;
+    --warning: #F59E0B;
+    --warning-light: #FFFBEB;
+    --error: #EF4444;
+    --error-light: #FEF2F2;
+    --info: #3B82F6;
+    --info-light: #EFF6FF;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #6366F1 100%);
+    color: white;
+    padding: 60px 0 48px;
+  }
+  .hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(24px, 4vw, 40px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .hero-sub {
+    font-size: clamp(14px, 2vw, 18px);
+    opacity: 0.85;
+    margin-bottom: 28px;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 13px;
+    opacity: 0.8;
+    margin-bottom: 36px;
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* PHASE PROGRESS */
+  .phase-track {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .phase-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .phase-item.done { background: rgba(16,185,129,0.25); border-color: rgba(16,185,129,0.5); }
+  .phase-check { font-size: 16px; }
+
+  /* SECTIONS */
+  .section { padding: 48px 0; }
+  .section:nth-child(even) { background: var(--surface); }
+  .section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::before {
+    content: "";
+    display: block;
+    width: 4px;
+    height: 24px;
+    background: var(--primary);
+    border-radius: 2px;
+  }
+  .section-desc { color: var(--text-muted); margin-bottom: 28px; font-size: 14px; }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+    padding: 24px;
+    border: 1px solid var(--border);
+  }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .card-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; }
+  .card-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+
+  .card-icon { font-size: 28px; margin-bottom: 12px; }
+  .card-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+  .card-body { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+  .value-card { border-top: 3px solid var(--primary); }
+  .value-card .card-title { color: var(--primary); }
+
+  /* METRIC CARDS */
+  .metric-card {
+    text-align: center;
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    padding: 24px 16px;
+  }
+  .metric-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .metric-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  .metric-badge {
+    display: inline-block;
+    background: var(--success-light);
+    color: var(--success);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 6px;
+  }
+
+  /* ARCH DIAGRAM */
+  .arch-box {
+    background: #0F172A;
+    color: #E2E8F0;
+    border-radius: 12px;
+    padding: 28px 24px;
+    font-family: "Consolas", "Monaco", "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+  }
+  .arch-box .c-primary { color: #818CF8; }
+  .arch-box .c-success { color: #34D399; }
+  .arch-box .c-warning { color: #FCD34D; }
+  .arch-box .c-info { color: #60A5FA; }
+  .arch-box .c-muted { color: #94A3B8; }
+
+  /* SCENARIO CARDS */
+  .scenario-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .scenario-header {
+    background: linear-gradient(135deg, var(--primary-light), #EDE9FE);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .scenario-icon { font-size: 24px; }
+  .scenario-title { font-weight: 700; font-size: 15px; color: var(--primary-dark); }
+  .scenario-agent { font-size: 12px; color: var(--text-muted); font-family: monospace; }
+  .scenario-body { padding: 16px 20px; }
+  .scenario-body p { font-size: 14px; color: var(--text-muted); margin-bottom: 12px; }
+
+  .tag {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-family: monospace;
+  }
+  .tag-green { background: var(--success-light); color: var(--success); }
+  .tag-gray { background: #F3F4F6; color: #6B7280; }
+
+  .fsm-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    margin-top: 10px;
+  }
+  .fsm-state {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    background: #F3F4F6;
+    color: #374151;
+    white-space: nowrap;
+  }
+  .fsm-state.active { background: var(--primary-light); color: var(--primary); }
+  .fsm-state.done { background: var(--success-light); color: var(--success); }
+  .fsm-arrow { color: var(--text-muted); font-size: 12px; }
+
+  .trigger-box {
+    background: #F9FAFB;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 12px;
+    font-style: italic;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .trigger-box strong { color: var(--text); font-style: normal; }
+
+  /* GOVERNANCE CARDS */
+  .gov-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border-left: 4px solid var(--primary);
+    border-top: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    padding: 20px 24px;
+  }
+  .gov-card-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+  .gov-card-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+  /* FSM STATES FULL */
+  .fsm-states-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .fsm-s {
+    font-size: 11px;
+    font-weight: 600;
+    font-family: monospace;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid;
+  }
+  .fsm-s.s-intake { background: #F0F9FF; color: #0369A1; border-color: #BAE6FD; }
+  .fsm-s.s-progress { background: var(--primary-light); color: var(--primary); border-color: #A5B4FC; }
+  .fsm-s.s-review { background: var(--warning-light); color: #B45309; border-color: #FDE68A; }
+  .fsm-s.s-done { background: var(--success-light); color: #065F46; border-color: #A7F3D0; }
+  .fsm-s.s-blocked { background: var(--error-light); color: #B91C1C; border-color: #FCA5A5; }
+  .fsm-s.s-archive { background: #F3F4F6; color: #6B7280; border-color: #D1D5DB; }
+
+  /* SLASH COMMANDS TABLE */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  thead { background: var(--primary); color: white; }
+  thead th { padding: 12px 16px; text-align: left; font-weight: 600; font-size: 13px; }
+  tbody tr:nth-child(even) { background: var(--bg); }
+  tbody tr:hover { background: var(--primary-light); }
+  tbody td { padding: 11px 16px; border-bottom: 1px solid var(--border); }
+  .cmd { font-family: monospace; font-weight: 700; color: var(--primary); font-size: 13px; }
+
+  /* ROADMAP */
+  .roadmap {
+    position: relative;
+    padding-left: 28px;
+  }
+  .roadmap::before {
+    content: "";
+    position: absolute;
+    left: 8px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: var(--border);
+  }
+  .roadmap-item {
+    position: relative;
+    margin-bottom: 24px;
+  }
+  .roadmap-item::before {
+    content: "";
+    position: absolute;
+    left: -24px;
+    top: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--primary);
+    border: 2px solid white;
+    box-shadow: 0 0 0 2px var(--primary);
+  }
+  .roadmap-title { font-weight: 700; font-size: 15px; color: var(--text); margin-bottom: 4px; }
+  .roadmap-desc { font-size: 14px; color: var(--text-muted); }
+
+  /* OVERVIEW PROSE */
+  .overview-prose {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    padding: 28px 32px;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+  .overview-prose strong { color: var(--primary); }
+
+  /* SCENARIO GRID */
+  .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); margin: 0; }
+
+  /* FOOTER */
+  .footer {
+    background: #0F172A;
+    color: #94A3B8;
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 13px;
+  }
+  .footer strong { color: #E2E8F0; }
+
+  /* PRINT */
+  @media print {
+    body { background: white; font-size: 12px; }
+    .hero { background: #4F46E5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section:nth-child(even) { background: white; }
+    .arch-box { background: #0F172A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card, .metric-card, .scenario-card, .gov-card { box-shadow: none; break-inside: avoid; }
+    .container, .hero-inner { max-width: 100%; padding: 0 12px; }
+  }
+
+  @media (max-width: 768px) {
+    .hero { padding: 40px 0 32px; }
+    .section { padding: 32px 0; }
+    .phase-track { flex-direction: column; align-items: flex-start; }
+    .arch-box { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">产品状态文档 · L4 验收</div>
+    <h1>Synapse Digital Twin<br>Collaboration Platform</h1>
+    <p class="hero-sub">Slack 原生的多 Agent 案例协作平台 — RBAC 角色隔离 · pgvector 语义检索 · CEO Guard 全链路审计</p>
+    <div class="hero-meta">
+      <span>📅 2026-04-28</span>
+      <span>🔖 Phase 4 完成版</span>
+      <span>📊 273/273 测试通过</span>
+      <span>🏗️ 代码库: synapse-platform</span>
+    </div>
+    <div class="phase-track">
+      <div class="phase-item done"><span class="phase-check">✅</span> Phase 1 · 基础骨架 <span style="opacity:0.7;font-size:11px;">(92/100)</span></div>
+      <div class="phase-item done"><span class="phase-check">✅</span> Phase 2 · 场景扩展 <span style="opacity:0.7;font-size:11px;">(93/100)</span></div>
+      <div class="phase-item done"><span class="phase-check">✅</span> Phase 3 · 架构完工 <span style="opacity:0.7;font-size:11px;">(91/100)</span></div>
+      <div class="phase-item done"><span class="phase-check">✅</span> Phase 4 · 真实集成 <span style="opacity:0.7;font-size:11px;">(93/100)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 1: OVERVIEW -->
+<div class="section">
+  <div class="container">
+    <div class="section-title">产品概述</div>
+    <p class="section-desc">一句话说清楚 Synapse 是什么，能做什么</p>
+
+    <div class="overview-prose">
+      <strong>Synapse</strong> 是一个 Slack 原生的多 Agent 协作平台，以"案例（Case）"为核心驱动单元，通过 <strong>Slack 原生界面</strong>接收来自任何团队成员的工作请求，由 <strong>5 个专业 AI Agent</strong> 自动分类、执行、审批并交付结果——L1-L3 自动派单 + L4 知会 + L5 裁决（详 CLAUDE.md L210），全过程通过 CEO Guard 审计日志（35 天 16,079 条记录）追溯。
+    </div>
+
+    <div class="card-grid">
+      <div class="card value-card">
+        <div class="card-icon">🤖</div>
+        <div class="card-title">专家级 AI 执行</div>
+        <div class="card-body">7 个核心业务场景，5 个专业 Agent（PM / Service / Research / Content / Orchestrator），每个 Agent 内置行业方法论知识库（McKinsey MECE、Amazon 6-pager、SCQA 等），确保交付物质量。</div>
+      </div>
+      <div class="card value-card">
+        <div class="card-icon">🏛️</div>
+        <div class="card-title">OPC 级可审计治理</div>
+        <div class="card-body">10 状态 FSM 生命周期管理，Approval Gate 强制人工审批门禁，EvidenceBundle 证据包，全链路 AuditLogger——每一个决策都有据可查，不可篡改。</div>
+      </div>
+      <div class="card value-card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">实时可见性</div>
+        <div class="card-body"><code>/synapse</code> 指令集提供实时案例仪表盘、Agent 绩效统计、SLA 状态追踪；SLA 预警在截止前 30 分钟主动 DM 告警，不让重要任务静默超时。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SECTION 2: ARCHITECTURE -->
+<div class="section" style="background:var(--surface)">
+  <div class="container">
+    <div class="section-title">平台架构</div>
+    <p class="section-desc">从 Slack 消息到交付物的完整数据流</p>
+
+    <div class="arch-box">
+<span class="c-muted">┌──────────────────────────────────────────────────────────────────────────────┐
+│                     Synapse Platform — 系统架构图                            │
+└──────────────────────────────────────────────────────────────────────────────┘</span>
+
+<span class="c-warning">用户 (Slack)</span> <span class="c-muted">──DM 或频道消息──▶</span> <span class="c-primary">Bolt App (Socket Mode)</span>
+                                              <span class="c-muted">│</span>
+                                              <span class="c-muted">▼</span>
+                                <span class="c-info">IntakeClassifier</span> <span class="c-muted">(关键词匹配 + RoutingRulesEngine YAML)</span>
+                                              <span class="c-muted">│</span>
+                                              <span class="c-muted">▼</span>
+                               <span class="c-primary">OrchestratorAgent</span> <span class="c-muted">(任务分发 + 案例创建)</span>
+                                              <span class="c-muted">│</span>
+              <span class="c-muted">┌─────────────────────┼───────────────────────┐</span>
+              <span class="c-muted">▼</span>                     <span class="c-muted">▼</span>                       <span class="c-muted">▼</span>
+    <span class="c-success">PMAgent</span>              <span class="c-success">ResearchAgent</span>          <span class="c-success">ContentAgent</span>
+  <span class="c-muted">(周报/会议筹备)</span>      <span class="c-muted">(调研/数据分析)</span>        <span class="c-muted">(内容撰写/决策简报)</span>
+              <span class="c-muted">└─────────────────────┼───────────────────────┘</span>
+                              <span class="c-muted">│</span>
+              <span class="c-muted">┌─────────────────────┼───────────────────────┐</span>
+              <span class="c-muted">▼</span>                     <span class="c-muted">▼</span>                       <span class="c-muted">▼</span>
+    <span class="c-success">ServiceAgent</span>       <span class="c-primary">FSM Engine</span>          <span class="c-warning">RAG Pipeline</span>
+  <span class="c-muted">(服务申请/ITIL)</span>   <span class="c-muted">(10 状态生命周期)</span>    <span class="c-muted">(pgvector HNSW 语义检索)</span>
+                              <span class="c-muted">│</span>
+              <span class="c-muted">┌─────────────────────┼───────────────────────┐</span>
+              <span class="c-muted">▼</span>                     <span class="c-muted">▼</span>                       <span class="c-muted">▼</span>
+    <span class="c-info">ApprovalGate</span>      <span class="c-info">EvidenceBundle</span>       <span class="c-info">SlaMonitor</span>
+  <span class="c-muted">(fail-loud 审批)</span>   <span class="c-muted">(证据包 + 审批记录)</span>   <span class="c-muted">(SLA 预警 DM)</span>
+                              <span class="c-muted">│</span>
+                              <span class="c-muted">▼</span>
+                   <span class="c-info">AuditLogger</span> <span class="c-muted">+ PostgreSQL (IStore&lt;T&gt;)</span>
+                              <span class="c-muted">│</span>
+                              <span class="c-muted">▼</span>
+            <span class="c-warning">Slack 交付</span> <span class="c-muted">(原始请求线程 · Block Kit 格式)</span>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SECTION 3: SCENARIOS -->
+<div class="section">
+  <div class="container">
+    <div class="section-title">七大业务场景</div>
+    <p class="section-desc">Synapse 当前支持的全部业务场景，涵盖日常运营最高频的 7 类需求</p>
+
+    <div class="scenario-grid">
+
+      <!-- T1 -->
+      <div class="scenario-card">
+        <div class="scenario-header">
+          <span class="scenario-icon">📋</span>
+          <div>
+            <div class="scenario-title">周报生成</div>
+            <div class="scenario-agent">agent.pm · weekly_report</div>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <div class="trigger-box"><strong>触发示例：</strong>"请帮我准备本周项目周报，重点包含进度、风险和下周计划"</div>
+          <p><strong>交付物：</strong>结构化项目周报，包含进度 RAG 状态、RAID 风险矩阵、下周计划三大模块，基于 PMI PMBOK 7th + Atlassian 方法论。</p>
+          <div class="fsm-flow">
+            <span class="fsm-state">INTAKE</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state active">IN_PROGRESS</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state">AWAITING_APPROVAL</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state done">COMPLETED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- T2 -->
+      <div class="scenario-card">
+        <div class="scenario-header">
+          <span class="scenario-icon">📅</span>
+          <div>
+            <div class="scenario-title">会议筹备</div>
+            <div class="scenario-agent">agent.pm · meeting_prep</div>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <div class="trigger-box"><strong>触发示例：</strong>"帮我准备明天的 Q2 季度评审会议"</div>
+          <p><strong>交付物：</strong>会议简报包，包含 SCQA 背景框架、结构化议题列表、预期 Q&A 清单、时间分配建议。</p>
+          <div class="fsm-flow">
+            <span class="fsm-state">INTAKE</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state active">IN_PROGRESS</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state">AWAITING_APPROVAL</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state done">COMPLETED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- T3 -->
+      <div class="scenario-card">
+        <div class="scenario-header">
+          <span class="scenario-icon">🎫</span>
+          <div>
+            <div class="scenario-title">服务申请</div>
+            <div class="scenario-agent">agent.ops · service_request</div>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <div class="trigger-box"><strong>触发示例：</strong>"我需要申请访问生产数据库的权限，请帮我提交申请"</div>
+          <p><strong>交付物：</strong>ITIL 风格服务申请记录，含申请类型、优先级、处理人、SLA 承诺，全程可追溯。</p>
+          <div class="fsm-flow">
+            <span class="fsm-state">INTAKE</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state active">PLANNED</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state">AWAITING_APPROVAL</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state done">COMPLETED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- T4 -->
+      <div class="scenario-card">
+        <div class="scenario-header">
+          <span class="scenario-icon">🔍</span>
+          <div>
+            <div class="scenario-title">调研请求</div>
+            <div class="scenario-agent">agent.research · research_request</div>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <div class="trigger-box"><strong>触发示例：</strong>"请帮我调研当前市场上主流 AI 协作工具的竞品情况"</div>
+          <p><strong>交付物：</strong>MECE 分解调研报告，强制 3 个独立信源，金字塔原则综合，附结论与建议。</p>
+          <div class="fsm-flow">
+            <span class="fsm-state">INTAKE</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state active">IN_PROGRESS</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state">AWAITING_APPROVAL</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state done">COMPLETED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- T5 -->
+      <div class="scenario-card">
+        <div class="scenario-header">
+          <span class="scenario-icon">📈</span>
+          <div>
+            <div class="scenario-title">数据分析</div>
+            <div class="scenario-agent">agent.research · data_analysis</div>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <div class="trigger-box"><strong>触发示例：</strong>"请帮我分析过去三个月的项目完成率数据，找出主要影响因素"</div>
+          <p><strong>交付物：</strong>假设驱动数据分析报告，包含数据摘要、假设验证路径、关键发现、行动建议。</p>
+          <div class="fsm-flow">
+            <span class="fsm-state">INTAKE</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state active">IN_PROGRESS</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state">AWAITING_APPROVAL</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state done">COMPLETED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- T6 -->
+      <div class="scenario-card">
+        <div class="scenario-header">
+          <span class="scenario-icon">✍️</span>
+          <div>
+            <div class="scenario-title">内容撰写</div>
+            <div class="scenario-agent">agent.content · content_draft</div>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <div class="trigger-box"><strong>触发示例：</strong>"请帮我撰写一篇关于 Synapse 平台上线的内部公告"</div>
+          <p><strong>交付物：</strong>金字塔原则结构化内容，SCQA 开篇，Chicago Manual of Style 写作规范，受众感知清晰。</p>
+          <div class="fsm-flow">
+            <span class="fsm-state">INTAKE</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state active">IN_PROGRESS</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state">AWAITING_APPROVAL</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state done">COMPLETED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- T7 -->
+      <div class="scenario-card">
+        <div class="scenario-header">
+          <span class="scenario-icon">📝</span>
+          <div>
+            <div class="scenario-title">决策简报</div>
+            <div class="scenario-agent">agent.content · decision_brief</div>
+          </div>
+        </div>
+        <div class="scenario-body">
+          <div class="trigger-box"><strong>触发示例：</strong>"我需要一份 A/B 方案决策材料，用于董事会"</div>
+          <p><strong>交付物：</strong>Amazon 6-pager 风格决策简报，强制包含 ≥3 个选项 + 明确推荐，附风险评估与前提假设。</p>
+          <div class="fsm-flow">
+            <span class="fsm-state">INTAKE</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state active">IN_PROGRESS</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state">AWAITING_APPROVAL</span><span class="fsm-arrow">→</span>
+            <span class="fsm-state done">COMPLETED</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SECTION 4: METRICS -->
+<div class="section" style="background:var(--surface)">
+  <div class="container">
+    <div class="section-title">技术指标（Phase 4 交付状态）</div>
+    <p class="section-desc">四阶段累计质量门禁数据，全部达标</p>
+
+    <div class="card-grid-4">
+      <div class="metric-card">
+        <div class="metric-value">273</div>
+        <div class="metric-label">测试用例全部通过</div>
+        <div class="metric-badge">0 失败</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">0</div>
+        <div class="metric-label">TypeScript 编译错误</div>
+        <div class="metric-badge">strict 模式</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">4/4</div>
+        <div class="metric-label">真实 Slack E2E 通过</div>
+        <div class="metric-badge">janussandbox.slack.com</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">20</div>
+        <div class="metric-label">决策记录归档</div>
+        <div class="metric-badge">D-004 至 D-020</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">7</div>
+        <div class="metric-label">业务场景全覆盖</div>
+        <div class="metric-badge">E2E 验证</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">5</div>
+        <div class="metric-label">专业 AI Agent</div>
+        <div class="metric-badge">RAG 知识注入</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">93</div>
+        <div class="metric-label">Phase 4 综合评分 /100</div>
+        <div class="metric-badge">门限 85/100</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">4</div>
+        <div class="metric-label">代码 Phase 分支</div>
+        <div class="metric-badge">wp1.5 → phase4</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SECTION 5: GOVERNANCE -->
+<div class="section">
+  <div class="container">
+    <div class="section-title">核心治理机制</div>
+    <p class="section-desc">OPC 级可审计治理的四个核心技术支柱，确保每个案例从请求到交付全程可追溯（PreToolUse hook + 审计日志 + D 编号决策 + 强制派单表）。</p>
+
+    <div class="card-grid-2">
+
+      <div class="gov-card">
+        <div class="gov-card-title">🔄 10 状态 FSM（有限状态机）</div>
+        <div class="gov-card-desc">
+          每个案例有且仅有一个当前状态，所有状态转移受 FSM 引擎管控，非法转移直接拒绝。状态 SSOT（Single Source of Truth）防止多处状态不一致。
+        </div>
+        <div class="fsm-states-list">
+          <span class="fsm-s s-intake">INTAKE</span>
+          <span class="fsm-s s-progress">TRIAGED</span>
+          <span class="fsm-s s-progress">PLANNED</span>
+          <span class="fsm-s s-progress">IN_PROGRESS</span>
+          <span class="fsm-s s-review">AWAITING_REVIEW</span>
+          <span class="fsm-s s-review">AWAITING_APPROVAL</span>
+          <span class="fsm-s s-blocked">BLOCKED</span>
+          <span class="fsm-s s-done">COMPLETED</span>
+          <span class="fsm-s s-archive">ARCHIVED</span>
+          <span class="fsm-s s-archive">CANCELLED</span>
+        </div>
+      </div>
+
+      <div class="gov-card">
+        <div class="gov-card-title">🔐 Approval Gate（审批门禁）</div>
+        <div class="gov-card-desc">
+          所有案例在进入 COMPLETED 前必须经过人工审批。采用 fail-loud 模式——审批矩阵加载失败时立即抛出异常，不允许静默通过。审批记录写入 EvidenceBundle，双路径强制执行（human + approvalRecord）。
+          <br><br>
+          审批矩阵通过 YAML 配置驱动，支持按场景类型、优先级、风险等级配置不同审批人。
+        </div>
+      </div>
+
+      <div class="gov-card">
+        <div class="gov-card-title">📦 EvidenceBundle（证据包）</div>
+        <div class="gov-card-desc">
+          每个案例生成独立的证据包，包含：
+          <ul style="margin-top:8px;padding-left:16px;font-size:13px;line-height:1.8;">
+            <li>原始 prompt（用户请求完整文本）</li>
+            <li>Agent 生成的 response（交付物全文）</li>
+            <li>审批信封（approvalEnvelopeId + 审批人 ID + 时间戳）</li>
+            <li>compiledBy 字段（human:&lt;userId&gt;）</li>
+          </ul>
+          证据包支持 PostgreSQL 持久化，可通过 <code>/synapse case {id}</code> 随时检索。
+        </div>
+      </div>
+
+      <div class="gov-card">
+        <div class="gov-card-title">📜 AuditLogger（全链路审计）</div>
+        <div class="gov-card-desc">
+          所有关键事件自动记录到审计日志：
+          <ul style="margin-top:8px;padding-left:16px;font-size:13px;line-height:1.8;">
+            <li><span class="tag">CASE_CREATED</span> — 案例创建，含分类结果</li>
+            <li><span class="tag">CASE_STATUS_CHANGED</span> — 每次状态迁移</li>
+            <li><span class="tag">CASE_COMPLETED</span> — 交付完成，含交付物摘要</li>
+            <li>Slack 交互事件（消息接收、审批点击）</li>
+          </ul>
+          日志存储于 PostgreSQL AuditStore，支持按时间范围、案例 ID、事件类型检索。
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SECTION 6: SLACK COMMANDS -->
+<div class="section" style="background:var(--surface)">
+  <div class="container">
+    <div class="section-title">Slack 指令参考</div>
+    <p class="section-desc">在 #ai-agents-noti 频道中使用以下斜杠命令管理案例</p>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>指令</th>
+            <th>功能说明</th>
+            <th>示例</th>
+            <th>返回内容</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="cmd">/synapse cases</span></td>
+            <td>查看所有活跃案例列表</td>
+            <td><code>/synapse cases</code></td>
+            <td>Block Kit 卡片，含状态色标、Agent、SLA 状态，最多 10 条</td>
+          </tr>
+          <tr>
+            <td><span class="cmd">/synapse cases [status]</span></td>
+            <td>按状态过滤案例</td>
+            <td><code>/synapse cases awaiting_approval</code></td>
+            <td>仅显示指定状态的案例</td>
+          </tr>
+          <tr>
+            <td><span class="cmd">/synapse cases [agent]</span></td>
+            <td>按 Agent 过滤案例</td>
+            <td><code>/synapse cases agent.pm</code></td>
+            <td>仅显示该 Agent 负责的案例</td>
+          </tr>
+          <tr>
+            <td><span class="cmd">/synapse case {id}</span></td>
+            <td>查看单个案例详情</td>
+            <td><code>/synapse case CASE-20260428-0001</code></td>
+            <td>完整案例信息：FSM 状态、Artifact 数量、SLA、[Approve] 按钮</td>
+          </tr>
+          <tr>
+            <td><span class="cmd">/synapse stats</span></td>
+            <td>查看 Agent 绩效统计</td>
+            <td><code>/synapse stats</code></td>
+            <td>各 Agent 处理量、完成率、SLA 合规率（全时段）</td>
+          </tr>
+          <tr>
+            <td><span class="cmd">/synapse stats [期间]</span></td>
+            <td>按时间段统计</td>
+            <td><code>/synapse stats 7d</code></td>
+            <td>支持 7d / 30d / all 三个时间窗口</td>
+          </tr>
+          <tr>
+            <td><span class="cmd">DM to Bot</span></td>
+            <td>触发业务场景（7 种）</td>
+            <td>直接发送自然语言请求</td>
+            <td>Bot 回复 CASE-ID 确认 + 执行结果</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top:20px;padding:16px 20px;background:var(--info-light);border-radius:10px;border:1px solid #BFDBFE;font-size:14px;">
+      <strong style="color:var(--info)">💡 状态颜色说明：</strong>
+      &nbsp;🔵 IN_PROGRESS &nbsp; 🟡 AWAITING_APPROVAL &nbsp; 🔴 BLOCKED &nbsp; ✅ COMPLETED
+      <br>
+      <strong style="color:var(--info)">⚠️ SLA 预警：</strong>案例距 SLA 截止 ≤ 30 分钟时，SLA 负责人将收到 Slack DM 告警（可配置阈值）。
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SECTION 7: ROADMAP -->
+<div class="section">
+  <div class="container">
+    <div class="section-title">Phase 5 路线图</div>
+    <p class="section-desc">Phase 4 验收后，以下为建议的下一阶段重点（按优先级排序）</p>
+
+    <div class="card-grid-2">
+      <div class="card">
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <div class="roadmap-title">🔑 RBAC 完整实现（最高优先）</div>
+            <div class="roadmap-desc">Phase 4 已完成 <code>IPermissionGate</code> 接口 + <code>NoOpPermissionGate</code> + migration 004 + 设计规范。Phase 5 替换为 <code>RbacPermissionGate</code>，集成 <code>UserStore</code>，实现 admin / pm / viewer 三级角色权限控制。</div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-title">🌐 Web 仪表盘</div>
+            <div class="roadmap-desc">触发条件：首个外部演示或非 Slack 可见性报告需求。提供独立 Web UI，展示案例看板、SLA 热力图、Agent 绩效趋势。</div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-title">🔬 RAG 召回质量量化</div>
+            <div class="roadmap-desc">建立 golden-set 评估管线（precision / recall / MRR），覆盖 PMAgent 和 ResearchAgent 知识库，确保语义检索质量可测量。</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="roadmap">
+          <div class="roadmap-item">
+            <div class="roadmap-title">⚙️ 生产 CI/CD 管道</div>
+            <div class="roadmap-desc">GitHub Actions + Docker Compose，将 live testcontainer 集成测试纳入 CI 自动化，实现每次代码变更自动验证。</div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-title">📊 高级报表</div>
+            <div class="roadmap-desc"><code>/synapse cases</code> 分页支持（>10 条案例）；<code>/synapse sla</code> 子命令按 SLA 紧急度分层（overdue / warning / on_track）。</div>
+          </div>
+          <div class="roadmap-item">
+            <div class="roadmap-title">🧠 跨 Agent 语料库检索</div>
+            <div class="roadmap-desc">ContentAgent 可查询 PMAgent 知识库，ResearchAgent 可引用跨领域语料，提升跨场景交付物的一致性和质量。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>Synapse Digital Twin Collaboration Platform</strong> — Phase 4 完成版<br>
+  文档版本：2026-04-28 &nbsp;·&nbsp; 执行者：knowledge_engineer + integration_qa &nbsp;·&nbsp; 授权：Lysander CEO<br>
+  <span style="opacity:0.5;font-size:11px;margin-top:8px;display:block;">代码仓库: synapse-platform, branch phase4-sprint-j, commit 86239a7 &nbsp;·&nbsp; 决策链: D-004 → D-020</span>
+</div>
+
+</body>
+</html>

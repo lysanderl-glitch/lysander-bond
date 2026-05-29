@@ -46,7 +46,7 @@ jobs:
               -d www.synapsehd.com \
               --non-interactive \
               --agree-tos \
-              --email lysanderl@janusd.io \
+              --email lysanderl@janusd.com \
               --redirect 2>&1"
 
       - name: Reload nginx

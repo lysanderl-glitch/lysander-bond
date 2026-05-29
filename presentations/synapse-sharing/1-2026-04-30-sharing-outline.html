@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synapse AI 协作运营体系 · 分享提纲</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    background: #fafbfc;
+    color: #1e293b;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ─── PAGE LAYOUT ─── */
+  .page {
+    width: 1120px;
+    margin: 0 auto;
+    padding: 40px 48px;
+    background: #fafbfc;
+    min-height: 794px;
+  }
+
+  .page-break {
+    page-break-after: always;
+    border-bottom: 2px dashed #e2e8f0;
+    margin: 0 auto 0 auto;
+    width: 1120px;
+  }
+
+  /* ─── PAGE 1: HERO ─── */
+  .hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1d4ed8 100%);
+    border-radius: 16px;
+    padding: 44px 52px;
+    color: #fff;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(96, 165, 250, 0.12);
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    bottom: -40px; left: 40%;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(167, 139, 250, 0.10);
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(96, 165, 250, 0.25);
+    border: 1px solid rgba(147, 197, 253, 0.4);
+    color: #93c5fd;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .hero-sub {
+    color: #93c5fd;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .hero-date {
+    color: #64748b;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ─── CORE PROPOSITIONS ─── */
+  .propositions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .prop-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #2563eb;
+    border-radius: 8px;
+    padding: 14px 18px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .prop-num {
+    flex-shrink: 0;
+    width: 26px; height: 26px;
+    background: #2563eb;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+
+  .prop-text {
+    font-size: 14px;
+    color: #1e293b;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .prop-text strong {
+    color: #1e3a8a;
+  }
+
+  /* ─── TIMELINE ─── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 12px;
+  }
+
+  .timeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-bottom: 28px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .tl-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+  }
+
+  .tl-item:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-60%);
+    color: #94a3b8;
+    font-size: 16px;
+    z-index: 1;
+  }
+
+  .tl-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #2563eb;
+    margin-bottom: 6px;
+  }
+
+  .tl-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #334155;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .tl-sub {
+    font-size: 10px;
+    color: #94a3b8;
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  /* ─── 4 QUADRANT CARDS ─── */
+  .quadrant-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .quad-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quad-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+  }
+
+  .quad-card.q1::before { background: #2563eb; }
+  .quad-card.q2::before { background: #7c3aed; }
+  .quad-card.q3::before { background: #0891b2; }
+  .quad-card.q4::before { background: #059669; }
+
+  .quad-icon {
+    font-size: 22px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .quad-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 4px;
+  }
+
+  .quad-en {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    margin-bottom: 8px;
+  }
+
+  .quad-desc {
+    font-size: 12.5px;
+    color: #475569;
+    line-height: 1.55;
+  }
+
+  /* ─── FOOTER ─── */
+  .page-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 4px;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .footer-link {
+    font-size: 12px;
+    font-weight: 600;
+    color: #2563eb;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .footer-copy {
+    font-size: 11px;
+    color: #94a3b8;
+  }
+
+  /* ─── PAGE 2: MODULE GRID ─── */
+  .page2-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #1e3a8a;
+  }
+
+  .page2-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #1e3a8a;
+  }
+
+  .page2-sub {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+  }
+
+  .page2-tag {
+    background: #1e3a8a;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .module-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .module-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .module-card.m1 { border-left: 4px solid #2563eb; }
+  .module-card.m2 { border-left: 4px solid #7c3aed; }
+  .module-card.m3 { border-left: 4px solid #059669; }
+  .module-card.m4 { border-left: 4px solid #ea580c; }
+  .module-card.m5 { border-left: 4px solid #0891b2; }
+  .module-card.m6 { border-left: 4px solid #db2777; }
+
+  .module-num {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .module-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .module-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .module-en {
+    font-size: 10px;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .module-points {
+    list-style: none;
+    flex: 1;
+  }
+
+  .module-points li {
+    font-size: 12.5px;
+    color: #334155;
+    padding: 4px 0;
+    border-bottom: 1px dashed #f1f5f9;
+    line-height: 1.45;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .module-points li:last-child {
+    border-bottom: none;
+  }
+
+  .point-icon {
+    flex-shrink: 0;
+    font-size: 13px;
+    margin-top: 1px;
+  }
+
+  .module-badge {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    align-self: flex-start;
+  }
+
+  .badge-ga { background: #dcfce7; color: #15803d; }
+  .badge-demo { background: #dbeafe; color: #1d4ed8; }
+  .badge-survey { background: #fce7f3; color: #be185d; }
+  .badge-research { background: #fef3c7; color: #b45309; }
+  .badge-vision { background: #ede9fe; color: #6d28d9; }
+
+  /* ─── CLOSING QUOTE ─── */
+  .closing-quote {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
+    border-radius: 12px;
+    padding: 22px 32px;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .quote-mark {
+    font-size: 48px;
+    color: rgba(147, 197, 253, 0.4);
+    line-height: 0.8;
+    margin-bottom: 8px;
+    display: block;
+    font-family: Georgia, serif;
+  }
+
+  .quote-text {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+  }
+
+  .quote-text em {
+    font-style: normal;
+    color: #93c5fd;
+  }
+
+  /* ─── PRINT ─── */
+  @media print {
+    body { background: #fff; }
+    .page { width: 100%; padding: 20px 28px; }
+    .page-break { page-break-after: always; border: none; }
+  }
+
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     PAGE 1 — 分享总纲
+═══════════════════════════════════════════ -->
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">Internal Sharing · 2026-04-29</div>
+    <h1>Synapse AI 协作运营体系</h1>
+    <div class="hero-sub">分享提纲 · Multi-Agent 团队协作与 AI 治理实践</div>
+    <div class="hero-date">主讲：刘子杨 &nbsp;·&nbsp; lysander.bond &nbsp;·&nbsp; synapsehd.com &nbsp;·&nbsp; 2026-04-29</div>
+  </div>
+
+  <!-- CORE PROPOSITIONS -->
+  <div class="section-label">核心命题</div>
+  <div class="propositions">
+    <div class="prop-item">
+      <div class="prop-num">1</div>
+      <div class="prop-text">不再受限于个人知识体系 — AI 团队帮你<strong>找资源、做调研、并行执行</strong>，能力边界由团队规模决定，而非个人储备</div>
+    </div>
+    <div class="prop-item">
+      <div class="prop-num">2</div>
+      <div class="prop-text">一套完整的 AI 治理框架：<strong>做正确的事 · 正确的做事 · 把事做正确</strong> — 从战略到执行全链路有序</div>
+    </div>
+    <div class="prop-item">
+      <div class="prop-num">3</div>
+      <div class="prop-text"><strong>"Synapse 让一个人拥有一个团队的执行力，让一个团队拥有一个组织的智能。"</strong></div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section-label">分享流程导航</div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">Synapse<br>体系全景</div>
+      <div class="tl-sub">架构 & 治理</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">场景验证 1<br>数字分身平台</div>
+      <div class="tl-sub">Digital Twin</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">场景验证 2<br>PMO Auto</div>
+      <div class="tl-sub">项目自动化</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">小场景<br>分享</div>
+      <div class="tl-sub">代码审计等</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">工具<br>横向对比</div>
+      <div class="tl-sub">选型建议</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-label">调研<br>& 反馈</div>
+      <div class="tl-sub">现场问卷</div>
+    </div>
+  </div>
+
+  <!-- 4 QUADRANT -->
+  <div class="section-label">AI 使用能力四象限</div>
+  <div class="quadrant-grid">
+    <div class="quad-card q1">
+      <span class="quad-icon">💬</span>
+      <div class="quad-title">沟通方式</div>
+      <div class="quad-en">Prompt Engineering</div>
+      <div class="quad-desc">精准表达需求是 AI 协作的起点。结构化 Prompt、上下文管理、角色锚定，决定 AI 输出质量的上限。</div>
+    </div>
+    <div class="quad-card q2">
+      <span class="quad-icon">🧠</span>
+      <div class="quad-title">能力沉淀</div>
+      <div class="quad-en">Knowledge & Skills</div>
+      <div class="quad-desc">知识体系（OBS 第二大脑）+ 可复用 Skills 规则库，将个人与团队经验固化为可调用的 AI 能力。</div>
+    </div>
+    <div class="quad-card q3">
+      <span class="quad-icon">⚙️</span>
+      <div class="quad-title">AI 治理</div>
+      <div class="quad-en">Harness Engineering</div>
+      <div class="quad-desc">规则（Guides）+ 流程（Workflow）+ 约束（Constraints）三层治理。Agent = Model + Harness，可控可审计。</div>
+    </div>
+    <div class="quad-card q4">
+      <span class="quad-icon">🚀</span>
+      <div class="quad-title">AI 进化</div>
+      <div class="quad-en">Gstack · GraphRAG</div>
+      <div class="quad-desc">引入 GraphRAG 知识图谱融合，System Self-improve 机制持续自我迭代，AI 能力随组织知识同步成长。</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <div class="footer-links">
+      <a class="footer-link" href="https://lysander.bond">🌐 lysander.bond</a>
+      <a class="footer-link" href="https://synapsehd.com">🔗 synapsehd.com</a>
+    </div>
+    <div class="footer-copy">Synapse AI 协作运营体系 · 内部分享资料 · 2026-04-29 &nbsp;|&nbsp; Page 1 / 2</div>
+  </div>
+
+</div><!-- /page 1 -->
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════
+     PAGE 2 — 内容详情 6 模块
+═══════════════════════════════════════════ -->
+<div class="page">
+
+  <!-- PAGE 2 HEADER -->
+  <div class="page2-header">
+    <div>
+      <div class="page2-title">内容详情 · 六大模块展开</div>
+      <div class="page2-sub">能力验证 · 工具对比 · 场景演示 · 现场调研</div>
+    </div>
+    <div class="page2-tag">Synapse · 2026-04-29</div>
+  </div>
+
+  <!-- MODULE GRID -->
+  <div class="module-grid">
+
+    <!-- M1: Synapse 体系 -->
+    <div class="module-card m1">
+      <div class="module-num">Module 01</div>
+      <span class="module-icon">🏗️</span>
+      <div class="module-title">Synapse 体系全景</div>
+      <div class="module-en">AI Operating System</div>
+      <ul class="module-points">
+        <li><span class="point-icon">📐</span>五层架构：知识 → 治理 → 团队 → 情报 → 决策</li>
+        <li><span class="point-icon">👥</span>58 核心 Agent，69 全量启用，专业分工</li>
+        <li><span class="point-icon">🏢</span>OPC 适用：组织 · 制度 · 治理 · 执行四层面</li>
+        <li><span class="point-icon">🔄</span>四级决策体系：L1 自动 → L4 总裁</li>
+      </ul>
+      <span class="module-badge badge-ga">✅ 已 GA</span>
+    </div>
+
+    <!-- M2: 数字分身 -->
+    <div class="module-card m2">
+      <div class="module-num">Module 02</div>
+      <span class="module-icon">🤖</span>
+      <div class="module-title">Digital Twin 协作平台</div>
+      <div class="module-en">让 AI 真正懂你</div>
+      <ul class="module-points">
+        <li><span class="point-icon">🪞</span>从英语沟通痛点出发，打造数字分身</li>
+        <li><span class="point-icon">📄</span>L 级任务：产品文档 + 测试用例全链路</li>
+        <li><span class="point-icon">🔍</span>质量报告 + 验收指南自动生成</li>
+        <li><span class="point-icon">🏛️</span>延伸至组织变革与治理层面实践</li>
+      </ul>
+      <span class="module-badge badge-demo">🔵 演示</span>
+    </div>
+
+    <!-- M3: PMO Auto -->
+    <div class="module-card m3">
+      <div class="module-num">Module 03</div>
+      <span class="module-icon">📊</span>
+      <div class="module-title">PMO Auto</div>
+      <div class="module-en">项目管理全自动化</div>
+      <ul class="module-points">
+        <li><span class="point-icon">⚡</span>Claude Code 驱动全流程自动化</li>
+        <li><span class="point-icon">🔗</span>Slack + n8n + Asana + Notion + Drive</li>
+        <li><span class="point-icon">📅</span>PMO Auto → PMO Auto Monday 演进</li>
+        <li><span class="point-icon">📈</span>从工具集成到智能编排的跃升路径</li>
+      </ul>
+      <span class="module-badge badge-ga">✅ 已 GA</span>
+    </div>
+
+    <!-- M4: 小场景 -->
+    <div class="module-card m4">
+      <div class="module-num">Module 04</div>
+      <span class="module-icon">🔬</span>
+      <div class="module-title">小场景分享</div>
+      <div class="module-en">高频实用场景</div>
+      <ul class="module-points">
+        <li><span class="point-icon">🛡️</span>代码审计：安全漏洞 + 质量分析自动化</li>
+        <li><span class="point-icon">🖥️</span>未来软件无界面：Agent 即界面</li>
+        <li><span class="point-icon">🔌</span>直接提供 API / CLI，无需传统 UI</li>
+        <li><span class="point-icon">🌐</span>服务层即产品，交互层由 AI 承载</li>
+      </ul>
+      <span class="module-badge badge-vision">🔮 前瞻</span>
+    </div>
+
+    <!-- M5: 工具对比 -->
+    <div class="module-card m5">
+      <div class="module-num">Module 05</div>
+      <span class="module-icon">⚖️</span>
+      <div class="module-title">工具横向对比</div>
+      <div class="module-en">实际体验 & 选型建议</div>
+      <ul class="module-points">
+        <li><span class="point-icon">🏆</span>Claude：Cowork 协作 + Code 研发双引擎</li>
+        <li><span class="point-icon">🤝</span>Codex · Trae · OpenClaw · Hermes 对比</li>
+        <li><span class="point-icon">📊</span>基于真实项目的体验数据，非纸面评测</li>
+        <li><span class="point-icon">🎯</span>场景匹配优先，不唯单一工具</li>
+      </ul>
+      <span class="module-badge badge-research">📋 调研中</span>
+    </div>
+
+    <!-- M6: 调研 -->
+    <div class="module-card m6">
+      <div class="module-num">Module 06</div>
+      <span class="module-icon">📝</span>
+      <div class="module-title">调研 & 反馈</div>
+      <div class="module-en">AI 研发能力建设评估</div>
+      <ul class="module-points">
+        <li><span class="point-icon">📋</span>技术现状调研问卷：现场填写</li>
+        <li><span class="point-icon">🔎</span>AI 研发能力建设成熟度评估</li>
+        <li><span class="point-icon">💡</span>共建认知：你的实践 + Synapse 框架</li>
+        <li><span class="point-icon">🤝</span>结果汇总后共享，推动团队认知对齐</li>
+      </ul>
+      <span class="module-badge badge-survey">🎀 现场互动</span>
+    </div>
+
+  </div><!-- /module-grid -->
+
+  <!-- CLOSING QUOTE -->
+  <div class="closing-quote">
+    <span class="quote-mark">"</span>
+    <div class="quote-text">
+      Synapse 让<em>一个人</em>拥有<em>一个团队</em>的执行力，<br>
+      让<em>一个团队</em>拥有<em>一个组织</em>的智能。
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <div class="footer-links">
+      <a class="footer-link" href="https://lysander.bond">🌐 lysander.bond</a>
+      <a class="footer-link" href="https://synapsehd.com">🔗 synapsehd.com</a>
+    </div>
+    <div class="footer-copy">Synapse AI 协作运营体系 · 内部分享资料 · 2026-04-29 &nbsp;|&nbsp; Page 2 / 2</div>
+  </div>
+
+</div><!-- /page 2 -->
+
+</body>
+</html>

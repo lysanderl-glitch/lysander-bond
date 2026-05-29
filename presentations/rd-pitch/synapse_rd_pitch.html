@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Synapse v3.0 — 研发赋能体系</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-900:#050a18;--bg-800:#090f22;--bg-700:#0d1530;
+  --bg-card:#111827;--bg-card-hover:#1a2540;
+  --accent-blue:#3b82f6;--accent-violet:#7c3aed;
+  --accent-cyan:#06b6d4;--accent-indigo:#6366f1;
+  --grad-primary:linear-gradient(135deg,#3b82f6,#7c3aed);
+  --grad-secondary:linear-gradient(135deg,#06b6d4,#3b82f6);
+  --text-primary:#f1f5f9;--text-secondary:#94a3b8;--text-muted:#64748b;
+  --border:rgba(99,102,241,0.2);--border-bright:rgba(99,102,241,0.5);
+  --radius:16px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg-900);color:var(--text-primary);
+  font-family:'PingFang SC','Hiragino Sans GB','Microsoft YaHei',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  line-height:1.7;overflow-x:hidden;
+}
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:16px 40px;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(5,10,24,0.85);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{font-size:1.1rem;font-weight:700;background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:28px}
+.nav-links a{color:var(--text-secondary);text-decoration:none;font-size:0.9rem;transition:color .2s}
+.nav-links a:hover{color:var(--accent-blue)}
+/* HERO */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(59,130,246,0.12) 0%,transparent 70%),
+              radial-gradient(ellipse 60% 50% at 80% 60%,rgba(124,58,237,0.10) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);
+  border-radius:999px;padding:6px 18px;font-size:0.82rem;color:var(--accent-blue);
+  margin-bottom:28px;letter-spacing:.05em;
+}
+.hero-badge::before{content:'◆';font-size:0.6rem}
+h1.hero-title{
+  font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;line-height:1.15;
+  margin-bottom:20px;
+  background:linear-gradient(135deg,#f1f5f9 0%,#93c5fd 40%,#a78bfa 70%,#f1f5f9 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-subtitle{font-size:clamp(1rem,2vw,1.25rem);color:var(--text-secondary);max-width:600px;margin:0 auto 48px}
+.hero-stats{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.hero-stat{text-align:center}
+.hero-stat .num{font-size:2.4rem;font-weight:800;background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-stat .label{font-size:0.82rem;color:var(--text-muted);margin-top:4px}
+.hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.btn-primary{
+  padding:13px 32px;border-radius:999px;font-size:0.95rem;font-weight:600;
+  background:var(--grad-primary);color:#fff;border:none;cursor:pointer;
+  box-shadow:0 0 30px rgba(59,130,246,0.35);transition:transform .2s,box-shadow .2s;text-decoration:none;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 45px rgba(59,130,246,0.5)}
+.btn-outline{
+  padding:13px 32px;border-radius:999px;font-size:0.95rem;font-weight:600;
+  background:transparent;color:var(--text-primary);border:1px solid var(--border-bright);
+  cursor:pointer;transition:all .2s;text-decoration:none;
+}
+.btn-outline:hover{background:rgba(99,102,241,0.1)}
+/* SECTIONS */
+section{padding:90px 24px}
+.container{max-width:1100px;margin:0 auto}
+.section-label{
+  display:inline-block;font-size:0.78rem;font-weight:600;letter-spacing:.12em;
+  color:var(--accent-blue);text-transform:uppercase;margin-bottom:12px;
+}
+.section-title{font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;margin-bottom:16px;line-height:1.25}
+.section-desc{color:var(--text-secondary);font-size:1rem;max-width:600px;margin-bottom:48px}
+/* OVERVIEW */
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:700px){.overview-grid{grid-template-columns:1fr}}
+.overview-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:32px;transition:all .25s;
+}
+.overview-card:hover{border-color:var(--border-bright);background:var(--bg-card-hover);transform:translateY(-3px)}
+.overview-card .icon{font-size:2rem;margin-bottom:16px}
+.overview-card h3{font-size:1.1rem;font-weight:700;margin-bottom:10px}
+.overview-card p{color:var(--text-secondary);font-size:0.93rem;line-height:1.7}
+/* COMPARE */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+@media(max-width:640px){.compare-grid{grid-template-columns:1fr}}
+.compare-col{padding:32px}
+.compare-col.before{background:rgba(100,116,139,0.08)}
+.compare-col.after{background:rgba(59,130,246,0.07);border-left:1px solid var(--border)}
+.compare-col h3{font-size:1rem;font-weight:700;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.compare-col.before h3{color:var(--text-muted)}
+.compare-col.after h3{color:var(--accent-blue)}
+.compare-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;font-size:0.9rem}
+.compare-item .icon{flex-shrink:0;margin-top:2px}
+.compare-col.before .icon{color:#ef4444}
+.compare-col.after .icon{color:#22c55e}
+/* CAPABILITIES */
+.cap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.cap-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;display:flex;flex-direction:column;gap:12px;transition:all .25s;
+}
+.cap-card:hover{border-color:var(--border-bright);background:var(--bg-card-hover);transform:translateY(-3px)}
+.cap-tag{
+  display:inline-block;font-size:0.72rem;font-weight:700;letter-spacing:.08em;
+  padding:3px 10px;border-radius:999px;text-transform:uppercase;
+}
+.cap-card h3{font-size:1.05rem;font-weight:700}
+.cap-card p{color:var(--text-secondary);font-size:0.88rem;line-height:1.65}
+.cap-card ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.cap-card ul li{
+  font-size:0.78rem;padding:3px 10px;
+  background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);
+  border-radius:999px;color:var(--text-secondary);
+}
+/* PIPELINE */
+.pipeline{display:flex;align-items:center;flex-wrap:wrap;gap:0;margin:0 auto;justify-content:center}
+.pipe-step{
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px 20px;min-width:140px;flex:1;max-width:180px;transition:all .25s;
+}
+.pipe-step:hover{border-color:var(--border-bright);transform:translateY(-4px)}
+.pipe-step .num{
+  width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;font-weight:700;margin-bottom:10px;
+  background:var(--grad-primary);
+}
+.pipe-step h4{font-size:0.88rem;font-weight:700;margin-bottom:6px}
+.pipe-step p{font-size:0.78rem;color:var(--text-muted);line-height:1.5}
+.pipe-arrow{color:var(--accent-blue);font-size:1.4rem;padding:0 6px;flex-shrink:0}
+@media(max-width:900px){.pipeline{flex-direction:column}.pipe-arrow{transform:rotate(90deg)}}
+/* QA */
+.qa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.qa-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:24px 20px;text-align:center;transition:all .25s;
+}
+.qa-card:hover{border-color:var(--border-bright);transform:translateY(-3px)}
+.qa-ring{
+  width:72px;height:72px;border-radius:50%;margin:0 auto 14px;display:flex;align-items:center;
+  justify-content:center;font-size:1.1rem;font-weight:800;
+  background:conic-gradient(#3b82f6 100%,rgba(99,102,241,0.15) 0);
+  box-shadow:0 0 20px rgba(59,130,246,0.3);
+}
+.qa-card h4{font-size:0.9rem;font-weight:700;margin-bottom:6px}
+.qa-card p{font-size:0.8rem;color:var(--text-muted);line-height:1.5}
+/* VALUE */
+.value-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+.value-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;transition:all .25s;
+}
+.value-card:hover{border-color:var(--border-bright);transform:translateY(-3px)}
+.value-scene{font-size:0.78rem;color:var(--accent-cyan);font-weight:600;letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase}
+.value-card h3{font-size:1rem;font-weight:700;margin-bottom:8px}
+.value-card .pain{color:#f87171;font-size:0.85rem;margin-bottom:8px}
+.value-card .solution{color:#4ade80;font-size:0.85rem}
+.value-card .pain::before{content:'痛点：';font-weight:600}
+.value-card .solution::before{content:'解法：';font-weight:600}
+/* SURVEY */
+.survey-section{background:linear-gradient(135deg,rgba(15,23,42,0.95),rgba(13,21,48,0.95));border-top:1px solid var(--border)}
+.survey-intro{
+  background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.2);
+  border-radius:var(--radius);padding:28px 32px;margin-bottom:40px;
+}
+.survey-intro p{color:var(--text-secondary);font-size:0.95rem;line-height:1.8}
+.survey-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:720px){.survey-grid{grid-template-columns:1fr}}
+.survey-card{
+  background:rgba(241,245,249,0.04);border:1px solid rgba(241,245,249,0.1);
+  border-radius:var(--radius);padding:28px;
+}
+.survey-card h3{
+  font-size:1rem;font-weight:700;margin-bottom:18px;padding-bottom:12px;
+  border-bottom:1px solid rgba(241,245,249,0.1);display:flex;align-items:center;gap:10px;
+}
+.survey-card h3 .badge{
+  font-size:0.72rem;padding:2px 10px;border-radius:999px;font-weight:700;
+  background:var(--grad-primary);
+}
+.survey-card ol{padding-left:0;list-style:none;counter-reset:q}
+.survey-card ol li{
+  counter-increment:q;display:flex;gap:10px;margin-bottom:13px;
+  font-size:0.88rem;color:var(--text-secondary);line-height:1.6;align-items:flex-start;
+}
+.survey-card ol li::before{
+  content:counter(q);flex-shrink:0;
+  width:22px;height:22px;border-radius:50%;background:rgba(59,130,246,0.15);
+  border:1px solid rgba(59,130,246,0.3);display:flex;align-items:center;justify-content:center;
+  font-size:0.72rem;font-weight:700;color:var(--accent-blue);margin-top:1px;
+}
+/* AUTOMATION */
+.timeline{position:relative;padding-left:32px;max-width:700px;margin:0 auto}
+.timeline::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--border);border-radius:2px}
+.tl-item{position:relative;margin-bottom:24px}
+.tl-item::before{
+  content:'';position:absolute;left:-26px;top:6px;
+  width:10px;height:10px;border-radius:50%;background:var(--accent-blue);
+  box-shadow:0 0 10px rgba(59,130,246,0.5);
+}
+.tl-item .time{font-size:0.8rem;color:var(--accent-blue);font-weight:700;margin-bottom:4px}
+.tl-item .desc{font-size:0.9rem;color:var(--text-secondary);line-height:1.6}
+/* FOOTER */
+footer{
+  text-align:center;padding:40px 24px;
+  border-top:1px solid var(--border);color:var(--text-muted);font-size:0.85rem;
+}
+footer .brand{font-weight:700;background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+/* REVEAL ANIMATION */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:0}
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Synapse v3.0</div>
+  <div class="nav-links">
+    <a href="#overview">体系概览</a>
+    <a href="#capabilities">研发赋能</a>
+    <a href="#pipeline">执行链</a>
+    <a href="#value">价值主张</a>
+    <a href="#survey">调研环节</a>
+  </div>
+</nav>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">AI 多智能体研发赋能体系</div>
+  <h1 class="hero-title">Synapse v3.0<br/>研发效率的全新范式</h1>
+  <p class="hero-subtitle">以 AI CEO 统筹、专业团队分工、标准化执行链为核心，为研发团队提供 7×24 的智能协作与质量保障能力</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">7×24</div><div class="label">自动化运转</div></div>
+    <div class="hero-stat"><div class="num">85+</div><div class="label">QA 质量门禁分数线</div></div>
+    <div class="hero-stat"><div class="num">46</div><div class="label">AI 专业团队成员</div></div>
+    <div class="hero-stat"><div class="num">5步</div><div class="label">标准交付执行链</div></div>
+  </div>
+  <div class="hero-cta">
+    <a href="#capabilities" class="btn-primary">了解研发赋能</a>
+    <a href="#survey" class="btn-outline">查看调研议题</a>
+  </div>
+</section>
+<div class="divider"></div>
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">体系概览</span>
+      <h2 class="section-title">什么是 Synapse？</h2>
+      <p class="section-desc">Synapse 是一套 AI 多智能体操作系统，由 AI CEO 统筹管理 11 个专业团队，通过标准化执行链将每一项任务从接收到交付全程自动化管控。</p>
+    </div>
+    <div class="overview-grid reveal">
+      <div class="overview-card">
+        <div class="icon">🧠</div>
+        <h3>AI CEO 统筹</h3>
+        <p>Lysander 作为 AI CEO，负责任务分级、团队派单、资源协调与决策审批。人类负责人只需提出目标与验收成果，中间环节全部由 AI 驱动。</p>
+      </div>
+      <div class="overview-card">
+        <div class="icon">⚙️</div>
+        <h3>专业团队分工</h3>
+        <p>11 个专业团队，46 名 AI 专员，各司其职。研发、PMO、QA、知识库、AI 辅助——每个职能都有明确的执行者和交付标准。</p>
+      </div>
+      <div class="overview-card">
+        <div class="icon">🔗</div>
+        <h3>标准化执行链</h3>
+        <p>从目标接收到成果交付，5 个标准环节，每个环节有明确 owner 和质量门禁。任务不完成不停止，质量不达标不交付。</p>
+      </div>
+      <div class="overview-card">
+        <div class="icon">🤖</div>
+        <h3>7×24 自动运转</h3>
+        <p>定时任务体系全天候运行：日报生成、日历同步、任务恢复、质量审计……无需人工干预，系统自动推进。</p>
+      </div>
+    </div>
+    <!-- COMPARE -->
+    <div class="reveal" style="margin-top:48px">
+      <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:24px;color:var(--text-secondary)">传统研发模式 vs. Synapse 赋能后</h3>
+      <div class="compare-grid">
+        <div class="compare-col before">
+          <h3>传统外包研发模式</h3>
+          <div class="compare-item"><span class="icon">✗</span><span>任务分配依赖人工协调，信息易丢失</span></div>
+          <div class="compare-item"><span class="icon">✗</span><span>代码质量依赖个人经验，标准不统一</span></div>
+          <div class="compare-item"><span class="icon">✗</span><span>知识沉淀靠人，人员流动损耗高</span></div>
+          <div class="compare-item"><span class="icon">✗</span><span>进度跟踪滞后，问题暴露晚</span></div>
+          <div class="compare-item"><span class="icon">✗</span><span>跨团队协作摩擦大，响应慢</span></div>
+        </div>
+        <div class="compare-col after">
+          <h3>Synapse 赋能后</h3>
+          <div class="compare-item"><span class="icon">✓</span><span>AI CEO 自动分级派单，全程追踪</span></div>
+          <div class="compare-item"><span class="icon">✓</span><span>QA 五维评审强制门禁，85分通过线</span></div>
+          <div class="compare-item"><span class="icon">✓</span><span>知识库自动沉淀，文档持续更新</span></div>
+          <div class="compare-item"><span class="icon">✓</span><span>实时任务状态，日终复盘自动生成</span></div>
+          <div class="compare-item"><span class="icon">✓</span><span>标准路由表，任意任务秒级分配到对应专员</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+<!-- CAPABILITIES -->
+<section id="capabilities" style="background:var(--bg-800)">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">研发赋能能力</span>
+      <h2 class="section-title">专为研发团队设计的 AI 能力矩阵</h2>
+      <p class="section-desc">从代码开发到项目管理，从质量保障到知识沉淀，Synapse 覆盖研发全链路。</p>
+    </div>
+    <div class="cap-grid reveal">
+      <div class="cap-card">
+        <span class="cap-tag" style="background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3)">rd · 研发团队</span>
+        <div style="font-size:1.8rem">💻</div>
+        <h3>全栈研发执行</h3>
+        <p>后端开发、前端工程、DevOps 自动化、CI/CD 流水线构建与维护，由专属 AI 专员承接并执行，符合工程规范。</p>
+        <ul><li>rd_backend</li><li>rd_frontend</li><li>rd_devops</li></ul>
+      </div>
+      <div class="cap-card">
+        <span class="cap-tag" style="background:rgba(124,58,237,0.15);color:#a78bfa;border:1px solid rgba(124,58,237,0.3)">ai_ml · AI辅助</span>
+        <div style="font-size:1.8rem">🤖</div>
+        <h3>AI 辅助研发</h3>
+        <p>代码生成与审查、自动化测试用例生成、需求分析、技术选型建议。将 AI 能力嵌入研发每一个环节。</p>
+        <ul><li>代码生成</li><li>自动测试</li><li>需求解析</li></ul>
+      </div>
+      <div class="cap-card">
+        <span class="cap-tag" style="background:rgba(6,182,212,0.15);color:#22d3ee;border:1px solid rgba(6,182,212,0.3)">butler · PMO</span>
+        <div style="font-size:1.8rem">📋</div>
+        <h3>项目管理与交付</h3>
+        <p>任务拆解、优先级管理、进度追踪、交付保障。butler_pmo 全程跟踪每个任务从派单到交付的完整生命周期。</p>
+        <ul><li>任务追踪</li><li>进度看板</li><li>UAT 管理</li></ul>
+      </div>
+      <div class="cap-card">
+        <span class="cap-tag" style="background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3)">obs · 知识库</span>
+        <div style="font-size:1.8rem">📚</div>
+        <h3>技术知识沉淀</h3>
+        <p>代码规范、架构决策记录（ADR）、接口文档、排障手册自动归档。人员流动不丢失知识，新人上手成本大幅降低。</p>
+        <ul><li>文档自动化</li><li>ADR 管理</li><li>知识图谱</li></ul>
+      </div>
+      <div class="cap-card">
+        <span class="cap-tag" style="background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3)">harness_ops · 执行规范</span>
+        <div style="font-size:1.8rem">🛡️</div>
+        <h3>执行约束与规范</h3>
+        <p>强制执行链规范、权限管控、操作审计、流程合规检查。确保团队协作有据可查，关键操作可回溯。</p>
+        <ul><li>权限管控</li><li>审计日志</li><li>流程合规</li></ul>
+      </div>
+      <div class="cap-card">
+        <span class="cap-tag" style="background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3)">QA · 质量体系</span>
+        <div style="font-size:1.8rem">✅</div>
+        <h3>五维质量门禁</h3>
+        <p>每次交付强制通过 QA 评审：完整性、准确性、一致性、可维护性、合规性五个维度，85 分通过线，低于则退回修订。</p>
+        <ul><li>强制评审</li><li>85分门禁</li><li>缺陷追踪</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+<!-- PIPELINE -->
+<section id="pipeline">
+  <div class="container">
+    <div class="reveal" style="text-align:center">
+      <span class="section-label">标准执行链</span>
+      <h2 class="section-title">每个任务的完整生命周期</h2>
+      <p class="section-desc" style="margin:0 auto 48px">从目标提出到成果验收，5 个标准环节，每个环节明确 owner 与交付标准，无环节跳过。</p>
+    </div>
+    <div class="pipeline reveal">
+      <div class="pipe-step">
+        <div class="num">01</div>
+        <h4>目标接收</h4>
+        <p>AI CEO 理解目标，不清晰则追问一次</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="num">02</div>
+        <h4>任务分级</h4>
+        <p>S / M / L 三级，决定执行深度与审批层级</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="num">03</div>
+        <h4>团队派单</h4>
+        <p>路由表自动匹配，专员明确，交付物预定义</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="num">04</div>
+        <h4>QA 审查</h4>
+        <p>五维评分，≥85 通过，低于退回修订</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="num">05</div>
+        <h4>结果交付</h4>
+        <p>达标交付，跨会话任务持续追踪不中断</p>
+      </div>
+    </div>
+    <!-- QA DIMENSIONS -->
+    <div class="reveal" style="margin-top:64px;text-align:center">
+      <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:32px">QA 五维评分体系（满分 100，通过线 85）</h3>
+      <div class="qa-grid">
+        <div class="qa-card"><div class="qa-ring">20</div><h4>完整性</h4><p>所有约定交付物齐全，无缺项</p></div>
+        <div class="qa-card"><div class="qa-ring">20</div><h4>准确性</h4><p>内容/代码/配置无错误</p></div>
+        <div class="qa-card"><div class="qa-ring">20</div><h4>一致性</h4><p>与现有系统和规范无冲突</p></div>
+        <div class="qa-card"><div class="qa-ring">20</div><h4>可维护性</h4><p>有注释、结构清晰、可升级</p></div>
+        <div class="qa-card"><div class="qa-ring">20</div><h4>合规性</h4><p>符合执行链规则和团队规范</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+<!-- VALUE -->
+<section id="value" style="background:var(--bg-800)">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">价值主张</span>
+      <h2 class="section-title">对研发团队的具体价值</h2>
+      <p class="section-desc">四个典型研发痛点，Synapse 的对应解法。</p>
+    </div>
+    <div class="value-grid reveal">
+      <div class="value-card">
+        <div class="value-scene">场景一</div>
+        <h3>需求变更频繁</h3>
+        <div class="pain">执行链混乱，任务优先级不清晰，团队疲于应付</div>
+        <div class="solution">AI CEO 实时重分级 + 标准派单，变更有序消化，不乱阵脚</div>
+      </div>
+      <div class="value-card">
+        <div class="value-scene">场景二</div>
+        <h3>外包团队质量不稳定</h3>
+        <div class="pain">代码风格各异，Bug 率高，Review 流于形式</div>
+        <div class="solution">QA 五维评审强制门禁，低于 85 分退回，质量标准统一可量化</div>
+      </div>
+      <div class="value-card">
+        <div class="value-scene">场景三</div>
+        <h3>知识沉淀缺失</h3>
+        <div class="pain">核心人员离职带走经验，新人上手周期长，重复踩坑</div>
+        <div class="solution">obs 知识库自动沉淀，架构决策、排障手册持续更新，知识不依赖个人</div>
+      </div>
+      <div class="value-card">
+        <div class="value-scene">场景四</div>
+        <h3>项目进度不透明</h3>
+        <div class="pain">管理层不知道任务实际状态，问题暴露滞后，管理成本高</div>
+        <div class="solution">butler PMO 全程追踪 + 日终复盘自动生成，进度实时可见，异常主动上报</div>
+      </div>
+    </div>
+    <!-- GSTACK FLYWHEEL -->
+    <div class="reveal" style="margin-top:64px">
+      <div style="text-align:center;margin-bottom:40px">
+        <span class="section-label">gstack × Synapse</span>
+        <h3 style="font-size:clamp(1.3rem,3vw,1.9rem);font-weight:800;margin-bottom:10px;background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent">研发能力飞轮</h3>
+        <p style="color:var(--text-secondary);font-size:0.95rem">AI 驱动的研发质量与效率双轮驱动 &nbsp;·&nbsp; YC 总裁 Garry Tan 背书 &nbsp;·&nbsp; GitHub 71,615 Stars</p>
+      </div>
+
+      <!-- 融合执行链 -->
+      <div style="margin-bottom:48px">
+        <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px">gstack 工程周期 × Synapse 执行链 — 完全融合</p>
+        <div style="display:flex;align-items:stretch;flex-wrap:wrap;gap:0;justify-content:center;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+          <div style="flex:1;min-width:120px;max-width:160px;padding:20px 14px;text-align:center;background:rgba(59,130,246,0.06);border-right:1px solid var(--border)">
+            <div style="font-size:1.3rem;margin-bottom:6px">💡</div>
+            <div style="font-size:0.78rem;font-weight:700;color:var(--accent-blue);margin-bottom:4px">Think</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);line-height:1.5">目标接收<br/>需求分级</div>
+          </div>
+          <div style="flex:1;min-width:120px;max-width:160px;padding:20px 14px;text-align:center;background:rgba(99,102,241,0.06);border-right:1px solid var(--border)">
+            <div style="font-size:1.3rem;margin-bottom:6px">📐</div>
+            <div style="font-size:0.78rem;font-weight:700;color:var(--accent-indigo);margin-bottom:4px">Plan</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);line-height:1.5">方案设计<br/>团队派单</div>
+          </div>
+          <div style="flex:1;min-width:120px;max-width:160px;padding:20px 14px;text-align:center;background:rgba(124,58,237,0.06);border-right:1px solid var(--border)">
+            <div style="font-size:1.3rem;margin-bottom:6px">⚙️</div>
+            <div style="font-size:0.78rem;font-weight:700;color:var(--accent-violet);margin-bottom:4px">Build</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);line-height:1.5">AI 专员<br/>全栈执行</div>
+          </div>
+          <div style="flex:1;min-width:120px;max-width:160px;padding:20px 14px;text-align:center;background:rgba(6,182,212,0.07);border-right:1px solid var(--border)">
+            <div style="font-size:1.3rem;margin-bottom:6px">🔍</div>
+            <div style="font-size:0.78rem;font-weight:700;color:var(--accent-cyan);margin-bottom:4px">Review</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);line-height:1.5"><code style="font-size:0.68rem;color:var(--accent-cyan)">/review</code><br/>深度审查</div>
+          </div>
+          <div style="flex:1;min-width:120px;max-width:160px;padding:20px 14px;text-align:center;background:rgba(16,185,129,0.06);border-right:1px solid var(--border)">
+            <div style="font-size:1.3rem;margin-bottom:6px">🧪</div>
+            <div style="font-size:0.78rem;font-weight:700;color:#34d399;margin-bottom:4px">QA</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);line-height:1.5"><code style="font-size:0.68rem;color:#34d399">/qa</code><br/>双层门禁</div>
+          </div>
+          <div style="flex:1;min-width:120px;max-width:160px;padding:20px 14px;text-align:center;background:rgba(245,158,11,0.06);border-right:1px solid var(--border)">
+            <div style="font-size:1.3rem;margin-bottom:6px">🚀</div>
+            <div style="font-size:0.78rem;font-weight:700;color:#fbbf24;margin-bottom:4px">Ship</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);line-height:1.5"><code style="font-size:0.68rem;color:#fbbf24">/ship</code><br/>一键发布</div>
+          </div>
+          <div style="flex:1;min-width:120px;max-width:160px;padding:20px 14px;text-align:center;background:rgba(239,68,68,0.06)">
+            <div style="font-size:1.3rem;margin-bottom:6px">📊</div>
+            <div style="font-size:0.78rem;font-weight:700;color:#f87171;margin-bottom:4px">Retro</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);line-height:1.5">执行复盘<br/>持续优化</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 三核心命令 -->
+      <div style="margin-bottom:48px">
+        <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px">三大核心命令 — 已集成进 Synapse 执行链</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+          <!-- /review -->
+          <div style="background:var(--bg-card);border:1px solid rgba(6,182,212,0.3);border-radius:var(--radius);padding:28px;transition:all .25s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(6,182,212,0.7)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(6,182,212,0.3)'">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+              <div style="font-size:1.6rem">🔍</div>
+              <div>
+                <code style="font-size:1rem;font-weight:800;color:var(--accent-cyan);background:rgba(6,182,212,0.12);padding:3px 10px;border-radius:6px">/review</code>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px">代码深度审查</div>
+              </div>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.65;margin-bottom:14px">偏执资深工程师视角，不放过任何潜在风险点，主动识别隐患而非被动等待问题暴露。</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <span style="font-size:0.72rem;padding:2px 8px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);border-radius:999px;color:var(--accent-cyan)">N+1 查询检测</span>
+              <span style="font-size:0.72rem;padding:2px 8px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);border-radius:999px;color:var(--accent-cyan)">竞态条件</span>
+              <span style="font-size:0.72rem;padding:2px 8px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);border-radius:999px;color:var(--accent-cyan)">安全边界</span>
+            </div>
+          </div>
+          <!-- /qa -->
+          <div style="background:var(--bg-card);border:1px solid rgba(16,185,129,0.3);border-radius:var(--radius);padding:28px;transition:all .25s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(16,185,129,0.7)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(16,185,129,0.3)'">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+              <div style="font-size:1.6rem">🧪</div>
+              <div>
+                <code style="font-size:1rem;font-weight:800;color:#34d399;background:rgba(16,185,129,0.12);padding:3px 10px;border-radius:6px">/qa</code>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px">质量健康评分</div>
+              </div>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.65;margin-bottom:14px">真实浏览器环境测试，自动修复发现的问题，输出 0-100 健康分。双层门禁：gstack + Synapse 均须通过。</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <span style="font-size:0.72rem;padding:2px 8px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:999px;color:#34d399">真实浏览器</span>
+              <span style="font-size:0.72rem;padding:2px 8px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:999px;color:#34d399">自动修复</span>
+              <span style="font-size:0.72rem;padding:2px 8px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:999px;color:#34d399">0-100 评分</span>
+            </div>
+          </div>
+          <!-- /ship -->
+          <div style="background:var(--bg-card);border:1px solid rgba(245,158,11,0.3);border-radius:var(--radius);padding:28px;transition:all .25s" onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='rgba(245,158,11,0.7)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(245,158,11,0.3)'">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+              <div style="font-size:1.6rem">🚀</div>
+              <div>
+                <code style="font-size:1rem;font-weight:800;color:#fbbf24;background:rgba(245,158,11,0.12);padding:3px 10px;border-radius:6px">/ship</code>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px">一键安全发布</div>
+              </div>
+            </div>
+            <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.65;margin-bottom:14px">全流程自动化发布，从分支同步到 PR 创建，每一步均有记录，发布过程可追溯、可回滚。</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px">
+              <span style="font-size:0.72rem;padding:2px 8px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:999px;color:#fbbf24">分支同步</span>
+              <span style="font-size:0.72rem;padding:2px 8px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:999px;color:#fbbf24">自动推送</span>
+              <span style="font-size:0.72rem;padding:2px 8px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:999px;color:#fbbf24">PR 全自动</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 双层质量门禁 -->
+      <div style="margin-bottom:48px">
+        <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px">双层质量门禁 — 两道防线，全部通过才交付</p>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center">
+          <div style="background:rgba(6,182,212,0.07);border:1px solid rgba(6,182,212,0.25);border-radius:var(--radius);padding:28px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#06b6d4,#3b82f6);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85rem">g</div>
+              <div>
+                <div style="font-weight:700;font-size:0.95rem">gstack QA</div>
+                <div style="font-size:0.75rem;color:var(--text-muted)">健康分 0–100</div>
+              </div>
+            </div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+              <li style="font-size:0.85rem;color:var(--text-secondary);display:flex;align-items:center;gap:8px"><span style="color:var(--accent-cyan)">▸</span>真实浏览器验证</li>
+              <li style="font-size:0.85rem;color:var(--text-secondary);display:flex;align-items:center;gap:8px"><span style="color:var(--accent-cyan)">▸</span>自动修复建议</li>
+              <li style="font-size:0.85rem;color:var(--text-secondary);display:flex;align-items:center;gap:8px"><span style="color:var(--accent-cyan)">▸</span>功能与 UI 全面覆盖</li>
+            </ul>
+          </div>
+          <div style="text-align:center;flex-shrink:0">
+            <div style="font-size:1.5rem;color:var(--accent-blue)">+</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px">双重<br/>保障</div>
+          </div>
+          <div style="background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.25);border-radius:var(--radius);padding:28px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+              <div style="width:44px;height:44px;border-radius:50%;background:var(--grad-primary);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85rem">S</div>
+              <div>
+                <div style="font-weight:700;font-size:0.95rem">Synapse QA</div>
+                <div style="font-size:0.75rem;color:var(--text-muted)">五维评审 / 85 分通过线</div>
+              </div>
+            </div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
+              <li style="font-size:0.85rem;color:var(--text-secondary);display:flex;align-items:center;gap:8px"><span style="color:var(--accent-blue)">▸</span>完整性 · 准确性 · 一致性</li>
+              <li style="font-size:0.85rem;color:var(--text-secondary);display:flex;align-items:center;gap:8px"><span style="color:var(--accent-blue)">▸</span>可维护性 · 合规性</li>
+              <li style="font-size:0.85rem;color:var(--text-secondary);display:flex;align-items:center;gap:8px"><span style="color:var(--accent-blue)">▸</span>低于 85 分强制退回</li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin-top:16px;text-align:center;padding:14px;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:var(--radius-sm)">
+          <span style="color:#4ade80;font-weight:700;font-size:0.9rem">✓ 两道门禁均通过 → 正式交付</span>
+          <span style="color:var(--text-muted);font-size:0.82rem;margin-left:16px">任一未达标 → 自动退回修订</span>
+        </div>
+      </div>
+
+      <!-- 效率数据大字展示 -->
+      <div style="background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(124,58,237,0.08));border:1px solid var(--border);border-radius:var(--radius);padding:36px 28px">
+        <p style="text-align:center;font-size:0.8rem;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px">gstack 实测效率数据 &nbsp;·&nbsp; Garry Tan：60 天产出 60 万行生产代码</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:20px;text-align:center">
+          <div>
+            <div style="font-size:2.8rem;font-weight:800;background:var(--grad-secondary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1">100x</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);margin-top:8px">脚手架生成效率</div>
+          </div>
+          <div>
+            <div style="font-size:2.8rem;font-weight:800;background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1">50x</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);margin-top:8px">测试编写效率</div>
+          </div>
+          <div>
+            <div style="font-size:2.8rem;font-weight:800;background:linear-gradient(135deg,#7c3aed,#f87171);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1">30x</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);margin-top:8px">功能实现效率</div>
+          </div>
+          <div>
+            <div style="font-size:2.8rem;font-weight:800;background:linear-gradient(135deg,#fbbf24,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1">71K+</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);margin-top:8px">GitHub Stars<br/><span style="font-size:0.72rem;color:var(--accent-cyan)">YC 总裁 Garry Tan 背书</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+<!-- SURVEY -->
+<section id="survey" class="survey-section">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">调研环节</span>
+      <h2 class="section-title">了解您的团队现状</h2>
+      <p class="section-desc">在正式评估 Synapse 的适配方案之前，我们希望深入了解贵团队当前的研发模式与约束条件，以便提供最贴合实际的落地建议。</p>
+    </div>
+    <div class="survey-intro reveal">
+      <p>以下四个主题涵盖了研发团队落地 AI 协作体系的核心维度。我们的沟通将围绕这些议题展开，欢迎团队相关负责人提前准备，以便会议中高效交流。</p>
+    </div>
+    <div class="survey-grid reveal">
+      <div class="survey-card">
+        <h3><span class="badge">主题 A</span>开发模式与研发流程</h3>
+        <ol>
+          <li>团队当前采用什么研发方法论？（瀑布 / 敏捷 / 看板 / 混合）</li>
+          <li>需求从提出到开发启动，通常经过哪些环节和角色？</li>
+          <li>一个功能从开发完成到正式上线，标准流程是什么样的？</li>
+          <li>目前研发流程中最大的瓶颈或痛点在哪里？</li>
+          <li>外包团队与内部需求方的对接方式是怎样的？</li>
+        </ol>
+      </div>
+      <div class="survey-card">
+        <h3><span class="badge">主题 B</span>开发环境与技术约束</h3>
+        <ol>
+          <li>当前使用的主要技术栈是什么？（语言 / 框架 / 数据库 / 中间件）</li>
+          <li>开发环境是本地搭建还是统一的云端或内网环境？</li>
+          <li>团队是否有外网访问限制？能否访问 GitHub、npm、AI 工具等？</li>
+          <li>对 AI 编程辅助工具（如 Cursor、Copilot、Claude Code）是否有合规政策？</li>
+          <li>内网部署 vs. SaaS 云端服务，贵方有哪些硬性要求？</li>
+        </ol>
+      </div>
+      <div class="survey-card">
+        <h3><span class="badge">主题 C</span>版本管理与发布机制</h3>
+        <ol>
+          <li>使用什么版本控制工具？（Git / SVN / 其他）分支策略是什么？</li>
+          <li>代码审查（Code Review）流程是怎样的？谁来审？审什么？</li>
+          <li>代码发布由谁负责？发布频率如何？有没有发布窗口期限制？</li>
+          <li>是否有 CI/CD 自动化流水线？使用什么工具？（Jenkins / GitLab CI / 其他）</li>
+          <li>测试覆盖情况：单元测试 / 集成测试 / UAT 是如何组织的？</li>
+        </ol>
+      </div>
+      <div class="survey-card">
+        <h3><span class="badge">主题 D</span>团队协作与知识管理</h3>
+        <ol>
+          <li>外包团队如何组织？（驻场 / 远程 / 混合），日常协同工具是什么？</li>
+          <li>任务管理和项目跟踪用什么工具？（Jira / 禅道 / 飞书 / 其他）</li>
+          <li>技术文档和知识沉淀的现状如何？文档更新是否及时？</li>
+          <li>人员流动对项目的影响有多大？目前如何应对知识流失？</li>
+          <li>当前团队对引入 AI 工具辅助研发的接受度和期望是什么？</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:12px">
+    <span class="brand">Janus Digital</span>
+    <span style="margin:0 12px;opacity:.3">·</span>
+    <span>Synapse v3.0</span>
+    <span style="margin:0 12px;opacity:.3">·</span>
+    <span>AI 多智能体研发赋能体系</span>
+  </div>
+  <div style="opacity:.4;font-size:0.78rem">联系方式：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+</footer>
+<script>
+// Reveal on scroll
+const reveals=document.querySelectorAll('.reveal');
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');io.unobserve(e.target)}});
+},{threshold:0.1});
+reveals.forEach(r=>io.observe(r));
+// Nav scroll effect
+window.addEventListener('scroll',()=>{
+  document.querySelector('nav').style.boxShadow=window.scrollY>40?'0 4px 30px rgba(0,0,0,0.4)':'none';
+});
+// Hero stats counter
+function animateCount(el,target,suffix=''){
+  let start=0;const duration=1800;const step=timestamp=>{
+    if(!start)start=timestamp;
+    const progress=Math.min((timestamp-start)/duration,1);
+    const val=Math.floor(progress*target);
+    el.textContent=val+suffix;
+    if(progress<1)requestAnimationFrame(step);
+  };requestAnimationFrame(step);
+}
+const statsObserver=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const nums=e.target.querySelectorAll('.num');
+      const targets=[724,85,46,5];const suffixes=['×24','+','','步'];
+      nums.forEach((n,i)=>{
+        if(i===0){n.textContent='7×24'}
+        else animateCount(n,targets[i],suffixes[i]);
+      });
+      statsObserver.unobserve(e.target);
+    }
+  });
+},{threshold:0.3});
+document.querySelector('.hero-stats')&&statsObserver.observe(document.querySelector('.hero-stats'));
+</script>
+</body>
+</html>

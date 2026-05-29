@@ -1,6 +1,6 @@
 ---
-title: "Agent Memory Collaboration Autonomous Decision Making"
-description: "How externalized memory with active_wbs fields reduced task recovery from 5 minutes to 30 seconds, enabling 85% of decisions to run autonomously."
+title: "Routing L1-L2 Decisions Back to Machines via Agent Memory Collaboration"
+description: "How externalized memory with active_wbs fields reduced task recovery from 5 minutes to 30 seconds, routing L1-L2 decisions away from human approval bottlenecks."
 date: 2026-05-03
 publishDate: 2026-05-03T00:00:00.000Z
 slug: agent-memory-collaboration-autonomous-decision-making
@@ -19,7 +19,7 @@ TITLE: Agent Memory Collaboration Replaces Manual Approval
 - Agents lacked persistent context to resume interrupted tasks
 - Static product descriptions insufficient without active task identifiers
 - Active_wbs field in product-profile frontmatter enabled 30-second recovery
-- 85% of tasks now resolved autonomously in L1-L2 range without escalation
+- L1-L2 range now routed by rules, eliminating up to 17 daily approval requests; the exact ratio fluctuates with task mix and is not strictly tracked
 
 In our Synapse system at week three, the CEO agent was processing up to seventeen pending confirmation requests every morning—each product line coordinator was blocking on manual approval before proceeding. This contradicted our goal of offloading repetitive decisions to machines. The core problem: multi-agent collaboration requires agents to know task context, current deadlock points, and next handoff targets, but LLMs themselves are stateless. Without externalized memory, agents either depended on humans repeatedly explaining background (inefficient and error-prone) or made unauthorized decisions (unacceptable risk).
 

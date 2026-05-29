@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>gstack × Synapse — AI 研发管理操作系统</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Linear/Stripe-inspired palette */
+  --bg:#08090c;
+  --bg-surface:#0e1014;
+  --bg-elevated:#15171c;
+  --bg-hover:#1a1d24;
+
+  --border-subtle:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.09);
+  --border-strong:rgba(255,255,255,0.14);
+
+  --text:#e8eaed;
+  --text-secondary:#9ca3af;
+  --text-muted:#6b7280;
+  --text-faint:#4b5563;
+
+  --accent:#5b8def;
+  --accent-hover:#7ba3f5;
+  --accent-subtle:rgba(91,141,239,0.1);
+  --accent-border:rgba(91,141,239,0.25);
+
+  --success:#4ade80;
+  --warning:#fbbf24;
+  --danger:#f87171;
+
+  --radius-sm:6px;
+  --radius:10px;
+  --radius-lg:14px;
+
+  --font-mono:'SF Mono',Monaco,'Cascadia Code',Consolas,monospace;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Inter','PingFang SC','Hiragino Sans GB','Microsoft YaHei',-apple-system,BlinkMacSystemFont,sans-serif;
+  line-height:1.6;overflow-x:hidden;
+  font-feature-settings:'ss01','ss02','cv11';
+  letter-spacing:-0.005em;
+}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:14px 32px;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(8,9,12,0.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid transparent;transition:border-color .2s;
+}
+nav.scrolled{border-bottom-color:var(--border-subtle)}
+.nav-brand{display:flex;align-items:baseline;gap:10px}
+.nav-logo{
+  width:22px;height:22px;border-radius:6px;
+  background:linear-gradient(135deg,#5b8def 0%,#7c6cf5 100%);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:0.75rem;color:#fff;
+  transform:translateY(3px);
+}
+.nav-name{font-size:0.95rem;font-weight:600;letter-spacing:-0.01em}
+.nav-tagline{font-size:0.78rem;color:var(--text-muted);letter-spacing:-0.005em}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{
+  color:var(--text-secondary);text-decoration:none;
+  font-size:0.84rem;font-weight:450;transition:color .15s;
+}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{
+  padding:7px 14px;border-radius:var(--radius-sm);font-size:0.82rem;font-weight:500;
+  background:var(--text);color:var(--bg);
+  text-decoration:none;transition:all .15s;
+}
+.nav-cta:hover{background:#fff;transform:translateY(-1px)}
+@media(max-width:820px){.nav-links{display:none}}
+
+/* ─── CONTAINERS ─── */
+.container{max-width:1080px;margin:0 auto;padding:0 32px}
+.container-narrow{max-width:820px;margin:0 auto;padding:0 32px}
+section{padding:96px 0;position:relative}
+.section-divider{height:1px;background:var(--border-subtle);max-width:1080px;margin:0 auto}
+
+/* ─── HERO ─── */
+.hero{
+  padding:160px 0 96px;position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%,rgba(91,141,239,0.08) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at 50% 0%,black 20%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 0%,black 20%,transparent 70%);
+  pointer-events:none;
+}
+.hero-inner{position:relative;z-index:1}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 12px;border-radius:999px;
+  background:var(--bg-elevated);border:1px solid var(--border);
+  font-size:0.78rem;color:var(--text-secondary);margin-bottom:28px;
+  letter-spacing:-0.005em;
+}
+.hero-badge-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--success);
+  box-shadow:0 0 8px rgba(74,222,128,0.5);
+}
+.hero h1{
+  font-size:clamp(2.2rem,5vw,3.5rem);font-weight:600;line-height:1.08;
+  letter-spacing:-0.03em;max-width:860px;margin-bottom:24px;
+}
+.hero h1 .highlight{
+  background:linear-gradient(135deg,#5b8def 0%,#a78bfa 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-desc{
+  font-size:1.08rem;color:var(--text-secondary);max-width:640px;margin-bottom:40px;
+  line-height:1.65;font-weight:400;letter-spacing:-0.005em;
+}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 18px;border-radius:var(--radius-sm);
+  background:var(--text);color:var(--bg);
+  font-size:0.88rem;font-weight:500;text-decoration:none;border:none;cursor:pointer;
+  transition:all .15s;
+}
+.btn-primary:hover{background:#fff;transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,255,255,0.08)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 18px;border-radius:var(--radius-sm);
+  background:transparent;color:var(--text);
+  font-size:0.88rem;font-weight:500;text-decoration:none;
+  border:1px solid var(--border-strong);cursor:pointer;transition:all .15s;
+}
+.btn-secondary:hover{background:var(--bg-elevated);border-color:var(--text-faint)}
+.btn-arrow{transition:transform .15s}
+.btn-primary:hover .btn-arrow,.btn-secondary:hover .btn-arrow{transform:translateX(2px)}
+
+/* Hero trust strip */
+.hero-trust{
+  margin-top:72px;padding-top:28px;border-top:1px solid var(--border-subtle);
+  display:flex;align-items:center;gap:32px;flex-wrap:wrap;
+}
+.hero-trust-label{
+  font-size:0.72rem;color:var(--text-muted);text-transform:uppercase;
+  letter-spacing:0.1em;font-weight:500;
+}
+.hero-trust-items{display:flex;gap:28px;flex-wrap:wrap;align-items:center}
+.trust-item{display:flex;align-items:center;gap:8px;font-size:0.84rem;color:var(--text-secondary)}
+.trust-item strong{color:var(--text);font-weight:600}
+
+/* ─── SECTION HEADER ─── */
+.eyebrow{
+  display:inline-block;font-size:0.72rem;font-weight:500;letter-spacing:0.1em;
+  color:var(--accent);text-transform:uppercase;margin-bottom:14px;
+}
+.section-title{
+  font-size:clamp(1.6rem,3vw,2.2rem);font-weight:600;line-height:1.2;
+  letter-spacing:-0.025em;margin-bottom:16px;max-width:720px;
+}
+.section-desc{
+  color:var(--text-secondary);font-size:1.02rem;max-width:620px;
+  line-height:1.65;margin-bottom:56px;letter-spacing:-0.005em;
+}
+
+/* ─── PROBLEM SECTION ─── */
+.problem-list{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--border-subtle);border:1px solid var(--border-subtle);
+  border-radius:var(--radius-lg);overflow:hidden;
+}
+@media(max-width:780px){.problem-list{grid-template-columns:1fr}}
+.problem-card{
+  background:var(--bg-surface);padding:32px 28px;
+  transition:background .15s;
+}
+.problem-card:hover{background:var(--bg-elevated)}
+.problem-num{
+  font-family:var(--font-mono);font-size:0.74rem;
+  color:var(--text-muted);margin-bottom:16px;letter-spacing:0.03em;
+}
+.problem-card h3{
+  font-size:1.02rem;font-weight:600;margin-bottom:10px;
+  letter-spacing:-0.015em;
+}
+.problem-card p{
+  font-size:0.9rem;color:var(--text-secondary);line-height:1.65;
+}
+
+/* ─── METHODOLOGY / GSTACK CRED ─── */
+.method-section{background:var(--bg-surface)}
+.method-callout{
+  background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:40px;margin-bottom:48px;
+  position:relative;
+}
+.method-callout::before{
+  content:'';position:absolute;left:0;top:40px;bottom:40px;width:3px;
+  background:linear-gradient(180deg,var(--accent) 0%,transparent 100%);
+  border-radius:0 2px 2px 0;
+}
+.method-callout-label{
+  font-family:var(--font-mono);font-size:0.72rem;
+  color:var(--accent);letter-spacing:0.05em;margin-bottom:14px;
+}
+.method-callout-quote{
+  font-size:1.3rem;line-height:1.45;font-weight:500;
+  letter-spacing:-0.015em;margin-bottom:18px;color:var(--text);
+}
+.method-callout-cite{
+  font-size:0.84rem;color:var(--text-muted);
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.method-callout-cite strong{color:var(--text-secondary);font-weight:500}
+.method-callout-stars{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:3px 10px;border-radius:999px;
+  background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);
+  font-size:0.78rem;color:var(--warning);font-weight:500;
+}
+
+.method-split{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;
+}
+@media(max-width:780px){.method-split{grid-template-columns:1fr}}
+.method-col{
+  background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:28px;
+}
+.method-col-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:0.72rem;
+  padding:3px 8px;border-radius:4px;margin-bottom:14px;letter-spacing:0.02em;
+}
+.method-col.proven .method-col-tag{
+  background:rgba(74,222,128,0.08);color:var(--success);
+  border:1px solid rgba(74,222,128,0.2);
+}
+.method-col.built .method-col-tag{
+  background:var(--accent-subtle);color:var(--accent);
+  border:1px solid var(--accent-border);
+}
+.method-col h3{
+  font-size:1.08rem;font-weight:600;margin-bottom:10px;
+  letter-spacing:-0.015em;
+}
+.method-col p{
+  font-size:0.9rem;color:var(--text-secondary);
+  line-height:1.65;margin-bottom:16px;
+}
+.method-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.method-col li{
+  font-size:0.85rem;color:var(--text-secondary);
+  display:flex;gap:10px;align-items:flex-start;
+}
+.method-col li::before{
+  content:'';width:4px;height:4px;border-radius:50%;
+  background:var(--text-faint);margin-top:9px;flex-shrink:0;
+}
+
+/* ─── OVERVIEW / PIPELINE ─── */
+.pipeline-v2{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:0;
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  overflow:hidden;background:var(--bg-surface);
+}
+@media(max-width:900px){.pipeline-v2{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.pipeline-v2{grid-template-columns:1fr}}
+.pipe-v2-step{
+  padding:24px 16px;text-align:center;
+  border-right:1px solid var(--border-subtle);
+  border-bottom:1px solid var(--border-subtle);
+  transition:background .15s;
+  position:relative;
+}
+.pipe-v2-step:hover{background:var(--bg-elevated)}
+.pipe-v2-step:last-child{border-right:none}
+.pipe-v2-num{
+  font-family:var(--font-mono);font-size:0.7rem;
+  color:var(--text-muted);margin-bottom:10px;
+}
+.pipe-v2-label{
+  font-size:0.88rem;font-weight:600;margin-bottom:6px;
+  letter-spacing:-0.01em;
+}
+.pipe-v2-sub{font-size:0.76rem;color:var(--text-muted);line-height:1.5}
+.pipe-v2-cmd{
+  display:inline-block;font-family:var(--font-mono);font-size:0.72rem;
+  padding:2px 6px;border-radius:3px;margin-top:6px;
+  background:var(--accent-subtle);color:var(--accent);
+  border:1px solid var(--accent-border);
+}
+
+/* ─── CAPABILITIES ─── */
+.cap-grid-v2{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;
+  background:var(--border-subtle);border:1px solid var(--border-subtle);
+  border-radius:var(--radius-lg);overflow:hidden;
+}
+@media(max-width:780px){.cap-grid-v2{grid-template-columns:1fr}}
+.cap-v2{
+  background:var(--bg-surface);padding:32px 28px;
+  display:flex;flex-direction:column;gap:12px;transition:background .15s;
+}
+.cap-v2:hover{background:var(--bg-elevated)}
+.cap-v2-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.cap-v2-tag{
+  font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);
+  letter-spacing:0.02em;
+}
+.cap-v2 h3{font-size:1.02rem;font-weight:600;letter-spacing:-0.015em}
+.cap-v2 p{font-size:0.9rem;color:var(--text-secondary);line-height:1.65}
+.cap-v2-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.cap-v2-chip{
+  font-family:var(--font-mono);font-size:0.72rem;
+  padding:2px 8px;border-radius:4px;
+  background:var(--bg);border:1px solid var(--border);
+  color:var(--text-secondary);
+}
+
+/* ─── QA MATRIX ─── */
+.qa-wrapper{
+  background:var(--bg-surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:40px;
+}
+.qa-header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-bottom:32px;flex-wrap:wrap;gap:16px;
+}
+.qa-header h3{font-size:1.15rem;font-weight:600;letter-spacing:-0.015em;margin-bottom:6px}
+.qa-header p{font-size:0.88rem;color:var(--text-secondary)}
+.qa-threshold{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 12px;border-radius:var(--radius-sm);
+  background:var(--accent-subtle);border:1px solid var(--accent-border);
+  font-size:0.82rem;color:var(--accent);font-weight:500;font-family:var(--font-mono);
+}
+.qa-dims{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+  background:var(--border-subtle);border:1px solid var(--border-subtle);
+  border-radius:var(--radius);overflow:hidden;
+}
+@media(max-width:780px){.qa-dims{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.qa-dims{grid-template-columns:1fr}}
+.qa-dim{
+  background:var(--bg-elevated);padding:20px 16px;text-align:center;
+}
+.qa-dim-score{
+  font-family:var(--font-mono);font-size:1.4rem;font-weight:600;
+  color:var(--text);margin-bottom:4px;letter-spacing:-0.02em;
+}
+.qa-dim-name{font-size:0.86rem;font-weight:500;margin-bottom:4px}
+.qa-dim-desc{font-size:0.76rem;color:var(--text-muted);line-height:1.5}
+
+/* ─── ADOPTION PATH ─── */
+.adopt-section{background:var(--bg-surface)}
+.adopt-steps{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+  position:relative;
+}
+@media(max-width:780px){.adopt-steps{grid-template-columns:1fr}}
+.adopt-step{
+  background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:28px;
+  display:flex;flex-direction:column;gap:14px;
+  position:relative;transition:all .15s;
+}
+.adopt-step:hover{border-color:var(--border-strong);transform:translateY(-2px)}
+.adopt-step-header{display:flex;align-items:center;justify-content:space-between}
+.adopt-step-phase{
+  font-family:var(--font-mono);font-size:0.72rem;
+  color:var(--accent);letter-spacing:0.05em;
+}
+.adopt-step-duration{
+  font-family:var(--font-mono);font-size:0.72rem;
+  padding:2px 8px;border-radius:4px;
+  background:var(--bg);border:1px solid var(--border);
+  color:var(--text-secondary);
+}
+.adopt-step h3{font-size:1.02rem;font-weight:600;letter-spacing:-0.015em}
+.adopt-step p{font-size:0.88rem;color:var(--text-secondary);line-height:1.65}
+.adopt-step-deliverables{
+  margin-top:6px;padding-top:14px;border-top:1px solid var(--border-subtle);
+}
+.adopt-step-deliverables-label{
+  font-family:var(--font-mono);font-size:0.7rem;
+  color:var(--text-muted);text-transform:uppercase;
+  letter-spacing:0.08em;margin-bottom:8px;
+}
+.adopt-step-deliverables ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.adopt-step-deliverables li{
+  font-size:0.83rem;color:var(--text-secondary);
+  display:flex;gap:8px;align-items:flex-start;
+}
+.adopt-step-deliverables li::before{
+  content:'→';color:var(--accent);flex-shrink:0;
+}
+
+/* ─── VALUE / SCENARIOS ─── */
+.value-list{display:flex;flex-direction:column;gap:0}
+.value-row{
+  display:grid;grid-template-columns:auto 1fr 1fr;gap:40px;
+  padding:32px 0;border-bottom:1px solid var(--border-subtle);
+  align-items:start;
+}
+.value-row:last-child{border-bottom:none}
+@media(max-width:780px){.value-row{grid-template-columns:1fr;gap:16px;padding:28px 0}}
+.value-num{
+  font-family:var(--font-mono);font-size:0.9rem;
+  color:var(--text-muted);letter-spacing:0.02em;
+  padding-top:4px;
+}
+.value-main h3{
+  font-size:1.05rem;font-weight:600;margin-bottom:8px;
+  letter-spacing:-0.015em;
+}
+.value-pain{font-size:0.88rem;color:var(--text-muted);line-height:1.65}
+.value-solution{font-size:0.88rem;color:var(--text-secondary);line-height:1.65}
+.value-solution-label{
+  font-family:var(--font-mono);font-size:0.7rem;
+  color:var(--success);letter-spacing:0.05em;
+  text-transform:uppercase;margin-bottom:6px;display:block;
+}
+
+/* ─── SURVEY (SIMPLIFIED) ─── */
+.survey-section{background:var(--bg-surface)}
+.survey-intro{
+  padding:24px 28px;border-radius:var(--radius-lg);
+  background:var(--bg-elevated);border:1px solid var(--border);
+  margin-bottom:32px;
+}
+.survey-intro p{
+  font-size:0.92rem;color:var(--text-secondary);line-height:1.7;
+}
+.survey-grid-v2{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:16px;
+}
+@media(max-width:780px){.survey-grid-v2{grid-template-columns:1fr}}
+.survey-item{
+  background:var(--bg-elevated);border:1px solid var(--border);
+  border-radius:var(--radius);padding:22px;
+  transition:all .15s;
+}
+.survey-item:hover{border-color:var(--border-strong)}
+.survey-item-header{
+  display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  padding-bottom:12px;border-bottom:1px solid var(--border-subtle);
+}
+.survey-item-tag{
+  font-family:var(--font-mono);font-size:0.7rem;
+  padding:2px 7px;border-radius:3px;
+  background:var(--accent-subtle);color:var(--accent);
+  border:1px solid var(--accent-border);letter-spacing:0.02em;
+}
+.survey-item-title{font-size:0.92rem;font-weight:600;letter-spacing:-0.01em}
+.survey-item ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.survey-item li{
+  font-size:0.85rem;color:var(--text-secondary);
+  line-height:1.6;display:flex;gap:10px;align-items:flex-start;
+}
+.survey-item li::before{
+  content:'';width:4px;height:4px;border-radius:50%;
+  background:var(--text-faint);margin-top:8px;flex-shrink:0;
+}
+
+/* ─── CTA ─── */
+.cta-section{
+  padding:112px 32px;text-align:center;position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 100%,rgba(91,141,239,0.12) 0%,transparent 65%);
+  pointer-events:none;
+}
+.cta-inner{position:relative;z-index:1;max-width:640px;margin:0 auto}
+.cta-section h2{
+  font-size:clamp(1.8rem,3.5vw,2.4rem);font-weight:600;
+  letter-spacing:-0.025em;margin-bottom:16px;line-height:1.2;
+}
+.cta-section p{
+  font-size:1rem;color:var(--text-secondary);
+  margin-bottom:32px;line-height:1.65;
+}
+.cta-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ─── FOOTER ─── */
+footer{
+  border-top:1px solid var(--border-subtle);
+  padding:32px 0;
+}
+.footer-inner{
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:16px;
+}
+.footer-brand{
+  display:flex;align-items:center;gap:10px;
+  font-size:0.86rem;color:var(--text-secondary);
+}
+.footer-brand strong{color:var(--text);font-weight:600}
+.footer-meta{
+  font-size:0.78rem;color:var(--text-muted);
+  display:flex;gap:16px;flex-wrap:wrap;
+}
+
+/* ─── REVEAL ─── */
+.reveal{
+  opacity:0;transform:translateY(20px);
+  transition:opacity .6s cubic-bezier(.22,.61,.36,1),transform .6s cubic-bezier(.22,.61,.36,1);
+}
+.reveal.visible{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+      <div class="nav-brand">
+    <span class="nav-logo">S</span>
+    <span class="nav-name">Synapse</span>
+    <span class="nav-tagline">× gstack</span>
+  </div>
+  <div class="nav-links">
+    <a href="#problem">挑战</a>
+    <a href="#method">方法论</a>
+    <a href="#pipeline">执行链</a>
+    <a href="#capabilities">能力</a>
+    <a href="#adopt">落地路径</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="container hero-inner">
+    <div class="hero-badge reveal">
+      <span class="hero-badge-dot"></span>
+      Synapse · AI 研发管理操作系统
+    </div>
+    <h1 class="reveal">研发团队的瓶颈不是打字速度，<br/>而是<span class="highlight">任务混乱、质量不稳、知识流失</span>。</h1>
+    <p class="hero-desc reveal">Cursor 和 Copilot 让工程师写得更快，但它们不解决研发管理的结构性问题。Synapse 在被 Y Combinator 总裁开源、GitHub 71K stars 验证的 gstack 工程体系之上，构建了一层完整的 AI 管理操作系统——让交付第一次变得可量化、可审计、不依赖个人。</p>
+
+    <div class="hero-trust reveal">
+      <div class="hero-trust-label">Built on proven foundations</div>
+      <div class="hero-trust-items">
+        <div class="trust-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color:var(--warning)"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span><strong>71,615</strong> GitHub Stars (gstack)</span>
+        </div>
+        <div class="trust-item">
+          <span>开源方：<strong>Garry Tan</strong> · YC 总裁</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">问题诊断</div>
+      <h2 class="section-title">AI 编程工具之后，<br/>研发管理的问题没消失，反而被放大了。</h2>
+      <p class="section-desc">AI 让个人产出速度提升一个量级，但团队交付的瓶颈从来不在"写得多快"。当每个工程师都在更快地产出代码，以下三个问题会比以前更严重。</p>
+    </div>
+    <div class="problem-list reveal">
+      <div class="problem-card">
+        <div class="problem-num">Problem 01</div>
+        <h3>产出快了，但交付混乱</h3>
+        <p>工程师写得更快，但任务优先级、验收标准、跨角色协同没有跟上节奏。结果是返工更多、质量波动更大、上线更慢。</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">Problem 02</div>
+        <h3>AI 代码的质量难以统一把关</h3>
+        <p>AI 生成的代码风格不一、边界条件容易漏、对业务规则的理解取决于提示词。没有强制的质量门禁，每一次发布都是赌注。</p>
+      </div>
+      <div class="problem-card">
+        <div class="problem-num">Problem 03</div>
+        <h3>知识仍然留在个人手里</h3>
+        <p>AI 能生成代码，但不会自动沉淀架构决策、排障经验、业务上下文。核心人员一旦流动，团队依然要从零开始。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- METHODOLOGY -->
+<section id="method" class="method-section">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">方法论基础</div>
+      <h2 class="section-title">我们不发明方法论，<br/>我们在被验证的方法论之上构建管理层。</h2>
+      <p class="section-desc">gstack 是由 Y Combinator 总裁 Garry Tan 主导开源的 AI 工程体系，GitHub 超过 71,000 stars。它解决的是"如何让 AI 写出可靠的代码"。Synapse 在这之上回答另一个问题：如何让一个研发组织运转起来。</p>
+    </div>
+
+    <div class="method-callout reveal">
+      <div class="method-callout-label">GARRY TAN · 公开引用</div>
+      <div class="method-callout-quote">"用 AI 编程工具，60 天写出了 60 万行生产级代码。"</div>
+      <div class="method-callout-cite">
+        <strong>Garry Tan</strong>
+        <span>Y Combinator 总裁 · gstack 开源发起人</span>
+        <span class="method-callout-stars">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          71,615 stars
+        </span>
+      </div>
+    </div>
+
+    <div class="method-split reveal">
+      <div class="method-col proven">
+        <span class="method-col-tag">EXTERNAL · 已验证</span>
+        <h3>gstack · 工程方法论</h3>
+        <p>已在开源社区被大规模验证的 AI 研发工程体系。核心命令 <code style="font-family:var(--font-mono);font-size:0.82em;padding:1px 5px;background:var(--bg);border:1px solid var(--border);border-radius:3px">/review</code>、<code style="font-family:var(--font-mono);font-size:0.82em;padding:1px 5px;background:var(--bg);border:1px solid var(--border);border-radius:3px">/qa</code>、<code style="font-family:var(--font-mono);font-size:0.82em;padding:1px 5px;background:var(--bg);border:1px solid var(--border);border-radius:3px">/ship</code> 已被大量项目实战验证。</p>
+        <ul>
+          <li>深度代码审查，主动识别隐患</li>
+          <li>真实浏览器环境的自动化 QA</li>
+          <li>一键安全发布，全流程可追溯</li>
+          <li>由 YC 总裁开源并长期维护</li>
+        </ul>
+      </div>
+      <div class="method-col built">
+        <span class="method-col-tag">INTERNAL · Janus Digital 构建</span>
+        <h3>Synapse · 管理操作系统</h3>
+        <p>由 Janus Digital 构建的 AI 管理层，将 gstack 从"工程能力"扩展为"组织能力"。解决任务分级、团队派单、质量门禁、知识沉淀等组织问题。</p>
+        <ul>
+          <li>AI CEO 统筹 11 个专业团队与 46 名 AI 专员</li>
+          <li>标准化执行链：S/M/L 任务分级与强制路由</li>
+          <li>五维 QA 评审，85 分强制门禁</li>
+          <li>7×24 自动运转：日报、复盘、异常上报</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- PIPELINE -->
+<section id="pipeline">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">执行链</div>
+      <h2 class="section-title">从需求到发布，每一步都有明确 owner。</h2>
+      <p class="section-desc">Synapse × gstack 将完整的研发生命周期拆成 7 个标准环节，每个环节有明确的承接专员、交付标准、质量门禁。负责人只需提出目标与验收成果，中间全程自动化。</p>
+    </div>
+    <div class="pipeline-v2 reveal">
+      <div class="pipe-v2-step">
+        <div class="pipe-v2-num">01</div>
+        <div class="pipe-v2-label">Think</div>
+        <div class="pipe-v2-sub">目标接收<br/>需求分级</div>
+      </div>
+      <div class="pipe-v2-step">
+        <div class="pipe-v2-num">02</div>
+        <div class="pipe-v2-label">Plan</div>
+        <div class="pipe-v2-sub">方案设计<br/>团队派单</div>
+      </div>
+      <div class="pipe-v2-step">
+        <div class="pipe-v2-num">03</div>
+        <div class="pipe-v2-label">Build</div>
+        <div class="pipe-v2-sub">AI 专员<br/>全栈执行</div>
+      </div>
+      <div class="pipe-v2-step">
+        <div class="pipe-v2-num">04</div>
+        <div class="pipe-v2-label">Review</div>
+        <div class="pipe-v2-sub">深度审查</div>
+        <span class="pipe-v2-cmd">/review</span>
+      </div>
+      <div class="pipe-v2-step">
+        <div class="pipe-v2-num">05</div>
+        <div class="pipe-v2-label">QA</div>
+        <div class="pipe-v2-sub">双层门禁</div>
+        <span class="pipe-v2-cmd">/qa</span>
+      </div>
+      <div class="pipe-v2-step">
+        <div class="pipe-v2-num">06</div>
+        <div class="pipe-v2-label">Ship</div>
+        <div class="pipe-v2-sub">一键发布</div>
+        <span class="pipe-v2-cmd">/ship</span>
+      </div>
+      <div class="pipe-v2-step">
+        <div class="pipe-v2-num">07</div>
+        <div class="pipe-v2-label">Retro</div>
+        <div class="pipe-v2-sub">执行复盘<br/>知识沉淀</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CAPABILITIES -->
+<section id="capabilities">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">能力矩阵</div>
+      <h2 class="section-title">6 个职能团队，覆盖研发组织的所有环节。</h2>
+      <p class="section-desc">每个职能由专属 AI 专员承接，交付标准明确、可量化。下面是核心团队与其主要能力。</p>
+    </div>
+    <div class="cap-grid-v2 reveal">
+      <div class="cap-v2">
+        <div class="cap-v2-header">
+          <h3>全栈研发执行</h3>
+          <span class="cap-v2-tag">team · rd</span>
+        </div>
+        <p>后端、前端、DevOps 专员各司其职，承接代码开发、CI/CD 构建、基础设施运维等工程任务。</p>
+        <div class="cap-v2-chips">
+          <span class="cap-v2-chip">rd_backend</span>
+          <span class="cap-v2-chip">rd_frontend</span>
+          <span class="cap-v2-chip">rd_devops</span>
+        </div>
+      </div>
+      <div class="cap-v2">
+        <div class="cap-v2-header">
+          <h3>AI 辅助研发</h3>
+          <span class="cap-v2-tag">team · ai_ml</span>
+        </div>
+        <p>代码生成与审查、自动化测试用例生成、需求解析、技术选型建议。将 AI 深度嵌入每个研发环节。</p>
+        <div class="cap-v2-chips">
+          <span class="cap-v2-chip">code_gen</span>
+          <span class="cap-v2-chip">test_auto</span>
+          <span class="cap-v2-chip">requirement_parse</span>
+        </div>
+      </div>
+      <div class="cap-v2">
+        <div class="cap-v2-header">
+          <h3>项目管理与交付</h3>
+          <span class="cap-v2-tag">team · butler / PMO</span>
+        </div>
+        <p>任务拆解、优先级管理、进度追踪、UAT 交付保障。全程跟踪每个任务从派单到交付的完整生命周期。</p>
+        <div class="cap-v2-chips">
+          <span class="cap-v2-chip">task_tracking</span>
+          <span class="cap-v2-chip">progress_board</span>
+          <span class="cap-v2-chip">uat_mgmt</span>
+        </div>
+      </div>
+      <div class="cap-v2">
+        <div class="cap-v2-header">
+          <h3>技术知识自动沉淀</h3>
+          <span class="cap-v2-tag">team · obs</span>
+        </div>
+        <p>代码规范、架构决策记录（ADR）、接口文档、排障手册自动归档。人员流动不丢失知识。</p>
+        <div class="cap-v2-chips">
+          <span class="cap-v2-chip">docs_auto</span>
+          <span class="cap-v2-chip">adr_mgmt</span>
+          <span class="cap-v2-chip">knowledge_graph</span>
+        </div>
+      </div>
+      <div class="cap-v2">
+        <div class="cap-v2-header">
+          <h3>执行约束与审计</h3>
+          <span class="cap-v2-tag">team · harness_ops</span>
+        </div>
+        <p>强制执行链规范、权限管控、操作审计、流程合规检查。关键操作可回溯，协作有据可查。</p>
+        <div class="cap-v2-chips">
+          <span class="cap-v2-chip">permission_ctrl</span>
+          <span class="cap-v2-chip">audit_log</span>
+          <span class="cap-v2-chip">compliance</span>
+        </div>
+      </div>
+      <div class="cap-v2">
+        <div class="cap-v2-header">
+          <h3>五维质量门禁</h3>
+          <span class="cap-v2-tag">team · QA</span>
+        </div>
+        <p>完整性、准确性、一致性、可维护性、合规性五个维度打分，总分满分 100，低于 85 分自动退回修订。</p>
+        <div class="cap-v2-chips">
+          <span class="cap-v2-chip">mandatory_review</span>
+          <span class="cap-v2-chip">85_threshold</span>
+          <span class="cap-v2-chip">defect_tracking</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- QA Matrix -->
+    <div class="qa-wrapper reveal" style="margin-top:48px">
+      <div class="qa-header">
+        <div>
+          <h3>QA 五维评分体系</h3>
+          <p>每次交付强制通过的质量门禁，低于阈值自动退回修订。</p>
+        </div>
+        <div class="qa-threshold">阈值 · 85 / 100</div>
+      </div>
+      <div class="qa-dims">
+        <div class="qa-dim">
+          <div class="qa-dim-score">20</div>
+          <div class="qa-dim-name">完整性</div>
+          <div class="qa-dim-desc">所有约定交付物齐全</div>
+        </div>
+        <div class="qa-dim">
+          <div class="qa-dim-score">20</div>
+          <div class="qa-dim-name">准确性</div>
+          <div class="qa-dim-desc">内容与代码无错误</div>
+        </div>
+        <div class="qa-dim">
+          <div class="qa-dim-score">20</div>
+          <div class="qa-dim-name">一致性</div>
+          <div class="qa-dim-desc">与现有系统无冲突</div>
+        </div>
+        <div class="qa-dim">
+          <div class="qa-dim-score">20</div>
+          <div class="qa-dim-name">可维护性</div>
+          <div class="qa-dim-desc">结构清晰可升级</div>
+        </div>
+        <div class="qa-dim">
+          <div class="qa-dim-score">20</div>
+          <div class="qa-dim-name">合规性</div>
+          <div class="qa-dim-desc">符合规则与规范</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- VALUE SCENARIOS -->
+<section id="scenarios">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">具体价值</div>
+      <h2 class="section-title">四个研发组织的典型场景。</h2>
+      <p class="section-desc">不讲泛泛的效率提升，讲具体场景下的困境与解法。如果这些困境你很熟悉，Synapse 大概率能帮到你。</p>
+    </div>
+    <div class="value-list reveal">
+      <div class="value-row">
+        <div class="value-num">01 · 需求管理</div>
+        <div class="value-main">
+          <h3>需求变更频繁，团队疲于应付</h3>
+          <p class="value-pain">任务优先级不清晰，改一个需求乱整个排期。</p>
+        </div>
+        <div>
+          <span class="value-solution-label">Synapse 的做法</span>
+          <p class="value-solution">AI CEO 实时重分级 + 标准路由派单，变更有序消化，不扰乱整体节奏。</p>
+        </div>
+      </div>
+      <div class="value-row">
+        <div class="value-num">02 · 质量保障</div>
+        <div class="value-main">
+          <h3>外包团队质量波动大</h3>
+          <p class="value-pain">代码风格各异、Bug 率高，Code Review 流于形式。</p>
+        </div>
+        <div>
+          <span class="value-solution-label">Synapse 的做法</span>
+          <p class="value-solution">QA 五维评审强制门禁，低于 85 分自动退回，质量标准统一可量化。</p>
+        </div>
+      </div>
+      <div class="value-row">
+        <div class="value-num">03 · 知识沉淀</div>
+        <div class="value-main">
+          <h3>核心人员离职，知识被带走</h3>
+          <p class="value-pain">架构决策、排障经验依赖个人，新人上手周期长，重复踩坑。</p>
+        </div>
+        <div>
+          <span class="value-solution-label">Synapse 的做法</span>
+          <p class="value-solution">obs 团队自动沉淀知识，ADR 与排障手册持续更新，团队资产不依赖个人。</p>
+        </div>
+      </div>
+      <div class="value-row">
+        <div class="value-num">04 · 进度透明</div>
+        <div class="value-main">
+          <h3>项目进度不透明，管理被动</h3>
+          <p class="value-pain">管理层不知任务实际状态，问题暴露滞后，管理成本高。</p>
+        </div>
+        <div>
+          <span class="value-solution-label">Synapse 的做法</span>
+          <p class="value-solution">PMO 全程追踪 + 日终复盘自动生成，进度实时可见，异常主动上报。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ADOPTION PATH -->
+<section id="adopt" class="adopt-section">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">落地路径</div>
+      <h2 class="section-title">分三个阶段落地，每个阶段目标明确。</h2>
+      <p class="section-desc">我们不建议一次性改造整个研发流程。Synapse 的落地方式是从一个可验证的场景开始，逐步扩展到全团队。</p>
+    </div>
+    <div class="adopt-steps reveal">
+      <div class="adopt-step">
+        <div class="adopt-step-header">
+          <span class="adopt-step-phase">PHASE 01</span>
+          <span class="adopt-step-duration">1–2 周</span>
+        </div>
+        <h3>现状摸底与适配评估</h3>
+        <p>围绕核心议题做几轮访谈，摸清团队现有流程、技术栈与合规边界，一起判断哪些场景值得先试、从哪个切入最顺手。</p>
+        <div class="adopt-step-deliverables">
+          <div class="adopt-step-deliverables-label">Deliverables</div>
+          <ul>
+            <li>现状摸底小结</li>
+            <li>落地方案与时间表</li>
+            <li>风险与合规提示</li>
+          </ul>
+        </div>
+      </div>
+      <div class="adopt-step">
+        <div class="adopt-step-header">
+          <span class="adopt-step-phase">PHASE 02</span>
+          <span class="adopt-step-duration">4–6 周</span>
+        </div>
+        <h3>试点项目落地</h3>
+        <p>选定一个适合的业务模块作为试点，部署 gstack 与 Synapse，跑完完整执行链，沉淀首批指标基线。</p>
+        <div class="adopt-step-deliverables">
+          <div class="adopt-step-deliverables-label">Deliverables</div>
+          <ul>
+            <li>试点环境搭建完毕</li>
+            <li>首轮交付的 QA 评分</li>
+            <li>试点效果评估</li>
+          </ul>
+        </div>
+      </div>
+      <div class="adopt-step">
+        <div class="adopt-step-header">
+          <span class="adopt-step-phase">PHASE 03</span>
+          <span class="adopt-step-duration">持续</span>
+        </div>
+        <h3>全面推广与持续迭代</h3>
+        <p>基于试点经验扩展到更多团队与模块，建立内部运维与培训体系，持续优化执行链以匹配团队实际节奏。</p>
+        <div class="adopt-step-deliverables">
+          <div class="adopt-step-deliverables-label">Deliverables</div>
+          <ul>
+            <li>全团队接入完成</li>
+            <li>内部运维手册</li>
+            <li>季度优化迭代</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SURVEY (SIMPLIFIED) -->
+<section id="survey" class="survey-section">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow">聊之前</div>
+      <h2 class="section-title">想跟你聊的几件事。</h2>
+      <p class="section-desc">聊的时候我们大概会围绕下面 4 个主题展开。你们不用准备什么——这些问题只是想让大家脑子里有个大概的方向，聊起来更顺。详细的调研清单我们在正式落地时会一起过。</p>
+    </div>
+    <div class="survey-intro reveal">
+      <p>每个主题列了 2 个最关心的问题。没有标准答案，也不用提前写文档，你们如实说现状就行。</p>
+    </div>
+    <div class="survey-grid-v2 reveal">
+      <div class="survey-item">
+        <div class="survey-item-header">
+          <span class="survey-item-tag">A</span>
+          <span class="survey-item-title">研发流程</span>
+        </div>
+        <ul>
+          <li>需求从提出到开发启动，通常经过哪些环节和角色？</li>
+          <li>目前研发流程中最大的瓶颈在哪里？</li>
+        </ul>
+      </div>
+      <div class="survey-item">
+        <div class="survey-item-header">
+          <span class="survey-item-tag">B</span>
+          <span class="survey-item-title">技术环境</span>
+        </div>
+        <ul>
+          <li>对 AI 编程工具（Cursor / Copilot / Claude Code）是否有合规政策？</li>
+          <li>内网部署 vs. SaaS 云端，贵方有哪些硬性要求？</li>
+        </ul>
+      </div>
+      <div class="survey-item">
+        <div class="survey-item-header">
+          <span class="survey-item-tag">C</span>
+          <span class="survey-item-title">发布机制</span>
+        </div>
+        <ul>
+          <li>代码审查和发布的流程是怎样的？由谁负责？</li>
+          <li>是否有 CI/CD 流水线？测试覆盖情况如何？</li>
+        </ul>
+      </div>
+      <div class="survey-item">
+        <div class="survey-item-header">
+          <span class="survey-item-tag">D</span>
+          <span class="survey-item-title">团队协作</span>
+        </div>
+        <ul>
+          <li>外包团队的组织方式和日常协同工具是什么？</li>
+          <li>人员流动对项目的影响目前如何应对？</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="cta" class="cta-section">
+  <div class="cta-inner reveal">
+    <div class="eyebrow">最后</div>
+    <h2>这份材料没想做成推销。</h2>
+    <p>只是把想聊的内容先整理出来，免得当面聊的时候漏掉什么。哪些地方 Synapse 能帮上，哪些地方暂时还不合适，我们当面说。</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="nav-logo">S</span>
+        <span><strong>Synapse</strong> · AI 研发管理操作系统</span>
+      </div>
+      <div class="footer-meta">
+        <span>lysanderl@janusd.com</span>
+        <span>v3.0</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Reveal on scroll
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(r => io.observe(r));
+
+// Nav scroll state
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 20) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+</script>
+</body>
+</html>

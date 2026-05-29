@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 驱动的产品能力全景 · Synapse-PJ 2026</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --teal:   #00d4aa;
+  --teal2:  #00ffcc;
+  --indigo: #6366f1;
+  --amber:  #f59e0b;
+  --red:    #ef4444;
+  --bg:     #080c10;
+  --bg2:    #0d1117;
+  --glass:  rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --text:   #f0f4f8;
+  --muted:  rgba(255,255,255,0.45);
+}
+.reveal {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.reveal .slides { text-align: left; }
+.reveal .slides section { padding: 0; height: 100%; width: 100%; }
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: 'Noto Sans SC', 'Inter', sans-serif;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1.15;
+}
+.reveal p, .reveal li { line-height: 1.65; }
+.reveal ul { list-style: none; padding: 0; }
+
+/* ── SLIDE WRAPPER ── */
+.slide {
+  width: 100%; height: 100%;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 48px 68px;
+  position: relative; overflow: hidden;
+}
+.slide::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% -10%, rgba(0,212,170,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at -5% 80%, rgba(99,102,241,0.10) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* ── SLIDE HEADER ── */
+.slide-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+.slide-label { font-size: 0.58em; font-weight: 700; color: var(--teal); letter-spacing: 0.14em; text-transform: uppercase; }
+.slide-label-amber { color: var(--amber); }
+.slide-label-indigo { color: var(--indigo); }
+.slide-title { font-size: 1.5em; font-weight: 800; color: var(--text); }
+.slide-title span { color: var(--teal); }
+.divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(0,212,170,0.5), transparent); margin-left: 4px; }
+.divider-line-amber { background: linear-gradient(90deg, rgba(245,158,11,0.5), transparent); }
+.divider-line-indigo { background: linear-gradient(90deg, rgba(99,102,241,0.5), transparent); }
+
+/* ── GRADIENT TEXT ── */
+.grad { background: linear-gradient(135deg, var(--teal), var(--indigo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.grad-amber { background: linear-gradient(135deg, var(--amber), #ff6b35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.grad-indigo { background: linear-gradient(135deg, var(--indigo), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+/* ── GIANT STAT ── */
+.giant { font-size: 5em; font-weight: 900; line-height: 0.9; letter-spacing: -0.04em; }
+.giant-label { font-size: 0.72em; color: var(--muted); margin-top: 6px; font-weight: 400; }
+
+/* ── CARDS ── */
+.card { background: var(--glass); border: 1px solid var(--border); border-radius: 12px; padding: 18px 22px; backdrop-filter: blur(8px); }
+.card-teal { border-color: rgba(0,212,170,0.3); background: rgba(0,212,170,0.06); }
+.card-indigo { border-color: rgba(99,102,241,0.3); background: rgba(99,102,241,0.06); }
+.card-amber { border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.06); }
+.card-amber-strong { border-color: rgba(245,158,11,0.4); background: rgba(245,158,11,0.07); }
+.card-indigo-strong { border-color: rgba(99,102,241,0.4); background: rgba(99,102,241,0.07); }
+
+/* ── BADGE / TAG ── */
+.badge { display: inline-flex; align-items: center; gap: 6px; background: var(--teal); color: #000; font-weight: 700; font-size: 0.58em; padding: 3px 10px; border-radius: 6px; letter-spacing: 0.05em; }
+.badge-amber { background: var(--amber); }
+.badge-indigo { background: var(--indigo); color: #fff; }
+.tag { display: inline-block; border: 1px solid rgba(0,212,170,0.4); color: var(--teal); font-size: 0.56em; padding: 2px 10px; border-radius: 20px; font-weight: 600; }
+.tag-amber { border-color: rgba(245,158,11,0.4); color: var(--amber); }
+.tag-indigo { border-color: rgba(99,102,241,0.4); color: var(--indigo); }
+
+/* ── GRIDS ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+.g5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; }
+
+/* ── METRIC BOX ── */
+.metric { text-align: center; padding: 16px 12px; background: var(--glass); border: 1px solid var(--border); border-radius: 12px; border-top: 3px solid var(--teal); }
+.metric-amber { border-top-color: var(--amber); }
+.metric-indigo { border-top-color: var(--indigo); }
+.metric-val { font-size: 2.2em; font-weight: 900; line-height: 1; letter-spacing: -0.03em; }
+.metric-lbl { font-size: 0.58em; color: var(--muted); margin-top: 5px; line-height: 1.5; }
+
+/* ── TIMELINE ── */
+.timeline { display: flex; gap: 5px; }
+.tl-item { flex: 1; background: rgba(0,212,170,0.06); border-top: 3px solid var(--teal); border-radius: 0 0 8px 8px; padding: 8px 5px; font-size: 0.46em; text-align: center; line-height: 1.4; }
+.tl-date { color: var(--teal); font-weight: 800; display: block; margin-bottom: 3px; font-size: 1.1em; }
+
+/* ── TABLE ── */
+table.t { width: 100%; border-collapse: collapse; font-size: 0.7em; }
+table.t th { background: rgba(0,212,170,0.12); color: var(--teal); padding: 8px 12px; text-align: left; font-weight: 700; font-size: 0.88em; letter-spacing: 0.04em; }
+table.t th.amber { background: rgba(245,158,11,0.12); color: var(--amber); }
+table.t td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+table.t tr:last-child td { border-bottom: none; }
+table.t .good { color: var(--teal); font-weight: 600; }
+table.t .good-amber { color: var(--amber); font-weight: 600; }
+table.t .bad { color: var(--muted); }
+
+/* ── STEP ── */
+.step { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.step:last-child { border-bottom: none; }
+.step-icon { width: 32px; height: 32px; border-radius: 8px; background: rgba(0,212,170,0.15); border: 1px solid rgba(0,212,170,0.3); display: flex; align-items: center; justify-content: center; font-size: 0.85em; flex-shrink: 0; }
+.step-body { flex: 1; }
+.step-title { font-size: 0.76em; font-weight: 700; margin-bottom: 2px; }
+.step-desc { font-size: 0.64em; color: var(--muted); line-height: 1.5; }
+
+/* ── LIST ── */
+.list li { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; font-size: 0.74em; }
+.list li::before { content: '▸'; color: var(--teal); flex-shrink: 0; margin-top: 1px; }
+.list-amber li::before { color: var(--amber); }
+.list-indigo li::before { color: var(--indigo); }
+
+/* ── COVER ELEMENTS ── */
+.cover-bg { position: absolute; inset: 0; pointer-events: none; }
+.cover-grid { position: absolute; inset: 0; opacity: 0.035; background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px); background-size: 64px 64px; }
+
+/* ── SECTION DIVIDER ── */
+.section-bg-amber { background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(245,158,11,0.2) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 10% 50%, rgba(245,158,11,0.08) 0%, transparent 55%); }
+.section-bg-teal { background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(0,212,170,0.2) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 10% 50%, rgba(0,212,170,0.08) 0%, transparent 55%); }
+.section-bg-indigo { background: radial-gradient(ellipse 70% 60% at 80% 50%, rgba(99,102,241,0.22) 0%, transparent 60%), radial-gradient(ellipse 50% 60% at 10% 50%, rgba(99,102,241,0.09) 0%, transparent 55%); }
+
+/* ── ARCH FLOW ── */
+.arch-flow { display: flex; align-items: center; gap: 8px; padding: 12px 0; flex-wrap: nowrap; }
+.arch-box { background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.3); border-radius: 8px; padding: 8px 14px; font-size: 0.66em; font-weight: 700; color: var(--teal); text-align: center; flex-shrink: 0; }
+.arch-arrow { color: var(--muted); font-size: 1.1em; flex-shrink: 0; }
+
+/* ── CHAIN ── */
+.chain-box { background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.3); border-radius: 6px; padding: 4px 10px; font-size: 0.6em; font-weight: 600; color: var(--teal); white-space: nowrap; display: inline-block; }
+
+/* ── REVEAL OVERRIDES ── */
+.reveal .progress { color: var(--teal); }
+.reveal .controls button { color: var(--teal); }
+.reveal .slide-number { color: var(--muted); font-size: 0.5em; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ═══════════════════ 01 COVER ═══════════════════ -->
+<section>
+<div class="slide" style="justify-content:center; padding:56px 80px;">
+  <div class="cover-bg" style="background: radial-gradient(ellipse 70% 60% at 85% 50%, rgba(0,212,170,0.18) 0%, transparent 50%), radial-gradient(ellipse 50% 50% at 15% 30%, rgba(99,102,241,0.14) 0%, transparent 50%), radial-gradient(ellipse 40% 40% at 50% 90%, rgba(245,158,11,0.10) 0%, transparent 45%);"></div>
+  <div class="cover-grid"></div>
+  <div style="position:relative; z-index:1;">
+    <div style="display:inline-flex; align-items:center; gap:10px; background:rgba(0,212,170,0.1); border:1px solid rgba(0,212,170,0.25); border-radius:8px; padding:5px 14px; font-size:0.58em; color:var(--teal); font-weight:700; letter-spacing:0.12em; margin-bottom:24px;">
+      SYNAPSE-PJ &nbsp;·&nbsp; 产品能力全景 &nbsp;·&nbsp; 2026
+    </div>
+    <div style="font-size:3.4em; font-weight:900; line-height:1.05; letter-spacing:-0.03em; margin-bottom:18px;">
+      <span class="grad">AI 驱动的</span><br>
+      <span class="grad">产品能力全景</span>
+    </div>
+    <div style="font-size:0.9em; color:rgba(255,255,255,0.55); margin-bottom:36px; font-weight:300; letter-spacing:0.02em;">
+      三条产品管线 · 自动化能力与提效策略
+    </div>
+    <div style="display:flex; gap:12px; margin-bottom:48px;">
+      <span style="display:inline-flex; align-items:center; gap:6px; background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.35); border-radius:20px; padding:5px 14px; font-size:0.6em; color:var(--amber); font-weight:700;">PM PMO Auto</span>
+      <span style="display:inline-flex; align-items:center; gap:6px; background:rgba(0,212,170,0.12); border:1px solid rgba(0,212,170,0.35); border-radius:20px; padding:5px 14px; font-size:0.6em; color:var(--teal); font-weight:700;">AI Synapse Multi-Agents</span>
+      <span style="display:inline-flex; align-items:center; gap:6px; background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.35); border-radius:20px; padding:5px 14px; font-size:0.6em; color:var(--indigo); font-weight:700;">SP Synapse Platform</span>
+    </div>
+    <div style="position:absolute; bottom:-20px; right:0; font-size:0.58em; color:var(--muted);">Synapse-PJ · 2026-05-04</div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 02 AGENDA ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label">OVERVIEW</div>
+      <div class="slide-title">三条产品管线<span>概览</span></div>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+  <div class="g3">
+    <!-- PMO Auto -->
+    <div class="card card-amber-strong" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.4);display:flex;align-items:center;justify-content:center;font-size:0.72em;font-weight:800;color:var(--amber);">PM</div>
+        <div>
+          <div style="font-size:0.88em;font-weight:800;color:var(--amber);">PMO Auto</div>
+          <div style="font-size:0.6em;color:var(--muted);">项目管理自动化</div>
+        </div>
+      </div>
+      <div style="font-size:0.65em;color:rgba(255,255,255,0.6);line-height:1.6;">一次 Notion 录入，全自动完成项目基础设施搭建</div>
+      <div style="border-top:1px solid rgba(245,158,11,0.2);padding-top:10px;">
+        <div style="font-size:2em;font-weight:900;color:var(--amber);line-height:1;">96%</div>
+        <div style="font-size:0.58em;color:var(--muted);">效率提升</div>
+      </div>
+      <div style="font-size:0.56em;color:var(--muted);">第 3-7 页 · 5张幻灯片</div>
+    </div>
+    <!-- Synapse Multi-Agents -->
+    <div class="card card-teal" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(0,212,170,0.2);border:1px solid rgba(0,212,170,0.4);display:flex;align-items:center;justify-content:center;font-size:0.72em;font-weight:800;color:var(--teal);">AI</div>
+        <div>
+          <div style="font-size:0.88em;font-weight:800;color:var(--teal);">Synapse Multi-Agents</div>
+          <div style="font-size:0.6em;color:var(--muted);">多智能体协作体系</div>
+        </div>
+      </div>
+      <div style="font-size:0.65em;color:rgba(255,255,255,0.6);line-height:1.6;">业务专家用业务语言驱动 AI，过程可审计，结果可积累</div>
+      <div style="border-top:1px solid rgba(0,212,170,0.2);padding-top:10px;">
+        <div style="font-size:2em;font-weight:900;color:var(--teal);line-height:1;">69</div>
+        <div style="font-size:0.58em;color:var(--muted);">个专业 Agent</div>
+      </div>
+      <div style="font-size:0.56em;color:var(--muted);">第 8-11 页 · 4张幻灯片</div>
+    </div>
+    <!-- Synapse Platform -->
+    <div class="card card-indigo-strong" style="display:flex; flex-direction:column; gap:12px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:rgba(99,102,241,0.2);border:1px solid rgba(99,102,241,0.4);display:flex;align-items:center;justify-content:center;font-size:0.72em;font-weight:800;color:var(--indigo);">SP</div>
+        <div>
+          <div style="font-size:0.88em;font-weight:800;color:var(--indigo);">Synapse Platform</div>
+          <div style="font-size:0.6em;color:var(--muted);">AI 数字分身协作</div>
+        </div>
+      </div>
+      <div style="font-size:0.65em;color:rgba(255,255,255,0.6);line-height:1.6;">Slack 内完成，零工具切换，AI 生成 + 人工必审</div>
+      <div style="border-top:1px solid rgba(99,102,241,0.2);padding-top:10px;">
+        <div style="font-size:2em;font-weight:900;color:var(--indigo);line-height:1;">20</div>
+        <div style="font-size:0.58em;color:var(--muted);">项核心能力</div>
+      </div>
+      <div style="font-size:0.56em;color:var(--muted);">第 12-15 页 · 4张幻灯片</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 03 PMO SECTION DIVIDER ═══════════════════ -->
+<section>
+<div class="slide" style="justify-content:center;">
+  <div class="cover-bg section-bg-amber"></div>
+  <div class="cover-grid"></div>
+  <div style="position:absolute; left:60px; top:50%; transform:translateY(-50%); font-size:9em; font-weight:900; line-height:1; opacity:0.08; color:var(--amber); pointer-events:none; user-select:none;">01</div>
+  <div style="position:relative; z-index:1; max-width:700px;">
+    <div class="tag tag-amber" style="margin-bottom:16px; font-size:0.62em; letter-spacing:0.12em;">PMO AUTO</div>
+    <div style="font-size:3em; font-weight:900; line-height:1.1; margin-bottom:14px;">
+      <span class="grad-amber">项目管理自动化</span>
+    </div>
+    <div style="font-size:0.82em; color:rgba(255,255,255,0.55); margin-bottom:28px; line-height:1.7;">
+      一次 Notion 录入，全自动完成项目基础设施搭建
+    </div>
+    <div style="display:flex; gap:8px; align-items:center; margin-bottom:18px;">
+      <span class="badge badge-amber">v2.6.3-EN</span>
+      <span class="badge badge-amber">GA</span>
+    </div>
+    <div style="display:flex; gap:24px;">
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--amber);">96%</div>
+        <div style="font-size:0.55em; color:var(--muted);">效率提升</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--amber);">≤60s</div>
+        <div style="font-size:0.55em; color:var(--muted);">通知 SLA P99</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--amber);">$300K+</div>
+        <div style="font-size:0.55em; color:var(--muted);">年度 ROI</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 04 PMO EXECUTIVE SUMMARY ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-amber">PMO AUTO · 执行摘要</div>
+      <div class="slide-title">半天录入工作，<span style="color:var(--amber);">压缩为 10 分钟</span></div>
+    </div>
+    <div class="divider-line divider-line-amber"></div>
+  </div>
+  <div style="display:flex; gap:24px; flex:1;">
+    <!-- LEFT 60% -->
+    <div style="flex:1.5; display:flex; flex-direction:column; gap:14px;">
+      <div style="font-size:0.64em; font-weight:700; color:var(--amber); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">核心命题</div>
+      <div style="font-size:0.76em; color:rgba(255,255,255,0.7); line-height:1.75; padding:14px 18px; background:rgba(245,158,11,0.06); border-left:3px solid var(--amber); border-radius:0 8px 8px 0;">
+        项目管理的瓶颈，不在决策，在录入。一个标准项目从立项到完全上线，项目经理需要耗费 <strong style="color:var(--amber);">4-5 小时</strong>在系统录入、任务创建、通知同步、文档搭建上。这些工作没有判断价值，但无法省略——直到 PMO Auto 出现。
+      </div>
+      <div style="font-size:0.92em; font-weight:800; color:var(--text); line-height:1.5; padding:14px 18px; background:rgba(245,158,11,0.1); border-radius:10px; border:1px solid rgba(245,158,11,0.25);">
+        PMO Auto 将项目经理的录入工作压缩为 <span class="grad-amber">10 分钟</span>数据填写，其余全部自动化。
+      </div>
+    </div>
+    <!-- RIGHT 40% -->
+    <div style="width:260px; display:flex; flex-direction:column; gap:8px;">
+      <div style="font-size:0.58em; font-weight:700; color:var(--amber); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">核心成果</div>
+      <div class="card" style="border-left:3px solid var(--amber); padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:0.6em; color:var(--muted);">启动耗时节省</div>
+        <div style="font-size:1.3em; font-weight:900; color:var(--amber);">96%</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--amber); padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:0.6em; color:var(--muted);">WBS 录入节省</div>
+        <div style="font-size:1.3em; font-weight:900; color:var(--amber);">99%</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--amber); padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:0.6em; color:var(--muted);">通知 SLA P99</div>
+        <div style="font-size:1.3em; font-weight:900; color:var(--amber);">≤60s</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--teal); padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:0.6em; color:var(--muted);">自动创建任务</div>
+        <div style="font-size:1.3em; font-weight:900; color:var(--teal);">80+</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--amber); padding:10px 14px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-size:0.6em; color:var(--muted);">年度 ROI</div>
+        <div style="font-size:1.3em; font-weight:900; color:var(--amber);">$300K+</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 05 PMO AUTOMATION MATRIX ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-amber">PMO AUTO · 能力矩阵</div>
+      <div class="slide-title">自动化能力矩阵</div>
+    </div>
+    <div class="divider-line divider-line-amber"></div>
+  </div>
+  <table class="t">
+    <thead>
+      <tr>
+        <th class="amber">能力模块</th>
+        <th class="amber">人工基线</th>
+        <th class="amber">PMO Auto</th>
+        <th class="amber">节省</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>项目立项 & 元数据录入</td><td class="bad">60-90 分钟</td><td class="good-amber">10 分钟（人工填表）</td><td class="good-amber">~80%</td></tr>
+      <tr><td>WBS 任务体系创建（80+ 任务）</td><td class="bad">3-4 小时</td><td class="good-amber">30-90 秒</td><td class="good-amber">99%</td></tr>
+      <tr><td>Notion Hub 文档搭建（17 页）</td><td class="bad">2-3 小时</td><td class="good-amber">全自动生成</td><td class="good-amber">100%</td></tr>
+      <tr><td>项目成员通知 & Slack 推送</td><td class="bad">30-60 分钟</td><td class="good-amber">≤60 秒 SLA</td><td class="good-amber">~98%</td></tr>
+      <tr><td>Asana 项目结构同步</td><td class="bad">1-2 小时</td><td class="good-amber">自动完成</td><td class="good-amber">100%</td></tr>
+      <tr><td>质量验收（E2E 测试）</td><td class="bad">人工复核</td><td class="good-amber">12 PASS / 0 FAIL</td><td class="good">系统化保证</td></tr>
+    </tbody>
+  </table>
+  <div class="g2" style="margin-top:14px;">
+    <div class="card card-amber-strong" style="padding:12px 16px;">
+      <div style="font-size:0.62em; font-weight:700; color:var(--amber); margin-bottom:4px;">WBS 模板战略护城河</div>
+      <div style="font-size:0.62em; color:var(--muted); line-height:1.6;">21 字段编码 Janus 方法论 · 不可简单复制的积累型资产 · 随项目增加而增值</div>
+    </div>
+    <div class="card card-teal" style="padding:12px 16px;">
+      <div style="font-size:0.62em; font-weight:700; color:var(--teal); margin-bottom:4px;">SSOT 设计原则</div>
+      <div style="font-size:0.62em; color:var(--muted); line-height:1.6;">Notion 作为唯一数据源 · 消除多系统数据漂移 · 一次录入触发全链路自动化</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 06 PMO ARCHITECTURE + KPI ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-amber">PMO AUTO · 架构 & KPI</div>
+      <div class="slide-title">系统架构 + KPI 仪表盘</div>
+    </div>
+    <div class="divider-line divider-line-amber"></div>
+  </div>
+  <!-- Architecture Flow -->
+  <div style="margin-bottom:16px;">
+    <div style="font-size:0.6em; font-weight:700; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;">数据流向</div>
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:nowrap;">
+      <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:8px;padding:10px 14px;font-size:0.62em;text-align:center;flex:1;">
+        <div style="font-weight:800;color:var(--amber);">项目经理 PM</div>
+        <div style="color:var(--muted);font-size:0.85em;margin-top:2px;">10 分钟填写数据</div>
+      </div>
+      <div style="color:var(--amber);font-size:1.2em;">→</div>
+      <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:8px;padding:10px 14px;font-size:0.62em;text-align:center;flex:1;">
+        <div style="font-weight:800;color:var(--amber);">Notion SSOT</div>
+        <div style="color:var(--muted);font-size:0.85em;margin-top:2px;">唯一真相源</div>
+      </div>
+      <div style="color:var(--amber);font-size:1.2em;">→</div>
+      <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.3);border-radius:8px;padding:10px 14px;font-size:0.62em;text-align:center;flex:1;">
+        <div style="font-weight:800;color:var(--teal);">n8n 工作流</div>
+        <div style="color:var(--muted);font-size:0.85em;margin-top:2px;">编排引擎</div>
+      </div>
+      <div style="color:var(--teal);font-size:1.2em;">→</div>
+      <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.3);border-radius:8px;padding:10px 14px;font-size:0.62em;text-align:center;flex:1;">
+        <div style="font-weight:800;color:var(--teal);">pmo-api</div>
+        <div style="color:var(--muted);font-size:0.85em;margin-top:2px;">API 中间层</div>
+      </div>
+      <div style="color:var(--teal);font-size:1.2em;">→</div>
+      <div style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:10px 14px;font-size:0.62em;text-align:center;flex:1;">
+        <div style="font-weight:800;color:var(--indigo);">Asana + Slack</div>
+        <div style="color:var(--muted);font-size:0.85em;margin-top:2px;">双通道执行</div>
+      </div>
+    </div>
+  </div>
+  <!-- KPI Row -->
+  <div style="font-size:0.6em; font-weight:700; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:10px;">KPI 仪表盘</div>
+  <div class="g5">
+    <div class="metric metric-amber">
+      <div class="metric-val grad-amber">96%</div>
+      <div class="metric-lbl">项目启动效率<br>Onboarding</div>
+    </div>
+    <div class="metric metric-amber">
+      <div class="metric-val grad-amber">≤60s</div>
+      <div class="metric-lbl">通知 SLA P99<br>Notification</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val grad">80+</div>
+      <div class="metric-lbl">自动创建任务<br>Auto Tasks</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val grad">17</div>
+      <div class="metric-lbl">Hub 标准页面<br>Hub Pages</div>
+    </div>
+    <div class="metric metric-amber">
+      <div class="metric-val grad-amber">$300K+</div>
+      <div class="metric-lbl">年度 ROI<br>Annual ROI</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 07 PMO N8N WORKFLOWS ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-amber">PMO AUTO · 自动化引擎</div>
+      <div class="slide-title">n8n 工作流清单 <span style="font-size:0.65em;font-weight:400;color:var(--muted);">— 14 个工作流 · 12 个激活（来源：n8n.lysander.bond 实例当期清单）</span></div>
+    </div>
+    <div class="divider-line divider-line-amber"></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+
+    <!-- LEFT: Project Lifecycle Workflows -->
+    <div>
+      <div style="font-size:0.58em;font-weight:700;color:var(--amber);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">项目生命周期 — 初始化 & 配置</div>
+      <table class="t" style="font-size:0.68em;">
+        <thead>
+          <tr>
+            <th style="width:52px;">工作流</th>
+            <th style="width:80px;">触发方式</th>
+            <th>用途说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span style="font-weight:800;color:var(--amber);">WF-01</span></td>
+            <td><span class="tag tag-amber" style="font-size:0.85em;">5 分钟轮询</span></td>
+            <td>
+              <div style="font-weight:600;">项目初始化</div>
+              <div style="color:var(--muted);font-size:0.88em;">Notion 状态翻转 → 自动创建 Asana 项目 + 邀请 5 个角色成员 + 生成 17 个 Hub 页面</div>
+            </td>
+          </tr>
+          <tr>
+            <td><span style="font-weight:800;color:var(--amber);">WF-11</span></td>
+            <td><span class="tag tag-amber" style="font-size:0.85em;">5 分钟轮询</span></td>
+            <td>
+              <div style="font-weight:600;">WBS 导入触发器</div>
+              <div style="color:var(--muted);font-size:0.88em;">检测 Registry 中待导入项目 → 调用 pmo-api 启动 wbs_to_asana.py 批量创建 80+ 任务</div>
+            </td>
+          </tr>
+          <tr>
+            <td><span style="font-weight:800;color:var(--amber);">WF-12</span></td>
+            <td><span class="tag tag-amber" style="font-size:0.85em;">备用路径</span></td>
+            <td>
+              <div style="font-weight:600;">WBS 工序导入 <span style="color:var(--red);font-size:0.85em;">⚠ 必须保持激活</span></div>
+              <div style="color:var(--muted);font-size:0.88em;">WF-11 的降级保底路径，直接从 Notion WBS DB 读取并写入 Asana，支持 &gt;100 行 WBS</div>
+            </td>
+          </tr>
+          <tr>
+            <td><span style="font-weight:800;color:var(--amber);">WF-14</span></td>
+            <td><span class="tag tag-amber" style="font-size:0.85em;">5 分钟轮询</span></td>
+            <td>
+              <div style="font-weight:600;">角色分配同步</div>
+              <div style="color:var(--muted);font-size:0.88em;">读取 Registry 角色邮箱 → 100% 覆盖 L2/L3 任务分配；unmapped_role 时 hard fail（不静默跳过）</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- RIGHT: Notification Workflows -->
+    <div>
+      <div style="font-size:0.58em;font-weight:700;color:var(--teal);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;">执行期通知 — 实时驱动团队响应</div>
+      <table class="t" style="font-size:0.68em;margin-bottom:12px;">
+        <thead>
+          <tr>
+            <th style="width:52px;">工作流</th>
+            <th style="width:80px;">触发方式</th>
+            <th>用途说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span style="font-weight:800;color:var(--teal);">WF-08</span></td>
+            <td><span class="tag" style="font-size:0.85em;">Webhook 实时</span></td>
+            <td>
+              <div style="font-weight:600;">Asana 任务完成通知</div>
+              <div style="color:var(--muted);font-size:0.88em;">监听 Asana 任务完成事件 → 识别下游依赖任务 → 通知对应负责人</div>
+            </td>
+          </tr>
+          <tr>
+            <td><span style="font-weight:800;color:var(--teal);">WF-09</span></td>
+            <td><span class="tag" style="font-size:0.85em;">内部调用</span></td>
+            <td>
+              <div style="font-weight:600;">统一通知出口</div>
+              <div style="color:var(--muted);font-size:0.88em;">所有通知的 Slack DM 发送中枢，P99 SLA ≤60 秒；与 WF-08 解耦，可独立复用</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Data flow summary box -->
+      <div class="card card-teal" style="font-size:0.64em;padding:12px 16px;">
+        <div style="font-weight:700;color:var(--teal);margin-bottom:6px;">完整自动化链路</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;color:var(--muted);">
+          <span style="color:var(--text);font-weight:600;">Notion</span>
+          <span>→ WF-01 →</span>
+          <span style="color:var(--text);font-weight:600;">Asana 项目 + Hub</span>
+          <span>→ WF-11/12 →</span>
+          <span style="color:var(--text);font-weight:600;">80+ WBS 任务</span>
+          <span>→ WF-14 →</span>
+          <span style="color:var(--text);font-weight:600;">角色分配</span>
+          <span>→ WF-08/09 →</span>
+          <span style="color:var(--amber);font-weight:600;">≤60s Slack 通知</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer note -->
+  <div style="display:flex;align-items:center;gap:12px;font-size:0.58em;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;">
+    <span><span style="color:var(--amber);font-weight:700;">14</span> 个工作流总计</span>
+    <span>·</span>
+    <span><span style="color:var(--teal);font-weight:700;">12</span> 个当前激活</span>
+    <span>·</span>
+    <span>n8n 生产实例：<span style="color:var(--text);">n8n.lysander.bond</span></span>
+    <span>·</span>
+    <span>后端 API：<span style="color:var(--text);">pmo-api.lysander.bond</span></span>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 08 PMO ROADMAP ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-amber">PMO AUTO · 路线图</div>
+      <div class="slide-title">产品路线图 & 当前状态</div>
+    </div>
+    <div class="divider-line divider-line-amber"></div>
+  </div>
+  <!-- Status Bar -->
+  <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+    <span class="badge badge-amber">GA v2.6.3-EN</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:6px;padding:3px 10px;font-size:0.55em;color:var(--amber);font-weight:600;">STABILITY-001 监控中 · 至 2026-05-10</span>
+    <span style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:6px;padding:3px 10px;font-size:0.55em;color:var(--teal);font-weight:600;">12 PASS / 0 FAIL</span>
+  </div>
+  <!-- Roadmap Columns -->
+  <div class="g3">
+    <div class="card card-amber-strong" style="position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--amber);"></div>
+      <div style="padding-top:6px;">
+        <div style="font-size:1.6em;font-weight:900;color:var(--amber);line-height:1;">v2.7</div>
+        <div style="font-size:0.68em;font-weight:700;color:var(--amber);margin:6px 0 10px;">质量护栏</div>
+        <ul class="list list-amber" style="gap:4px;">
+          <li>WBS 完整性验证</li>
+          <li>异常自动预警</li>
+          <li>状态机形式化</li>
+          <li>输入验证强化</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card card-teal" style="position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--teal);"></div>
+      <div style="padding-top:6px;">
+        <div style="font-size:1.6em;font-weight:900;color:var(--teal);line-height:1;">v3.0</div>
+        <div style="font-size:0.68em;font-weight:700;color:var(--teal);margin:6px 0 10px;">事件驱动架构</div>
+        <ul class="list" style="gap:4px;">
+          <li>Notion Webhook 替代轮询</li>
+          <li>pmo-api 成为状态机核心</li>
+          <li>实时漂移检测</li>
+          <li>双向数据回写</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card card-indigo-strong" style="position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--indigo);"></div>
+      <div style="padding-top:6px;">
+        <div style="font-size:1.6em;font-weight:900;color:var(--indigo);line-height:1;">v4.0</div>
+        <div style="font-size:0.68em;font-weight:700;color:var(--indigo);margin:6px 0 10px;">多租户平台</div>
+        <ul class="list list-indigo" style="gap:4px;">
+          <li>租户隔离</li>
+          <li>自定义模板库</li>
+          <li>白标能力</li>
+          <li>SaaS 商业化交付</li>
+        </ul>
+        <div style="margin-top:10px;font-size:0.56em;color:var(--muted);border-top:1px solid rgba(99,102,241,0.2);padding-top:8px;">条件：L4 总裁决策</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 08 SYNAPSE MULTI-AGENTS SECTION DIVIDER ═══════════════════ -->
+<section>
+<div class="slide" style="justify-content:center;">
+  <div class="cover-bg section-bg-teal"></div>
+  <div class="cover-grid"></div>
+  <div style="position:absolute; left:60px; top:50%; transform:translateY(-50%); font-size:9em; font-weight:900; line-height:1; opacity:0.08; color:var(--teal); pointer-events:none; user-select:none;">02</div>
+  <div style="position:relative; z-index:1; max-width:700px;">
+    <div class="tag" style="margin-bottom:16px; font-size:0.62em; letter-spacing:0.12em;">SYNAPSE MULTI-AGENTS</div>
+    <div style="font-size:3em; font-weight:900; line-height:1.1; margin-bottom:14px;">
+      <span class="grad">多智能体协作运营体系</span>
+    </div>
+    <div style="font-size:0.82em; color:rgba(255,255,255,0.55); margin-bottom:28px; line-height:1.7;">
+      业务专家用业务语言驱动 AI，过程可审计，结果可积累，能力可复制
+    </div>
+    <div style="display:flex; gap:24px;">
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--teal);">69</div>
+        <div style="font-size:0.55em; color:var(--muted);">专业 Agent</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--teal);">≥85</div>
+        <div style="font-size:0.55em; color:var(--muted);">QA 门禁分数</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--teal);">0%</div>
+        <div style="font-size:0.55em; color:var(--muted);">Owner 参与度</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 09 SYNAPSE ARCHITECTURE + FORMULA ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label">SYNAPSE MULTI-AGENTS · 架构</div>
+      <div class="slide-title">核心公式 & <span>五层架构</span></div>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="display:flex; gap:20px; flex:1;">
+    <!-- LEFT 45% -->
+    <div style="width:42%; display:flex; flex-direction:column; gap:12px;">
+      <div style="text-align:center; padding:16px; background:rgba(0,212,170,0.08); border:1px solid rgba(0,212,170,0.2); border-radius:12px;">
+        <div style="font-size:1.5em; font-weight:900; letter-spacing:-0.02em;" class="grad">Agent = Model + Harness</div>
+        <div style="font-size:0.58em; color:var(--muted); margin-top:8px; line-height:1.6;">Model = 大语言模型 (Claude claude-sonnet-4-6)<br>Harness = 规则 + 约束 + 流程 + 记忆 + 角色</div>
+      </div>
+      <!-- 5 Layer Stack -->
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:8px;padding:8px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--teal);">知识层 · OBS 第二大脑</div>
+          <div style="font-size:0.52em;color:var(--muted);">35条记忆 · 50+决策 · 产品知识库</div>
+        </div>
+        <div style="text-align:center;font-size:0.5em;color:var(--muted);">←突触→</div>
+        <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:8px;padding:8px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--teal);">控制层 · Harness Engineering</div>
+          <div style="font-size:0.52em;color:var(--muted);">规则 · 约束 · 质量门禁 · 角色路由</div>
+        </div>
+        <div style="text-align:center;font-size:0.5em;color:var(--muted);">←突触→</div>
+        <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:8px;padding:8px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--teal);">执行层 · Multi-Agent 团队</div>
+          <div style="font-size:0.52em;color:var(--muted);">69 个 Agent · 58 核心 · 13 专业团队</div>
+        </div>
+        <div style="text-align:center;font-size:0.5em;color:var(--muted);">←突触→</div>
+        <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:8px;padding:8px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--teal);">决策层 · 四级决策体系</div>
+          <div style="font-size:0.52em;color:var(--muted);">L1 自动 → L2 专家 → L3 CEO → L4 总裁</div>
+        </div>
+        <div style="text-align:center;font-size:0.5em;color:var(--muted);">←突触→</div>
+        <div style="background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:8px;padding:8px 14px;">
+          <div style="font-size:0.6em;font-weight:700;color:var(--teal);">进化层 · 情报闭环管线</div>
+          <div style="font-size:0.52em;color:var(--muted);">发现 → 评估 → 执行 → 报告 → 自改进</div>
+        </div>
+      </div>
+    </div>
+    <!-- RIGHT 55% -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+      <div style="font-size:0.62em; font-weight:700; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase;">为什么 Harness 是竞争壁垒</div>
+      <div class="card" style="border-left:3px solid var(--red); padding:12px 16px;">
+        <div style="font-size:0.62em;font-weight:700;color:#ef4444;margin-bottom:4px;">传统 AI 使用方式</div>
+        <div style="font-size:0.6em;color:var(--muted);line-height:1.6;">每次从零开始 · 提示词工程依赖个人经验 · 知识无法积累 · 结果不可预测</div>
+      </div>
+      <div class="card card-teal" style="padding:12px 16px;">
+        <div style="font-size:0.62em;font-weight:700;color:var(--teal);margin-bottom:4px;">Synapse 方式</div>
+        <div style="font-size:0.6em;color:rgba(255,255,255,0.7);line-height:1.6;">跨会话持久记忆 · 专业分工 12 个团队 · 决策持续积累 · 每周自我审查优化</div>
+      </div>
+      <div style="background:linear-gradient(135deg, rgba(0,212,170,0.1), rgba(99,102,241,0.1));border:1px solid rgba(0,212,170,0.2);border-radius:10px;padding:14px 16px;text-align:center;">
+        <div style="font-size:0.62em;color:var(--muted);margin-bottom:6px;">Owner 参与度变化</div>
+        <div style="font-size:1.4em;font-weight:900;">
+          <span style="color:var(--muted);">100%</span>
+          <span style="color:var(--teal);margin:0 12px;">→</span>
+          <span class="grad">0%</span>
+        </div>
+        <div style="font-size:0.54em;color:var(--muted);margin-top:4px;">仅接收 Slack 结果通知，不参与执行过程</div>
+      </div>
+      <div class="g2" style="gap:8px;">
+        <div class="card" style="padding:10px 14px;text-align:center;border-top:2px solid var(--teal);">
+          <div style="font-size:1.5em;font-weight:900;color:var(--teal);">13</div>
+          <div style="font-size:0.54em;color:var(--muted);">专业团队</div>
+        </div>
+        <div class="card" style="padding:10px 14px;text-align:center;border-top:2px solid var(--teal);">
+          <div style="font-size:1.5em;font-weight:900;color:var(--teal);">69</div>
+          <div style="font-size:0.54em;color:var(--muted);">专业 Agent</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 10 SYNAPSE 6 CAPABILITIES ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label">SYNAPSE MULTI-AGENTS · 能力</div>
+      <div class="slide-title">六大核心能力矩阵</div>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+    <div class="card card-teal" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--teal);margin-bottom:4px;">Harness Engineering</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">AI 行为的工程化约束，而非提示词技巧</div>
+      <div style="display:inline-block;background:rgba(0,212,170,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--teal);font-weight:700;">4层控制机制</div>
+    </div>
+    <div class="card card-teal" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--teal);margin-bottom:4px;">OBS 知识系统</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">跨会话持久记忆，决策与项目知识全部结构化</div>
+      <div style="display:inline-block;background:rgba(0,212,170,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--teal);font-weight:700;">35条记忆 · 50+决策</div>
+    </div>
+    <div class="card card-teal" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--teal);margin-bottom:4px;">Multi-Agent 专业团队</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">专业分工，任务自动路由到对应专家</div>
+      <div style="display:inline-block;background:rgba(0,212,170,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--teal);font-weight:700;">69个Agent · 13支团队</div>
+    </div>
+    <div class="card card-amber" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--amber);margin-bottom:4px;">四级决策体系</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">绝大多数决策内部解决，L4上报极少</div>
+      <div style="display:inline-block;background:rgba(245,158,11,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--amber);font-weight:700;">L4上报率 &lt;5%</div>
+    </div>
+    <div class="card card-amber" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--amber);margin-bottom:4px;">自我进化机制</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">每周六维度 Harness 审查，系统持续优化规则</div>
+      <div style="display:inline-block;background:rgba(245,158,11,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--amber);font-weight:700;">消除 40+ 不必要中断</div>
+    </div>
+    <div class="card card-indigo-strong" style="padding:14px 18px;">
+      <div style="font-size:0.7em;font-weight:800;color:var(--indigo);margin-bottom:4px;">情报闭环管线</div>
+      <div style="font-size:0.6em;color:rgba(255,255,255,0.6);margin-bottom:8px;">每日 3 节奏自动运行，Owner 只收 Slack 摘要</div>
+      <div style="display:inline-block;background:rgba(99,102,241,0.15);border-radius:6px;padding:2px 8px;font-size:0.54em;color:var(--indigo);font-weight:700;">8am报 · 10am行动 · Slack摘要</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 11 SYNAPSE PROVEN RESULTS ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label">SYNAPSE MULTI-AGENTS · 实证</div>
+      <div class="slide-title">PDCA 成果时间线 & <span>量化成果</span></div>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+  <!-- Timeline -->
+  <div class="timeline" style="margin-bottom:16px;">
+    <div class="tl-item"><span class="tl-date">D-0412</span>Harness v1<br>基础约束建立</div>
+    <div class="tl-item"><span class="tl-date">D-0424</span>扩大<br>Lysander 授权</div>
+    <div class="tl-item"><span class="tl-date">D-0427</span>周审查<br>制度启动</div>
+    <div class="tl-item"><span class="tl-date">D-0428(1)</span>Agent 记忆<br>协作机制</div>
+    <div class="tl-item"><span class="tl-date">D-0428(2)</span>PMO Auto<br>EN迁移</div>
+    <div class="tl-item"><span class="tl-date">D-0430(PQG)</span>PQG v2.0<br>141次分析</div>
+    <div class="tl-item"><span class="tl-date">D-0430(Arch)</span>Phoenix<br>部署架构</div>
+    <div class="tl-item"><span class="tl-date">D-0501</span>Token<br>优化方案C</div>
+    <div class="tl-item"><span class="tl-date">D-0503</span>PMO Auto<br>GA v2.6.3-EN</div>
+  </div>
+  <!-- Result Cards -->
+  <div class="g2">
+    <div class="card card-teal" style="padding:16px 20px;">
+      <div style="font-size:0.62em;font-weight:700;color:var(--teal);margin-bottom:10px;">Phoenix 实证 — 跨4天多会话连续执行</div>
+      <div style="display:flex; gap:16px;">
+        <div style="text-align:center;">
+          <div style="font-size:1.8em;font-weight:900;color:var(--teal);">3</div>
+          <div style="font-size:0.52em;color:var(--muted);">Owner 参与节点</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:1.8em;font-weight:900;color:var(--teal);">99.7%</div>
+          <div style="font-size:0.52em;color:var(--muted);">测试通过率<br>294/295</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:1.8em;font-weight:900;color:var(--teal);">4天</div>
+          <div style="font-size:0.52em;color:var(--muted);">连续执行</div>
+        </div>
+      </div>
+    </div>
+    <div class="card card-amber-strong" style="padding:16px 20px;">
+      <div style="font-size:0.62em;font-weight:700;color:var(--amber);margin-bottom:10px;">量化成果</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <div style="text-align:center;padding:8px;background:rgba(245,158,11,0.08);border-radius:6px;">
+          <div style="font-size:1.2em;font-weight:900;color:var(--amber);">0%</div>
+          <div style="font-size:0.5em;color:var(--muted);">Owner参与度（执行期）</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:rgba(245,158,11,0.08);border-radius:6px;">
+          <div style="font-size:1.2em;font-weight:900;color:var(--amber);">50+</div>
+          <div style="font-size:0.5em;color:var(--muted);">D编号决策归档</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:rgba(0,212,170,0.08);border-radius:6px;">
+          <div style="font-size:1.2em;font-weight:900;color:var(--teal);">35条</div>
+          <div style="font-size:0.5em;color:var(--muted);">跨会话持久记忆</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:rgba(0,212,170,0.08);border-radius:6px;">
+          <div style="font-size:1.2em;font-weight:900;color:var(--teal);">141</div>
+          <div style="font-size:0.5em;color:var(--muted);">PQG中断事件分析</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 12 SYNAPSE PLATFORM SECTION DIVIDER ═══════════════════ -->
+<section>
+<div class="slide" style="justify-content:center;">
+  <div class="cover-bg section-bg-indigo"></div>
+  <div class="cover-grid"></div>
+  <div style="position:absolute; left:60px; top:50%; transform:translateY(-50%); font-size:9em; font-weight:900; line-height:1; opacity:0.08; color:var(--indigo); pointer-events:none; user-select:none;">03</div>
+  <div style="position:relative; z-index:1; max-width:700px;">
+    <div class="tag tag-indigo" style="margin-bottom:16px; font-size:0.62em; letter-spacing:0.12em;">SYNAPSE PLATFORM</div>
+    <div style="font-size:3em; font-weight:900; line-height:1.1; margin-bottom:14px;">
+      <span class="grad-indigo">AI 数字分身协作系统</span>
+    </div>
+    <div style="font-size:0.82em; color:rgba(255,255,255,0.55); margin-bottom:28px; line-height:1.7;">
+      Slack 内完成，零工具切换。AI 全力生成，人类必须审批。
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+      <span class="badge badge-indigo">v0.5.0</span>
+      <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);border-radius:6px;padding:3px 10px;font-size:0.55em;color:var(--indigo);font-weight:600;">Phase 1-4 Complete</span>
+    </div>
+    <div style="display:flex; gap:24px;">
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--indigo);">20</div>
+        <div style="font-size:0.55em; color:var(--muted);">核心能力</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--indigo);">294/295</div>
+        <div style="font-size:0.55em; color:var(--muted);">测试通过 99.7%</div>
+      </div>
+      <div style="width:1px;background:rgba(255,255,255,0.1);"></div>
+      <div style="text-align:center;">
+        <div style="font-size:2em; font-weight:900; color:var(--indigo);">~2天</div>
+        <div style="font-size:0.55em; color:var(--muted);">Phase 1-4 交付</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 13 SYNAPSE PLATFORM OVERVIEW + PDCA ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-indigo">SYNAPSE PLATFORM · 概览</div>
+      <div class="slide-title">产品概览 & <span style="color:var(--indigo);">PDCA 自改进闭环</span></div>
+    </div>
+    <div class="divider-line divider-line-indigo"></div>
+  </div>
+  <div style="display:flex; gap:20px; flex:1;">
+    <!-- LEFT 50% -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+      <div style="font-size:0.6em; font-weight:700; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">三大核心价值</div>
+      <div class="card card-indigo-strong" style="padding:12px 16px; border-left:3px solid var(--indigo);">
+        <div style="font-size:0.66em;font-weight:700;color:var(--indigo);margin-bottom:3px;">零工具切换</div>
+        <div style="font-size:0.6em;color:var(--muted);">完全构建在 Slack 之上，无需切换新界面</div>
+      </div>
+      <div class="card card-teal" style="padding:12px 16px; border-left:3px solid var(--teal);">
+        <div style="font-size:0.66em;font-weight:700;color:var(--teal);margin-bottom:3px;">AI 生成 + 强制人工审批</div>
+        <div style="font-size:0.6em;color:var(--muted);">技术层面的硬约束，不可绕过，不可关闭</div>
+      </div>
+      <div class="card card-amber" style="padding:12px 16px; border-left:3px solid var(--amber);">
+        <div style="font-size:0.66em;font-weight:700;color:var(--amber);margin-bottom:3px;">每次使用 = 训练数据</div>
+        <div style="font-size:0.6em;color:var(--muted);">Slack 内联编辑自动记录，AI 持续对齐风格</div>
+      </div>
+      <div style="display:flex; gap:8px; margin-top:4px; flex-wrap:wrap;">
+        <span class="badge badge-indigo">v0.5.0 LIVE</span>
+        <span style="display:inline-flex;align-items:center;background:rgba(0,212,170,0.1);border:1px solid rgba(0,212,170,0.25);border-radius:6px;padding:3px 8px;font-size:0.52em;color:var(--teal);font-weight:600;">294/295 Tests · 99.7%</span>
+        <span style="display:inline-flex;align-items:center;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);border-radius:6px;padding:3px 8px;font-size:0.52em;color:var(--indigo);font-weight:600;">E2E: 2026-04-28</span>
+      </div>
+    </div>
+    <!-- RIGHT 50% PDCA -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+      <div style="font-size:0.6em; font-weight:700; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">PDCA 自改进闭环</div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:0; flex:1; justify-content:center;">
+        <div style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:8px 24px;font-size:0.62em;font-weight:700;color:var(--indigo);text-align:center;width:80%;">Plan — Slack 输入业务意图</div>
+        <div style="color:var(--muted);font-size:0.8em;margin:2px 0;">↓</div>
+        <div style="background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.3);border-radius:8px;padding:8px 24px;font-size:0.62em;font-weight:700;color:var(--teal);text-align:center;width:80%;">Do — AI 解析 + 生成交付物</div>
+        <div style="color:var(--muted);font-size:0.8em;margin:2px 0;">↓</div>
+        <div style="background:rgba(245,158,11,0.12);border:2px solid rgba(245,158,11,0.4);border-radius:8px;padding:8px 24px;font-size:0.62em;font-weight:800;color:var(--amber);text-align:center;width:80%;">Check — 人类审批门（强制必须）</div>
+        <div style="color:var(--muted);font-size:0.8em;margin:2px 0;">↓</div>
+        <div style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);border-radius:8px;padding:8px 24px;font-size:0.62em;font-weight:700;color:var(--indigo);text-align:center;width:80%;">Act — 自动记录为训练样本</div>
+        <div style="color:var(--muted);font-size:0.8em;margin:2px 0;">↺</div>
+        <div style="font-size:0.56em;color:var(--muted);text-align:center;max-width:280px;line-height:1.5;">每次使用，AI 越来越贴合你的风格偏好</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 14 SYNAPSE PLATFORM 20 CAPABILITIES ═══════════════════ -->
+<section>
+<div class="slide" style="padding:40px 60px;">
+  <div class="slide-header" style="margin-bottom:18px;">
+    <div>
+      <div class="slide-label slide-label-indigo">SYNAPSE PLATFORM · 能力</div>
+      <div class="slide-title">20项核心能力 · <span style="color:var(--indigo);">四层架构</span></div>
+    </div>
+    <div class="divider-line divider-line-indigo"></div>
+  </div>
+  <table class="t" style="font-size:0.62em;">
+    <thead>
+      <tr><th style="background:rgba(99,102,241,0.15);color:var(--indigo);">层级</th><th style="background:rgba(99,102,241,0.15);color:var(--indigo);">能力</th><th style="background:rgba(99,102,241,0.15);color:var(--indigo);">说明</th></tr>
+    </thead>
+    <tbody>
+      <tr style="background:rgba(99,102,241,0.08);">
+        <td rowspan="3" style="color:var(--indigo);font-weight:700;border-right:2px solid rgba(99,102,241,0.3);white-space:nowrap;">层1<br>接入与<br>理解</td>
+        <td style="font-weight:600;">Slack Socket Mode 实时接入</td><td style="color:var(--muted);">无公开端口，安全实时双向通信</td>
+      </tr>
+      <tr style="background:rgba(99,102,241,0.04);"><td style="font-weight:600;">双层意图理解（自然语言 + 上下文）</td><td style="color:var(--muted);">业务语言直接驱动，无需提示词工程</td></tr>
+      <tr style="background:rgba(99,102,241,0.08);"><td style="font-weight:600;">文档自动入库知识库</td><td style="color:var(--muted);">pgvector + Voyage AI 语义向量存储</td></tr>
+      <tr style="background:rgba(0,212,170,0.06);">
+        <td rowspan="7" style="color:var(--teal);font-weight:700;border-right:2px solid rgba(0,212,170,0.3);white-space:nowrap;">层2<br>执行与<br>协作</td>
+        <td style="font-weight:600;">高质量交付物生成</td><td style="color:var(--muted);">周报 · 会议材料 · 内容草稿 · 分析报告</td>
+      </tr>
+      <tr style="background:rgba(0,212,170,0.03);"><td style="font-weight:600;">多 Agent 协调编排</td><td style="color:var(--muted);">复杂任务多角色协同执行</td></tr>
+      <tr style="background:rgba(0,212,170,0.06);"><td style="font-weight:600;">异步任务队列</td><td style="color:var(--muted);">长时任务后台执行，不阻塞交互</td></tr>
+      <tr style="background:rgba(0,212,170,0.03);"><td style="font-weight:600;">双语无缝协作（EN↔ZH）</td><td style="color:var(--muted);">中英文输入统一处理</td></tr>
+      <tr style="background:rgba(0,212,170,0.06);"><td style="font-weight:600;">服务请求处理</td><td style="color:var(--muted);">结构化业务服务请求管理</td></tr>
+      <tr style="background:rgba(0,212,170,0.03);"><td style="font-weight:600;">Slack 内联编辑 + 训练捕获</td><td style="color:var(--muted);">修改即训练样本，零额外操作</td></tr>
+      <tr style="background:rgba(0,212,170,0.06);"><td style="font-weight:600;">Jina AI 内容增强</td><td style="color:var(--muted);">搜索质量与内容深度提升</td></tr>
+      <tr style="background:rgba(245,158,11,0.06);">
+        <td rowspan="5" style="color:var(--amber);font-weight:700;border-right:2px solid rgba(245,158,11,0.3);white-space:nowrap;">层3<br>治理与<br>质量</td>
+        <td style="font-weight:600;">确定性 FSM 状态机（自研）</td><td style="color:var(--muted);">非 LangGraph，可审计，不依赖外部框架</td>
+      </tr>
+      <tr style="background:rgba(245,158,11,0.03);"><td style="font-weight:600;color:var(--amber);">强制人类审批门（技术硬约束）</td><td style="color:var(--amber);font-weight:500;">所有AI输出必须通过，不可绕过，不可关闭</td></tr>
+      <tr style="background:rgba(245,158,11,0.06);"><td style="font-weight:600;">SLA 监控告警</td><td style="color:var(--muted);">自动检测与响应延迟告警</td></tr>
+      <tr style="background:rgba(245,158,11,0.03);"><td style="font-weight:600;">不可变审计日志</td><td style="color:var(--muted);">每个动作完整记录，可追溯可审计</td></tr>
+      <tr style="background:rgba(245,158,11,0.06);"><td style="font-weight:600;">CI/CD 自动测试</td><td style="color:var(--muted);">294/295 · 49个测试文件</td></tr>
+      <tr style="background:rgba(0,212,170,0.04);">
+        <td rowspan="5" style="color:#4ade80;font-weight:700;border-right:2px solid rgba(74,222,128,0.3);white-space:nowrap;">层4<br>智能<br>进化</td>
+        <td style="font-weight:600;">RAG 语义检索（pgvector）</td><td style="color:var(--muted);">pgvector 语义向量检索，非关键词匹配</td>
+      </tr>
+      <tr style="background:rgba(0,212,170,0.02);"><td style="font-weight:600;">4层个人训练系统</td><td style="color:var(--muted);">风格·领域·反馈·规范，全面对齐</td></tr>
+      <tr style="background:rgba(0,212,170,0.04);"><td style="font-weight:600;">Web 管理看板</td><td style="color:var(--muted);">平台状态与训练数据管理</td></tr>
+      <tr style="background:rgba(0,212,170,0.02);"><td style="font-weight:600;">Slack 查询命令</td><td style="color:var(--muted);">直接在 Slack 查询历史与状态</td></tr>
+      <tr style="background:rgba(0,212,170,0.04);"><td style="font-weight:600;">RBAC 权限管理（预埋，Phase 5）</td><td style="color:var(--muted);">多角色访问控制（角色 / 资源 / 操作三元组隔离）</td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:10px;padding:8px 14px;background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:8px;font-size:0.56em;color:rgba(255,255,255,0.65);">
+    <strong style="color:var(--indigo);">ADR-0001：</strong>明确拒绝 LangGraph — 自研 FSM 确保确定性、可测试、可追溯
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 15 SYNAPSE PLATFORM QUALITY + ROADMAP ═══════════════════ -->
+<section>
+<div class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-label slide-label-indigo">SYNAPSE PLATFORM · 质量 & 路线图</div>
+      <div class="slide-title">质量实证 + <span style="color:var(--indigo);">v1.0.0 路径</span></div>
+    </div>
+    <div class="divider-line divider-line-indigo"></div>
+  </div>
+  <div style="display:flex; gap:20px; flex:1;">
+    <!-- LEFT 45% -->
+    <div style="width:42%; display:flex; flex-direction:column; gap:10px;">
+      <div style="text-align:center;padding:18px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.25);border-radius:12px;">
+        <div style="font-size:2.8em;font-weight:900;line-height:1;" class="grad-indigo">294/295</div>
+        <div style="font-size:0.64em;color:var(--indigo);font-weight:700;margin:4px 0;">99.7% 测试通过率</div>
+        <div style="font-size:0.56em;color:var(--muted);">49 个测试文件覆盖全链路</div>
+      </div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;">
+        <span style="background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.3);border-radius:4px;padding:3px 8px;font-size:0.52em;color:var(--teal);font-weight:700;">Unit PASS</span>
+        <span style="background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.3);border-radius:4px;padding:3px 8px;font-size:0.52em;color:var(--teal);font-weight:700;">Integration PASS</span>
+        <span style="background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.3);border-radius:4px;padding:3px 8px;font-size:0.52em;color:var(--teal);font-weight:700;">Acceptance PASS</span>
+        <span style="background:rgba(0,212,170,0.12);border:1px solid rgba(0,212,170,0.3);border-radius:4px;padding:3px 8px;font-size:0.52em;color:var(--teal);font-weight:700;">E2E PASS</span>
+      </div>
+      <div class="card card-indigo-strong" style="padding:12px 16px;">
+        <div style="font-size:0.6em;font-weight:700;color:var(--indigo);margin-bottom:4px;">真实 E2E 验证</div>
+        <div style="font-size:0.56em;color:var(--muted);line-height:1.6;">
+          2026-04-28<br>
+          AUD-20260428-0001 ~ 0066+<br>
+          66+ 真实交互场景全部通过
+        </div>
+      </div>
+      <div class="card" style="padding:10px 16px;border-left:3px solid var(--amber);">
+        <div style="font-size:0.58em;font-weight:700;color:var(--amber);margin-bottom:2px;">开发速度</div>
+        <div style="font-size:0.56em;color:var(--muted);">Phase 1-4 完成于约 2 天 (2026-04-28→04-29)</div>
+      </div>
+    </div>
+    <!-- RIGHT 55% -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px;">
+      <div style="font-size:0.6em;font-weight:700;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:4px;">Phase 5 路线图</div>
+      <div class="g3" style="gap:8px;">
+        <div class="card card-indigo-strong" style="padding:10px 12px;">
+          <div style="font-size:0.56em;font-weight:800;color:var(--indigo);margin-bottom:4px;">[P0] RBAC 正式启用</div>
+          <div style="font-size:0.52em;color:var(--muted);">多角色多团队权限管理</div>
+        </div>
+        <div class="card card-indigo-strong" style="padding:10px 12px;">
+          <div style="font-size:0.56em;font-weight:800;color:var(--indigo);margin-bottom:4px;">[P1] n8n Webhook</div>
+          <div style="font-size:0.52em;color:var(--muted);">事件驱动外部集成</div>
+        </div>
+        <div class="card card-indigo-strong" style="padding:10px 12px;">
+          <div style="font-size:0.56em;font-weight:800;color:var(--indigo);margin-bottom:4px;">[P1] 多工作区</div>
+          <div style="font-size:0.52em;color:var(--muted);">规模化企业部署</div>
+        </div>
+      </div>
+      <div style="font-size:0.6em;font-weight:700;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:6px;margin-bottom:6px;">v1.0.0 GA 达成条件</div>
+      <div style="display:flex; flex-direction:column; gap:6px;">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);border-radius:8px;">
+          <span style="width:16px;height:16px;border:1px solid rgba(99,102,241,0.5);border-radius:3px;flex-shrink:0;"></span>
+          <span style="font-size:0.62em;color:rgba(255,255,255,0.7);">生产稳定运行 30 天，无 P0 事故</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);border-radius:8px;">
+          <span style="width:16px;height:16px;border:1px solid rgba(99,102,241,0.5);border-radius:3px;flex-shrink:0;"></span>
+          <span style="font-size:0.62em;color:rgba(255,255,255,0.7);">P0/P1 技术债清零，Phase 1-4 遗留问题全部解决</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(99,102,241,0.06);border:1px solid rgba(99,102,241,0.15);border-radius:8px;">
+          <span style="width:16px;height:16px;border:1px solid rgba(99,102,241,0.5);border-radius:3px;flex-shrink:0;"></span>
+          <span style="font-size:0.62em;color:rgba(255,255,255,0.7);">PMC L3 评审通过 + Phase 5 全部能力交付</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════ 16 CLOSING ═══════════════════ -->
+<section>
+<div class="slide" style="justify-content:center;">
+  <div class="cover-bg" style="background: radial-gradient(ellipse 60% 50% at 80% -10%, rgba(0,212,170,0.14) 0%, transparent 55%), radial-gradient(ellipse 45% 45% at -5% 80%, rgba(99,102,241,0.12) 0%, transparent 50%), radial-gradient(ellipse 40% 40% at 50% 110%, rgba(245,158,11,0.10) 0%, transparent 45%);"></div>
+  <div class="cover-grid"></div>
+  <div style="position:relative;z-index:1;width:100%;">
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="font-size:0.58em;font-weight:700;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;">三条产品管线 · 现状摘要</div>
+    </div>
+    <div class="g3" style="margin-bottom:28px;">
+      <div class="card card-amber-strong" style="text-align:center;padding:18px 14px;">
+        <div style="font-size:0.7em;font-weight:800;color:var(--amber);margin-bottom:6px;">PMO Auto</div>
+        <div style="font-size:0.56em;color:var(--muted);line-height:1.8;">v2.6.3-EN GA<br>96% 效率提升<br>$300K+ ROI</div>
+      </div>
+      <div class="card card-teal" style="text-align:center;padding:18px 14px;">
+        <div style="font-size:0.7em;font-weight:800;color:var(--teal);margin-bottom:6px;">Synapse Multi-Agents</div>
+        <div style="font-size:0.56em;color:var(--muted);line-height:1.8;">69 Agent · 13 团队<br>Owner 0% 参与<br>50+ 决策归档</div>
+      </div>
+      <div class="card card-indigo-strong" style="text-align:center;padding:18px 14px;">
+        <div style="font-size:0.7em;font-weight:800;color:var(--indigo);margin-bottom:6px;">Synapse Platform</div>
+        <div style="font-size:0.56em;color:var(--muted);line-height:1.8;">v0.5.0 · 20 项能力<br>294/295 测试通过<br>~2天交付Phase 1-4</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:20px 32px;background:linear-gradient(135deg, rgba(0,212,170,0.08), rgba(99,102,241,0.08));border:1px solid rgba(0,212,170,0.2);border-radius:14px;">
+      <div style="font-size:0.9em;font-weight:700;line-height:1.7;" class="grad">
+        AI 协作运营体系
+      </div>
+      <div style="font-size:0.7em;color:rgba(255,255,255,0.6);margin-top:6px;">
+        从今天开始，让业务专家用业务语言驱动 AI
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:20px;font-size:0.56em;color:var(--muted);">Synapse-PJ · 2026-05-04</div>
+  </div>
+</div>
+</section>
+
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  transition: 'slide',
+  transitionSpeed: 'fast',
+  backgroundTransition: 'fade',
+  controls: true,
+  progress: true,
+  center: false,
+  width: 1280,
+  height: 720,
+  margin: 0,
+  minScale: 0.2,
+  maxScale: 2.0,
+  slideNumber: 'c/t',
+  plugins: []
+});
+</script>
+</body>
+</html>

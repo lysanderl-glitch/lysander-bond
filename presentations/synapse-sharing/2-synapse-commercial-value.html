@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synapse — AI 协作运营体系</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif; color: #1a1a2e; line-height: 1.75; background: #fff; }
+
+/* 封面 */
+.cover {
+  background: linear-gradient(150deg, #0a0a1a 0%, #1a1a5e 40%, #0f2460 70%, #1a3a6e 100%);
+  color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 60px;
+  page-break-after: always;
+  position: relative;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(circle at 30% 40%, rgba(37,99,235,0.3) 0%, transparent 50%),
+              radial-gradient(circle at 70% 60%, rgba(124,58,237,0.2) 0%, transparent 50%);
+}
+.cover-content { position: relative; z-index: 1; }
+.cover h1 { font-size: 3.2em; font-weight: 900; letter-spacing: 0.05em; margin-bottom: 8px; }
+.cover h1 span { color: #60a5fa; }
+.cover .tagline { font-size: 1.25em; color: #94a3b8; margin: 16px 0 32px; letter-spacing: 0.03em; }
+.cover .version-bar { display: flex; gap: 24px; justify-content: center; font-size: 0.85em; color: #64748b; }
+.cover .version-bar span { background: rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 20px; }
+
+/* 大数字统计卡片 */
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0; }
+.stat-card {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 24px 16px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 60px; height: 60px;
+  background: radial-gradient(circle, rgba(37,99,235,0.1), transparent);
+  border-radius: 50%;
+}
+.stat-card .num { font-size: 2.4em; font-weight: 900; color: #1e3a8a; display: block; line-height: 1; }
+.stat-card .label { font-size: 0.82em; color: #475569; margin-top: 8px; line-height: 1.3; }
+
+/* 章节 */
+.section { max-width: 900px; margin: 0 auto; padding: 40px 50px; }
+.page-break { page-break-after: always; }
+h2 {
+  font-size: 1.45em;
+  color: #1e3a8a;
+  border-left: 5px solid #2563eb;
+  padding: 8px 0 8px 16px;
+  margin: 0 0 28px;
+  background: linear-gradient(to right, #eff6ff, transparent);
+}
+h3 { font-size: 1.05em; color: #334155; margin: 28px 0 12px; font-weight: 700; }
+
+/* 表格 */
+table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92em; }
+th { background: #1e3a8a; color: white; padding: 10px 14px; text-align: left; font-weight: 600; }
+td { padding: 9px 14px; border: 1px solid #e2e8f0; vertical-align: top; }
+tr:nth-child(even) td { background: #f8fafc; }
+.table-highlight td, .table-highlight th { background: #1e3a8a !important; color: white !important; font-weight: bold; }
+
+/* 成熟度阶梯 */
+.maturity-ladder { margin: 20px 0; }
+.maturity-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border-left: 3px solid #cbd5e1;
+}
+.maturity-row.active {
+  background: linear-gradient(to right, #1e3a8a, #1e40af);
+  color: white;
+  border-left-color: #60a5fa;
+  box-shadow: 0 4px 12px rgba(30,58,138,0.3);
+}
+.maturity-row .level-badge {
+  min-width: 68px;
+  font-weight: 800;
+  font-size: 0.88em;
+  text-align: center;
+  padding: 3px 0;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.08);
+}
+.maturity-row.active .level-badge { background: rgba(255,255,255,0.2); }
+.maturity-row .desc { flex: 1; font-size: 0.9em; }
+.maturity-row .pct { min-width: 50px; text-align: right; font-weight: 700; font-size: 0.9em; opacity: 0.8; }
+
+/* 三栏功能卡片 */
+.card-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+.feature-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 20px;
+  background: white;
+  position: relative;
+}
+.feature-card .icon { font-size: 1.8em; margin-bottom: 10px; display: block; }
+.feature-card h4 { font-size: 0.95em; color: #1e3a8a; margin-bottom: 8px; font-weight: 700; }
+.feature-card p { font-size: 0.85em; color: #475569; line-height: 1.6; }
+.feature-card .pct-badge {
+  display: inline-block;
+  background: #1e3a8a;
+  color: white;
+  font-size: 0.8em;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+
+/* 两列对比 */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+.col-box { border-radius: 10px; padding: 20px; }
+.col-box.input { background: #fef9c3; border: 1px solid #fde68a; }
+.col-box.output { background: #dcfce7; border: 1px solid #86efac; }
+.col-box h4 { font-weight: 700; margin-bottom: 12px; font-size: 0.95em; }
+.col-box.input h4 { color: #92400e; }
+.col-box.output h4 { color: #166534; }
+.col-box ul { padding-left: 16px; font-size: 0.88em; line-height: 2; }
+
+/* 时间线 */
+.timeline { margin: 20px 0; }
+.timeline-item { display: flex; gap: 16px; margin-bottom: 16px; }
+.timeline-dot { min-width: 12px; height: 12px; border-radius: 50%; background: #2563eb; margin-top: 6px; position: relative; }
+.timeline-dot::after { content: ''; position: absolute; top: 12px; left: 5px; width: 2px; height: calc(100% + 8px); background: #bfdbfe; }
+.timeline-item:last-child .timeline-dot::after { display: none; }
+.timeline-content h4 { font-size: 0.92em; font-weight: 700; color: #1e3a8a; margin-bottom: 4px; }
+.timeline-content p { font-size: 0.85em; color: #475569; }
+
+/* 流程箭头 */
+.flow { display: flex; align-items: center; gap: 8px; margin: 20px 0; flex-wrap: wrap; }
+.flow-step { background: #1e3a8a; color: white; padding: 8px 16px; border-radius: 6px; font-size: 0.85em; font-weight: 600; white-space: nowrap; }
+.flow-arrow { color: #2563eb; font-size: 1.2em; font-weight: 900; }
+
+/* 大引语 */
+.big-quote {
+  background: linear-gradient(135deg, #1e3a8a, #1e40af);
+  color: white;
+  padding: 28px 36px;
+  border-radius: 10px;
+  margin: 28px 0;
+  font-size: 1.15em;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* 对比高亮 */
+.vs-badge { display: inline-block; background: #2563eb; color: white; font-size: 0.75em; padding: 1px 6px; border-radius: 3px; margin-left: 4px; }
+.check { color: #16a34a; font-weight: 700; }
+.cross { color: #dc2626; }
+
+/* 脚注 */
+.footnote { font-size: 0.78em; color: #64748b; font-style: italic; margin-top: 8px; }
+
+/* 五层架构可视化 */
+.arch-stack { margin: 20px 0; }
+.arch-layer {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 4px;
+}
+.arch-label { min-width: 80px; font-size: 0.78em; color: #64748b; text-align: right; padding-right: 12px; font-weight: 600; }
+.arch-bar {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 0.88em;
+  font-weight: 600;
+}
+
+strong.hi { color: #1e3a8a; }
+
+/* 进度条 */
+.progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.progress-label { min-width: 180px; font-size: 0.88em; color: #334155; font-weight: 600; }
+.progress-bar-wrap { flex: 1; background: #e2e8f0; border-radius: 4px; height: 10px; }
+.progress-bar-fill { height: 10px; border-radius: 4px; background: linear-gradient(to right, #1e3a8a, #2563eb); }
+.progress-score { min-width: 48px; font-size: 0.88em; font-weight: 800; color: #1e3a8a; text-align: right; }
+.progress-tag { font-size: 0.75em; background: #dbeafe; color: #1e3a8a; border-radius: 20px; padding: 2px 8px; font-weight: 700; }
+
+/* 适合/不适合 */
+.fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0; }
+.fit-box { border-radius: 10px; padding: 20px; }
+.fit-box.yes { background: #f0fdf4; border: 1px solid #86efac; }
+.fit-box.no { background: #fff1f2; border: 1px solid #fca5a5; }
+.fit-box h4 { font-weight: 700; margin-bottom: 12px; font-size: 0.95em; }
+.fit-box.yes h4 { color: #166534; }
+.fit-box.no h4 { color: #991b1b; }
+.fit-box li { font-size: 0.88em; line-height: 2; margin-left: 16px; color: #374151; }
+
+/* 组织架构 */
+.org-chart { margin: 20px 0; }
+.org-top { display: flex; flex-direction: column; align-items: center; margin-bottom: 12px; }
+.org-box { padding: 12px 24px; border-radius: 8px; text-align: center; font-weight: 700; font-size: 0.92em; display: flex; flex-direction: column; gap: 4px; min-width: 220px; }
+.org-sub { font-size: 0.78em; font-weight: 400; opacity: 0.85; }
+.org-president { background: #1e3a8a; color: white; }
+.org-connector-v { width: 2px; height: 20px; background: #bfdbfe; margin: 0 auto; }
+.org-ceo { background: linear-gradient(135deg, #2563eb, #1e40af); color: white; box-shadow: 0 4px 12px rgba(37,99,235,0.25); }
+.org-mid-row { display: grid; grid-template-columns: 1fr 3fr; gap: 16px; align-items: start; margin-top: 4px; }
+.org-branch { padding-top: 8px; }
+.org-think { background: #fef9c3; border: 1px solid #fde68a; color: #92400e; font-size: 0.88em; min-width: unset; }
+.org-branch-main { display: flex; flex-direction: column; gap: 10px; }
+.org-exec { background: #dbeafe; border: 1px solid #93c5fd; color: #1e3a8a; font-size: 0.88em; min-width: unset; }
+.org-teams-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.org-team-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 10px 8px; text-align: center; }
+.team-name { font-weight: 700; font-size: 0.82em; color: #1e3a8a; margin-bottom: 3px; }
+.team-desc { font-size: 0.74em; color: #64748b; line-height: 1.4; }
+</style>
+</head>
+<body>
+
+<!-- ==================== 封面 ==================== -->
+<div class="cover">
+  <div class="cover-content">
+    <h1><span>Synapse</span></h1>
+    <p style="font-size:1.5em;color:#e2e8f0;margin:8px 0;font-weight:300;letter-spacing:0.1em;">AI 协作运营体系</p>
+    <p class="tagline">从指令执行到组织级 AI 智能</p>
+    <div style="width:60px;height:2px;background:linear-gradient(to right,#2563eb,#7c3aed);margin:24px auto;"></div>
+    <div class="version-bar">
+      <span>Core v1.0.0</span>
+      <span>infra v1.0.7</span>
+      <span>2026-05-27 快照</span>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 资产速览 ==================== -->
+<div class="section page-break">
+  <h2>体系资产速览</h2>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <span class="num">55</span>
+      <div class="label">活跃核心 Agent<br>持续审计运行</div>
+    </div>
+    <div class="stat-card">
+      <span class="num">12</span>
+      <div class="label">专业团队<br>按领域垂直分工</div>
+    </div>
+    <div class="stat-card">
+      <span class="num">40</span>
+      <div class="label">Harness 治理模块<br>CLAUDE.md 281 行 / 320 行熵预算</div>
+    </div>
+    <div class="stat-card">
+      <span class="num">97</span>
+      <div class="label">自动化脚本<br>Python 85 + JS 12</div>
+    </div>
+    <div class="stat-card">
+      <span class="num">9</span>
+      <div class="label">活跃工作流<br>情报→执行全闭环</div>
+    </div>
+    <div class="stat-card">
+      <span class="num" style="font-size:1.8em;">35 天</span>
+      <div class="label">CEO Guard 审计日志连续运行<br><strong>16,079</strong> 条工具调用记录</div>
+    </div>
+  </div>
+  <p class="footnote">数据截止 2026-05-27，55 Agent / 12 团队 / 29 D 记录 / 16,079 审计行（自 organization.yaml + decision-log + ceo-guard-audit.log）</p>
+
+  <h3>组织架构</h3>
+  <div class="org-chart">
+    <!-- 顶层 -->
+    <div class="org-top">
+      <div class="org-box org-president">总裁 · 刘子杨<span class="org-sub">最高决策者 / L4 授权</span></div>
+      <div class="org-connector-v"></div>
+      <div class="org-box org-ceo">Lysander CEO<span class="org-sub">AI 管理者 · 统筹 55 个核心 Agent / 12 团队</span></div>
+    </div>
+    <!-- 两大板块 -->
+    <div class="org-mid-row">
+      <div class="org-branch">
+        <div class="org-box org-think">智囊团<span class="org-sub">决策顾问 · 专家评审 · 执行审计师</span></div>
+      </div>
+      <div class="org-branch-main">
+        <div class="org-box org-exec">执行团队 · 12 专业团队 / 55 核心 Agent<span class="org-sub">按任务类型自动路由，并行执行</span></div>
+        <div class="org-teams-grid">
+          <div class="org-team-card"><div class="team-name">Harness_ops</div><div class="team-desc">配置 · 执行链 · QA · Notion</div></div>
+          <div class="org-team-card"><div class="team-name">Butler</div><div class="team-desc">交付 · PMO · IoT</div></div>
+          <div class="org-team-card"><div class="team-name">RD</div><div class="team-desc">研发 · 系统架构</div></div>
+          <div class="org-team-card"><div class="team-name">OBS</div><div class="team-desc">知识库 · 记忆管理</div></div>
+          <div class="org-team-card"><div class="team-name">Content_ops</div><div class="team-desc">内容运营 · 创作</div></div>
+          <div class="org-team-card"><div class="team-name">Growth</div><div class="team-desc">增长 · 市场 · 用户</div></div>
+          <div class="org-team-card"><div class="team-name">AI_ML</div><div class="team-desc">AI 模型 · 机器学习</div></div>
+          <div class="org-team-card"><div class="team-name">PDG</div><div class="team-desc">产品 · 设计 · 增长</div></div>
+          <div class="org-team-card"><div class="team-name">Specialist</div><div class="team-desc">跨领域专家</div></div>
+          <div class="org-team-card"><div class="team-name">Product_ops</div><div class="team-desc">产品运营 · 流程</div></div>
+          <div class="org-team-card"><div class="team-name">HR</div><div class="team-desc">Agent 评分 · 入职</div></div>
+          <div class="org-team-card"><div class="team-name">Graphify</div><div class="team-desc">视觉 · 设计 · 图表</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 第一章：体系全景 ==================== -->
+<div class="section page-break">
+  <h2>第一章 &mdash; 体系全景</h2>
+
+  <h3>五层架构</h3>
+  <div class="arch-stack">
+    <div class="arch-layer">
+      <div class="arch-label">知识层</div>
+      <div class="arch-bar" style="background:#e0f2fe;color:#0c4a6e;border:1px solid #bae6fd;">
+        <strong>OBS 知识层</strong> &mdash; 结构化知识库（GraphRAG + OPC），存储决策历史、执行经验、行业情报，跨会话持久记忆
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-label">控制层</div>
+      <div class="arch-bar" style="background:#dbeafe;color:#1e3a8a;border:1px solid #bfdbfe;">
+        <strong>Harness 控制层</strong> &mdash; 40 个治理模块定义 Agent 行为规则、执行链约束、QA 门禁；AI 行为的「宪法」（CLAUDE.md 主配置 281 行 / 320 行熵预算内）
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-label">执行层</div>
+      <div class="arch-bar" style="background:#bfdbfe;color:#1e3a8a;border:1px solid #93c5fd;">
+        <strong>Agents 执行层</strong> &mdash; 55 个核心 Agent，12 个团队，按任务类型自动路由分工，并行执行
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-label">进化层</div>
+      <div class="arch-bar" style="background:#93c5fd;color:#1e3a8a;border:1px solid #60a5fa;">
+        <strong>Intel 进化层</strong> &mdash; 9 个自动化工作流，情报→评估→执行→反馈全闭环，体系自主进化
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-label">决策层</div>
+      <div class="arch-bar" style="background:#1e3a8a;color:white;border:1px solid #1e40af;">
+        <strong>L1&ndash;L4 决策层</strong> &mdash; L1 全自动执行 / L2 专家评审 / L3 CEO 决策 / L4 人工审批；四级制确保质量与效率平衡
+      </div>
+    </div>
+  </div>
+
+  <h3>Synapse vs 普通 AI 工具</h3>
+  <table>
+    <tr><th>能力维度</th><th>普通 AI 工具（ChatGPT / Copilot）</th><th>Synapse</th></tr>
+    <tr><td>执行方式</td><td>人工输入→单次回复</td><td class="check">&#10003; 多 Agent 并行、自动分工</td></tr>
+    <tr><td>记忆能力</td><td>会话内短暂记忆，重启清零</td><td class="check">&#10003; OBS 知识库跨会话持久记忆</td></tr>
+    <tr><td>自动化</td><td>需人工触发每次任务</td><td class="check">&#10003; 定时 + 事件 + 状态三重触发</td></tr>
+    <tr><td>质量控制</td><td>依赖人工 Prompt 精确度</td><td class="check">&#10003; Harness 约束 + QA 门禁 + 审计日志</td></tr>
+    <tr><td>决策支持</td><td>单次问答，无流程</td><td class="check">&#10003; L1&ndash;L4 四级决策体系，专家评审</td></tr>
+    <tr><td>体系进化</td><td>使用体验不积累</td><td class="check">&#10003; 每次执行写入知识库，越用越强</td></tr>
+  </table>
+
+  <h3>情报闭环流程</h3>
+  <div class="flow">
+    <div class="flow-step">外部情报</div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">自动评分</div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">RICE 优先级排序</div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">Lysander 派单</div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">Agent 执行</div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">结果回写知识库</div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">下次更优决策</div>
+  </div>
+  <p class="footnote">情报管线每日 03:00&ndash;06:30 自动执行扫描与评分，L3 项 Lysander 自主派单，L4+ 项进入总裁知会/裁决；每个循环的输出公开归档。</p>
+</div>
+
+<!-- ==================== 第二章：行业先进性 ==================== -->
+<div class="section page-break">
+  <h2>第二章 &mdash; 行业先进性定位</h2>
+
+  <h3>企业 AI 成熟度阶梯</h3>
+  <div class="maturity-ladder">
+    <div class="maturity-row">
+      <div class="level-badge">Level 1</div>
+      <div class="desc">
+        <strong>Chat 使用</strong> &mdash; ChatGPT 个人账户，无体系、无治理、无积累<br>
+        <span style="font-size:0.88em;color:#64748b;">典型工具：ChatGPT Free / Plus</span>
+      </div>
+      <div class="pct">~70%</div>
+    </div>
+    <div class="maturity-row">
+      <div class="level-badge">Level 2</div>
+      <div class="desc">
+        <strong>工具集成</strong> &mdash; GitHub Copilot、M365 Copilot，有工具无协作<br>
+        <span style="font-size:0.88em;color:#64748b;">典型工具：Copilot、Notion AI</span>
+      </div>
+      <div class="pct">~20%</div>
+    </div>
+    <div class="maturity-row">
+      <div class="level-badge">Level 3</div>
+      <div class="desc">
+        <strong>单 Agent 自动化</strong> &mdash; n8n AI Workflow，单任务执行、无分工、无记忆<br>
+        <span style="font-size:0.88em;color:#64748b;">典型工具：n8n、Zapier AI</span>
+      </div>
+      <div class="pct">~7%</div>
+    </div>
+    <div class="maturity-row">
+      <div class="level-badge">Level 4</div>
+      <div class="desc">
+        <strong>Multi-Agent 协作</strong> &mdash; CrewAI、LangGraph，有协作无治理、无体系<br>
+        <span style="font-size:0.88em;color:#64748b;">典型工具：CrewAI、AutoGen</span>
+      </div>
+      <div class="pct">~2.5%</div>
+    </div>
+  </div>
+  <p class="footnote">治理可审计样本：CEO Guard 审计日志连续 35 天累积 16,079 条；29 份 D 编号决策跨度 46 天；事故 → 宪法的可追溯样本：WF-09 silent-fail → P0 规则（D-2026-05-19-002）。</p>
+
+  <h3>Synapse 与同类 Multi-Agent 框架的治理差异（按公开文档对比）</h3>
+  <table>
+    <tr><th>能力</th><th>同类框架（CrewAI / LangGraph）</th><th>Synapse（治理优先版本）</th></tr>
+    <tr><td>Agent 治理</td><td class="cross">&#10007; 无统一约束，自由执行</td><td class="check">&#10003; Harness 规则 + CEO 禁区 + 审计日志</td></tr>
+    <tr><td>跨会话记忆</td><td class="cross">&#10007; 会话清零，无持久记忆</td><td class="check">&#10003; OBS 知识库全量持久化</td></tr>
+    <tr><td>体系自进化</td><td class="cross">&#10007; 固定流程，人工迭代</td><td class="check">&#10003; 情报管线驱动，自动提案执行</td></tr>
+    <tr><td>决策体系</td><td class="cross">&#10007; 无分级，AI 全权或全无</td><td class="check">&#10003; L1&ndash;L5 五级，人机协作精准边界</td></tr>
+    <tr><td>质量门禁</td><td class="cross">&#10007; 依赖 Prompt 质量</td><td class="check">&#10003; QA 自动评分，&ge;3.5 才通过</td></tr>
+    <tr><td>组织架构</td><td class="cross">&#10007; 任务导向临时编组</td><td class="check">&#10003; 12 专业团队 + 55 核心 Agent 固定分工</td></tr>
+  </table>
+</div>
+
+<!-- ==================== 第三章：提效模式 ==================== -->
+<div class="section page-break">
+  <h2>第三章 &mdash; 提效模式</h2>
+  <p style="color:#475569;margin-bottom:20px;">Synapse 不是"让 AI 帮你写东西"，而是重构工作流——将人从执行中解放，聚焦在真正需要判断的地方。</p>
+
+  <div class="card-grid-3">
+    <div class="feature-card">
+      <span class="icon">&#9889;</span>
+      <div class="pct-badge">替代率 60&ndash;80%</div>
+      <h4>替代执行</h4>
+      <p><strong>适用场景：</strong>报告生成、数据整理、代码草稿、内容创作、日志归档</p>
+      <p style="margin-top:8px;"><strong>工作模式：</strong>Agent 主导完整执行，人工仅做最终验收</p>
+      <p style="margin-top:8px;"><strong>每天节省：</strong>2&ndash;4 小时重复性工作</p>
+      <p style="margin-top:8px;color:#1e3a8a;font-weight:600;">典型案例：月度运营报告，从 4 小时 &rarr; 20 分钟</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">&#127807;</span>
+      <div class="pct-badge">提效 30&ndash;50%</div>
+      <h4>压缩决策链</h4>
+      <p><strong>适用场景：</strong>任务分配、需求分析、方案评估、进度跟踪、优先级排序</p>
+      <p style="margin-top:8px;"><strong>工作模式：</strong>Agent 提供分析和建议，人只做最终判断</p>
+      <p style="margin-top:8px;"><strong>每天节省：</strong>1&ndash;2 小时协调沟通时间</p>
+      <p style="margin-top:8px;color:#1e3a8a;font-weight:600;">典型案例：新需求从提出到方案，从 3 天 &rarr; 2 小时</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">&#129504;</span>
+      <div class="pct-badge">持续积累</div>
+      <h4>知识复利</h4>
+      <p><strong>适用场景：</strong>经验沉淀、决策回溯、知识检索、新成员上手</p>
+      <p style="margin-top:8px;"><strong>工作模式：</strong>每次执行自动存入知识库，下次自动调用</p>
+      <p style="margin-top:8px;"><strong>护城河价值：</strong>6 个月积累，竞争对手无法压缩时间复制</p>
+      <p style="margin-top:8px;color:#1e3a8a;font-weight:600;">典型案例：新 Agent 入职，继承所有历史经验，零学习期</p>
+    </div>
+  </div>
+
+  <h3>Synapse 一天的运营流程（Dubai 时区）</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <h4>03:00 &mdash; 情报 Agent 自动启动</h4>
+        <p>全网搜索 AI 前沿动态，抓取行业新闻、技术论文、竞品动态；自动评分过滤低价值信息</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <h4>04:00 &mdash; 行动 Agent 评估情报价值</h4>
+        <p>4 位专家 Agent 对情报打 RICE 分，筛选可执行建议，生成派单候选清单</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <h4>06:00 &mdash; 任务恢复 Agent 检查阻塞任务</h4>
+        <p>读取 active_tasks.yaml，识别阻塞已解除的任务，自动续接未完成工作，无需人工介入</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <h4>06:30 &mdash; 晨报推送总裁</h4>
+        <p>包含今日议程 + 情报摘要 + 待决策事项；总裁仅需查看结果，无需参与过程</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <h4>全天 &mdash; L1 任务全自动执行</h4>
+        <p>L2/L3 任务按规则自动路由到专家评审；总裁只在 L4 决策时被打扰</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <h4>22:00 &mdash; Notion AI Hub 日志同步</h4>
+        <p>当日执行记录、情报结论、决策历史全部写入知识库；为明天的体系进化积累数据</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>三种任务级别对照</h3>
+  <table>
+    <tr><th>级别</th><th>判断标准</th><th>执行方式</th><th>总裁参与</th></tr>
+    <tr><td><strong>S 级</strong>（常规）</td><td>5 分钟内、风险可忽略、不影响架构</td><td>Lysander 派单 &rarr; Agent 执行 &rarr; 汇报</td><td>仅看结果</td></tr>
+    <tr><td><strong>M 级</strong>（中等）</td><td>有成熟方案、风险可控、不涉战略</td><td>方案 &rarr; 派单 &rarr; 执行 &rarr; QA 审查</td><td>仅看结果</td></tr>
+    <tr><td><strong>L 级</strong>（重大）</td><td>高风险 / 不可逆 / 战略级 / 跨团队</td><td>深度分析 &rarr; 专家评审 &rarr; 执行 &rarr; QA</td><td>最终验收</td></tr>
+  </table>
+</div>
+
+<!-- ==================== 第四章：价值生产模型 ==================== -->
+<div class="section page-break">
+  <h2>第四章 &mdash; 价值生产模型</h2>
+
+  <h3>投入 vs 产出</h3>
+  <div class="two-col">
+    <div class="col-box input">
+      <h4>&#128229; 投入侧</h4>
+      <ul>
+        <li>AI API 成本：$50&ndash;200 / 月</li>
+        <li>建设时间：1&ndash;3 个月（一次性投入）</li>
+        <li>学习成本：核心人员 2&ndash;4 周掌握基本操作</li>
+        <li>运维成本：体系建成后接近零边际成本</li>
+        <li><strong>总计年成本：&asymp; ¥6,000&ndash;18,000 / 年</strong></li>
+      </ul>
+    </div>
+    <div class="col-box output">
+      <h4>&#128228; 产出侧</h4>
+      <ul>
+        <li>等效产能：相当于新增 3&ndash;8 名专员</li>
+        <li>外包节省：减少 40&ndash;70% 重复性外包支出</li>
+        <li>速度提升：L1 任务小时级 &rarr; 分钟级</li>
+        <li>7&times;24 待命：夜间 / 假日 Agent 持续运行</li>
+        <li><strong>知识积累：体系越用越聪明，无上限</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>ROI 计算示例（以 10 人团队为基准）</h3>
+  <table>
+    <tr><th>计算项</th><th>金额 / 月</th><th>说明</th></tr>
+    <tr><td>替代 2 名外包（保守估算）</td><td>¥20,000</td><td>一般外包单价 ¥10,000/月</td></tr>
+    <tr><td>内部效率提升折算</td><td>¥10,000</td><td>平均每人每天节省 1.5 小时，10 人折算</td></tr>
+    <tr><td>AI API 成本（扣除）</td><td style="color:#dc2626;">-¥1,200</td><td>$150/月 &times; 8 汇率</td></tr>
+    <tr class="table-highlight"><td><strong>月净节省</strong></td><td><strong>¥28,800</strong></td><td>保守口径</td></tr>
+    <tr class="table-highlight"><td><strong>年化回报</strong></td><td><strong>¥345,600</strong></td><td>¥28,800 &times; 12</td></tr>
+    <tr class="table-highlight"><td><strong>回本周期</strong></td><td><strong>&lt; 2 个月</strong></td><td>含建设成本</td></tr>
+  </table>
+  <p class="footnote">以上为保守估算，实际效益因团队规模和使用深度存在差异；不含知识积累的长期复利价值</p>
+
+  <h3>三种价值维度</h3>
+  <table>
+    <tr><th>维度</th><th>具体表现</th><th>可量化程度</th></tr>
+    <tr><td><strong>效率价值</strong></td><td>任务执行速度提升 5&ndash;20&times;；L1 自动化率 &ge;80%</td><td>高，可直接计时</td></tr>
+    <tr><td><strong>质量价值</strong></td><td>QA 门禁拦截错误，Harness 约束防止低级失误</td><td>中，可追踪错误率</td></tr>
+    <tr><td><strong>护城河价值</strong></td><td>知识库积累、流程精准化、竞争对手无法复制</td><td>低，但最持久</td></tr>
+  </table>
+
+  <div class="big-quote">
+    「Synapse 让一个人拥有一个团队的执行力，让一个团队拥有一个组织的智能。」
+  </div>
+</div>
+
+<!-- ==================== 第五章：为什么是现在 ==================== -->
+<div class="section page-break">
+  <h2>第五章 &mdash; 为什么是现在</h2>
+
+  <h3>行业演进时间线</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:#94a3b8;"></div>
+      <div class="timeline-content">
+        <h4>2023 &mdash; ChatGPT 发布：Level 1 爆发</h4>
+        <p>Chat 使用进入主流，个人生产力工具普及；但体系化使用几乎为零，多数人仍在「试玩」阶段</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:#94a3b8;"></div>
+      <div class="timeline-content">
+        <h4>2024 &mdash; Copilot 全面集成：Level 2 普及</h4>
+        <p>Microsoft 365 Copilot、GitHub Copilot 规模化落地；工具集成成为企业标配，但协作体系仍未成型</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:#60a5fa;"></div>
+      <div class="timeline-content">
+        <h4>2025 &mdash; Agent SDK 发布：Level 4 启动</h4>
+        <p>OpenAI / Anthropic 相继发布 Agent 框架，Multi-Agent 开始生产落地；CrewAI、LangGraph 快速扩散，但治理空白明显</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:#2563eb;width:16px;height:16px;margin-top:4px;box-shadow:0 0 0 3px rgba(37,99,235,0.3);"></div>
+      <div class="timeline-content">
+        <h4 style="color:#dc2626;">2026（现在）&mdash; 治理优先的 Multi-Agent 实践仍是少数派</h4>
+        <p>Synapse 在 OPC 方向投入治理 + 进化 + 决策框架的可审计化（D-2026-05-27-001 已批准阶段路线）。</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:#e2e8f0;"></div>
+      <div class="timeline-content">
+        <h4 style="color:#94a3b8;">2027+ &mdash; 体系成熟期（窗口关闭）</h4>
+        <p>早期积累的知识库和流程规则成为不可复制的竞争壁垒；晚进者需付出 3&ndash;5&times; 的时间成本追赶，且永远缺少历史数据沉淀</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>三个先发优势</h3>
+  <div class="card-grid-3">
+    <div class="feature-card">
+      <span class="icon">&#127968;</span>
+      <h4>知识护城河</h4>
+      <p>知识库是时间的函数——6 个月的情报积累、决策记录、执行经验，后来者无法压缩时间复制。</p>
+      <p style="margin-top:10px;color:#1e3a8a;font-weight:600;font-size:0.85em;">OBS 知识库每天增量积累，永不清零</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">&#9881;&#65039;</span>
+      <h4>流程沉淀</h4>
+      <p>Harness 规则越运行越精准，早期团队的执行质量远超晚进者。</p>
+      <p style="margin-top:10px;color:#1e3a8a;font-weight:600;font-size:0.85em;">40 个 Harness 治理模块 = 40 个精准约束，CLAUDE.md 主配置控制在 320 行熵预算内</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">&#127919;</span>
+      <h4>人才稀缺窗口</h4>
+      <p>当前掌握 AI 体系运营的人才极少，学习成本处于历史低点，是最佳入场时机。</p>
+      <p style="margin-top:10px;color:#1e3a8a;font-weight:600;font-size:0.85em;">2027 年后竞争加剧，学习成本将显著上升</p>
+    </div>
+  </div>
+
+  <h3>入场的准入条件</h3>
+  <div class="fit-grid">
+    <div class="fit-box yes">
+      <h4>&#10003; 适合引入 Synapse</h4>
+      <ul>
+        <li>团队规模 5&ndash;100 人，有明确运营目标</li>
+        <li>有重复性、标准化的工作流程</li>
+        <li>决策链较长，希望压缩响应周期</li>
+        <li>希望 AI 不只是工具，而是团队成员</li>
+        <li>有明确的"第一个项目"试点</li>
+        <li>管理层支持实验性探索</li>
+      </ul>
+    </div>
+    <div class="fit-box no">
+      <h4>&#10007; 暂不适合引入</h4>
+      <ul>
+        <li>所有工作均高度非标准化、无法复现</li>
+        <li>团队对 AI 工具零认知，抵触情绪强烈</li>
+        <li>数据安全合规要求极高（医疗/金融核心）</li>
+        <li>没有内部推动 Owner（体系需要人来运营）</li>
+        <li>期待零学习成本立即产出（需 1&ndash;3 个月建设期）</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== 附录：体系资产全貌 ==================== -->
+<div class="section">
+  <h2>附录 &mdash; 体系资产全貌（2026-05-27 快照）</h2>
+
+  <table>
+    <tr><th>资产类别</th><th>数量</th><th>说明</th></tr>
+    <tr><td>活跃核心 Agent</td><td><strong>55 个</strong></td><td>分布在 12 个专业团队，按任务类型自动路由</td></tr>
+    <tr><td>专业团队</td><td><strong>12 个</strong></td><td>Graphify / HR / Harness_ops / RD / OBS / Content_ops / PDG / Growth / AI_ML / Specialist / Product_ops / Janusd_delivery</td></tr>
+    <tr><td>Harness 治理模块</td><td><strong>40 个</strong></td><td>CLAUDE.md 主配置 281 行 / 320 行熵预算内</td></tr>
+    <tr><td>自动化脚本</td><td><strong>97 个</strong></td><td>Python 85 个 + JavaScript 12 个</td></tr>
+    <tr><td>活跃工作流</td><td><strong>9 个</strong></td><td>情报管线 + 任务恢复 + 晨报 + Notion 同步等</td></tr>
+    <tr><td>体系版本</td><td><strong>Core v1.0.0 / infra v1.0.7</strong></td><td>稳定运行，持续迭代</td></tr>
+    <tr><td>D 编号决策</td><td><strong>29 份</strong></td><td>跨度 2026-04-12 至 2026-05-27（46 天）</td></tr>
+    <tr><td>CEO Guard 审计日志</td><td><strong>16,079 条</strong></td><td>连续 35 天累积工具调用记录</td></tr>
+  </table>
+
+  <div style="margin-top:40px;padding:20px;background:#f8fafc;border-radius:8px;text-align:center;">
+    <p style="font-size:0.85em;color:#64748b;">本文档由 Synapse content_ops 团队生成 &middot; 数据截止 2026-05-27</p>
+    <p style="font-size:0.85em;color:#64748b;margin-top:4px;">Synapse &mdash; AI 协作运营体系 &middot; Core v1.0.0 &middot; infra v1.0.7</p>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Synapse Platform — 验收测试操作手册</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #4F46E5;
+    --primary-light: #EEF2FF;
+    --primary-dark: #3730A3;
+    --bg: #F9FAFB;
+    --surface: #FFFFFF;
+    --text: #111827;
+    --text-muted: #6B7280;
+    --border: #E5E7EB;
+    --success: #10B981;
+    --success-light: #ECFDF5;
+    --warning: #F59E0B;
+    --warning-light: #FFFBEB;
+    --error: #EF4444;
+    --error-light: #FEF2F2;
+    --info: #3B82F6;
+    --info-light: #EFF6FF;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #1E1B4B 0%, #4F46E5 60%, #7C3AED 100%);
+    color: white;
+    padding: 48px 0 40px;
+  }
+  .hero-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 { font-size: clamp(22px, 3.5vw, 34px); font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
+  .hero-sub { font-size: 15px; opacity: 0.85; margin-bottom: 20px; }
+  .hero-row { display: flex; flex-wrap: wrap; gap: 16px; }
+  .hero-chip {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+  .hero-chip strong { font-weight: 700; }
+
+  /* SECTION */
+  .section { padding: 40px 0; }
+  .section-alt { background: var(--surface); }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::before {
+    content: "";
+    display: block;
+    width: 4px;
+    height: 22px;
+    background: var(--primary);
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .section-desc { color: var(--text-muted); margin-bottom: 24px; font-size: 14px; }
+
+  /* PRE-CHECK */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .cb {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: inline-block;
+  }
+  .checklist li .desc { flex: 1; }
+  .checklist li .desc strong { color: var(--text); }
+  .checklist li .desc small { color: var(--text-muted); display: block; font-size: 12px; }
+
+  /* ENV TABLE */
+  .env-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .env-table th { background: var(--primary); color: white; padding: 10px 14px; text-align: left; font-size: 13px; }
+  .env-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+  .env-table tr:last-child td { border-bottom: none; }
+  .env-table td:first-child { font-weight: 600; color: var(--text-muted); font-size: 13px; width: 160px; }
+  .env-table td code { font-family: monospace; background: #F3F4F6; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+
+  /* TEST SCENARIO CARD */
+  .test-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .test-header {
+    background: linear-gradient(135deg, var(--primary-light), #EDE9FE);
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .test-header-left { display: flex; align-items: center; gap: 12px; }
+  .test-num {
+    background: var(--primary);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .test-name { font-size: 17px; font-weight: 700; color: var(--primary-dark); }
+  .test-meta { font-size: 12px; color: var(--text-muted); display: flex; gap: 12px; flex-wrap: wrap; margin-top: 2px; }
+  .test-meta span { display: flex; align-items: center; gap: 4px; }
+  .test-conclusion {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .verdict { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .verdict .cb-sm {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border);
+    border-radius: 3px;
+    display: inline-block;
+  }
+
+  .test-body { padding: 20px 24px; }
+
+  /* PRECONDITIONS */
+  .precond {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    border: 1px solid var(--border);
+  }
+  .precond strong { color: var(--text); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .precond ul { margin: 6px 0 0 16px; }
+  .precond li { margin-bottom: 3px; color: var(--text-muted); }
+
+  /* STEPS */
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .step-num {
+    width: 28px;
+    height: 28px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-content { flex: 1; }
+  .step-title { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 6px; }
+  .step-desc { font-size: 14px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.6; }
+
+  /* MESSAGE BOX */
+  .msg-box {
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    background: var(--primary-light);
+    padding: 14px 18px;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+    position: relative;
+    margin: 8px 0;
+  }
+  .msg-box::before {
+    content: "发送消息内容：";
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+
+  /* SCREENSHOT PLACEHOLDER */
+  .screenshot-placeholder {
+    border: 2px dashed #CBD5E1;
+    border-radius: 8px;
+    background: #F8FAFC;
+    padding: 24px;
+    text-align: center;
+    margin: 10px 0;
+    color: #94A3B8;
+    font-size: 13px;
+  }
+  .screenshot-placeholder .label { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; color: #CBD5E1; }
+  .screenshot-placeholder .expected { color: #64748B; font-size: 13px; }
+
+  /* EXPECTED RESULTS */
+  .expect-box {
+    background: var(--success-light);
+    border: 1px solid #A7F3D0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    margin: 8px 0;
+  }
+  .expect-box strong { color: #065F46; font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; display: block; margin-bottom: 6px; }
+  .expect-box ul { margin-left: 16px; }
+  .expect-box li { color: #065F46; margin-bottom: 3px; }
+
+  /* PASS/FAIL ROW */
+  .pf-row {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 8px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 10px;
+  }
+  .pf-item { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+  .pf-item .cb-sm {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border);
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .pf-pass .cb-sm { border-color: var(--success); }
+  .pf-pass { color: var(--success); }
+  .pf-fail .cb-sm { border-color: var(--error); }
+  .pf-fail { color: var(--error); }
+
+  /* ACCEPTANCE CRITERIA */
+  .ac-box {
+    background: #FEFCE8;
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 16px;
+  }
+  .ac-box strong { color: #B45309; font-size: 13px; display: block; margin-bottom: 10px; }
+  .ac-list { list-style: none; padding: 0; }
+  .ac-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    padding: 4px 0;
+    color: #78350F;
+  }
+  .ac-list .cb-sm {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #FCD34D;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* TEST CONCLUSION FOOTER */
+  .test-footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .test-footer-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+  .verdict-options { display: flex; gap: 20px; }
+  .vopt { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+  .vopt-pass { color: var(--success); }
+  .vopt-partial { color: var(--warning); }
+  .vopt-fail { color: var(--error); }
+  .vopt .cb-sm { width: 16px; height: 16px; border: 2px solid; border-radius: 3px; display: inline-block; }
+  .vopt-pass .cb-sm { border-color: var(--success); }
+  .vopt-partial .cb-sm { border-color: var(--warning); }
+  .vopt-fail .cb-sm { border-color: var(--error); }
+
+  /* SLASH COMMAND SECTION */
+  .slash-card {
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .slash-header {
+    background: #0F172A;
+    color: #E2E8F0;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .slash-cmd { font-family: monospace; font-size: 15px; color: #818CF8; font-weight: 700; }
+  .slash-desc { font-size: 13px; color: #94A3B8; }
+  .slash-body { padding: 16px 20px; }
+
+  /* SUMMARY TABLE */
+  .summary-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .summary-table th { background: var(--primary); color: white; padding: 10px 16px; text-align: left; font-size: 13px; }
+  .summary-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); }
+  .summary-table tr:nth-child(even) td { background: var(--bg); }
+  .summary-table .verdict-cell { display: flex; gap: 16px; align-items: center; }
+  .summary-table .remarks { color: var(--text-muted); font-size: 12px; font-style: italic; }
+
+  /* SIGN-OFF */
+  .signoff {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-top: 24px;
+  }
+  .signoff h3 { font-size: 16px; font-weight: 700; margin-bottom: 20px; color: var(--text); }
+  .signoff-row { display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 20px; }
+  .signoff-field { flex: 1; min-width: 200px; }
+  .signoff-field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .signoff-line {
+    border-bottom: 2px solid var(--border);
+    height: 36px;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 4px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* DIVIDER */
+  .divider { height: 1px; background: var(--border); }
+
+  /* NOTE BOX */
+  .note {
+    background: var(--info-light);
+    border: 1px solid #BFDBFE;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #1E40AF;
+    margin: 12px 0;
+  }
+  .note strong { font-weight: 700; }
+
+  /* WARNING BOX */
+  .warn {
+    background: var(--warning-light);
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #92400E;
+    margin: 12px 0;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: #0F172A;
+    color: #94A3B8;
+    text-align: center;
+    padding: 28px 24px;
+    font-size: 13px;
+  }
+  .footer strong { color: #E2E8F0; }
+
+  /* PRINT */
+  @media print {
+    body { background: white; font-size: 11px; }
+    .hero { background: #1E1B4B !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-alt { background: white; }
+    .test-card, .slash-card { box-shadow: none; break-inside: avoid; }
+    .container, .hero-inner { max-width: 100%; padding: 0 12px; }
+    .screenshot-placeholder { height: 60px; }
+    @page { margin: 1.5cm; }
+  }
+
+  @media (max-width: 768px) {
+    .step { flex-direction: column; }
+    .step-num { margin-top: 0; }
+    .test-header { flex-direction: column; }
+    .verdict-options { flex-wrap: wrap; }
+  }
+
+  code { font-family: monospace; background: #F3F4F6; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">验收测试操作手册 · L4</div>
+    <h1>Synapse Platform — 总裁验收测试指南</h1>
+    <p class="hero-sub">Phase 4 端到端验收 · 10 个测试场景 · 步骤化操作手册 · 总裁亲测版</p>
+    <div class="hero-row">
+      <div class="hero-chip">🌐 <strong>工作区：</strong>janussandbox.slack.com</div>
+      <div class="hero-chip">📢 <strong>频道：</strong>#ai-agents-noti</div>
+      <div class="hero-chip">🤖 <strong>Bot：</strong>Synapse Bot</div>
+      <div class="hero-chip">👤 <strong>测试人：</strong>刘子杨</div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: TEST ENV -->
+<div class="section section-alt">
+  <div class="container">
+    <div class="section-title">测试环境说明</div>
+    <p class="section-desc">验收测试的基础环境配置信息</p>
+
+    <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:24px;">
+      <table class="env-table">
+        <tr>
+          <td>Slack 工作区</td>
+          <td><strong>janussandbox.slack.com</strong></td>
+        </tr>
+        <tr>
+          <td>测试频道</td>
+          <td><strong>#ai-agents-noti</strong> <code>C0AV1JAHZHB</code></td>
+        </tr>
+        <tr>
+          <td>测试账号</td>
+          <td>总裁账号 <code>U0ASLJZMVDE</code></td>
+        </tr>
+        <tr>
+          <td>Bot 名称</td>
+          <td><strong>Synapse Bot</strong>（lysandersandbox）</td>
+        </tr>
+        <tr>
+          <td>案例 ID 格式</td>
+          <td><code>CASE-YYYYMMDD-NNNN</code>，例：<code>CASE-20260428-0001</code></td>
+        </tr>
+        <tr>
+          <td>测试日期</td>
+          <td><span style="border-bottom:2px solid var(--border);display:inline-block;width:200px;">&nbsp;</span></td>
+        </tr>
+        <tr>
+          <td>测试人</td>
+          <td>刘子杨</td>
+        </tr>
+        <tr>
+          <td>参考分支</td>
+          <td><code>phase4-sprint-j</code>，commit <code>86239a7</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>测试方式说明：</strong>T-01 至 T-07 通过 <strong>向 Synapse Bot 发送私信（DM）</strong>触发，Bot 会自动分类并创建案例。T-08 至 T-10 通过在 <strong>#ai-agents-noti 频道输入斜杠命令</strong>触发。
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SECTION: PRECHECKS -->
+<div class="section">
+  <div class="container">
+    <div class="section-title">前置检查清单</div>
+    <p class="section-desc">开始测试前，请确认以下所有条件满足</p>
+
+    <div class="test-card">
+      <div class="test-body" style="padding-top:8px;">
+        <ul class="checklist">
+          <li>
+            <span class="cb"></span>
+            <div class="desc">
+              <strong>已登录 janussandbox.slack.com</strong>
+              <small>浏览器或 Slack 客户端，使用总裁账号</small>
+            </div>
+          </li>
+          <li>
+            <span class="cb"></span>
+            <div class="desc">
+              <strong>已加入 #ai-agents-noti 频道</strong>
+              <small>可在 Slack 侧边栏或搜索中找到该频道</small>
+            </div>
+          </li>
+          <li>
+            <span class="cb"></span>
+            <div class="desc">
+              <strong>Synapse Bot 在频道中显示为在线</strong>
+              <small>频道成员列表中可见 "Synapse Bot"，状态显示为绿色在线点</small>
+            </div>
+          </li>
+          <li>
+            <span class="cb"></span>
+            <div class="desc">
+              <strong>可以向 Synapse Bot 发送私信（DM）</strong>
+              <small>在 Slack 搜索栏输入 Bot 名称，确认可以打开私信会话</small>
+            </div>
+          </li>
+          <li>
+            <span class="cb"></span>
+            <div class="desc">
+              <strong>Bot 已完成 Socket Mode 连接</strong>
+              <small>服务端 <code>npm start</code> 已运行，无连接错误日志</small>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SCENARIOS -->
+<div class="section section-alt">
+  <div class="container">
+    <div class="section-title">测试场景 T-01 至 T-07（业务场景 E2E）</div>
+    <p class="section-desc">通过向 Synapse Bot 发送私信触发各场景，验证完整案例生命周期</p>
+
+    <!-- T-01 -->
+    <div class="test-card">
+      <div class="test-header">
+        <div class="test-header-left">
+          <div class="test-num">T-01</div>
+          <div>
+            <div class="test-name">📋 周报生成（weekly_report）</div>
+            <div class="test-meta">
+              <span>🤖 负责 Agent: PMAgent</span>
+              <span>⏱ 预计耗时: 2-3 分钟</span>
+              <span>🎯 测试目标: 验证周报生成端到端全链路</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="test-body">
+        <div class="precond">
+          <strong>前置条件</strong>
+          <ul>
+            <li>Bot 已通过 Socket Mode 连接至 janussandbox.slack.com</li>
+            <li>前置检查清单全部通过</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">打开与 Synapse Bot 的私信会话，发送触发消息</div>
+            <div class="step-desc">在 Slack 中找到 Synapse Bot，点击私信，发送以下消息（复制粘贴以确保准确性）：</div>
+            <div class="msg-box">请帮我准备本周项目周报，重点包含进度、风险和下周计划。</div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：Slack DM 界面，已发送上述消息</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">等待 Bot 回复确认（≤5 秒）</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>Bot 回复包含案例 ID（格式：<code>CASE-20260428-NNNN</code>）</li>
+                <li>回复中包含 "new case" 或案例类型确认（weekly_report）</li>
+                <li>回复中包含 "Accepted" 或类似确认文字</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：Bot 回复包含 CASE-ID 和类型确认</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+              <div style="font-size:12px;color:var(--text-muted);flex:1;">若超过 10 秒无回复，请检查 Bot 是否在线</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">等待 Agent 执行（≤30 秒）</div>
+            <div class="step-desc">PMAgent 正在基于 PMBOK 7th、Atlassian 方法论知识库生成周报草稿。</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>Bot 在同一线程回复结构化周报草稿</li>
+                <li>内容包含：进度部分（RAG 状态）、风险矩阵、下周计划</li>
+                <li>消息包含状态提示 "AWAITING_APPROVAL" 或 "等待审批"</li>
+                <li>出现 [Approve] / [批准] 可交互按钮</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：Bot 回复包含结构化周报草稿，含审批按钮</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">审批确认</div>
+            <div class="step-desc">点击 Bot 消息中的 [Approve] / [批准] 按钮，触发审批流程。</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>Bot 更新消息，状态变为 <code>COMPLETED</code></li>
+                <li>Bot 在原始线程回复最终交付物</li>
+                <li>EvidenceBundle 证据包已创建（可通过 /synapse case {id} 查询）</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：审批后状态变为 COMPLETED，最终交付物显示在线程中</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ac-box">
+          <strong>✅ 验收标准（全部必须通过）</strong>
+          <ul class="ac-list">
+            <li><span class="cb-sm"></span> 全流程在 60 秒内完成</li>
+            <li><span class="cb-sm"></span> 案例 ID 格式正确（CASE-YYYYMMDD-NNNN）</li>
+            <li><span class="cb-sm"></span> 交付物包含结构化内容（非空，有进度/风险/计划三个部分）</li>
+            <li><span class="cb-sm"></span> 审批后状态变为 COMPLETED</li>
+            <li><span class="cb-sm"></span> 记录 CASE ID：___________________（供后续 T-10 查询使用）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="test-footer">
+        <span class="test-footer-label">T-01 测试结论：</span>
+        <div class="verdict-options">
+          <div class="vopt vopt-pass"><span class="cb-sm"></span> 通过</div>
+          <div class="vopt vopt-partial"><span class="cb-sm"></span> 部分通过</div>
+          <div class="vopt vopt-fail"><span class="cb-sm"></span> 失败</div>
+        </div>
+        <div style="flex:1;text-align:right;font-size:12px;color:var(--text-muted);">备注：<span style="display:inline-block;border-bottom:1px solid var(--border);width:200px;">&nbsp;</span></div>
+      </div>
+    </div>
+
+    <!-- T-02 -->
+    <div class="test-card">
+      <div class="test-header">
+        <div class="test-header-left">
+          <div class="test-num">T-02</div>
+          <div>
+            <div class="test-name">📅 会议筹备（meeting_prep）</div>
+            <div class="test-meta">
+              <span>🤖 负责 Agent: PMAgent</span>
+              <span>⏱ 预计耗时: 2-3 分钟</span>
+              <span>🎯 测试目标: 验证会议简报包端到端生成</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="test-body">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">向 Synapse Bot 发送私信</div>
+            <div class="msg-box">请帮我准备明天的 Q2 季度评审会议，需要议题列表和背景材料。</div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：已发送会议筹备触发消息</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">等待 Bot 接收确认（≤5 秒）+ Agent 执行（≤30 秒）</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>Bot 回复案例 ID 确认（meeting_prep 类型）</li>
+                <li>Bot 生成会议简报包：SCQA 背景框架 + 议题列表 + 预期 Q&A</li>
+                <li>出现审批按钮，等待确认</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：会议简报包，含 SCQA、议题、Q&A 三个模块</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> Bot 接收确认通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">点击 [Approve] 完成审批</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>案例状态更新为 COMPLETED</li>
+                <li>最终会议简报包投递至原始线程</li>
+              </ul>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="ac-box">
+          <strong>✅ 验收标准</strong>
+          <ul class="ac-list">
+            <li><span class="cb-sm"></span> 案例 ID 格式正确，类型为 meeting_prep</li>
+            <li><span class="cb-sm"></span> 交付物包含 SCQA 框架 + 议题列表</li>
+            <li><span class="cb-sm"></span> 审批后状态 COMPLETED</li>
+          </ul>
+        </div>
+      </div>
+      <div class="test-footer">
+        <span class="test-footer-label">T-02 测试结论：</span>
+        <div class="verdict-options">
+          <div class="vopt vopt-pass"><span class="cb-sm"></span> 通过</div>
+          <div class="vopt vopt-partial"><span class="cb-sm"></span> 部分通过</div>
+          <div class="vopt vopt-fail"><span class="cb-sm"></span> 失败</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T-03 -->
+    <div class="test-card">
+      <div class="test-header">
+        <div class="test-header-left">
+          <div class="test-num">T-03</div>
+          <div>
+            <div class="test-name">🎫 服务申请（service_request）</div>
+            <div class="test-meta">
+              <span>🤖 负责 Agent: ServiceAgent (agent.ops)</span>
+              <span>⏱ 预计耗时: 1-2 分钟</span>
+              <span>🎯 测试目标: 验证 ITIL 风格服务申请全链路</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="test-body">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">向 Synapse Bot 发送私信</div>
+            <div class="msg-box">我需要申请访问生产数据库的权限，请帮我提交申请。</div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：已发送权限申请触发消息</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">等待 Bot 接收 + ServiceAgent 处理（≤20 秒）</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>Bot 回复案例 ID（service_request / internal_service 类型）</li>
+                <li>ServiceAgent 生成 ITIL 风格申请记录，含：申请类型、优先级、处理人、SLA 承诺</li>
+                <li>FSM 流转：INTAKE → PLANNED → AWAITING_APPROVAL</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：ITIL 格式服务申请记录，含优先级和 SLA 字段</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">审批并确认完成</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>点击 [Approve] 后状态更新为 COMPLETED</li>
+                <li>服务申请记录已归档</li>
+              </ul>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="ac-box">
+          <strong>✅ 验收标准</strong>
+          <ul class="ac-list">
+            <li><span class="cb-sm"></span> 正确路由至 ServiceAgent（不是 PMAgent）</li>
+            <li><span class="cb-sm"></span> 交付物含 ITIL 风格字段（申请类型/优先级/SLA）</li>
+            <li><span class="cb-sm"></span> 审批后状态 COMPLETED</li>
+          </ul>
+        </div>
+      </div>
+      <div class="test-footer">
+        <span class="test-footer-label">T-03 测试结论：</span>
+        <div class="verdict-options">
+          <div class="vopt vopt-pass"><span class="cb-sm"></span> 通过</div>
+          <div class="vopt vopt-partial"><span class="cb-sm"></span> 部分通过</div>
+          <div class="vopt vopt-fail"><span class="cb-sm"></span> 失败</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T-04 -->
+    <div class="test-card">
+      <div class="test-header">
+        <div class="test-header-left">
+          <div class="test-num">T-04</div>
+          <div>
+            <div class="test-name">🔍 调研请求（research_request）</div>
+            <div class="test-meta">
+              <span>🤖 负责 Agent: ResearchAgent (agent.research)</span>
+              <span>⏱ 预计耗时: 2-4 分钟</span>
+              <span>🎯 测试目标: 验证 MECE 调研报告端到端生成</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="test-body">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">向 Synapse Bot 发送私信</div>
+            <div class="msg-box">请帮我调研当前市场上主流 AI 协作工具的竞品情况，对比功能和定价。</div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：已发送调研触发消息</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">等待 ResearchAgent 执行（≤60 秒）</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>Bot 回复案例 ID（research_request 类型）</li>
+                <li>ResearchAgent 生成 MECE 结构调研报告（≥3 个独立信源）</li>
+                <li>报告包含：问题分解 + 发现 + 建议（金字塔原则综合）</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：结构化调研报告，MECE 分解，含结论与建议</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">审批确认</div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 审批后状态 COMPLETED</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="ac-box">
+          <strong>✅ 验收标准</strong>
+          <ul class="ac-list">
+            <li><span class="cb-sm"></span> 正确路由至 ResearchAgent（不是 PMAgent 或 ServiceAgent）</li>
+            <li><span class="cb-sm"></span> 报告有 MECE 结构（互斥完整）</li>
+            <li><span class="cb-sm"></span> 包含明确建议与结论</li>
+          </ul>
+        </div>
+      </div>
+      <div class="test-footer">
+        <span class="test-footer-label">T-04 测试结论：</span>
+        <div class="verdict-options">
+          <div class="vopt vopt-pass"><span class="cb-sm"></span> 通过</div>
+          <div class="vopt vopt-partial"><span class="cb-sm"></span> 部分通过</div>
+          <div class="vopt vopt-fail"><span class="cb-sm"></span> 失败</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T-05 -->
+    <div class="test-card">
+      <div class="test-header">
+        <div class="test-header-left">
+          <div class="test-num">T-05</div>
+          <div>
+            <div class="test-name">📈 数据分析（data_analysis）</div>
+            <div class="test-meta">
+              <span>🤖 负责 Agent: ResearchAgent</span>
+              <span>⏱ 预计耗时: 2-4 分钟</span>
+              <span>🎯 测试目标: 验证假设驱动数据分析报告生成</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="test-body">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">向 Synapse Bot 发送私信</div>
+            <div class="msg-box">请帮我分析过去三个月的项目完成率数据，找出主要影响因素。</div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：已发送数据分析触发消息</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">等待分析报告（≤60 秒）</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>Bot 回复案例 ID（data_analysis 类型）</li>
+                <li>报告包含：假设陈述 + 数据摘要 + 关键发现 + 行动建议</li>
+                <li>分析框架基于假设驱动方法论</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：假设驱动分析报告，含假设 → 验证 → 结论结构</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">审批确认</div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 审批后状态 COMPLETED</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="ac-box">
+          <strong>✅ 验收标准</strong>
+          <ul class="ac-list">
+            <li><span class="cb-sm"></span> 类型识别为 data_analysis（非 research_request）</li>
+            <li><span class="cb-sm"></span> 报告有假设驱动结构</li>
+            <li><span class="cb-sm"></span> 包含行动建议</li>
+          </ul>
+        </div>
+      </div>
+      <div class="test-footer">
+        <span class="test-footer-label">T-05 测试结论：</span>
+        <div class="verdict-options">
+          <div class="vopt vopt-pass"><span class="cb-sm"></span> 通过</div>
+          <div class="vopt vopt-partial"><span class="cb-sm"></span> 部分通过</div>
+          <div class="vopt vopt-fail"><span class="cb-sm"></span> 失败</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T-06 -->
+    <div class="test-card">
+      <div class="test-header">
+        <div class="test-header-left">
+          <div class="test-num">T-06</div>
+          <div>
+            <div class="test-name">✍️ 内容撰写（content_draft）</div>
+            <div class="test-meta">
+              <span>🤖 负责 Agent: ContentAgent (agent.content)</span>
+              <span>⏱ 预计耗时: 2-3 分钟</span>
+              <span>🎯 测试目标: 验证金字塔原则结构内容生成</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="test-body">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">向 Synapse Bot 发送私信</div>
+            <div class="msg-box">请帮我撰写一篇关于 Synapse 平台上线的内部公告，受众是全体员工。</div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：已发送内容撰写触发消息</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">等待 ContentAgent 生成内容（≤30 秒）</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>Bot 回复案例 ID（content_draft 类型）</li>
+                <li>ContentAgent 生成公告内容：SCQA 开篇 + 主体正文 + 行动号召</li>
+                <li>写作风格符合 Chicago Manual of Style，受众感知清晰</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：结构化内部公告，SCQA 格式，语言专业清晰</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">审批确认</div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 审批后状态 COMPLETED</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="ac-box">
+          <strong>✅ 验收标准</strong>
+          <ul class="ac-list">
+            <li><span class="cb-sm"></span> 正确路由至 ContentAgent</li>
+            <li><span class="cb-sm"></span> 内容有清晰的段落结构（非流水账）</li>
+            <li><span class="cb-sm"></span> 语言适合全员内部公告受众</li>
+          </ul>
+        </div>
+      </div>
+      <div class="test-footer">
+        <span class="test-footer-label">T-06 测试结论：</span>
+        <div class="verdict-options">
+          <div class="vopt vopt-pass"><span class="cb-sm"></span> 通过</div>
+          <div class="vopt vopt-partial"><span class="cb-sm"></span> 部分通过</div>
+          <div class="vopt vopt-fail"><span class="cb-sm"></span> 失败</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T-07 -->
+    <div class="test-card">
+      <div class="test-header">
+        <div class="test-header-left">
+          <div class="test-num">T-07</div>
+          <div>
+            <div class="test-name">📝 决策简报（decision_brief）</div>
+            <div class="test-meta">
+              <span>🤖 负责 Agent: ContentAgent</span>
+              <span>⏱ 预计耗时: 3-5 分钟</span>
+              <span>🎯 测试目标: 验证 Amazon 6-pager 风格决策材料生成</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="test-body">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">向 Synapse Bot 发送私信</div>
+            <div class="msg-box">我需要在下周董事会上决定是否将 Synapse 平台推广到全公司，请准备一份 A/B 方案的决策材料。</div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：已发送决策简报触发消息</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">等待 ContentAgent 生成决策简报（≤60 秒）</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>Bot 回复案例 ID（decision_brief 类型）</li>
+                <li>ContentAgent 生成 Amazon 6-pager 风格决策简报</li>
+                <li><strong>强制包含 ≥3 个方案选项</strong>（A/B/C 或更多）+ 明确推荐</li>
+                <li>包含：背景 + 问题定义 + 方案对比 + 推荐 + 风险评估 + 前提假设</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：6-pager 风格决策简报，含 3+ 方案选项和明确推荐</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">审批确认</div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 审批后状态 COMPLETED</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="ac-box">
+          <strong>✅ 验收标准</strong>
+          <ul class="ac-list">
+            <li><span class="cb-sm"></span> 正确路由至 ContentAgent，类型为 decision_brief</li>
+            <li><span class="cb-sm"></span> 包含 ≥3 个方案选项（规则强制）</li>
+            <li><span class="cb-sm"></span> 有明确推荐（非"两者均可"）</li>
+            <li><span class="cb-sm"></span> 包含风险评估章节</li>
+          </ul>
+        </div>
+      </div>
+      <div class="test-footer">
+        <span class="test-footer-label">T-07 测试结论：</span>
+        <div class="verdict-options">
+          <div class="vopt vopt-pass"><span class="cb-sm"></span> 通过</div>
+          <div class="vopt vopt-partial"><span class="cb-sm"></span> 部分通过</div>
+          <div class="vopt vopt-fail"><span class="cb-sm"></span> 失败</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SLASH COMMANDS -->
+<div class="section">
+  <div class="container">
+    <div class="section-title">测试场景 T-08 至 T-10（Slash Commands 报表功能）</div>
+    <p class="section-desc">在 #ai-agents-noti 频道中使用斜杠命令，验证报表功能</p>
+
+    <div class="note">
+      <strong>操作方式：</strong>以下测试在 <strong>#ai-agents-noti 频道</strong>中输入斜杠命令（非私信 Bot），在 Slack 消息输入框中直接输入 <code>/synapse ...</code>。建议在 T-01 至 T-07 完成后进行，此时系统中已有案例数据。
+    </div>
+
+    <!-- T-08 -->
+    <div class="slash-card">
+      <div class="slash-header">
+        <div>
+          <div class="slash-cmd">T-08 · /synapse cases</div>
+          <div class="slash-desc">活跃案例列表仪表盘</div>
+        </div>
+      </div>
+      <div class="slash-body">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">在 #ai-agents-noti 频道输入斜杠命令</div>
+            <div class="msg-box" style="font-family:monospace;">/synapse cases</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>返回 Block Kit 格式案例列表（Header + 分项 Section）</li>
+                <li>每条案例含：CASE-ID、类型、状态色标、负责 Agent、SLA 状态</li>
+                <li>状态颜色编码正确：🔵 IN_PROGRESS · 🟡 AWAITING_APPROVAL · 🔴 BLOCKED · ✅ COMPLETED</li>
+                <li>最多显示 10 条（如有更多则注明 cap）</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：Block Kit 案例列表，含状态色标，最多 10 条</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="test-footer">
+        <span class="test-footer-label">T-08 测试结论：</span>
+        <div class="verdict-options">
+          <div class="vopt vopt-pass"><span class="cb-sm"></span> 通过</div>
+          <div class="vopt vopt-partial"><span class="cb-sm"></span> 部分通过</div>
+          <div class="vopt vopt-fail"><span class="cb-sm"></span> 失败</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T-09 -->
+    <div class="slash-card">
+      <div class="slash-header">
+        <div>
+          <div class="slash-cmd">T-09 · /synapse stats</div>
+          <div class="slash-desc">Agent 绩效统计报表</div>
+        </div>
+      </div>
+      <div class="slash-body">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">在 #ai-agents-noti 频道输入</div>
+            <div class="msg-box" style="font-family:monospace;">/synapse stats</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>返回各 Agent 绩效统计（处理量 / 完成率 / SLA 合规率）</li>
+                <li>包含 PMAgent、ServiceAgent、ResearchAgent、ContentAgent 各自数据</li>
+                <li>包含整体汇总统计</li>
+                <li>显示统计时间范围（默认 all）</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：Agent 绩效统计表，含各 Agent 数据和整体汇总</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <div class="step-title">（可选）测试时间段参数</div>
+            <div class="msg-box" style="font-family:monospace;">/synapse stats 7d</div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 按时间段过滤正确</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="test-footer">
+        <span class="test-footer-label">T-09 测试结论：</span>
+        <div class="verdict-options">
+          <div class="vopt vopt-pass"><span class="cb-sm"></span> 通过</div>
+          <div class="vopt vopt-partial"><span class="cb-sm"></span> 部分通过</div>
+          <div class="vopt vopt-fail"><span class="cb-sm"></span> 失败</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- T-10 -->
+    <div class="slash-card">
+      <div class="slash-header">
+        <div>
+          <div class="slash-cmd">T-10 · /synapse case {id}</div>
+          <div class="slash-desc">单个案例完整详情查询</div>
+        </div>
+      </div>
+      <div class="slash-body">
+        <div class="warn">
+          <strong>前置要求：</strong>需使用 T-01 至 T-07 中记录的 CASE-ID。请在下方填入案例 ID 后再执行此测试。
+        </div>
+        <div style="padding:12px 0;font-size:14px;color:var(--text-muted);">
+          使用的 CASE-ID：<span style="border-bottom:2px solid var(--border);display:inline-block;width:240px;font-family:monospace;">&nbsp;</span>
+        </div>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <div class="step-title">在 #ai-agents-noti 频道输入（替换为实际 CASE-ID）</div>
+            <div class="msg-box" style="font-family:monospace;">/synapse case CASE-20260428-XXXX</div>
+            <div class="expect-box">
+              <strong>期望结果</strong>
+              <ul>
+                <li>返回完整案例详情 Block Kit 卡片</li>
+                <li>包含：当前 FSM 状态、案例类型、负责 Agent</li>
+                <li>包含：Artifact 数量、SLA 状态（On track / Warning / Overdue）</li>
+                <li>若案例处于 AWAITING_APPROVAL 状态，显示 [Approve] 按钮</li>
+                <li>若案例已 COMPLETED，显示 EvidenceBundle 信息</li>
+              </ul>
+            </div>
+            <div class="screenshot-placeholder">
+              <div class="label">截图位置</div>
+              <div class="expected">预期：完整案例详情，含状态、Agent、SLA 信息，如等待审批则含 [Approve] 按钮</div>
+            </div>
+            <div class="pf-row">
+              <div class="pf-item pf-pass"><span class="cb-sm"></span> 通过</div>
+              <div class="pf-item pf-fail"><span class="cb-sm"></span> 失败</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="test-footer">
+        <span class="test-footer-label">T-10 测试结论：</span>
+        <div class="verdict-options">
+          <div class="vopt vopt-pass"><span class="cb-sm"></span> 通过</div>
+          <div class="vopt vopt-partial"><span class="cb-sm"></span> 部分通过</div>
+          <div class="vopt vopt-fail"><span class="cb-sm"></span> 失败</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SLA NOTE -->
+<div class="section section-alt">
+  <div class="container">
+    <div class="section-title">SLA 预警功能说明</div>
+    <p class="section-desc">此功能为时间触发机制，不纳入本次验收必须项</p>
+
+    <div class="test-card">
+      <div class="test-body">
+        <div class="note">
+          <strong>说明：</strong>SLA 预警在案例距 SLA 截止时间 ≤ 30 分钟时，自动向负责人发送 Slack DM 告警（阈值可通过 <code>SLA_WARNING_MINUTES</code> 环境变量配置）。由于此功能依赖真实时间流逝触发，无法在即时验收测试中直接验证。已通过单元测试（含 double-fire 防护、graceful degradation 5 路径）覆盖。
+        </div>
+        <div style="padding:12px 0;font-size:14px;">
+          <strong>验证方式（可选，不阻塞验收）：</strong>
+          <ol style="margin: 8px 0 0 20px; color: var(--text-muted); line-height: 2;">
+            <li>创建一个测试案例，人为缩短 SLA 截止时间</li>
+            <li>等待 SLA_WARNING_MINUTES（默认 30 分钟）前，观察是否收到 DM 告警</li>
+            <li>告警 DM 应包含：案例 ID、类型、SLA 截止时间、当前状态</li>
+          </ol>
+        </div>
+        <div class="ac-box" style="background:#F0FDF4;border-color:#BBF7D0;">
+          <strong style="color:#166534;">说明（非必须通过）</strong>
+          <ul class="ac-list" style="color:#166534;">
+            <li><span class="cb-sm" style="border-color:#86EFAC;"></span> SLA 预警 DM 格式正确（案例 ID + 截止时间 + 当前状态）</li>
+            <li><span class="cb-sm" style="border-color:#86EFAC;"></span> 重复告警防护生效（同一案例不发送重复 DM）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SUMMARY TABLE -->
+<div class="section">
+  <div class="container">
+    <div class="section-title">验收总结表</div>
+    <p class="section-desc">完成全部测试后填写此表，作为正式验收记录</p>
+
+    <div class="test-card" style="margin-bottom:28px;">
+      <div class="test-body" style="padding:0;">
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th style="width:80px;">场景编号</th>
+              <th>场景名称</th>
+              <th style="width:100px;">负责 Agent</th>
+              <th style="width:200px;">测试结论</th>
+              <th>备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>T-01</td>
+              <td>周报生成（weekly_report）</td>
+              <td>PMAgent</td>
+              <td>
+                <div style="display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600;">
+                  <span style="color:var(--success);">☐ 通过</span>
+                  <span style="color:var(--error);">☐ 失败</span>
+                </div>
+              </td>
+              <td class="remarks"></td>
+            </tr>
+            <tr>
+              <td>T-02</td>
+              <td>会议筹备（meeting_prep）</td>
+              <td>PMAgent</td>
+              <td>
+                <div style="display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600;">
+                  <span style="color:var(--success);">☐ 通过</span>
+                  <span style="color:var(--error);">☐ 失败</span>
+                </div>
+              </td>
+              <td class="remarks"></td>
+            </tr>
+            <tr>
+              <td>T-03</td>
+              <td>服务申请（service_request）</td>
+              <td>ServiceAgent</td>
+              <td>
+                <div style="display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600;">
+                  <span style="color:var(--success);">☐ 通过</span>
+                  <span style="color:var(--error);">☐ 失败</span>
+                </div>
+              </td>
+              <td class="remarks"></td>
+            </tr>
+            <tr>
+              <td>T-04</td>
+              <td>调研请求（research_request）</td>
+              <td>ResearchAgent</td>
+              <td>
+                <div style="display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600;">
+                  <span style="color:var(--success);">☐ 通过</span>
+                  <span style="color:var(--error);">☐ 失败</span>
+                </div>
+              </td>
+              <td class="remarks"></td>
+            </tr>
+            <tr>
+              <td>T-05</td>
+              <td>数据分析（data_analysis）</td>
+              <td>ResearchAgent</td>
+              <td>
+                <div style="display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600;">
+                  <span style="color:var(--success);">☐ 通过</span>
+                  <span style="color:var(--error);">☐ 失败</span>
+                </div>
+              </td>
+              <td class="remarks"></td>
+            </tr>
+            <tr>
+              <td>T-06</td>
+              <td>内容撰写（content_draft）</td>
+              <td>ContentAgent</td>
+              <td>
+                <div style="display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600;">
+                  <span style="color:var(--success);">☐ 通过</span>
+                  <span style="color:var(--error);">☐ 失败</span>
+                </div>
+              </td>
+              <td class="remarks"></td>
+            </tr>
+            <tr>
+              <td>T-07</td>
+              <td>决策简报（decision_brief）</td>
+              <td>ContentAgent</td>
+              <td>
+                <div style="display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600;">
+                  <span style="color:var(--success);">☐ 通过</span>
+                  <span style="color:var(--error);">☐ 失败</span>
+                </div>
+              </td>
+              <td class="remarks"></td>
+            </tr>
+            <tr>
+              <td>T-08</td>
+              <td>/synapse cases 指令</td>
+              <td>—</td>
+              <td>
+                <div style="display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600;">
+                  <span style="color:var(--success);">☐ 通过</span>
+                  <span style="color:var(--error);">☐ 失败</span>
+                </div>
+              </td>
+              <td class="remarks"></td>
+            </tr>
+            <tr>
+              <td>T-09</td>
+              <td>/synapse stats 指令</td>
+              <td>—</td>
+              <td>
+                <div style="display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600;">
+                  <span style="color:var(--success);">☐ 通过</span>
+                  <span style="color:var(--error);">☐ 失败</span>
+                </div>
+              </td>
+              <td class="remarks"></td>
+            </tr>
+            <tr>
+              <td>T-10</td>
+              <td>/synapse case {id} 指令</td>
+              <td>—</td>
+              <td>
+                <div style="display:flex;gap:12px;align-items:center;font-size:12px;font-weight:600;">
+                  <span style="color:var(--success);">☐ 通过</span>
+                  <span style="color:var(--error);">☐ 失败</span>
+                </div>
+              </td>
+              <td class="remarks"></td>
+            </tr>
+            <tr style="background: var(--primary-light); font-weight:700;">
+              <td colspan="2" style="font-weight:800;color:var(--primary-dark);">总体验收结论</td>
+              <td colspan="2">
+                <div style="display:flex;gap:16px;align-items:center;font-size:13px;font-weight:700;">
+                  <span style="color:var(--success);">☐ 验收通过</span>
+                  <span style="color:var(--warning);">☐ 条件通过</span>
+                  <span style="color:var(--error);">☐ 需整改</span>
+                </div>
+              </td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SIGN-OFF -->
+    <div class="signoff">
+      <h3>正式验收签字</h3>
+      <div class="signoff-row">
+        <div class="signoff-field">
+          <label>测试人</label>
+          <div class="signoff-line">刘子杨</div>
+        </div>
+        <div class="signoff-field">
+          <label>测试日期</label>
+          <div class="signoff-line"></div>
+        </div>
+        <div class="signoff-field">
+          <label>签字</label>
+          <div class="signoff-line"></div>
+        </div>
+      </div>
+      <div class="signoff-row">
+        <div class="signoff-field">
+          <label>批准人（Lysander CEO）</label>
+          <div class="signoff-line">Lysander</div>
+        </div>
+        <div class="signoff-field">
+          <label>批准日期</label>
+          <div class="signoff-line"></div>
+        </div>
+        <div class="signoff-field">
+          <label>决策归档编号（D-号）</label>
+          <div class="signoff-line">D-2026-0428-020</div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:16px;">
+        <strong>验收说明：</strong>本次验收对应 Phase 4 交付，决策归档编号 D-2026-0428-020。如总裁验收通过，即授权启动 Phase 5（RBAC 完整实现为核心优先项）。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <strong>Synapse Platform — 验收测试操作手册</strong><br>
+  Phase 4 验收版 · 2026-04-28 · 执行者：knowledge_engineer + integration_qa<br>
+  <span style="opacity:0.5;font-size:11px;margin-top:8px;display:block;">Slack 工作区: janussandbox.slack.com · 频道: #ai-agents-noti (C0AV1JAHZHB) · 代码: phase4-sprint-j @ 86239a7</span>
+</div>
+
+</body>
+</html>

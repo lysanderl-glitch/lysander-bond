@@ -128,10 +128,10 @@ import Layout from '../../../layouts/Layout.astro';
       <div class="flex gap-5 p-6 bg-white border border-[var(--color-border)] rounded-xl">
         <div class="shrink-0 w-10 h-10 rounded-lg bg-[#FCAD2A]/10 flex items-center justify-center font-extrabold text-[#FCAD2A] text-lg">4</div>
         <div>
-          <h3 class="font-bold text-[var(--color-text)] mb-2">Four decision tiers.</h3>
-          <p class="text-sm text-[var(--color-text-light)] mb-3">L1 auto-execute → L2 expert review → L3 CEO call → L4 escalate to operator. Specialists go before the CEO. The CEO goes before the operator. The operator should be guessing far less than 5 percent of the time.</p>
+          <h3 class="font-bold text-[var(--color-text)] mb-2">Five decision tiers.</h3>
+          <p class="text-sm text-[var(--color-text-light)] mb-3">L1 auto-execute → L2 expert review → L3 Lysander call → L4 strategic-alignment notify the operator → L5 value judgment. Specialists go before Lysander; the operator is involved only at L4 (notify) and L5 (call). The exact proportion handled below L3 fluctuates with task mix and is not strictly tracked.</p>
           <div class="text-xs font-mono bg-[#F7F8FA] border border-[var(--color-border)] rounded px-3 py-2 text-[var(--color-muted)]">
-            L4 triggers: external contracts / budgets above $1M-equivalent / existential decisions / operator-flagged items
+            L5 triggers: external contracts / budgets > $1M / value judgments with no objective optimum / operator-flagged items
           </div>
         </div>
       </div>
@@ -159,7 +159,7 @@ import Layout from '../../../layouts/Layout.astro';
             "CLAUDE.md = harness configuration (Guides + Sensors + Constraints)",
             "organization.yaml = roles and routing rules",
             "hr_base.py = capability-audit engine (90-or-better passing line)",
-            "decision_rules.yaml = the four-tier decision system",
+            "decision_rules.yaml = the five-tier decision framework",
             "The 14 Skills = execution-chain checkpoints, made triggerable",
             "evolution_engine = self-improvement loop",
           ].map(item => (

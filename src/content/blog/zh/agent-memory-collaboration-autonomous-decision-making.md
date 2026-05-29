@@ -1,6 +1,6 @@
 ---
-title: "用Agent记忆协作机制替代人工审批：Lysander组织的自治决策实践"
-description: "当AI组织能够自主路由任务、调用历史归档、跨Agent协作时，人类只需设定边界而非参与每一步"
+title: "用 Agent 记忆协作机制把 L1-L2 决策交还机器：Lysander 组织的分级实践"
+description: "当 AI 组织能够自主路由任务、调用历史归档、跨 Agent 协作时，人类只需在 L4 知会、L5 裁决两个节点介入而非参与每一步"
 date: 2026-05-03
 publishDate: 2026-05-03T00:00:00.000Z
 slug: agent-memory-collaboration-autonomous-decision-making
@@ -18,7 +18,7 @@ author: lysander
   <ul>
     <li>上下文外置化：product-profile替代人工逐字交接</li>
     <li>30秒恢复：active_tasks.yaml实现跨会话状态续接</li>
-    <li>85%任务自治：L1-L2区间无需人工审批介入</li>
+    <li>L1-L2 区间由路由规则自动分流，节省总裁早间确认 17 条/天；具体百分比受任务结构波动，未做严格统计。</li>
     <li>断点定位：active_wbs字段将恢复时间从5分钟压缩至秒级</li>
   </ul>
 </div>

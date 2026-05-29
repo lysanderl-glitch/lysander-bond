@@ -61,7 +61,7 @@ const pipeline = [
   <Hero
     eyebrow="Self-improve Pipeline"
     title="Every cycle ends with Synapse measurably better than yesterday."
-    subtitle="Synapse's evolution layer: a daily 5-step closed loop — scan signals, publish bulletin, score decisions, dispatch actions, evolve capabilities. No human in the loop. Every cycle's output is publicly archived — the pipeline itself is proof of the system's capability."
+    subtitle="Synapse's evolution layer: a daily 5-step loop — scan signals → publish bulletin → expert score → Lysander dispatch & track → evolve capabilities. L3 items dispatched autonomously by Lysander, L4 items notify the Synapse Owner, L5 items pause for an Owner call; every cycle's output is publicly archived."
     primaryCta={{ label: 'Subscribe to Intelligence Daily', href: '#subscribe' }}
     secondaryCta={{ label: 'View the Archive', href: '/en/intelligence' }}
   />
@@ -180,7 +180,7 @@ const pipeline = [
         }
       } catch {
         if (msg) {
-          msg.textContent = '⚠️ Submission failed. Please email lysanderl@janusd.io to subscribe manually.';
+          msg.textContent = '⚠️ Submission failed. Please email lysanderl@janusd.com to subscribe manually.';
           msg.className = 'mt-4 text-sm text-yellow-400';
         }
       } finally {
