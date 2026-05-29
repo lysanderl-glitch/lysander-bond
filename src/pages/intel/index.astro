@@ -1,0 +1,168 @@
+---
+// ECR 外部能力雷达 — versioned intel collection host.
+// Shows the latest ECR scan in full (4-category sections); links to historical
+// scans below. Each scan lives in src/content/intel/YYYY-Www.md
+// History URL pattern: /intel/YYYY-Www/
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+const allEntries = await getCollection('intel');
+
+// Sort descending by week string (YYYY-Www lexicographic sort is safe)
+allEntries.sort((a, b) => b.data.week.localeCompare(a.data.week));
+
+const latest = allEntries[0];
+const historical = allEntries.slice(1);
+
+const { Content } = await render(latest);
+---
+
+<Layout
+  title="外部能力雷达 | Lysander"
+  description="Synapse ECR 外部能力雷达：每周扫描 AI agent 生态的新模型、新工具、GitHub 最佳实践与行业范式，标记 CAG 吸收候选供决策内化。"
+  lang="zh"
+  darkContent={false}
+>
+  <!-- Hero -->
+  <section class="pt-24 pb-10 px-6 border-b border-[var(--color-border)]">
+    <div class="max-w-4xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FCAD2A]/10 border border-[#FCAD2A]/30 text-[#FCAD2A] text-xs font-semibold mb-5">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] animate-pulse"></span>
+        外部能力雷达 · {latest.data.week}
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-3" style="font-family: var(--font-display, 'Fraunces', Georgia, serif); letter-spacing: -0.02em;">
+        ECR 外部能力雷达
+      </h1>
+      <p class="text-base md:text-lg text-[var(--color-text-light)] leading-relaxed max-w-2xl">
+        每周扫描 AI agent 生态的新模型、新工具、GitHub 最佳实践与行业范式。⭐ 标记项为 CAG 吸收候选，供总裁一眼决策是否内化进 Synapse。
+      </p>
+      <div class="flex items-center gap-4 mt-3 flex-wrap">
+        <p class="text-xs text-[var(--color-muted)] font-mono">
+          数据窗口 {latest.data.window_label} · 实时抓取核验
+        </p>
+        <span class="text-xs font-semibold text-[#28a745]">窗口内 {latest.data.fresh_count} 条</span>
+        <span class="text-xs font-semibold text-[var(--color-muted)]">窗口外剔除 {latest.data.historical_count} 条</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Latest entry content -->
+  <article class="py-14 px-6">
+    <div class="max-w-4xl mx-auto intel-content">
+      <Content />
+    </div>
+  </article>
+
+  <!-- Historical archive -->
+  {historical.length > 0 && (
+    <section class="py-10 px-6 border-t border-[var(--color-border)] bg-[#F7F8FA]">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-[var(--color-muted)] mb-5">往期扫描</h2>
+        <ul class="space-y-3">
+          {historical.map((entry) => (
+            <li class="flex items-baseline gap-4">
+              <span class="text-xs font-mono text-[var(--color-muted)] w-24 shrink-0">{entry.data.week}</span>
+              <a
+                href={`/intel/${entry.data.week}/`}
+                class="text-sm text-[#028CDC] hover:underline leading-snug"
+              >
+                {entry.data.summary ?? entry.data.title}
+              </a>
+              <span class="text-xs text-[#28a745] font-mono shrink-0">{entry.data.fresh_count} 新</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- Footer note -->
+  <section class="py-10 px-6 border-t border-[var(--color-border)] bg-[#F7F8FA]">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-xs text-[var(--color-muted)] leading-relaxed">
+        每期一条 dated scan，历史永久保留。<br>
+        本期 <span class="font-mono">{latest.data.week}</span> — <a href={`/intel/${latest.data.week}/`} class="text-[#028CDC] hover:underline">固定链接</a>
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .intel-content h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .intel-content h2:first-child {
+    margin-top: 0;
+  }
+  .intel-content strong {
+    color: var(--color-text);
+  }
+  .intel-content p {
+    color: var(--color-text-light);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .intel-content a {
+    color: #028CDC;
+    text-decoration: none;
+  }
+  .intel-content a:hover {
+    text-decoration: underline;
+  }
+  .intel-content em {
+    color: var(--color-muted);
+    font-style: normal;
+    font-size: 0.875rem;
+  }
+  .intel-content blockquote {
+    border-left: 3px solid #FCAD2A;
+    background: #FCAD2A0A;
+    padding: 0.75rem 1rem;
+    margin: 1.5rem 0;
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+  }
+  .intel-content blockquote p {
+    margin-bottom: 0;
+  }
+  .intel-content hr {
+    border-color: var(--color-border);
+    margin: 2rem 0;
+  }
+  .intel-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin: 1.5rem 0;
+  }
+  .intel-content th,
+  .intel-content td {
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+  .intel-content th {
+    background: #F7F8FA;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .intel-content td {
+    color: var(--color-text-light);
+  }
+  .intel-content ul {
+    margin: 1rem 0;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .intel-content li {
+    color: var(--color-text-light);
+    line-height: 1.7;
+    margin-bottom: 0.4rem;
+  }
+</style>

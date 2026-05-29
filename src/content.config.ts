@@ -145,6 +145,22 @@ const weeklyCollection = defineCollection({
   }),
 });
 
+// ECR 外部能力雷达 — versioned external-capability intelligence scans for
+// /intel and /intel/[slug]. Each file = one week's ECR (External Capability
+// Radar) scan snapshot. Naming convention: YYYY-Www.md (ISO week, e.g. 2026-W22).
+const intelCollection = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/intel' }),
+  schema: z.object({
+    title: z.string(),
+    week: z.string(),               // ISO week, e.g. "2026-W22"
+    scan_date: z.date(),            // YYYY-MM-DD (scan run date)
+    window_label: z.string(),       // e.g. "2026-05-22 → 2026-05-29"
+    summary: z.string(),
+    fresh_count: z.number(),        // 窗口内新信号条数
+    historical_count: z.number(),   // 窗口外·已剔除条数
+  }),
+});
+
 export const collections = {
   blog: blogCollection,
   'synapse-core': synapseCoreCollection,
@@ -152,4 +168,5 @@ export const collections = {
   'intelligence-decisions': intelDecisionsCollection,
   'intelligence-results': intelResultsCollection,
   weekly: weeklyCollection,
+  intel: intelCollection,
 };

@@ -1,0 +1,145 @@
+---
+// Dynamic intel route — versioned ECR (External Capability Radar) archive.
+// URL pattern: /intel/YYYY-Www/
+// Each .md file in src/content/intel/ maps to one weekly scan entry.
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('intel');
+  return entries.map((entry) => ({
+    params: { slug: entry.data.week },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout
+  title={`${entry.data.title} | Lysander`}
+  description={entry.data.summary ?? `Synapse ECR 外部能力雷达 · ${entry.data.week}`}
+  lang="zh"
+  darkContent={false}
+>
+  <!-- Header -->
+  <section class="pt-24 pb-10 px-6 border-b border-[var(--color-border)]">
+    <div class="max-w-4xl mx-auto">
+      <a href="/intel" class="text-sm text-[var(--color-muted)] hover:text-[var(--color-text)] transition-colors mb-6 inline-block">
+        ← 返回外部能力雷达
+      </a>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FCAD2A]/10 border border-[#FCAD2A]/30 text-[#FCAD2A] text-xs font-semibold mb-5">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A]"></span>
+        历史扫描 · {entry.data.week}
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold text-[var(--color-text)] mb-3" style="font-family: var(--font-display, 'Fraunces', Georgia, serif); letter-spacing: -0.02em;">
+        {entry.data.title}
+      </h1>
+      <p class="text-base text-[var(--color-text-light)] leading-relaxed max-w-2xl">
+        {entry.data.summary}
+      </p>
+      <div class="flex items-center gap-4 mt-4 flex-wrap">
+        <span class="text-xs text-[var(--color-muted)] font-mono">{entry.data.week}</span>
+        <span class="text-xs text-[var(--color-muted)] font-mono">数据窗口 {entry.data.window_label}</span>
+        <span class="text-xs font-semibold text-[#28a745]">窗口内 {entry.data.fresh_count} 条</span>
+        <span class="text-xs font-semibold text-[var(--color-muted)]">窗口外剔除 {entry.data.historical_count} 条</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <article class="py-14 px-6">
+    <div class="max-w-4xl mx-auto prose prose-lg max-w-none intel-content">
+      <Content />
+    </div>
+  </article>
+
+  <!-- Footer nav -->
+  <section class="py-10 px-6 border-t border-[var(--color-border)] bg-[#F7F8FA]">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <a href="/intel" class="text-sm text-[#028CDC] hover:underline">← 查看最新一期</a>
+      <span class="text-xs text-[var(--color-muted)] font-mono">{entry.data.week}</span>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .intel-content h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0.4rem;
+  }
+  .intel-content h2:first-child {
+    margin-top: 0;
+  }
+  .intel-content strong {
+    color: var(--color-text);
+  }
+  .intel-content p {
+    color: var(--color-text-light);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .intel-content a {
+    color: #028CDC;
+    text-decoration: none;
+  }
+  .intel-content a:hover {
+    text-decoration: underline;
+  }
+  .intel-content em {
+    color: var(--color-muted);
+    font-style: normal;
+    font-size: 0.875rem;
+  }
+  .intel-content blockquote {
+    border-left: 3px solid #FCAD2A;
+    background: #FCAD2A0A;
+    padding: 0.75rem 1rem;
+    margin: 1.5rem 0;
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+  }
+  .intel-content blockquote p {
+    margin-bottom: 0;
+  }
+  .intel-content hr {
+    border-color: var(--color-border);
+    margin: 2rem 0;
+  }
+  .intel-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin: 1.5rem 0;
+  }
+  .intel-content th,
+  .intel-content td {
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+  .intel-content th {
+    background: #F7F8FA;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  .intel-content td {
+    color: var(--color-text-light);
+  }
+  .intel-content ul {
+    margin: 1rem 0;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+  .intel-content li {
+    color: var(--color-text-light);
+    line-height: 1.7;
+    margin-bottom: 0.4rem;
+  }
+</style>
