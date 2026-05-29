@@ -186,25 +186,77 @@ import Layout from '../../layouts/Layout.astro';
             <div class="text-[10px] text-white/40 mt-1">Decisions Logged</div>
           </div>
         </div>
-        <div class="space-y-2">
-          <div class="flex items-center gap-3 p-2.5 bg-white/[0.03] rounded-lg">
-            <div class="w-6 h-6 rounded bg-[#FCAD2A]/20 flex items-center justify-center text-[10px] text-[#FCAD2A] font-bold">5</div>
-            <div class="text-xs text-white/60">Strategist — Strategic direction correctly identified</div>
-            <div class="ml-auto text-[10px] text-[#FCAD2A] font-mono">APPROVED</div>
+
+        <!-- ══ Audit-trace component: turns the number into a trace ══ -->
+        <div class="grid md:grid-cols-2 gap-4">
+          <!-- 3B redacted audit-log slice -->
+          <div class="p-4 bg-white/[0.03] rounded-lg border border-white/5">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-xs font-semibold text-white/70">CEO Guard audit slice</div>
+              <div class="text-[10px] text-white/30 font-mono">logs/ceo-guard-audit.log</div>
+            </div>
+            <p class="text-[11px] text-white/45 leading-relaxed mb-3">The CEO Guard hook leaves a trace before and after every tool call. Below is a redacted slice of the audit log: timestamp, phase, tool type. Command contents and session identifiers are redacted — but the fact of the trace itself is governance evidence that cannot be forged.</p>
+            <div class="space-y-1.5 font-mono text-[11px]">
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:07</span><span class="text-[#FCAD2A]/80">PRE</span><span class="text-white/55">Bash</span></div>
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:08</span><span class="text-[#028CDC]/80">POST</span><span class="text-white/55">Bash</span></div>
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:09</span><span class="text-[#FCAD2A]/80">PRE</span><span class="text-white/55">Bash</span></div>
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:39</span><span class="text-[#FCAD2A]/80">PRE</span><span class="text-white/55">Edit</span></div>
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:39</span><span class="text-[#028CDC]/80">POST</span><span class="text-white/55">Edit</span></div>
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:40</span><span class="text-[#FCAD2A]/80">PRE</span><span class="text-white/55">Edit</span></div>
+            </div>
           </div>
-          <div class="flex items-center gap-3 p-2.5 bg-white/[0.03] rounded-lg">
-            <div class="w-6 h-6 rounded bg-[#028CDC]/20 flex items-center justify-center text-[10px] text-[#028CDC] font-bold">5</div>
-            <div class="text-xs text-white/60">Decision Advisor — Risk assessment comprehensive and controlled</div>
-            <div class="ml-auto text-[10px] text-[#028CDC] font-mono">APPROVED</div>
-          </div>
-          <div class="flex items-center gap-3 p-2.5 bg-white/[0.03] rounded-lg">
-            <div class="w-6 h-6 rounded bg-[#028CDC]/20 flex items-center justify-center text-[10px] text-[#028CDC] font-bold">5</div>
-            <div class="text-xs text-white/60">Trend Watcher — Fully aligned with industry trajectory</div>
-            <div class="ml-auto text-[10px] text-[#028CDC] font-mono">APPROVED</div>
+
+          <!-- 3C displayable D-record list -->
+          <div class="p-4 bg-white/[0.03] rounded-lg border border-white/5">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-xs font-semibold text-white/70">Displayable governance decisions (D-records)</div>
+              <div class="text-[10px] text-white/30 font-mono">title · date · level</div>
+            </div>
+            <p class="text-[11px] text-white/45 leading-relaxed mb-3">Every governance-mechanism decision is archived under a number — the evidence trail from "incident" to "constitution."</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <span class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-[#FCAD2A]/15 text-[#FCAD2A] shrink-0 mt-0.5">L4</span>
+                <div><div class="text-xs text-white/70 leading-snug">WF-09 exclusive Slack notification path</div><div class="text-[10px] text-white/35 font-mono">D-2026-05-19-002 · 2026-05-19</div></div>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-[#FCAD2A]/15 text-[#FCAD2A] shrink-0 mt-0.5">L4</span>
+                <div><div class="text-xs text-white/70 leading-snug">Worktree → Main mandatory sync rule (P0 guard)</div><div class="text-[10px] text-white/35 font-mono">D-2026-0512-001 · 2026-05-12</div></div>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-[#FCAD2A]/15 text-[#FCAD2A] shrink-0 mt-0.5">L4</span>
+                <div><div class="text-xs text-white/70 leading-snug">Weekly review mechanism + 4 governance structures</div><div class="text-[10px] text-white/35 font-mono">D-2026-0427-001 · 2026-04-27</div></div>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-[#028CDC]/15 text-[#028CDC] shrink-0 mt-0.5">L3</span>
+                <div><div class="text-xs text-white/70 leading-snug">CLAUDE.md edit checklist — pre-commit hook enforced</div><div class="text-[10px] text-white/35 font-mono">D-2026-0427-003 · 2026-04-27</div></div>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-[#028CDC]/15 text-[#028CDC] shrink-0 mt-0.5">L3</span>
+                <div><div class="text-xs text-white/70 leading-snug">Agent memory collaboration mechanism v1 enabled</div><div class="text-[10px] text-white/35 font-mono">D-2026-04-28-001 · 2026-04-28</div></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- ══ Operations story: When "success" is a lie ══ -->
+    <article class="bg-white rounded-xl border border-[var(--color-border)] shadow-sm p-8 md:p-10 mb-8">
+      <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-3">Build in Public · Operations Story</p>
+      <h3 class="text-2xl font-bold text-[var(--color-text)] mb-6" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">When "success" is a lie</h3>
+      <div class="space-y-4 text-[var(--color-text-light)] leading-relaxed">
+        <p>In early May 2026 we discovered something unsettling: Synapse's Slack notifications had been <strong class="text-[var(--color-text)]">silently failing for over 11 days</strong> while the system reported "success" the entire time.</p>
+        <p>The root cause was a classic trap: the caller saw HTTP 200 and assumed success, while Slack's real verdict — <code class="px-1.5 py-0.5 rounded bg-[#F7F8FA] text-[#013A7D] text-sm font-mono">{`{"ok":false,"error":"not_authed"}`}</code> — sat inside the response body that <strong class="text-[var(--color-text)]">nobody was reading</strong>. Worse still, the health heartbeat ran through the very same path, so the "monitor of the monitor" failed along with it. That is the monitoring paradox: when the sentry and the gate share one lock, a broken lock silences the sentry too.</p>
+        <p>Why did 11 days pass unnoticed? Because every link in the pipeline glowed green. GHA run status: green. HTTP status code: 200. At the technical layer "everything was fine" — at the business layer, nothing was being delivered. Technical success had masked business failure.</p>
+        <p>We did not treat it as a one-off bug to patch and forget. We turned the incident <strong class="text-[var(--color-text)]">into institution</strong>:</p>
+        <ul class="space-y-3 pl-1">
+          <li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] shrink-0 mt-2"></span><span>A P0 governance principle was written into the system's constitution — the <strong class="text-[var(--color-text)]">Silent Fail Defense Principle</strong>: "HTTP 2xx / status=success ≠ confirmed business effect; every external service call must assert on response-body business fields (e.g. <code class="px-1 py-0.5 rounded bg-[#F7F8FA] text-[#013A7D] text-sm font-mono">ok=true</code>); assertion failure must throw and mark the upstream job failed; silent stdout warnings are prohibited; meta-monitoring must be independent of the monitored pipeline." <span class="text-[var(--color-muted)] text-sm">(Source: <code class="font-mono">CLAUDE.md</code>, tagged <code class="font-mono">[ADDED: 2026-05-05]</code>)</span></span></li>
+          <li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] shrink-0 mt-2"></span><span>Two weeks later we tightened it with a companion rule — the <strong class="text-[var(--color-text)]">WF-09 Exclusive Notification Path</strong>: all Slack notifications must route through a single governed workflow; any bypass is a violation. <span class="text-[var(--color-muted)] text-sm">(Source: <code class="font-mono">CLAUDE.md</code> <code class="font-mono">[ADDED: 2026-05-19]</code>; decision <code class="font-mono">D-2026-05-19-002</code>)</span></span></li>
+          <li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] shrink-0 mt-2"></span><span>The single exception is a <strong class="text-[var(--color-text)]">meta-monitoring channel independent of the main pipeline</strong> — built precisely to carry an alert out by another road when the main path fails as a whole. <span class="text-[var(--color-muted)] text-sm">(Source: an independent meta-monitoring script, authorized exemption)</span></span></li>
+        </ul>
+        <p>This is what we mean by "the Harness is not a claim, it is a trace": what you see is not a slogan but a dated rule, a numbered decision, and an auditable log line. The incident was not buried — it was recorded, institutionalized, and it permanently changed how the system behaves.</p>
+      </div>
+    </article>
 
     <!-- Quote -->
     <div class="bg-white border-l-3 border-[#FCAD2A] rounded-r-xl p-6 shadow-sm" style="border-left: 3px solid #FCAD2A;">
