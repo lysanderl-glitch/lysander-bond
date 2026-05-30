@@ -48,6 +48,31 @@ export default defineConfig({
     '/academy/course': '/academy',
     '/en/academy/dashboard': '/en/academy',
     '/en/academy/course': '/en/academy',
+    // ── /intelligence TAKEN OFFLINE (President L5② decision, 2026-05-30) ──
+    // The self-evolution pipeline page is temporarily offline pending a
+    // foundation fix + verification ("PG-0"). The intelligence pipeline
+    // published fabricated content (date-handoff bug, ~2026-05-23+), so the
+    // whole /intelligence tree is taken offline.
+    //
+    // Two-part take-offline (both REVERSIBLE, page source KEPT intact):
+    //  1. These static-index redirects send the hub + section indexes to home.
+    //  2. The dynamic detail routes (daily/[date], decisions/[id], results/[date])
+    //     return an empty getStaticPaths() so no detail pages are built — see the
+    //     OFFLINE guards in src/pages/(en/)intelligence/**/[date].astro & [id].astro.
+    //     (Astro forbids redirecting a dynamic route to a static destination, so a
+    //     redirect cannot be used for the detail routes.)
+    // RESTORE: delete this block AND remove the OFFLINE guards in the detail routes.
+    // Fabricated content is quarantined in _quarantine/intelligence-fabricated-2026-05/.
+    // NOTE: do NOT redirect /intel — that is the separate weekly External
+    // Capability Radar (ECR), unaffected by this decision.
+    '/intelligence': '/',
+    '/intelligence/daily': '/',
+    '/intelligence/decisions': '/',
+    '/intelligence/results': '/',
+    '/en/intelligence': '/en/',
+    '/en/intelligence/daily': '/en/',
+    '/en/intelligence/decisions': '/en/',
+    '/en/intelligence/results': '/en/',
   },
   vite: {
     plugins: [tailwindcss()]

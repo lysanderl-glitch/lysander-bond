@@ -3,6 +3,9 @@ import Layout from '../../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
+  // OFFLINE (President L5②, 2026-05-30): /intelligence taken offline pending PG-0.
+  // Build no detail pages. RESTORE: delete the next line.
+  return [];
   const items = await getCollection('intelligence-decisions');
   return items
     .filter(item => item.data.date)
