@@ -27,11 +27,18 @@ the site. They are preserved in git for audit / forensics — nothing is deleted
   upstream source HTML is "(missing)" — `actionsCount: 0` (except 05-25 which
   reports on an empty `items: 0` source).
 
-## Files quarantined
+## Files quarantined (37 total)
 
-- daily (14): 2026-05-23 … 2026-05-29, ZH + EN
-- decisions (6): 2026-05-23, 24, 25, 27, 28, 30
-- results (12): 2026-05-23, 24, 25, 27, 28, 30, ZH + EN
+- daily (16): 2026-05-23 … 2026-05-30, ZH + EN
+- decisions (7): 2026-05-23, 24, 25, 27, 28, 30, 31
+- results (14): 2026-05-23, 24, 25, 27, 28, 30, 31, ZH + EN
+
+Note: 2026-05-30 (daily) and 2026-05-31 (decisions/results) were re-generated
+and auto-pushed to `main` by the publish pipeline DURING this retraction
+(commits da0abbb / 159399a / de5f44c, 2026-05-30) and were quarantined in the
+same pass. 2026-05-31 is a future date relative to the retraction date — it
+cannot contain genuine same-day intel. This is the regeneration risk (below)
+already materializing.
 
 ## Restore (only after PG-0 foundation fix + verification)
 
