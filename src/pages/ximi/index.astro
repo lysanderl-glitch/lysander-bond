@@ -199,7 +199,7 @@
   </div>
 </div>
 
-<script>
+<script is:inline>
 const SAVE='ximi_v4';
 const EMOTIONS=[
   {id:'heal',   name:'治愈',  emoji:'🌸',bg:'rgba(144,238,144,0.15)',border:'rgba(144,238,144,0.5)',glow:'rgba(144,238,144,0.4)',type:'good'},
@@ -286,7 +286,6 @@ function tick(){
 
 function animFrame(d){
   const field=$('g-field');
-  const fh=field.clientHeight;
   bubbles=bubbles.filter(b=>{
     if(!b.el.parentNode)return false;
     b.y-=d.speed/60;
@@ -312,7 +311,7 @@ function spawnBubble(d){
   const em=EM[id];
   const size=50+Math.floor(Math.random()*18);
   const fw=field.clientWidth;
-  const minX=135,maxX=fw-size-10;
+  const minX=135,maxX=Math.max(minX+60,fw-size-10);
   const x=minX+Math.random()*(maxX-minX);
   const y=field.clientHeight-size-5;
   const el=document.createElement('div');
