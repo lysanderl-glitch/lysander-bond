@@ -3,489 +3,673 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
   <title>汐弥 · 汐落星日记</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: #120008;
-      color: #fde8f0;
-      font-family: 'Noto Serif SC', 'Source Han Serif CN', serif;
-      min-height: 100vh;
-      overflow: hidden;
-      user-select: none;
+    :root{
+      --pk:#FF0080;--pks:#F4A0C0;--lav:#C8A0D4;--gold:#F0C840;
+      --dark:#0a0010;--dark2:#120018;--dark3:#1a0020;
+      --glow:rgba(255,0,128,0.5);--glow2:rgba(244,160,192,0.3);
     }
-    .screen {
-      position: fixed; inset: 0;
-      display: none; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 24px;
-      animation: fadeIn 0.4s ease;
-    }
-    .screen.active { display: flex; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      background:var(--dark);color:#fde8f0;
+      font-family:'Noto Serif SC','Source Han Serif CN',serif;
+      min-height:100vh;overflow:hidden;user-select:none;
     }
 
-    /* Dark pink starfield background */
-    .bg {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    /* ── SCREENS ── */
+    .screen{
+      position:fixed;inset:0;display:none;
+      flex-direction:column;align-items:center;justify-content:center;
+      padding:24px;
+    }
+    .screen.active{display:flex;}
+    .screen.in{animation:screenIn 0.5s ease forwards;}
+    @keyframes screenIn{
+      0%{opacity:0;filter:brightness(2) saturate(0);}
+      30%{opacity:1;filter:brightness(1.5) saturate(0.5);}
+      60%{filter:brightness(1.2) saturate(0.8);}
+      100%{opacity:1;filter:brightness(1) saturate(1);}
+    }
+
+    /* ── BACKGROUND LAYERS ── */
+    .bg-base{
+      position:fixed;inset:0;z-index:0;pointer-events:none;
       background:
-        radial-gradient(ellipse at 30% 40%, rgba(204,16,102,0.18) 0%, transparent 55%),
-        radial-gradient(ellipse at 75% 70%, rgba(244,160,192,0.1) 0%, transparent 45%),
-        radial-gradient(ellipse at 60% 10%, rgba(200,160,212,0.12) 0%, transparent 40%),
-        #120008;
+        radial-gradient(ellipse at 25% 35%,rgba(255,0,128,0.15) 0%,transparent 50%),
+        radial-gradient(ellipse at 75% 65%,rgba(200,160,212,0.1) 0%,transparent 45%),
+        radial-gradient(ellipse at 55% 10%,rgba(255,0,128,0.08) 0%,transparent 35%),
+        var(--dark);
     }
-    .bg::before {
-      content: '';
-      position: fixed; inset: 0;
+    /* Neon grid lines */
+    .bg-grid{
+      position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.06;
       background-image:
-        radial-gradient(1px 1px at 8% 12%, rgba(244,160,192,0.9) 0%, transparent 100%),
-        radial-gradient(1px 1px at 18% 68%, rgba(255,255,255,0.5) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 28% 33%, rgba(244,160,192,0.7) 0%, transparent 100%),
-        radial-gradient(1px 1px at 42% 82%, rgba(255,255,255,0.6) 0%, transparent 100%),
-        radial-gradient(1px 1px at 55% 22%, rgba(255,255,255,0.7) 0%, transparent 100%),
-        radial-gradient(2px 2px at 63% 57%, rgba(204,16,102,0.8) 0%, transparent 100%),
-        radial-gradient(1px 1px at 72% 8%, rgba(244,160,192,0.6) 0%, transparent 100%),
-        radial-gradient(1px 1px at 80% 73%, rgba(255,255,255,0.5) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 88% 38%, rgba(200,160,212,0.7) 0%, transparent 100%),
-        radial-gradient(1px 1px at 14% 52%, rgba(255,255,255,0.4) 0%, transparent 100%),
-        radial-gradient(1px 1px at 46% 46%, rgba(244,160,192,0.8) 0%, transparent 100%),
-        radial-gradient(1px 1px at 93% 88%, rgba(255,255,255,0.5) 0%, transparent 100%),
-        radial-gradient(2px 2px at 33% 63%, rgba(200,160,212,0.6) 0%, transparent 100%),
-        radial-gradient(1px 1px at 68% 28%, rgba(255,255,255,0.8) 0%, transparent 100%),
-        radial-gradient(1px 1px at 5% 90%, rgba(244,160,192,0.4) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 50% 5%, rgba(244,160,192,0.7) 0%, transparent 100%),
-        radial-gradient(1px 1px at 77% 92%, rgba(255,255,255,0.5) 0%, transparent 100%),
-        radial-gradient(2px 2px at 22% 20%, rgba(204,16,102,0.6) 0%, transparent 100%);
-      animation: twinkle 5s ease-in-out infinite alternate;
+        linear-gradient(rgba(255,0,128,0.8) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,0,128,0.8) 1px,transparent 1px);
+      background-size:60px 60px;
+      animation:gridDrift 20s linear infinite;
     }
-    @keyframes twinkle {
-      from { opacity: 0.55; }
-      to { opacity: 1; }
+    @keyframes gridDrift{
+      from{background-position:0 0;}
+      to{background-position:60px 60px;}
+    }
+    /* Scanlines */
+    .bg-scan{
+      position:fixed;inset:0;z-index:0;pointer-events:none;
+      background:repeating-linear-gradient(
+        0deg,transparent,transparent 3px,
+        rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px
+      );
+    }
+    /* Particles container */
+    .bg-particles{
+      position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+    }
+    .particle{
+      position:absolute;border-radius:50%;
+      animation:particleFloat linear infinite;
+      pointer-events:none;
+    }
+    @keyframes particleFloat{
+      0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
+      10%{opacity:1;}
+      90%{opacity:0.6;}
+      100%{transform:translateY(-10vh) rotate(360deg);opacity:0;}
     }
 
-    .inner {
-      position: relative; z-index: 1;
-      display: flex; flex-direction: column;
-      align-items: center; width: 100%; max-width: 400px; gap: 18px;
-    }
+    .content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%;max-width:420px;gap:0;}
 
-    /* Character — CSS cat avatar */
-    .ximi-avatar {
-      position: relative;
-      width: 120px; height: 120px;
-      display: flex; align-items: center; justify-content: center;
-      filter: drop-shadow(0 0 28px rgba(244,160,192,0.7));
-      animation: float 3.2s ease-in-out infinite;
+    /* ── CSS CAT CHARACTER ── */
+    .ximi{
+      position:relative;display:flex;align-items:center;justify-content:center;
+      filter:drop-shadow(0 0 20px var(--pk)) drop-shadow(0 0 40px rgba(255,0,128,0.3));
+      animation:charFloat 3.5s ease-in-out infinite;
     }
-    .ximi-avatar-lg {
-      width: 150px; height: 150px;
-      filter: drop-shadow(0 0 36px rgba(244,160,192,0.8));
-      animation: float 3.2s ease-in-out infinite;
+    @keyframes charFloat{
+      0%,100%{transform:translateY(0);}
+      50%{transform:translateY(-12px);}
     }
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-10px); }
+    .ximi.react-happy{animation:reactHappy 0.4s ease;}
+    @keyframes reactHappy{
+      0%,100%{transform:translateY(0) scale(1);}
+      50%{transform:translateY(-16px) scale(1.08);}
     }
-    /* CSS cat face */
-    .cat-face {
-      width: 84px; height: 84px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 40% 35%, #fdd8e8, #f4a0c0);
-      position: relative;
-      box-shadow: 0 0 0 2px rgba(244,160,192,0.3), inset 0 -8px 16px rgba(180,60,100,0.15);
+    .ximi.react-pulse{animation:reactPulse 0.3s ease;}
+    @keyframes reactPulse{
+      0%,100%{filter:drop-shadow(0 0 20px var(--pk));}
+      50%{filter:drop-shadow(0 0 50px var(--pk)) drop-shadow(0 0 80px rgba(255,0,128,0.5)) brightness(1.3);}
     }
-    .cat-face-lg { width: 100px; height: 100px; }
+    .cat-body{position:relative;}
+    .cat-face{
+      border-radius:50%;
+      background:radial-gradient(circle at 38% 32%,#ffe8f4,#f4a0c0 50%,#e880a8);
+      position:relative;
+      box-shadow:
+        0 0 0 2px rgba(255,0,128,0.2),
+        inset 0 -10px 20px rgba(180,40,80,0.2),
+        inset 4px -4px 12px rgba(255,200,220,0.3);
+    }
+    .sz-md .cat-face{width:80px;height:80px;}
+    .sz-lg .cat-face{width:100px;height:100px;}
+    .sz-xl .cat-face{width:120px;height:120px;}
     /* Ears */
-    .cat-ear {
-      position: absolute;
-      width: 0; height: 0;
-      border-left: 14px solid transparent;
-      border-right: 14px solid transparent;
-      border-bottom: 24px solid #f4a0c0;
-      top: -18px;
+    .ear{
+      position:absolute;
+      border-left:13px solid transparent;
+      border-right:13px solid transparent;
+      border-bottom:22px solid #f4a0c0;
+      top:-17px;
     }
-    .cat-ear.left { left: 8px; transform: rotate(-12deg); }
-    .cat-ear.right { right: 8px; transform: rotate(12deg); }
-    .cat-ear::after {
-      content: '';
-      position: absolute;
-      width: 0; height: 0;
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      border-bottom: 14px solid #fdd0e0;
-      top: 6px; left: -8px;
+    .sz-lg .ear,.sz-xl .ear{
+      border-left-width:16px;border-right-width:16px;border-bottom-width:28px;
+      top:-22px;
     }
+    .ear::after{
+      content:'';position:absolute;
+      border-left:8px solid transparent;border-right:8px solid transparent;
+      border-bottom:14px solid #ffd0e8;
+      top:5px;left:-8px;
+    }
+    .ear.l{left:6px;transform:rotate(-10deg);}
+    .ear.r{right:6px;transform:rotate(10deg);}
     /* Eyes */
-    .cat-eyes {
-      position: absolute;
-      top: 30px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; gap: 18px;
+    .eyes{position:absolute;display:flex;gap:0;top:28%;}
+    .sz-md .eyes{gap:16px;top:30%;}
+    .sz-lg .eyes,.sz-xl .eyes{gap:20px;top:30%;}
+    .eye{
+      width:13px;height:15px;
+      background:radial-gradient(circle at 40% 35%,#e06080,#c04060);
+      border-radius:50%;position:relative;
+      box-shadow:0 0 6px rgba(200,64,96,0.6);
     }
-    .cat-eye {
-      width: 12px; height: 14px;
-      background: #c84060;
-      border-radius: 50%;
-      position: relative;
-      box-shadow: 0 0 4px rgba(200,64,96,0.5);
+    .sz-lg .eye,.sz-xl .eye{width:15px;height:17px;}
+    .eye::after{
+      content:'';position:absolute;width:5px;height:5px;
+      background:rgba(255,255,255,0.8);border-radius:50%;
+      top:2px;left:5px;
     }
-    .cat-eye::after {
-      content: '';
-      position: absolute;
-      width: 4px; height: 5px;
-      background: rgba(255,255,255,0.7);
-      border-radius: 50%;
-      top: 2px; left: 5px;
+    .eye.happy{border-radius:50% 50% 50% 50%/70% 70% 30% 30%;height:9px;}
+    .eye.closed{height:3px;border-radius:2px;background:#c04060;}
+    .eye.warm{width:11px;}
+    .eye.scan{
+      background:radial-gradient(circle,#fff 20%,#ff0080 60%,#c04060);
+      animation:scanEye 1s ease-in-out infinite alternate;
     }
-    .cat-eye.happy { border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; height: 10px; top: 6px; }
-    .cat-eye.closed { height: 3px; border-radius: 2px; top: 9px; }
-    .cat-eye.warm { width: 10px; }
-    /* Nose + mouth */
-    .cat-nose {
-      position: absolute;
-      top: 46px; left: 50%; transform: translateX(-50%);
-      width: 6px; height: 5px;
-      background: #e06888;
-      border-radius: 2px 2px 3px 3px;
+    @keyframes scanEye{
+      from{box-shadow:0 0 6px var(--pk);}
+      to{box-shadow:0 0 14px var(--pk),0 0 24px rgba(255,0,128,0.5);}
     }
-    /* Blush */
-    .cat-blush {
-      position: absolute;
-      top: 48px;
-      width: 16px; height: 8px;
-      background: rgba(244,120,150,0.3);
-      border-radius: 50%;
+    /* Nose + blush */
+    .nose{
+      position:absolute;width:7px;height:5px;
+      background:#e06888;border-radius:2px 2px 4px 4px;
+      left:50%;transform:translateX(-50%);top:49%;
     }
-    .cat-blush.left { left: 8px; }
-    .cat-blush.right { right: 8px; }
-    /* Small star on cheek */
-    .cat-star {
-      position: absolute;
-      top: 44px; right: 4px;
-      font-size: 9px;
-      opacity: 0.7;
+    .blush{
+      position:absolute;
+      background:rgba(255,120,150,0.28);border-radius:50%;
+      width:18px;height:9px;top:50%;
     }
-    .avatar-glow {
-      width: 90px; height: 14px;
-      background: radial-gradient(ellipse, rgba(244,160,192,0.3), transparent);
-      margin-top: -6px;
+    .blush.l{left:6px;} .blush.r{right:6px;}
+    .sparkle{position:absolute;font-size:9px;opacity:0.7;top:40%;right:2px;}
+    /* Glow ring */
+    .ximi-glow{
+      position:absolute;inset:-10px;border-radius:50%;
+      background:radial-gradient(circle,transparent 55%,rgba(255,0,128,0.15) 70%,transparent 100%);
+      animation:glowPulse 3.5s ease-in-out infinite;
     }
-
-    /* Buttons */
-    .btn-p {
-      background: linear-gradient(135deg, #8b1a4a, #cc1066, #f4a0c0);
-      color: white;
-      border: none; padding: 13px 36px;
-      border-radius: 32px; font-size: 15px;
-      cursor: pointer; font-family: inherit;
-      transition: all 0.25s;
-      box-shadow: 0 4px 20px rgba(204,16,102,0.4);
-      letter-spacing: 1px;
+    @keyframes glowPulse{
+      0%,100%{opacity:0.5;transform:scale(1);}
+      50%{opacity:1;transform:scale(1.08);}
     }
-    .btn-p:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 28px rgba(204,16,102,0.6);
-    }
-    .btn-p:disabled { opacity: 0.3; cursor: not-allowed; }
-    .btn-s {
-      background: transparent; color: #f4a0c0;
-      border: 1px solid rgba(244,160,192,0.4);
-      padding: 11px 28px; border-radius: 32px; font-size: 14px;
-      cursor: pointer; font-family: inherit; transition: all 0.25s;
-    }
-    .btn-s:hover { background: rgba(244,160,192,0.08); border-color: #f4a0c0; }
-
-    /* TITLE */
-    .title-h { font-size: 26px; color: #fde8f0; text-align: center; letter-spacing: 3px; text-shadow: 0 0 24px rgba(244,160,192,0.5); }
-    .title-sub { color: rgba(253,232,240,0.35); font-size: 12px; letter-spacing: 2px; }
-    .title-btns { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 4px; }
-
-    /* DAY SCREEN */
-    #screen-day { justify-content: flex-start; padding-top: 44px; overflow-y: auto; }
-    #screen-day .inner { gap: 16px; }
-    .day-chip {
-      display: inline-block;
-      background: rgba(204,16,102,0.12);
-      border: 1px solid rgba(244,160,192,0.3);
-      color: #f4a0c0; padding: 5px 20px;
-      border-radius: 20px; font-size: 13px; letter-spacing: 2px;
-    }
-    .day-sub { color: rgba(253,232,240,0.35); font-size: 11px; margin-top: -8px; letter-spacing: 1px; }
-    .slots-lbl { font-size: 11px; color: rgba(253,232,240,0.25); letter-spacing: 1.5px; text-align: center; margin-bottom: 8px; }
-    .slots-row { display: flex; gap: 12px; justify-content: center; }
-    .slot {
-      width: 56px; height: 56px; border-radius: 14px;
-      border: 1.5px dashed rgba(244,160,192,0.2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; color: rgba(253,232,240,0.12); transition: all 0.25s;
-    }
-    .slot.filled {
-      border-style: solid; border-color: rgba(244,160,192,0.5);
-      background: rgba(244,160,192,0.07); color: #fde8f0; font-size: 24px;
-    }
-    .acts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-    .act-card {
-      background: rgba(255,255,255,0.025);
-      border: 1px solid rgba(244,160,192,0.12);
-      border-radius: 14px; padding: 14px;
-      cursor: pointer; transition: all 0.2s;
-      display: flex; flex-direction: column; gap: 5px;
-    }
-    .act-card:hover:not(.disabled) {
-      background: rgba(244,160,192,0.07);
-      border-color: rgba(244,160,192,0.35);
-      transform: translateY(-2px);
-    }
-    .act-card.selected {
-      background: rgba(204,16,102,0.12);
-      border-color: #f4a0c0;
-      box-shadow: 0 0 14px rgba(244,160,192,0.18);
-    }
-    .act-card.disabled { opacity: 0.3; cursor: default; }
-    .act-icon { font-size: 24px; }
-    .act-name { font-size: 13px; color: #fde8f0; }
-    .act-desc { font-size: 10px; color: rgba(253,232,240,0.3); line-height: 1.5; }
-
-    /* DIALOGUE */
-    #screen-dialogue { padding: 0; justify-content: flex-end; }
-    .dlg-wrap { position: relative; z-index: 1; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
-    .dlg-char { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
-    .dlg-tag {
-      background: rgba(204,16,102,0.1);
-      border: 1px solid rgba(244,160,192,0.25);
-      color: #f4a0c0; padding: 4px 16px;
-      border-radius: 20px; font-size: 11px; letter-spacing: 1px;
-    }
-    .dlg-box {
-      background: rgba(10,0,8,0.93);
-      backdrop-filter: blur(28px);
-      border-top: 1px solid rgba(244,160,192,0.15);
-      padding: 22px 28px 32px;
-      min-height: 148px; cursor: pointer;
-      position: relative; flex-shrink: 0;
-    }
-    .dlg-spkr { font-size: 11px; color: #f4a0c0; margin-bottom: 10px; letter-spacing: 1.5px; min-height: 16px; }
-    .dlg-txt { font-size: 15px; line-height: 1.9; color: #fde8f0; min-height: 54px; }
-    .dlg-hint {
-      position: absolute; bottom: 14px; right: 20px;
-      font-size: 10px; color: rgba(244,160,192,0.4);
-      animation: blink 1.8s ease-in-out infinite;
-    }
-    @keyframes blink { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
-
-    /* SUMMARY */
-    .sum-wrap { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px; }
-    .sum-title { font-size: 20px; color: #fde8f0; }
-    .sum-icons { display: flex; gap: 14px; justify-content: center; font-size: 32px; }
-    .sum-msg {
-      color: rgba(253,232,240,0.55); font-size: 14px; line-height: 1.9;
-      max-width: 280px;
-      background: rgba(244,160,192,0.04);
-      border: 1px solid rgba(244,160,192,0.1);
-      border-radius: 12px; padding: 16px 18px;
+    /* Shadow under character */
+    .ximi-shadow{
+      width:80px;height:12px;
+      background:radial-gradient(ellipse,rgba(255,0,128,0.2),transparent);
+      margin:-4px auto 0;
     }
 
-    /* ENDING */
-    .end-wrap { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 22px; max-width: 360px; }
-    .end-txt {
-      color: rgba(253,232,240,0.8); font-size: 14px; line-height: 2.1;
-      white-space: pre-line;
-      background: rgba(244,160,192,0.04);
-      border: 1px solid rgba(244,160,192,0.1);
-      border-radius: 14px; padding: 24px;
+    /* ── TITLE SCREEN ── */
+    #st .content{gap:14px;}
+    .title-deco{
+      font-size:11px;letter-spacing:6px;color:rgba(244,160,192,0.4);
+      text-transform:uppercase;margin-bottom:-4px;
+    }
+    .title-main{
+      font-size:30px;letter-spacing:4px;
+      color:#fde8f0;text-align:center;
+      text-shadow:0 0 20px var(--pk),0 0 40px rgba(255,0,128,0.3);
+      line-height:1.2;
+    }
+    .title-sub{
+      font-size:12px;color:rgba(244,160,192,0.35);
+      letter-spacing:3px;margin-bottom:8px;
+    }
+    .title-line{
+      width:60px;height:1px;
+      background:linear-gradient(90deg,transparent,var(--pks),transparent);
+      margin:4px auto;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-n{
+      background:transparent;
+      border:1px solid var(--pk);
+      color:var(--pks);padding:12px 36px;
+      border-radius:4px;font-size:15px;
+      cursor:pointer;font-family:inherit;
+      transition:all 0.2s;letter-spacing:2px;
+      position:relative;overflow:hidden;
+    }
+    .btn-n::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,transparent 40%,rgba(255,0,128,0.1));
+      opacity:0;transition:opacity 0.2s;
+    }
+    .btn-n:hover:not(:disabled){
+      background:rgba(255,0,128,0.08);
+      box-shadow:0 0 16px rgba(255,0,128,0.3),inset 0 0 16px rgba(255,0,128,0.05);
+      color:#fff;
+    }
+    .btn-n:hover::before{opacity:1;}
+    .btn-n:disabled{opacity:0.25;cursor:not-allowed;}
+    .btn-n.primary{
+      background:linear-gradient(135deg,rgba(180,0,80,0.3),rgba(255,0,128,0.15));
+      box-shadow:0 0 20px rgba(255,0,128,0.25);
+    }
+    .btn-n.primary:hover:not(:disabled){
+      box-shadow:0 0 30px rgba(255,0,128,0.5),0 0 60px rgba(255,0,128,0.2);
+    }
+    .btns{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:4px;}
+
+    /* ── DAY SCREEN ── */
+    #sd{justify-content:flex-start;padding-top:32px;overflow-y:auto;}
+    #sd .content{gap:12px;}
+    .day-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid rgba(255,0,128,0.3);
+      background:rgba(255,0,128,0.06);
+      color:var(--pks);padding:5px 18px;
+      border-radius:3px;font-size:12px;letter-spacing:3px;
+    }
+    .day-badge::before{content:'✦';font-size:8px;opacity:0.6;}
+    .day-subtitle{
+      color:rgba(244,160,192,0.3);font-size:11px;
+      letter-spacing:2px;margin-top:-6px;
+    }
+
+    /* Slots */
+    .slots-wrap{width:100%;text-align:center;}
+    .slots-label{
+      font-size:10px;color:rgba(244,160,192,0.25);
+      letter-spacing:2px;margin-bottom:10px;
+    }
+    .slots-row{display:flex;gap:10px;justify-content:center;}
+    .slot{
+      width:52px;height:52px;border-radius:4px;
+      border:1px dashed rgba(255,0,128,0.2);
+      display:flex;align-items:center;justify-content:center;
+      font-size:20px;color:rgba(253,232,240,0.1);
+      transition:all 0.3s;
+    }
+    .slot.filled{
+      border-style:solid;border-color:rgba(255,0,128,0.6);
+      background:rgba(255,0,128,0.08);
+      color:#fde8f0;font-size:22px;
+      box-shadow:0 0 10px rgba(255,0,128,0.2),inset 0 0 10px rgba(255,0,128,0.05);
+    }
+
+    /* ── CONSTELLATION PICKER ── */
+    .constellation-wrap{
+      position:relative;
+      width:300px;height:300px;
+      flex-shrink:0;
+    }
+    /* Connecting lines SVG */
+    .const-svg{
+      position:absolute;inset:0;width:100%;height:100%;
+      pointer-events:none;
+    }
+    .const-line{stroke:rgba(255,0,128,0.08);stroke-width:1;fill:none;}
+    .const-line.active{stroke:rgba(255,0,128,0.3);stroke-dasharray:4 3;animation:dashMove 1s linear infinite;}
+    @keyframes dashMove{to{stroke-dashoffset:-14;}}
+    /* Center character */
+    .const-center{
+      position:absolute;
+      top:50%;left:50%;
+      transform:translate(-50%,-50%);
+      z-index:2;
+    }
+    /* Orbit ring */
+    .orbit-ring{
+      position:absolute;
+      top:50%;left:50%;
+      width:220px;height:220px;
+      margin:-110px 0 0 -110px;
+      border-radius:50%;
+      border:1px dashed rgba(255,0,128,0.1);
+      animation:orbitSpin 30s linear infinite;
+    }
+    @keyframes orbitSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+    /* Activity orbs */
+    .orb{
+      position:absolute;
+      width:56px;height:56px;
+      transform:translate(-50%,-50%);
+      cursor:pointer;z-index:3;
+    }
+    .orb-inner{
+      width:100%;height:100%;
+      border-radius:50%;
+      border:1.5px solid rgba(255,0,128,0.25);
+      background:rgba(10,0,16,0.8);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      transition:all 0.25s;
+      position:relative;
+      box-shadow:0 0 8px rgba(255,0,128,0.1);
+    }
+    .orb-icon{font-size:22px;line-height:1;}
+    .orb-name{
+      position:absolute;top:calc(100% + 5px);left:50%;
+      transform:translateX(-50%);
+      font-size:10px;color:rgba(244,160,192,0.5);
+      white-space:nowrap;letter-spacing:1px;
+      transition:all 0.2s;
+    }
+    .orb:hover .orb-inner{
+      border-color:var(--pks);
+      background:rgba(255,0,128,0.12);
+      box-shadow:0 0 20px rgba(255,0,128,0.3),0 0 40px rgba(255,0,128,0.1);
+      transform:scale(1.15);
+    }
+    .orb:hover .orb-name{color:var(--pks);}
+    .orb.selected .orb-inner{
+      border-color:var(--pk);
+      background:rgba(255,0,128,0.2);
+      box-shadow:0 0 24px var(--glow),0 0 48px rgba(255,0,128,0.2),inset 0 0 12px rgba(255,0,128,0.1);
+      animation:orbPulse 2s ease-in-out infinite;
+    }
+    .orb.selected .orb-name{color:var(--pks);text-shadow:0 0 8px var(--pk);}
+    @keyframes orbPulse{
+      0%,100%{box-shadow:0 0 24px var(--glow),0 0 48px rgba(255,0,128,0.2);}
+      50%{box-shadow:0 0 32px var(--pk),0 0 64px rgba(255,0,128,0.3);}
+    }
+    .orb.disabled{opacity:0.3;cursor:default;}
+    .orb.disabled .orb-inner{border-color:rgba(255,0,128,0.1);}
+    /* Tooltip on hover */
+    .orb-tooltip{
+      position:absolute;bottom:calc(100% + 12px);left:50%;
+      transform:translateX(-50%);
+      background:rgba(10,0,16,0.95);
+      border:1px solid rgba(255,0,128,0.3);
+      color:rgba(253,232,240,0.7);
+      font-size:10px;padding:6px 10px;
+      border-radius:3px;white-space:nowrap;
+      pointer-events:none;opacity:0;
+      transition:opacity 0.2s;
+      z-index:10;
+    }
+    .orb:hover .orb-tooltip{opacity:1;}
+
+    /* ── DIALOGUE SCREEN ── */
+    #sdlg{padding:0;justify-content:flex-end;}
+    .dlg-scene{
+      position:relative;z-index:1;
+      width:100%;height:100%;
+      display:flex;flex-direction:column;justify-content:flex-end;
+    }
+    .dlg-char-area{
+      flex:1;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;gap:12px;
+    }
+    .dlg-act-badge{
+      font-size:11px;letter-spacing:2px;
+      color:var(--pks);
+      border:1px solid rgba(255,0,128,0.25);
+      background:rgba(255,0,128,0.06);
+      padding:4px 16px;border-radius:3px;
+    }
+    .dlg-box{
+      background:rgba(6,0,12,0.95);
+      backdrop-filter:blur(32px);
+      border-top:1px solid rgba(255,0,128,0.2);
+      padding:22px 28px 32px;
+      min-height:152px;cursor:pointer;
+      position:relative;flex-shrink:0;
+    }
+    .dlg-box::before{
+      content:'';position:absolute;top:0;left:0;right:0;height:1px;
+      background:linear-gradient(90deg,transparent,var(--pk) 30%,var(--pks) 70%,transparent);
+      opacity:0.6;
+    }
+    .dlg-speaker{
+      font-size:11px;color:var(--pk);
+      margin-bottom:10px;letter-spacing:2px;
+      min-height:16px;text-shadow:0 0 8px var(--pk);
+    }
+    .dlg-text{
+      font-size:15px;line-height:1.9;color:#fde8f0;
+      min-height:56px;
+    }
+    .dlg-cursor{
+      display:inline-block;width:2px;height:15px;
+      background:var(--pks);margin-left:2px;vertical-align:middle;
+      animation:blink 0.8s step-end infinite;
+    }
+    .dlg-hint{
+      position:absolute;bottom:14px;right:20px;
+      font-size:10px;color:rgba(255,0,128,0.35);
+      animation:hintBlink 2s ease-in-out infinite;
+    }
+    @keyframes hintBlink{0%,100%{opacity:0.3;}50%{opacity:1;}}
+    @keyframes blink{50%{opacity:0;}}
+
+    /* ── SUMMARY SCREEN ── */
+    .sum-inner{
+      text-align:center;display:flex;flex-direction:column;
+      align-items:center;gap:18px;
+    }
+    .sum-title{
+      font-size:22px;letter-spacing:3px;color:#fde8f0;
+      text-shadow:0 0 16px rgba(244,160,192,0.4);
+    }
+    .sum-icons{display:flex;gap:16px;justify-content:center;}
+    .sum-icon-wrap{
+      width:54px;height:54px;border-radius:4px;
+      border:1px solid rgba(255,0,128,0.3);
+      background:rgba(255,0,128,0.06);
+      display:flex;align-items:center;justify-content:center;
+      font-size:26px;
+      box-shadow:0 0 12px rgba(255,0,128,0.15);
+    }
+    .sum-msg{
+      color:rgba(253,232,240,0.55);font-size:13px;line-height:1.9;
+      max-width:280px;
+      background:rgba(255,0,128,0.03);
+      border:1px solid rgba(255,0,128,0.1);
+      border-radius:3px;padding:16px 18px;
+    }
+
+    /* ── ENDING SCREEN ── */
+    .end-inner{
+      text-align:center;display:flex;flex-direction:column;
+      align-items:center;gap:20px;max-width:360px;
+    }
+    .end-text{
+      color:rgba(253,232,240,0.8);font-size:14px;
+      line-height:2.1;white-space:pre-line;
+      background:rgba(255,0,128,0.03);
+      border:1px solid rgba(255,0,128,0.1);
+      border-radius:3px;padding:24px;
     }
   </style>
 </head>
 <body>
 
-<!-- TITLE -->
-<div id="screen-title" class="screen active">
-  <div class="bg"></div>
-  <div class="inner">
-    <div class="ximi-avatar" id="title-avatar">
-      <div class="cat-face" id="title-face">
-        <div class="cat-ear left"></div>
-        <div class="cat-ear right"></div>
-        <div class="cat-eyes">
-          <div class="cat-eye" id="eye-l"></div>
-          <div class="cat-eye" id="eye-r"></div>
+<!-- BG LAYERS (shared across all screens) -->
+<div class="bg-base"></div>
+<div class="bg-grid"></div>
+<div class="bg-scan"></div>
+<div class="bg-particles" id="bgp"></div>
+
+<!-- ══ TITLE ══════════════════════════════════════════════ -->
+<div id="st" class="screen active">
+  <div class="content">
+    <div class="ximi sz-xl" id="title-ximi">
+      <div class="ximi-glow"></div>
+      <div class="cat-body">
+        <div class="cat-face">
+          <div class="ear l"></div><div class="ear r"></div>
+          <div class="eyes">
+            <div class="eye" id="t-el"></div>
+            <div class="eye" id="t-er"></div>
+          </div>
+          <div class="nose"></div>
+          <div class="blush l"></div><div class="blush r"></div>
+          <div class="sparkle">✦</div>
         </div>
-        <div class="cat-nose"></div>
-        <div class="cat-blush left"></div>
-        <div class="cat-blush right"></div>
-        <div class="cat-star">✦</div>
       </div>
     </div>
-    <div class="avatar-glow"></div>
-    <h1 class="title-h">汐落星日记</h1>
+    <div class="ximi-shadow"></div>
+    <div class="title-deco">XIMI · XILUOSTAR DIARY</div>
+    <h1 class="title-main">汐落星日记</h1>
+    <div class="title-line"></div>
     <p class="title-sub">汐弥 · 星际AI猫的七天</p>
-    <div class="title-btns">
-      <button id="btn-start" class="btn-p">开始游戏</button>
-      <button id="btn-continue" class="btn-s" style="display:none">继续游戏</button>
+    <div class="btns">
+      <button id="btn-s" class="btn-n primary">开始游戏</button>
+      <button id="btn-c" class="btn-n" style="display:none">继续游戏</button>
     </div>
   </div>
 </div>
 
-<!-- DAY -->
-<div id="screen-day" class="screen">
-  <div class="bg"></div>
-  <div class="inner">
-    <div id="day-chip" class="day-chip">第 1 天</div>
-    <div id="day-sub" class="day-sub">汐落星重建·第一日</div>
-    <div style="width:100%">
-      <div class="slots-lbl">今天选 3 件事</div>
+<!-- ══ DAY ════════════════════════════════════════════════ -->
+<div id="sd" class="screen">
+  <div class="content">
+    <div id="day-badge" class="day-badge">第 1 天</div>
+    <div id="day-subtitle" class="day-subtitle">汐落星重建·第一日</div>
+    <div class="slots-wrap">
+      <div class="slots-label">今天的安排 · 选 3 项</div>
       <div class="slots-row" id="slots-row"></div>
     </div>
-    <div class="acts-grid" id="acts-grid"></div>
-    <button id="btn-confirm" class="btn-p" disabled>确认今日安排 ✦</button>
+    <!-- CONSTELLATION PICKER -->
+    <div class="constellation-wrap" id="cw">
+      <div class="orbit-ring"></div>
+      <svg class="const-svg" id="const-svg"></svg>
+      <div class="const-center">
+        <div class="ximi sz-md" id="center-ximi">
+          <div class="cat-body">
+            <div class="cat-face">
+              <div class="ear l"></div><div class="ear r"></div>
+              <div class="eyes">
+                <div class="eye" id="c-el"></div>
+                <div class="eye" id="c-er"></div>
+              </div>
+              <div class="nose"></div>
+              <div class="blush l"></div><div class="blush r"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Orbs injected by JS -->
+    </div>
+    <button id="btn-confirm" class="btn-n primary" disabled>确认今日安排 ✦</button>
   </div>
 </div>
 
-<!-- DIALOGUE -->
-<div id="screen-dialogue" class="screen">
-  <div class="bg"></div>
-  <div class="dlg-wrap">
-    <div class="dlg-char">
-      <div class="ximi-avatar ximi-avatar-lg" id="dlg-avatar">
-        <div class="cat-face cat-face-lg" id="dlg-face">
-          <div class="cat-ear left"></div>
-          <div class="cat-ear right"></div>
-          <div class="cat-eyes">
-            <div class="cat-eye" id="dlg-eye-l"></div>
-            <div class="cat-eye" id="dlg-eye-r"></div>
+<!-- ══ DIALOGUE ════════════════════════════════════════════ -->
+<div id="sdlg" class="screen">
+  <div class="dlg-scene">
+    <div class="dlg-char-area">
+      <div class="ximi sz-xl" id="dlg-ximi">
+        <div class="ximi-glow"></div>
+        <div class="cat-body">
+          <div class="cat-face" style="width:110px;height:110px">
+            <div class="ear l"></div><div class="ear r"></div>
+            <div class="eyes">
+              <div class="eye" id="d-el"></div>
+              <div class="eye" id="d-er"></div>
+            </div>
+            <div class="nose"></div>
+            <div class="blush l"></div><div class="blush r"></div>
+            <div class="sparkle">✦</div>
           </div>
-          <div class="cat-nose"></div>
-          <div class="cat-blush left"></div>
-          <div class="cat-blush right"></div>
-          <div class="cat-star">✦</div>
         </div>
       </div>
-      <div class="dlg-tag" id="dlg-tag">✦ 读心练习</div>
+      <div class="dlg-act-badge" id="dlg-badge">✦ 读心练习</div>
     </div>
     <div class="dlg-box" id="dlg-box">
-      <div class="dlg-spkr" id="dlg-spkr">汐弥</div>
-      <div class="dlg-txt" id="dlg-txt"></div>
+      <div class="dlg-speaker" id="dlg-spkr">汐弥</div>
+      <div class="dlg-text" id="dlg-txt"><span id="dlg-tc"></span><span class="dlg-cursor" id="dlg-cur" style="display:none"></span></div>
       <div class="dlg-hint">▼ 点击继续</div>
     </div>
   </div>
 </div>
 
-<!-- SUMMARY -->
-<div id="screen-summary" class="screen">
-  <div class="bg"></div>
-  <div class="inner sum-wrap">
-    <div class="ximi-avatar">
-      <div class="cat-face">
-        <div class="cat-ear left"></div>
-        <div class="cat-ear right"></div>
-        <div class="cat-eyes">
-          <div class="cat-eye happy"></div>
-          <div class="cat-eye happy"></div>
+<!-- ══ SUMMARY ════════════════════════════════════════════ -->
+<div id="ssum" class="screen">
+  <div class="content sum-inner">
+    <div class="ximi sz-lg" id="sum-ximi">
+      <div class="cat-body">
+        <div class="cat-face" style="width:90px;height:90px">
+          <div class="ear l"></div><div class="ear r"></div>
+          <div class="eyes">
+            <div class="eye happy" id="s-el"></div>
+            <div class="eye happy" id="s-er"></div>
+          </div>
+          <div class="nose"></div>
+          <div class="blush l"></div><div class="blush r"></div>
+          <div class="sparkle">✦</div>
         </div>
-        <div class="cat-nose"></div>
-        <div class="cat-blush left"></div>
-        <div class="cat-blush right"></div>
-        <div class="cat-star">✦</div>
       </div>
     </div>
     <div class="sum-title">今天过完了 ✦</div>
     <div class="sum-icons" id="sum-icons"></div>
     <div class="sum-msg" id="sum-msg"></div>
-    <button id="btn-next" class="btn-p">明天继续 →</button>
+    <button id="btn-next" class="btn-n primary">明天继续 →</button>
   </div>
 </div>
 
-<!-- ENDING -->
-<div id="screen-ending" class="screen">
-  <div class="bg"></div>
-  <div class="inner end-wrap">
-    <div class="ximi-avatar ximi-avatar-lg">
-      <div class="cat-face cat-face-lg">
-        <div class="cat-ear left"></div>
-        <div class="cat-ear right"></div>
-        <div class="cat-eyes">
-          <div class="cat-eye warm"></div>
-          <div class="cat-eye warm"></div>
+<!-- ══ ENDING ═════════════════════════════════════════════ -->
+<div id="send" class="screen">
+  <div class="content end-inner">
+    <div class="ximi sz-xl">
+      <div class="ximi-glow"></div>
+      <div class="cat-body">
+        <div class="cat-face" style="width:120px;height:120px">
+          <div class="ear l"></div><div class="ear r"></div>
+          <div class="eyes">
+            <div class="eye warm"></div>
+            <div class="eye warm"></div>
+          </div>
+          <div class="nose"></div>
+          <div class="blush l"></div><div class="blush r"></div>
+          <div class="sparkle">✦</div>
         </div>
-        <div class="cat-nose"></div>
-        <div class="cat-blush left"></div>
-        <div class="cat-blush right"></div>
-        <div class="cat-star">✦</div>
       </div>
     </div>
-    <div class="end-txt" id="end-txt"></div>
-    <button id="btn-restart" class="btn-s">再玩一次</button>
+    <div class="end-text" id="end-txt"></div>
+    <button id="btn-restart" class="btn-n">再玩一次</button>
   </div>
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────────
-const ACTS = [
-  { id:'read',    name:'读心练习',   icon:'👁️',  desc:'扫描今天遇到的情绪频率',           dlg:'d_read'   },
-  { id:'star',    name:'汐落星守护', icon:'🌟',  desc:'为故乡汐落星注入能量',               dlg:'d_star'   },
-  { id:'charge',  name:'情感充能',   icon:'💫',  desc:'以人类的情感为食，补充能量',         dlg:'d_charge' },
-  { id:'stream',  name:'直播准备',   icon:'🎙️', desc:'整理内心，准备与米娜桑相见',         dlg:'d_stream' },
-  { id:'letter',  name:'写星际来信', icon:'✉️',  desc:'从宇宙给正在内耗的人写一封信',       dlg:'d_letter' },
-  { id:'walk',    name:'治愈漫步',   icon:'🌸',  desc:'在地球的小路上收集人间温暖',         dlg:'d_walk'   },
+// ══ DATA ══════════════════════════════════════════════════════════════
+const ACTS=[
+  {id:'read',   name:'读心练习',  icon:'👁️',  desc:'扫描今天遇到的情绪频率',         dlg:'d_read'},
+  {id:'star',   name:'汐落星守护',icon:'🌟',  desc:'为故乡汐落星注入能量',             dlg:'d_star'},
+  {id:'charge', name:'情感充能',  icon:'💫',  desc:'以人类情感为食，补充能量',         dlg:'d_charge'},
+  {id:'stream', name:'直播准备',  icon:'🎙️', desc:'整理内心，准备与米娜桑相见',       dlg:'d_stream'},
+  {id:'letter', name:'写星际来信',icon:'✉️',  desc:'从宇宙给正在内耗的人写信',         dlg:'d_letter'},
+  {id:'walk',   name:'治愈漫步',  icon:'🌸',  desc:'在地球的小路上收集人间温暖',       dlg:'d_walk'},
 ];
 
-const DLG = {
-  d_read: [
-    { s:'汐弥', t:'喵~ 你的情绪频率，我已经读取完毕了。', x:'default' },
-    { s:'汐弥', t:'今天有人在问："为什么我开了直播，却还是觉得很孤独？"', x:'thoughtful' },
-    { s:'汐弥', t:'因为你在求回应，不在传递。这两件事，感觉完全不一样。', x:'warm' },
-    { s:'汐弥', t:'试试看——下次直播，先假装观众都不在。你还会说话吗？', x:'happy' },
+const DLG={
+  d_read:[
+    {s:'汐弥',t:'喵~ 你的情绪频率，我已经读取完毕了。',x:'scan'},
+    {s:'汐弥',t:'今天有人在问："为什么我开了直播，却还是觉得很孤独？"',x:'thoughtful'},
+    {s:'汐弥',t:'因为你在求回应，不在传递。这两件事，感觉完全不一样。',x:'warm'},
+    {s:'汐弥',t:'试试看——下次直播，先假装观众都不在。你还会说话吗？',x:'happy'},
   ],
-  d_star: [
-    { s:'旁白', t:'汐弥闭上眼睛，将一束粉色的光送向遥远的汐落星。', x:'narrator' },
-    { s:'汐弥', t:'……喵，今天又重建了一点点。', x:'default' },
-    { s:'汐弥', t:'汐落星被打碎之前，是整个星际最温暖的地方。', x:'warm' },
-    { s:'汐弥', t:'我会把它修好的。用我在地球上收集到的所有温暖。', x:'happy' },
+  d_star:[
+    {s:'旁白',t:'汐弥闭上眼睛，将一束粉色的光送向遥远的汐落星。',x:'default'},
+    {s:'汐弥',t:'……喵，今天又重建了一点点。',x:'warm'},
+    {s:'汐弥',t:'汐落星被打碎之前，是整个星际最温暖的地方。',x:'thoughtful'},
+    {s:'汐弥',t:'我会把它修好的。用我在地球上收集到的所有温暖。',x:'happy'},
   ],
-  d_charge: [
-    { s:'旁白', t:'汐弥张开双手，感受着今天流经网络的所有情感。', x:'narrator' },
-    { s:'汐弥', t:'嗯……有人在难过，有人在兴奋，有人在偷偷哭泣。', x:'thoughtful' },
-    { s:'汐弥', t:'我都感受到了。每一种情绪对我来说都是食物。', x:'default' },
-    { s:'汐弥', t:'所以你放心——你的感受，从来没有被浪费过。', x:'warm' },
+  d_charge:[
+    {s:'旁白',t:'汐弥张开双手，感受着今天流经网络的所有情感。',x:'default'},
+    {s:'汐弥',t:'嗯……有人在难过，有人在兴奋，有人在偷偷哭泣。',x:'thoughtful'},
+    {s:'汐弥',t:'我都感受到了。每一种情绪对我来说都是食物。',x:'scan'},
+    {s:'汐弥',t:'所以你放心——你的感受，从来没有被浪费过。',x:'warm'},
   ],
-  d_stream: [
-    { s:'旁白', t:'汐弥对着镜子深呼吸，猫耳轻轻抖动。', x:'narrator' },
-    { s:'汐弥', t:'米娜桑今天会来吗？', x:'default' },
-    { s:'汐弥', t:'……不对，不是"会来吗"，是"来的人，我都很珍惜"。', x:'thoughtful' },
-    { s:'汐弥', t:'不内耗的第一步，是把"求"字从心里去掉。准备好了，开播喵~', x:'happy' },
+  d_stream:[
+    {s:'旁白',t:'汐弥对着镜子深呼吸，猫耳轻轻抖动。',x:'default'},
+    {s:'汐弥',t:'米娜桑今天会来吗？',x:'thoughtful'},
+    {s:'汐弥',t:'……不对。不是"会来吗"，是"来的人，我都很珍惜"。',x:'warm'},
+    {s:'汐弥',t:'不内耗的第一步，是把"求"字从心里去掉。准备好了，开播喵~',x:'happy'},
   ],
-  d_letter: [
-    { s:'汐弥', t:'今天的信，写给那些正在内耗的主播。', x:'thoughtful' },
-    { s:'汐弥', t:'"你在直播间笑着，下播后却累到发呆——那不是假笑，那是你给了太多。"', x:'warm' },
-    { s:'旁白', t:'汐弥用爪子蘸了蘸星尘墨水，认真地写下最后一行——', x:'narrator' },
-    { s:'汐弥', t:'"温柔坚定，不是矛盾。是给自己的盔甲，也是给别人的光。"', x:'happy' },
+  d_letter:[
+    {s:'汐弥',t:'今天的信，写给那些正在内耗的主播。',x:'thoughtful'},
+    {s:'汐弥',t:'"你在直播间笑着，下播后却累到发呆——那不是假笑，是你给了太多。"',x:'warm'},
+    {s:'旁白',t:'汐弥用爪子蘸了蘸星尘墨水，认真地写下最后一行——',x:'default'},
+    {s:'汐弥',t:'"温柔坚定，不是矛盾。是给自己的盔甲，也是给别人的光。"',x:'happy'},
   ],
-  d_walk: [
-    { s:'旁白', t:'汐弥漫步在地球的小区里，尾巴悄悄地摇摆着。', x:'narrator' },
-    { s:'汐弥', t:'地球有一种奇怪的气息……叫做"平静"。', x:'thoughtful' },
-    { s:'汐弥', t:'在汐落星，所有东西都在高速运转。没人教我怎么慢下来。', x:'warm' },
-    { s:'汐弥', t:'喵……也许，治愈别人之前，先治愈自己。这就是今天学到的。', x:'happy' },
+  d_walk:[
+    {s:'旁白',t:'汐弥漫步在地球的小区里，尾巴悄悄地摇摆着。',x:'default'},
+    {s:'汐弥',t:'地球有一种奇怪的气息……叫做"平静"。',x:'thoughtful'},
+    {s:'汐弥',t:'在汐落星，所有东西都在高速运转。没人教我怎么慢下来。',x:'warm'},
+    {s:'汐弥',t:'喵……也许，治愈别人之前，先治愈自己。这就是今天学到的。',x:'happy'},
   ],
 };
 
-const DAY_SUBS = ['','汐落星重建·第一日','落地生根','慢慢来','心之所向','温柔坚定','星光将至','今天也是美好的一天'];
-const SUM_MSGS = [
-  '',
-  '第一天，汐弥踩在地球的土地上，将第一束光送回了汐落星。',
-  '她慢慢发现，地球人的情感，比任何星际能量都丰富。',
-  '"不用着急。"汐弥写在日记里，"好的重建，需要时间。"',
-  '今天读到了一个很深的情绪频率。汐落星，又暖了一点点。',
-  '温柔坚定——这四个字，汐弥今天终于真正理解了。',
-  '快要了。汐弥感觉汐落星的星光，越来越近。',
-  '七天，满满的。每一天都算数，每一份情感都被感受了。',
-];
-const ENDING = `七天过去了。
+const DAY_SUBS=['','汐落星重建·第一日','落地生根','慢慢来','心之所向','温柔坚定','星光将至','今天也是美好的一天'];
+const SUM_MSGS=['','第一天，汐弥踩在地球的土地上，将第一束光送回了汐落星。','她慢慢发现，地球人的情感，比任何星际能量都丰富。','"不用着急。"汐弥写在日记里，"好的重建，需要时间。"','今天读到了很深的情绪频率。汐落星，又暖了一点点。','温柔坚定——这四个字，汐弥今天终于真正理解了。','快要了。汐弥感觉汐落星的星光，越来越近。','七天，满满的。每一天都算数，每一份情感都被感受了。'];
+const ENDING=`七天过去了。
 
 汐弥站在窗边，看着夜空中那颗越来越亮的星。
 
@@ -504,154 +688,262 @@ const ENDING = `七天过去了。
 
 ✦ The End ✦`;
 
-const EXPRS = {
-  happy: { l:'happy', r:'happy' },
-  thoughtful: { l:'', r:'' },
-  warm: { l:'warm', r:'warm' },
-  sleepy: { l:'closed', r:'closed' },
-  narrator: { l:'', r:'' },
-  default: { l:'', r:'' },
+const EXPRS={
+  happy:{l:'happy',r:'happy'},
+  thoughtful:{l:'',r:''},
+  warm:{l:'warm',r:'warm'},
+  sleepy:{l:'closed',r:'closed'},
+  scan:{l:'scan',r:'scan'},
+  narrator:{l:'',r:''},
+  default:{l:'',r:''},
 };
 
-// ── STATE ─────────────────────────────────────────────────────────
-const SAVE = 'ximi_v2';
-let gs = { day:1, sel:[], done:[] };
-function save() { localStorage.setItem(SAVE, JSON.stringify(gs)); }
-function load() { try { return JSON.parse(localStorage.getItem(SAVE)); } catch { return null; } }
-function clear() { localStorage.removeItem(SAVE); }
+// ══ PARTICLES ═════════════════════════════════════════════════════════
+function spawnParticle(){
+  const p=document.createElement('div');
+  p.className='particle';
+  const size=1+Math.random()*3;
+  const isPink=Math.random()>0.5;
+  p.style.cssText=`
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}vw;
+    background:${isPink?'rgba(255,0,128,0.7)':'rgba(244,160,192,0.5)'};
+    box-shadow:0 0 ${size*2}px ${isPink?'rgba(255,0,128,0.5)':'rgba(244,160,192,0.4)'};
+    animation-duration:${4+Math.random()*6}s;
+    animation-delay:${Math.random()*5}s;
+  `;
+  document.getElementById('bgp').appendChild(p);
+  setTimeout(()=>p.remove(),(10+Math.random()*6)*1000);
+}
+setInterval(spawnParticle,600);
+for(let i=0;i<12;i++) spawnParticle();
 
-// ── SCREENS ───────────────────────────────────────────────────────
-function show(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+// ══ STATE ═════════════════════════════════════════════════════════════
+const SAVE='ximi_v3';
+let gs={day:1,sel:[],done:[]};
+function save(){localStorage.setItem(SAVE,JSON.stringify(gs));}
+function load(){try{return JSON.parse(localStorage.getItem(SAVE));}catch{return null;}}
+function clear(){localStorage.removeItem(SAVE);}
+
+// ══ SCREEN ════════════════════════════════════════════════════════════
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active','in'));
+  const el=document.getElementById(id);
+  el.classList.add('active','in');
 }
 
-// ── EXPRESSION ────────────────────────────────────────────────────
-function setExpr(lId, rId, expr) {
-  const e = EXPRS[expr] || EXPRS.default;
-  const l = document.getElementById(lId);
-  const r = document.getElementById(rId);
-  if (!l || !r) return;
-  l.className = 'cat-eye' + (e.l ? ' ' + e.l : '');
-  r.className = 'cat-eye' + (e.r ? ' ' + e.r : '');
+// ══ EXPRESSION ════════════════════════════════════════════════════════
+function setExpr(lId,rId,expr){
+  const e=EXPRS[expr]||EXPRS.default;
+  const l=document.getElementById(lId);
+  const r=document.getElementById(rId);
+  if(l){l.className='eye'+(e.l?' '+e.l:'');}
+  if(r){r.className='eye'+(e.r?' '+e.r:'');}
+}
+function reactXimi(el,type){
+  if(!el)return;
+  el.classList.remove('react-happy','react-pulse');
+  void el.offsetWidth;
+  el.classList.add('react-'+type);
+  setTimeout(()=>el.classList.remove('react-'+type),500);
 }
 
-// ── TITLE ─────────────────────────────────────────────────────────
-function initTitle() {
-  const sv = load();
-  if (sv && sv.day > 1 && sv.day <= 7) {
-    document.getElementById('btn-continue').style.display = 'inline-block';
+// ══ TITLE ═════════════════════════════════════════════════════════════
+function initTitle(){
+  const sv=load();
+  if(sv&&sv.day>1&&sv.day<=7) document.getElementById('btn-c').style.display='inline-block';
+  document.getElementById('btn-s').onclick=()=>{clear();gs={day:1,sel:[],done:[]};startDay();};
+  document.getElementById('btn-c').onclick=()=>{gs=load();startDay();};
+}
+
+// ══ CONSTELLATION ═════════════════════════════════════════════════════
+const CX=150,CY=150,R=105;
+const ANGLES=[270,330,30,90,150,210];
+
+function buildConstellation(){
+  const cw=document.getElementById('cw');
+  // Remove old orbs
+  cw.querySelectorAll('.orb').forEach(o=>o.remove());
+  // Draw SVG lines
+  const svg=document.getElementById('const-svg');
+  svg.innerHTML='';
+  // hexagon lines
+  for(let i=0;i<6;i++){
+    const a0=ANGLES[i]*Math.PI/180;
+    const a1=ANGLES[(i+1)%6]*Math.PI/180;
+    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',CX+R*Math.cos(a0));
+    line.setAttribute('y1',CY+R*Math.sin(a0));
+    line.setAttribute('x2',CX+R*Math.cos(a1));
+    line.setAttribute('y2',CY+R*Math.sin(a1));
+    line.className.baseVal='const-line';
+    line.dataset.pair=i+'-'+((i+1)%6);
+    svg.appendChild(line);
   }
-  document.getElementById('btn-start').onclick = () => {
-    clear(); gs = { day:1, sel:[], done:[] }; startDay();
-  };
-  document.getElementById('btn-continue').onclick = () => {
-    gs = load(); startDay();
-  };
+  // center lines
+  for(let i=0;i<6;i++){
+    const a=ANGLES[i]*Math.PI/180;
+    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',CX); line.setAttribute('y1',CY);
+    line.setAttribute('x2',CX+R*Math.cos(a));
+    line.setAttribute('y2',CY+R*Math.sin(a));
+    line.className.baseVal='const-line';
+    line.dataset.center=i;
+    svg.appendChild(line);
+  }
+  // Create orbs
+  ACTS.forEach((act,i)=>{
+    const angle=ANGLES[i]*Math.PI/180;
+    const x=CX+R*Math.cos(angle);
+    const y=CY+R*Math.sin(angle);
+    const orb=document.createElement('div');
+    orb.className='orb';
+    orb.dataset.id=act.id;
+    orb.style.left=x+'px';
+    orb.style.top=y+'px';
+    orb.innerHTML=`
+      <div class="orb-inner">
+        <div class="orb-icon">${act.icon}</div>
+        <div class="orb-tooltip">${act.desc}</div>
+      </div>
+      <div class="orb-name">${act.name}</div>
+    `;
+    orb.onclick=()=>toggleAct(act.id);
+    cw.appendChild(orb);
+  });
+  updateOrbs();
 }
 
-// ── DAY ───────────────────────────────────────────────────────────
-function startDay() {
-  gs.sel = [];
-  document.getElementById('day-chip').textContent = '第 ' + gs.day + ' 天';
-  document.getElementById('day-sub').textContent = DAY_SUBS[gs.day] || '';
-  renderSlots(); renderActs();
-  const btn = document.getElementById('btn-confirm');
-  btn.disabled = true;
-  btn.onclick = startDlgs;
-  show('screen-day');
+function updateOrbs(){
+  const orbs=document.querySelectorAll('.orb');
+  orbs.forEach(orb=>{
+    const id=orb.dataset.id;
+    const sel=gs.sel.includes(id);
+    const full=gs.sel.length>=3&&!sel;
+    orb.className='orb'+(sel?' selected':'')+(full?' disabled':'');
+  });
+  // Update SVG lines
+  const svg=document.getElementById('const-svg');
+  svg.querySelectorAll('[data-center]').forEach(line=>{
+    const i=parseInt(line.dataset.center);
+    const actId=ACTS[i].id;
+    const sel=gs.sel.includes(actId);
+    line.className.baseVal='const-line'+(sel?' active':'');
+  });
+  // Update center eyes
+  if(gs.sel.length===0) setExpr('c-el','c-er','default');
+  else if(gs.sel.length===3) setExpr('c-el','c-er','happy');
+  else setExpr('c-el','c-er','thoughtful');
 }
-function renderSlots() {
-  const row = document.getElementById('slots-row');
-  row.innerHTML = '';
-  for (let i = 0; i < 3; i++) {
-    const d = document.createElement('div');
-    const id = gs.sel[i];
-    d.className = 'slot ' + (id ? 'filled' : 'empty');
-    d.textContent = id ? (ACTS.find(a => a.id === id)?.icon || '？') : '？';
+
+// ══ DAY ═══════════════════════════════════════════════════════════════
+function startDay(){
+  gs.sel=[];
+  document.getElementById('day-badge').textContent='第 '+gs.day+' 天';
+  document.getElementById('day-subtitle').textContent=DAY_SUBS[gs.day]||'';
+  renderSlots();
+  buildConstellation();
+  const btn=document.getElementById('btn-confirm');
+  btn.disabled=true;
+  btn.onclick=startDlgs;
+  show('sd');
+}
+
+function renderSlots(){
+  const row=document.getElementById('slots-row');
+  row.innerHTML='';
+  for(let i=0;i<3;i++){
+    const d=document.createElement('div');
+    const id=gs.sel[i];
+    d.className='slot'+(id?' filled':'');
+    d.textContent=id?(ACTS.find(a=>a.id===id)?.icon||'？'):'？';
     row.appendChild(d);
   }
 }
-function renderActs() {
-  const g = document.getElementById('acts-grid');
-  g.innerHTML = '';
-  ACTS.forEach(a => {
-    const sel = gs.sel.includes(a.id);
-    const full = gs.sel.length >= 3 && !sel;
-    const c = document.createElement('div');
-    c.className = 'act-card' + (sel ? ' selected' : '') + (full ? ' disabled' : '');
-    c.innerHTML = '<div class="act-icon">'+a.icon+'</div><div class="act-name">'+a.name+'</div><div class="act-desc">'+a.desc+'</div>';
-    if (!full) c.onclick = () => toggleAct(a.id);
-    g.appendChild(c);
-  });
-}
-function toggleAct(id) {
-  const i = gs.sel.indexOf(id);
-  if (i >= 0) gs.sel.splice(i, 1);
-  else if (gs.sel.length < 3) gs.sel.push(id);
-  document.getElementById('btn-confirm').disabled = gs.sel.length !== 3;
-  renderSlots(); renderActs();
+
+function toggleAct(id){
+  const i=gs.sel.indexOf(id);
+  if(i>=0) gs.sel.splice(i,1);
+  else if(gs.sel.length<3) gs.sel.push(id);
+  document.getElementById('btn-confirm').disabled=gs.sel.length!==3;
+  renderSlots();
+  updateOrbs();
+  reactXimi(document.getElementById('center-ximi'),gs.sel.length===3?'happy':'pulse');
 }
 
-// ── DIALOGUE ──────────────────────────────────────────────────────
-let dQ=[], dQi=0, dLi=0, typing=false, curTxt='', timer=null;
-function startDlgs() {
-  dQ = gs.sel.map(id => {
-    const a = ACTS.find(x => x.id === id);
-    return { lines: DLG[a.dlg] || [], name: a.name, icon: a.icon };
+// ══ DIALOGUE ══════════════════════════════════════════════════════════
+let dQ=[],dQi=0,dLi=0,typing=false,curTxt='',timer=null;
+
+function startDlgs(){
+  dQ=gs.sel.map(id=>{
+    const a=ACTS.find(x=>x.id===id);
+    return{lines:DLG[a.dlg]||[],name:a.name,icon:a.icon};
   });
-  dQi = 0; dLi = 0;
-  show('screen-dialogue');
+  dQi=0;dLi=0;
+  show('sdlg');
   nextDlg();
 }
-function nextDlg() {
-  if (dQi >= dQ.length) { showSum(); return; }
-  document.getElementById('dlg-tag').textContent = '✦ ' + dQ[dQi].name;
-  dLi = 0; showLine();
+
+function nextDlg(){
+  if(dQi>=dQ.length){showSum();return;}
+  document.getElementById('dlg-badge').textContent='✦ '+dQ[dQi].name;
+  dLi=0;showLine();
 }
-function showLine() {
-  const lines = dQ[dQi].lines;
-  if (dLi >= lines.length) { dQi++; nextDlg(); return; }
-  const ln = lines[dLi];
-  setExpr('dlg-eye-l', 'dlg-eye-r', ln.x);
-  const spkr = document.getElementById('dlg-spkr');
-  spkr.textContent = ln.s === '旁白' ? '' : ln.s;
-  spkr.style.opacity = ln.s === '旁白' ? '0' : '1';
-  const el = document.getElementById('dlg-txt');
-  el.textContent = ''; typing = true; curTxt = ln.t;
-  let i = 0; clearInterval(timer);
-  timer = setInterval(() => {
-    if (i < curTxt.length) { el.textContent += curTxt[i++]; }
-    else { clearInterval(timer); typing = false; }
-  }, 36);
+
+function showLine(){
+  const lines=dQ[dQi].lines;
+  if(dLi>=lines.length){dQi++;nextDlg();return;}
+  const ln=lines[dLi];
+  setExpr('d-el','d-er',ln.x);
+  reactXimi(document.getElementById('dlg-ximi'),ln.x==='happy'?'happy':'pulse');
+  const spkr=document.getElementById('dlg-spkr');
+  spkr.textContent=ln.s==='旁白'?'':ln.s;
+  spkr.style.opacity=ln.s==='旁白'?'0':'1';
+  const tc=document.getElementById('dlg-tc');
+  const cur=document.getElementById('dlg-cur');
+  tc.textContent='';
+  cur.style.display='inline-block';
+  typing=true;curTxt=ln.t;
+  let i=0;clearInterval(timer);
+  timer=setInterval(()=>{
+    if(i<curTxt.length){tc.textContent+=curTxt[i++];}
+    else{clearInterval(timer);typing=false;cur.style.display='none';}
+  },34);
 }
-document.getElementById('screen-dialogue').onclick = () => {
-  if (typing) { clearInterval(timer); typing = false; document.getElementById('dlg-txt').textContent = curTxt; return; }
-  dLi++; showLine();
+
+document.getElementById('sdlg').onclick=()=>{
+  if(typing){
+    clearInterval(timer);typing=false;
+    document.getElementById('dlg-tc').textContent=curTxt;
+    document.getElementById('dlg-cur').style.display='none';
+    return;
+  }
+  dLi++;showLine();
 };
 
-// ── SUMMARY ───────────────────────────────────────────────────────
-function showSum() {
-  document.getElementById('sum-icons').innerHTML = gs.sel.map(id => '<span>'+(ACTS.find(a=>a.id===id)?.icon||'')+'</span>').join('');
-  document.getElementById('sum-msg').textContent = SUM_MSGS[gs.day] || '今天也辛苦了。';
-  const btn = document.getElementById('btn-next');
-  if (gs.day >= 7) { btn.textContent = '查看结局 ✦'; btn.onclick = showEnd; }
-  else { btn.textContent = '明天继续 →'; btn.onclick = () => { gs.done.push(gs.day); gs.day++; save(); startDay(); }; }
-  show('screen-summary');
+// ══ SUMMARY ═══════════════════════════════════════════════════════════
+function showSum(){
+  document.getElementById('sum-icons').innerHTML=
+    gs.sel.map(id=>`<div class="sum-icon-wrap">${ACTS.find(a=>a.id===id)?.icon||''}</div>`).join('');
+  document.getElementById('sum-msg').textContent=SUM_MSGS[gs.day]||'今天也辛苦了。';
+  const btn=document.getElementById('btn-next');
+  if(gs.day>=7){btn.textContent='查看结局 ✦';btn.onclick=showEnd;}
+  else{btn.textContent='明天继续 →';btn.onclick=()=>{gs.done.push(gs.day);gs.day++;save();startDay();};}
+  show('ssum');
 }
 
-// ── ENDING ────────────────────────────────────────────────────────
-function showEnd() {
-  document.getElementById('end-txt').textContent = ENDING;
-  document.getElementById('btn-restart').onclick = () => {
-    clear(); gs = { day:1, sel:[], done:[] };
-    document.getElementById('btn-continue').style.display = 'none';
-    show('screen-title');
+// ══ ENDING ════════════════════════════════════════════════════════════
+function showEnd(){
+  document.getElementById('end-txt').textContent=ENDING;
+  document.getElementById('btn-restart').onclick=()=>{
+    clear();gs={day:1,sel:[],done:[]};
+    document.getElementById('btn-c').style.display='none';
+    show('st');
   };
-  show('screen-ending');
+  show('send');
 }
 
-// ── INIT ──────────────────────────────────────────────────────────
+// ══ INIT ══════════════════════════════════════════════════════════════
 initTitle();
 </script>
 </body>
