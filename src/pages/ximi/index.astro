@@ -5,946 +5,430 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
-  <title>汐弥 · 汐落星日记</title>
+  <title>以情感为食 · 汐弥的七天情感收集</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --pk:#FF0080;--pks:#F4A0C0;--lav:#C8A0D4;--gold:#F0C840;
-      --dark:#0a0010;--dark2:#120018;--dark3:#1a0020;
-      --glow:rgba(255,0,128,0.5);--glow2:rgba(244,160,192,0.3);
-    }
+    :root{--pk:#FF0080;--pks:#F4A0C0;--lav:#C8A0D4;--gold:#F0C840;--dark:#0a0010;--dark2:#120018;--glow:rgba(255,0,128,0.5);}
     *{margin:0;padding:0;box-sizing:border-box;}
-    body{
-      background:var(--dark);color:#fde8f0;
-      font-family:'Noto Serif SC','Source Han Serif CN',serif;
-      min-height:100vh;overflow:hidden;user-select:none;
-    }
+    body{background:var(--dark);color:#fde8f0;font-family:'Noto Serif SC',serif;height:100vh;overflow:hidden;user-select:none;}
 
-    /* ── SCREENS ── */
-    .screen{
-      position:fixed;inset:0;display:none;
-      flex-direction:column;align-items:center;justify-content:center;
-      padding:24px;
-    }
-    .screen.active{display:flex;}
-    .screen.in{animation:screenIn 0.5s ease forwards;}
-    @keyframes screenIn{
-      0%{opacity:0;filter:brightness(2) saturate(0);}
-      30%{opacity:1;filter:brightness(1.5) saturate(0.5);}
-      60%{filter:brightness(1.2) saturate(0.8);}
-      100%{opacity:1;filter:brightness(1) saturate(1);}
-    }
+    /* BG */
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,0,128,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,128,0.05) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+    body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);pointer-events:none;z-index:0;}
 
-    /* ── BACKGROUND LAYERS ── */
-    .bg-base{
-      position:fixed;inset:0;z-index:0;pointer-events:none;
-      background:
-        radial-gradient(ellipse at 25% 35%,rgba(255,0,128,0.15) 0%,transparent 50%),
-        radial-gradient(ellipse at 75% 65%,rgba(200,160,212,0.1) 0%,transparent 45%),
-        radial-gradient(ellipse at 55% 10%,rgba(255,0,128,0.08) 0%,transparent 35%),
-        var(--dark);
-    }
-    /* Neon grid lines */
-    .bg-grid{
-      position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.06;
-      background-image:
-        linear-gradient(rgba(255,0,128,0.8) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,0,128,0.8) 1px,transparent 1px);
-      background-size:60px 60px;
-      animation:gridDrift 20s linear infinite;
-    }
-    @keyframes gridDrift{
-      from{background-position:0 0;}
-      to{background-position:60px 60px;}
-    }
-    /* Scanlines */
-    .bg-scan{
-      position:fixed;inset:0;z-index:0;pointer-events:none;
-      background:repeating-linear-gradient(
-        0deg,transparent,transparent 3px,
-        rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px
-      );
-    }
-    /* Particles container */
-    .bg-particles{
-      position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-    }
-    .particle{
-      position:absolute;border-radius:50%;
-      animation:particleFloat linear infinite;
-      pointer-events:none;
-    }
-    @keyframes particleFloat{
-      0%{transform:translateY(100vh) rotate(0deg);opacity:0;}
-      10%{opacity:1;}
-      90%{opacity:0.6;}
-      100%{transform:translateY(-10vh) rotate(360deg);opacity:0;}
-    }
+    /* SCREENS */
+    .screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;z-index:10;}
+    .screen.active{display:flex;animation:screenIn .5s ease both;}
+    @keyframes screenIn{0%{opacity:0;filter:brightness(1.8) saturate(0);}100%{opacity:1;filter:brightness(1) saturate(1);}}
 
-    .content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;width:100%;max-width:420px;gap:0;}
+    /* TITLE */
+    .title-bg{position:absolute;inset:0;overflow:hidden;}
+    .title-bg img{width:100%;height:100%;object-fit:cover;filter:blur(3px) brightness(0.35);}
+    .title-overlay{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 20%,rgba(10,0,16,0.7) 100%);}
+    .title-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;}
+    .av-ring{width:144px;height:144px;border-radius:50%;border:3px solid var(--pk);box-shadow:0 0 24px var(--glow),0 0 60px var(--glow);overflow:hidden;animation:float 3s ease-in-out infinite;flex-shrink:0;}
+    .av-ring img{width:100%;height:100%;object-fit:cover;}
+    .av-fallback{width:100%;height:100%;background:radial-gradient(circle,#ff6eb4,#8b0057);display:flex;align-items:center;justify-content:center;font-size:36px;}
+    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+    .t-main{font-size:28px;font-weight:600;color:#fff;text-shadow:0 0 20px var(--glow);letter-spacing:4px;text-align:center;}
+    .t-sub{font-size:14px;color:var(--pks);letter-spacing:2px;}
+    .btn-row{display:flex;gap:12px;margin-top:8px;}
+    .btn{padding:10px 28px;border:1.5px solid var(--pk);background:rgba(255,0,128,0.12);color:#fff;font-family:inherit;font-size:14px;letter-spacing:2px;cursor:pointer;border-radius:4px;transition:.2s;}
+    .btn:hover{background:rgba(255,0,128,0.3);box-shadow:0 0 12px var(--glow);}
+    .btn.sec{border-color:var(--lav);background:rgba(200,160,212,0.1);color:var(--lav);}
+    .btn.sec:hover{background:rgba(200,160,212,0.25);}
 
-    /* ── CSS CAT CHARACTER ── */
-    .ximi{
-      position:relative;display:flex;align-items:center;justify-content:center;
-      filter:drop-shadow(0 0 20px var(--pk)) drop-shadow(0 0 40px rgba(255,0,128,0.3));
-      animation:charFloat 3.5s ease-in-out infinite;
-    }
-    @keyframes charFloat{
-      0%,100%{transform:translateY(0);}
-      50%{transform:translateY(-12px);}
-    }
-    .ximi.react-happy{animation:reactHappy 0.4s ease;}
-    @keyframes reactHappy{
-      0%,100%{transform:translateY(0) scale(1);}
-      50%{transform:translateY(-16px) scale(1.08);}
-    }
-    .ximi.react-pulse{animation:reactPulse 0.3s ease;}
-    @keyframes reactPulse{
-      0%,100%{filter:drop-shadow(0 0 20px var(--pk));}
-      50%{filter:drop-shadow(0 0 50px var(--pk)) drop-shadow(0 0 80px rgba(255,0,128,0.5)) brightness(1.3);}
-    }
-    .cat-body{position:relative;}
-    .cat-face{
-      border-radius:50%;
-      background:radial-gradient(circle at 38% 32%,#ffe8f4,#f4a0c0 50%,#e880a8);
-      position:relative;
-      box-shadow:
-        0 0 0 2px rgba(255,0,128,0.2),
-        inset 0 -10px 20px rgba(180,40,80,0.2),
-        inset 4px -4px 12px rgba(255,200,220,0.3);
-    }
-    .sz-md .cat-face{width:80px;height:80px;}
-    .sz-lg .cat-face{width:100px;height:100px;}
-    .sz-xl .cat-face{width:120px;height:120px;}
-    /* Ears */
-    .ear{
-      position:absolute;
-      border-left:13px solid transparent;
-      border-right:13px solid transparent;
-      border-bottom:22px solid #f4a0c0;
-      top:-17px;
-    }
-    .sz-lg .ear,.sz-xl .ear{
-      border-left-width:16px;border-right-width:16px;border-bottom-width:28px;
-      top:-22px;
-    }
-    .ear::after{
-      content:'';position:absolute;
-      border-left:8px solid transparent;border-right:8px solid transparent;
-      border-bottom:14px solid #ffd0e8;
-      top:5px;left:-8px;
-    }
-    .ear.l{left:6px;transform:rotate(-10deg);}
-    .ear.r{right:6px;transform:rotate(10deg);}
-    /* Eyes */
-    .eyes{position:absolute;display:flex;gap:0;top:28%;}
-    .sz-md .eyes{gap:16px;top:30%;}
-    .sz-lg .eyes,.sz-xl .eyes{gap:20px;top:30%;}
-    .eye{
-      width:13px;height:15px;
-      background:radial-gradient(circle at 40% 35%,#e06080,#c04060);
-      border-radius:50%;position:relative;
-      box-shadow:0 0 6px rgba(200,64,96,0.6);
-    }
-    .sz-lg .eye,.sz-xl .eye{width:15px;height:17px;}
-    .eye::after{
-      content:'';position:absolute;width:5px;height:5px;
-      background:rgba(255,255,255,0.8);border-radius:50%;
-      top:2px;left:5px;
-    }
-    .eye.happy{border-radius:50% 50% 50% 50%/70% 70% 30% 30%;height:9px;}
-    .eye.closed{height:3px;border-radius:2px;background:#c04060;}
-    .eye.warm{width:11px;}
-    .eye.scan{
-      background:radial-gradient(circle,#fff 20%,#ff0080 60%,#c04060);
-      animation:scanEye 1s ease-in-out infinite alternate;
-    }
-    @keyframes scanEye{
-      from{box-shadow:0 0 6px var(--pk);}
-      to{box-shadow:0 0 14px var(--pk),0 0 24px rgba(255,0,128,0.5);}
-    }
-    /* Nose + blush */
-    .nose{
-      position:absolute;width:7px;height:5px;
-      background:#e06888;border-radius:2px 2px 4px 4px;
-      left:50%;transform:translateX(-50%);top:49%;
-    }
-    .blush{
-      position:absolute;
-      background:rgba(255,120,150,0.28);border-radius:50%;
-      width:18px;height:9px;top:50%;
-    }
-    .blush.l{left:6px;} .blush.r{right:6px;}
-    .sparkle{position:absolute;font-size:9px;opacity:0.7;top:40%;right:2px;}
-    /* Glow ring */
-    .ximi-glow{
-      position:absolute;inset:-10px;border-radius:50%;
-      background:radial-gradient(circle,transparent 55%,rgba(255,0,128,0.15) 70%,transparent 100%);
-      animation:glowPulse 3.5s ease-in-out infinite;
-    }
-    @keyframes glowPulse{
-      0%,100%{opacity:0.5;transform:scale(1);}
-      50%{opacity:1;transform:scale(1.08);}
-    }
-    /* Shadow under character */
-    .ximi-shadow{
-      width:80px;height:12px;
-      background:radial-gradient(ellipse,rgba(255,0,128,0.2),transparent);
-      margin:-4px auto 0;
-    }
+    /* BRIEF */
+    .brief-box{background:rgba(18,0,24,0.9);border:1px solid rgba(255,0,128,0.3);border-radius:12px;padding:28px 32px;max-width:480px;width:100%;text-align:center;}
+    .day-label{font-size:11px;letter-spacing:3px;color:var(--pk);text-transform:uppercase;margin-bottom:6px;}
+    .day-title{font-size:22px;color:#fff;margin-bottom:4px;}
+    .day-theme{font-size:13px;color:var(--pks);margin-bottom:20px;}
+    .brief-section{text-align:left;margin-bottom:14px;}
+    .brief-section h4{font-size:11px;letter-spacing:2px;color:var(--lav);margin-bottom:8px;}
+    .em-tags{display:flex;flex-wrap:wrap;gap:6px;}
+    .em-tag{padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid;}
 
-    /* ── TITLE SCREEN ── */
-    #st .content{gap:14px;}
-    .title-deco{
-      font-size:11px;letter-spacing:6px;color:rgba(244,160,192,0.4);
-      text-transform:uppercase;margin-bottom:-4px;
-    }
-    .title-main{
-      font-size:30px;letter-spacing:4px;
-      color:#fde8f0;text-align:center;
-      text-shadow:0 0 20px var(--pk),0 0 40px rgba(255,0,128,0.3);
-      line-height:1.2;
-    }
-    .title-sub{
-      font-size:12px;color:rgba(244,160,192,0.35);
-      letter-spacing:3px;margin-bottom:8px;
-    }
-    .title-line{
-      width:60px;height:1px;
-      background:linear-gradient(90deg,transparent,var(--pks),transparent);
-      margin:4px auto;
-    }
-
-    /* ── BUTTONS ── */
-    .btn-n{
-      background:transparent;
-      border:1px solid var(--pk);
-      color:var(--pks);padding:12px 36px;
-      border-radius:4px;font-size:15px;
-      cursor:pointer;font-family:inherit;
-      transition:all 0.2s;letter-spacing:2px;
-      position:relative;overflow:hidden;
-    }
-    .btn-n::before{
-      content:'';position:absolute;inset:0;
-      background:linear-gradient(135deg,transparent 40%,rgba(255,0,128,0.1));
-      opacity:0;transition:opacity 0.2s;
-    }
-    .btn-n:hover:not(:disabled){
-      background:rgba(255,0,128,0.08);
-      box-shadow:0 0 16px rgba(255,0,128,0.3),inset 0 0 16px rgba(255,0,128,0.05);
-      color:#fff;
-    }
-    .btn-n:hover::before{opacity:1;}
-    .btn-n:disabled{opacity:0.25;cursor:not-allowed;}
-    .btn-n.primary{
-      background:linear-gradient(135deg,rgba(180,0,80,0.3),rgba(255,0,128,0.15));
-      box-shadow:0 0 20px rgba(255,0,128,0.25);
-    }
-    .btn-n.primary:hover:not(:disabled){
-      box-shadow:0 0 30px rgba(255,0,128,0.5),0 0 60px rgba(255,0,128,0.2);
-    }
-    .btns{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:4px;}
-
-    /* ── DAY SCREEN ── */
-    #sd{justify-content:flex-start;padding-top:32px;overflow-y:auto;}
-    #sd .content{gap:12px;}
-    .day-badge{
-      display:inline-flex;align-items:center;gap:8px;
-      border:1px solid rgba(255,0,128,0.3);
-      background:rgba(255,0,128,0.06);
-      color:var(--pks);padding:5px 18px;
-      border-radius:3px;font-size:12px;letter-spacing:3px;
-    }
-    .day-badge::before{content:'✦';font-size:8px;opacity:0.6;}
-    .day-subtitle{
-      color:rgba(244,160,192,0.3);font-size:11px;
-      letter-spacing:2px;margin-top:-6px;
-    }
-
-    /* Slots */
-    .slots-wrap{width:100%;text-align:center;}
-    .slots-label{
-      font-size:10px;color:rgba(244,160,192,0.25);
-      letter-spacing:2px;margin-bottom:10px;
-    }
-    .slots-row{display:flex;gap:10px;justify-content:center;}
-    .slot{
-      width:52px;height:52px;border-radius:4px;
-      border:1px dashed rgba(255,0,128,0.2);
-      display:flex;align-items:center;justify-content:center;
-      font-size:20px;color:rgba(253,232,240,0.1);
-      transition:all 0.3s;
-    }
-    .slot.filled{
-      border-style:solid;border-color:rgba(255,0,128,0.6);
-      background:rgba(255,0,128,0.08);
-      color:#fde8f0;font-size:22px;
-      box-shadow:0 0 10px rgba(255,0,128,0.2),inset 0 0 10px rgba(255,0,128,0.05);
-    }
-
-    /* ── CONSTELLATION PICKER ── */
-    .constellation-wrap{
-      position:relative;
-      width:300px;height:300px;
-      flex-shrink:0;
-    }
-    /* Connecting lines SVG */
-    .const-svg{
-      position:absolute;inset:0;width:100%;height:100%;
-      pointer-events:none;
-    }
-    .const-line{stroke:rgba(255,0,128,0.08);stroke-width:1;fill:none;}
-    .const-line.active{stroke:rgba(255,0,128,0.3);stroke-dasharray:4 3;animation:dashMove 1s linear infinite;}
-    @keyframes dashMove{to{stroke-dashoffset:-14;}}
-    /* Center character */
-    .const-center{
-      position:absolute;
-      top:50%;left:50%;
-      transform:translate(-50%,-50%);
-      z-index:2;
-    }
-    /* Orbit ring */
-    .orbit-ring{
-      position:absolute;
-      top:50%;left:50%;
-      width:220px;height:220px;
-      margin:-110px 0 0 -110px;
-      border-radius:50%;
-      border:1px dashed rgba(255,0,128,0.1);
-      animation:orbitSpin 30s linear infinite;
-    }
-    @keyframes orbitSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-    /* Activity orbs */
-    .orb{
-      position:absolute;
-      width:56px;height:56px;
-      transform:translate(-50%,-50%);
-      cursor:pointer;z-index:3;
-    }
-    .orb-inner{
-      width:100%;height:100%;
-      border-radius:50%;
-      border:1.5px solid rgba(255,0,128,0.25);
-      background:rgba(10,0,16,0.8);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      transition:all 0.25s;
-      position:relative;
-      box-shadow:0 0 8px rgba(255,0,128,0.1);
-    }
-    .orb-icon{font-size:22px;line-height:1;}
-    .orb-name{
-      position:absolute;top:calc(100% + 5px);left:50%;
-      transform:translateX(-50%);
-      font-size:10px;color:rgba(244,160,192,0.5);
-      white-space:nowrap;letter-spacing:1px;
-      transition:all 0.2s;
-    }
-    .orb:hover .orb-inner{
-      border-color:var(--pks);
-      background:rgba(255,0,128,0.12);
-      box-shadow:0 0 20px rgba(255,0,128,0.3),0 0 40px rgba(255,0,128,0.1);
-      transform:scale(1.15);
-    }
-    .orb:hover .orb-name{color:var(--pks);}
-    .orb.selected .orb-inner{
-      border-color:var(--pk);
-      background:rgba(255,0,128,0.2);
-      box-shadow:0 0 24px var(--glow),0 0 48px rgba(255,0,128,0.2),inset 0 0 12px rgba(255,0,128,0.1);
-      animation:orbPulse 2s ease-in-out infinite;
-    }
-    .orb.selected .orb-name{color:var(--pks);text-shadow:0 0 8px var(--pk);}
-    @keyframes orbPulse{
-      0%,100%{box-shadow:0 0 24px var(--glow),0 0 48px rgba(255,0,128,0.2);}
-      50%{box-shadow:0 0 32px var(--pk),0 0 64px rgba(255,0,128,0.3);}
-    }
-    .orb.disabled{opacity:0.3;cursor:default;}
-    .orb.disabled .orb-inner{border-color:rgba(255,0,128,0.1);}
-    /* Tooltip on hover */
-    .orb-tooltip{
-      position:absolute;bottom:calc(100% + 12px);left:50%;
-      transform:translateX(-50%);
-      background:rgba(10,0,16,0.95);
-      border:1px solid rgba(255,0,128,0.3);
-      color:rgba(253,232,240,0.7);
-      font-size:10px;padding:6px 10px;
-      border-radius:3px;white-space:nowrap;
-      pointer-events:none;opacity:0;
-      transition:opacity 0.2s;
-      z-index:10;
-    }
-    .orb:hover .orb-tooltip{opacity:1;}
-
-    /* ── DIALOGUE SCREEN ── */
-    #sdlg{padding:0;justify-content:flex-end;}
-    .dlg-scene{
-      position:relative;z-index:1;
-      width:100%;height:100%;
-      display:flex;flex-direction:column;justify-content:flex-end;
-    }
-    .dlg-char-area{
-      flex:1;display:flex;flex-direction:column;
-      align-items:center;justify-content:center;gap:12px;
-    }
-    .dlg-act-badge{
-      font-size:11px;letter-spacing:2px;
-      color:var(--pks);
-      border:1px solid rgba(255,0,128,0.25);
-      background:rgba(255,0,128,0.06);
-      padding:4px 16px;border-radius:3px;
-    }
-    .dlg-box{
-      background:rgba(6,0,12,0.95);
-      backdrop-filter:blur(32px);
-      border-top:1px solid rgba(255,0,128,0.2);
-      padding:22px 28px 32px;
-      min-height:152px;cursor:pointer;
-      position:relative;flex-shrink:0;
-    }
-    .dlg-box::before{
-      content:'';position:absolute;top:0;left:0;right:0;height:1px;
-      background:linear-gradient(90deg,transparent,var(--pk) 30%,var(--pks) 70%,transparent);
-      opacity:0.6;
-    }
-    .dlg-speaker{
-      font-size:11px;color:var(--pk);
-      margin-bottom:10px;letter-spacing:2px;
-      min-height:16px;text-shadow:0 0 8px var(--pk);
-    }
-    .dlg-text{
-      font-size:15px;line-height:1.9;color:#fde8f0;
-      min-height:56px;
-    }
-    .dlg-cursor{
-      display:inline-block;width:2px;height:15px;
-      background:var(--pks);margin-left:2px;vertical-align:middle;
-      animation:blink 0.8s step-end infinite;
-    }
-    .dlg-hint{
-      position:absolute;bottom:14px;right:20px;
-      font-size:10px;color:rgba(255,0,128,0.35);
-      animation:hintBlink 2s ease-in-out infinite;
-    }
-    @keyframes hintBlink{0%,100%{opacity:0.3;}50%{opacity:1;}}
+    /* GAME */
+    #sg{padding:0;display:flex;flex-direction:column;}
+    .hud{flex-shrink:0;padding:10px 16px;background:rgba(10,0,16,0.85);border-bottom:1px solid rgba(255,0,128,0.2);z-index:20;}
+    .hud-row1{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+    .hud-day{font-size:12px;color:var(--pks);letter-spacing:1px;}
+    .hud-timer{font-size:18px;font-weight:600;color:#fff;transition:color .3s;}
+    .hud-timer.warn{color:#ff3333;animation:blink .6s step-end infinite;}
     @keyframes blink{50%{opacity:0;}}
+    .energy-bar-wrap{height:8px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;}
+    .energy-bar-fill{height:100%;background:linear-gradient(90deg,var(--pk),var(--pks));border-radius:4px;transition:width .3s;box-shadow:0 0 8px var(--glow);}
+    .hud-row3{display:flex;justify-content:space-between;margin-top:4px;}
+    .hud-label{font-size:10px;color:#8a6070;letter-spacing:1px;}
+    .hud-pct{font-size:10px;color:var(--pk);}
+    .game-field{flex:1;position:relative;overflow:hidden;}
+    .portrait{position:absolute;bottom:0;left:0;width:110px;height:150px;z-index:5;pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,black 50%,transparent 100%);mask-image:linear-gradient(180deg,black 50%,transparent 100%);}
+    .portrait img{width:100%;height:100%;object-fit:cover;object-position:top center;}
+    .portrait-fallback{width:100%;height:100%;background:linear-gradient(180deg,#8b0057,#400028);display:flex;align-items:center;justify-content:center;font-size:40px;}
+    .portrait.hit-good{animation:glow-good .4s ease;}
+    .portrait.hit-bad{animation:shake .4s ease;}
+    @keyframes glow-good{0%,100%{filter:none;}50%{filter:drop-shadow(0 0 14px #ff6eb4);}}
+    @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
 
-    /* ── SUMMARY SCREEN ── */
-    .sum-inner{
-      text-align:center;display:flex;flex-direction:column;
-      align-items:center;gap:18px;
-    }
-    .sum-title{
-      font-size:22px;letter-spacing:3px;color:#fde8f0;
-      text-shadow:0 0 16px rgba(244,160,192,0.4);
-    }
-    .sum-icons{display:flex;gap:16px;justify-content:center;}
-    .sum-icon-wrap{
-      width:54px;height:54px;border-radius:4px;
-      border:1px solid rgba(255,0,128,0.3);
-      background:rgba(255,0,128,0.06);
-      display:flex;align-items:center;justify-content:center;
-      font-size:26px;
-      box-shadow:0 0 12px rgba(255,0,128,0.15);
-    }
-    .sum-msg{
-      color:rgba(253,232,240,0.55);font-size:13px;line-height:1.9;
-      max-width:280px;
-      background:rgba(255,0,128,0.03);
-      border:1px solid rgba(255,0,128,0.1);
-      border-radius:3px;padding:16px 18px;
-    }
+    /* BUBBLES */
+    .bubble{position:absolute;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;border:1.5px solid;transition:transform .1s;z-index:10;}
+    .bubble:hover{transform:scale(1.08);}
+    .bubble .b-emoji{font-size:18px;line-height:1;}
+    .bubble .b-name{font-size:9px;margin-top:2px;opacity:.8;}
+    .bubble.burst{animation:burst .3s ease forwards;pointer-events:none;}
+    @keyframes burst{0%{transform:scale(1);opacity:1;}100%{transform:scale(2.2);opacity:0;}}
 
-    /* ── ENDING SCREEN ── */
-    .end-inner{
-      text-align:center;display:flex;flex-direction:column;
-      align-items:center;gap:20px;max-width:360px;
-    }
-    .end-text{
-      color:rgba(253,232,240,0.8);font-size:14px;
-      line-height:2.1;white-space:pre-line;
-      background:rgba(255,0,128,0.03);
-      border:1px solid rgba(255,0,128,0.1);
-      border-radius:3px;padding:24px;
-    }
+    /* SCORE POPUP */
+    .score-pop{position:absolute;font-size:13px;font-weight:600;pointer-events:none;z-index:30;animation:pop-up .9s ease forwards;}
+    @keyframes pop-up{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-50px);}}
+
+    /* DIALOGUE */
+    .dlg-box{background:rgba(12,0,18,0.95);border:1px solid rgba(255,0,128,0.35);border-radius:12px;max-width:500px;width:100%;padding:0;overflow:hidden;}
+    .dlg-head{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid rgba(255,0,128,0.15);}
+    .dlg-av{width:48px;height:48px;border-radius:50%;overflow:hidden;border:2px solid var(--pk);flex-shrink:0;}
+    .dlg-av img{width:100%;height:100%;object-fit:cover;}
+    .dlg-speaker{font-size:13px;color:var(--pk);letter-spacing:1px;}
+    .dlg-body{padding:16px 20px;min-height:70px;}
+    .dlg-text{font-size:15px;color:#f0d8e8;line-height:1.8;}
+    .dlg-foot{padding:12px 20px;text-align:right;}
+
+    /* SUMMARY */
+    .sum-box{background:rgba(12,0,18,0.95);border:1px solid rgba(255,0,128,0.3);border-radius:12px;max-width:420px;width:100%;padding:32px;text-align:center;}
+    .sum-pct{font-size:56px;font-weight:600;color:var(--pk);text-shadow:0 0 24px var(--glow);}
+    .sum-stars{font-size:28px;letter-spacing:4px;margin:8px 0;}
+    .sum-msg{font-size:13px;color:var(--pks);margin-bottom:20px;}
+
+    /* ENDING */
+    .end-box{max-width:460px;width:100%;text-align:center;}
+    .end-text{font-size:15px;line-height:2.2;color:#f0d8e8;white-space:pre-line;margin-bottom:24px;}
+    .end-fin{font-size:16px;color:var(--gold);letter-spacing:4px;text-shadow:0 0 16px rgba(240,200,64,0.6);}
   </style>
 </head>
 <body>
 
-<!-- BG LAYERS (shared across all screens) -->
-<div class="bg-base"></div>
-<div class="bg-grid"></div>
-<div class="bg-scan"></div>
-<div class="bg-particles" id="bgp"></div>
-
-<!-- ══ TITLE ══════════════════════════════════════════════ -->
+<!-- TITLE -->
 <div id="st" class="screen active">
-  <div class="content">
-    <div class="ximi sz-xl" id="title-ximi">
-      <div class="ximi-glow"></div>
-      <div class="cat-body">
-        <div class="cat-face">
-          <div class="ear l"></div><div class="ear r"></div>
-          <div class="eyes">
-            <div class="eye" id="t-el"></div>
-            <div class="eye" id="t-er"></div>
-          </div>
-          <div class="nose"></div>
-          <div class="blush l"></div><div class="blush r"></div>
-          <div class="sparkle">✦</div>
-        </div>
-      </div>
+  <div class="title-bg">
+    <img src="https://i0.hdslb.com/bfs/live/new_room_cover/32679670d6ea20c396711c16445aab200f680e28.jpg" onerror="this.style.display='none'">
+  </div>
+  <div class="title-overlay"></div>
+  <div class="title-content">
+    <div class="av-ring">
+      <img id="av-title" src="https://i0.hdslb.com/bfs/face/ced9670b1bff022a8fb01c58d048aca279d4987d.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="av-fallback" style="display:none">🌸</div>
     </div>
-    <div class="ximi-shadow"></div>
-    <div class="title-deco">XIMI · XILUOSTAR DIARY</div>
-    <h1 class="title-main">汐落星日记</h1>
-    <div class="title-line"></div>
-    <p class="title-sub">汐弥 · 星际AI猫的七天</p>
-    <div class="btns">
-      <button id="btn-s" class="btn-n primary">开始游戏</button>
-      <button id="btn-c" class="btn-n" style="display:none">继续游戏</button>
+    <div class="t-main">以情感为食</div>
+    <div class="t-sub">汐弥 · 七天情感收集</div>
+    <div class="btn-row">
+      <button class="btn" onclick="startNew()">开始游戏</button>
+      <button class="btn sec" id="btn-cont" style="display:none" onclick="loadGame()">继续游戏</button>
     </div>
   </div>
 </div>
 
-<!-- ══ DAY ════════════════════════════════════════════════ -->
-<div id="sd" class="screen">
-  <div class="content">
-    <div id="day-badge" class="day-badge">第 1 天</div>
-    <div id="day-subtitle" class="day-subtitle">汐落星重建·第一日</div>
-    <div class="slots-wrap">
-      <div class="slots-label">今天的安排 · 选 3 项</div>
-      <div class="slots-row" id="slots-row"></div>
+<!-- BRIEF -->
+<div id="sb" class="screen">
+  <div class="brief-box">
+    <div class="day-label" id="br-label">DAY 1</div>
+    <div class="day-title" id="br-title">汐落星重建·第一日</div>
+    <div class="day-theme" id="br-theme">寻找第一束治愈之光</div>
+    <div class="brief-section">
+      <h4>收集目标</h4>
+      <div class="em-tags" id="br-targets"></div>
     </div>
-    <!-- CONSTELLATION PICKER -->
-    <div class="constellation-wrap" id="cw">
-      <div class="orbit-ring"></div>
-      <svg class="const-svg" id="const-svg"></svg>
-      <div class="const-center">
-        <div class="ximi sz-md" id="center-ximi">
-          <div class="cat-body">
-            <div class="cat-face">
-              <div class="ear l"></div><div class="ear r"></div>
-              <div class="eyes">
-                <div class="eye" id="c-el"></div>
-                <div class="eye" id="c-er"></div>
-              </div>
-              <div class="nose"></div>
-              <div class="blush l"></div><div class="blush r"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Orbs injected by JS -->
+    <div class="brief-section">
+      <h4>请避开</h4>
+      <div class="em-tags" id="br-avoids"></div>
     </div>
-    <button id="btn-confirm" class="btn-n primary" disabled>确认今日安排 ✦</button>
+    <button class="btn" style="width:100%;margin-top:4px" onclick="startGame()">开始捕捉 ▶</button>
   </div>
 </div>
 
-<!-- ══ DIALOGUE ════════════════════════════════════════════ -->
+<!-- GAME -->
+<div id="sg" class="screen">
+  <div class="hud">
+    <div class="hud-row1">
+      <div class="hud-day" id="g-daylabel"></div>
+      <div class="hud-timer" id="g-timer">45</div>
+    </div>
+    <div class="energy-bar-wrap"><div class="energy-bar-fill" id="g-bar" style="width:0%"></div></div>
+    <div class="hud-row3">
+      <div class="hud-label">情感能量</div>
+      <div class="hud-pct" id="g-pct">0%</div>
+    </div>
+  </div>
+  <div class="game-field" id="g-field">
+    <div class="portrait" id="g-portrait">
+      <img src="https://i0.hdslb.com/bfs/face/ced9670b1bff022a8fb01c58d048aca279d4987d.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="portrait-fallback" style="display:none">🌸</div>
+    </div>
+  </div>
+</div>
+
+<!-- DIALOGUE -->
 <div id="sdlg" class="screen">
-  <div class="dlg-scene">
-    <div class="dlg-char-area">
-      <div class="ximi sz-xl" id="dlg-ximi">
-        <div class="ximi-glow"></div>
-        <div class="cat-body">
-          <div class="cat-face" style="width:110px;height:110px">
-            <div class="ear l"></div><div class="ear r"></div>
-            <div class="eyes">
-              <div class="eye" id="d-el"></div>
-              <div class="eye" id="d-er"></div>
-            </div>
-            <div class="nose"></div>
-            <div class="blush l"></div><div class="blush r"></div>
-            <div class="sparkle">✦</div>
-          </div>
-        </div>
-      </div>
-      <div class="dlg-act-badge" id="dlg-badge">✦ 读心练习</div>
+  <div class="dlg-box">
+    <div class="dlg-head">
+      <div class="dlg-av"><img src="https://i0.hdslb.com/bfs/face/ced9670b1bff022a8fb01c58d048aca279d4987d.jpg" onerror="this.style.display='none'"></div>
+      <div class="dlg-speaker" id="dlg-speaker">汐弥</div>
     </div>
-    <div class="dlg-box" id="dlg-box">
-      <div class="dlg-speaker" id="dlg-spkr">汐弥</div>
-      <div class="dlg-text" id="dlg-txt"><span id="dlg-tc"></span><span class="dlg-cursor" id="dlg-cur" style="display:none"></span></div>
-      <div class="dlg-hint">▼ 点击继续</div>
-    </div>
+    <div class="dlg-body"><div class="dlg-text" id="dlg-text"></div></div>
+    <div class="dlg-foot"><button class="btn" onclick="nextLine()">继续 ▶</button></div>
   </div>
 </div>
 
-<!-- ══ SUMMARY ════════════════════════════════════════════ -->
+<!-- SUMMARY -->
 <div id="ssum" class="screen">
-  <div class="content sum-inner">
-    <div class="ximi sz-lg" id="sum-ximi">
-      <div class="cat-body">
-        <div class="cat-face" style="width:90px;height:90px">
-          <div class="ear l"></div><div class="ear r"></div>
-          <div class="eyes">
-            <div class="eye happy" id="s-el"></div>
-            <div class="eye happy" id="s-er"></div>
-          </div>
-          <div class="nose"></div>
-          <div class="blush l"></div><div class="blush r"></div>
-          <div class="sparkle">✦</div>
-        </div>
-      </div>
-    </div>
-    <div class="sum-title">今天过完了 ✦</div>
-    <div class="sum-icons" id="sum-icons"></div>
+  <div class="sum-box">
+    <div class="day-label" id="sum-label">DAY 1 完成</div>
+    <div class="sum-pct" id="sum-pct">0%</div>
+    <div class="sum-stars" id="sum-stars">☆☆☆</div>
     <div class="sum-msg" id="sum-msg"></div>
-    <button id="btn-next" class="btn-n primary">明天继续 →</button>
+    <button class="btn" style="width:100%" id="sum-btn" onclick="sumNext()">第2天继续 →</button>
   </div>
 </div>
 
-<!-- ══ ENDING ═════════════════════════════════════════════ -->
+<!-- ENDING -->
 <div id="send" class="screen">
-  <div class="content end-inner">
-    <div class="ximi sz-xl">
-      <div class="ximi-glow"></div>
-      <div class="cat-body">
-        <div class="cat-face" style="width:120px;height:120px">
-          <div class="ear l"></div><div class="ear r"></div>
-          <div class="eyes">
-            <div class="eye warm"></div>
-            <div class="eye warm"></div>
-          </div>
-          <div class="nose"></div>
-          <div class="blush l"></div><div class="blush r"></div>
-          <div class="sparkle">✦</div>
-        </div>
-      </div>
-    </div>
-    <div class="end-text" id="end-txt"></div>
-    <button id="btn-restart" class="btn-n">再玩一次</button>
+  <div class="end-box">
+    <div class="end-text" id="end-text"></div>
+    <div class="end-fin">✦  The End  ✦</div>
+    <br>
+    <button class="btn sec" style="margin-top:16px" onclick="startNew()">再玩一次</button>
   </div>
 </div>
 
 <script>
-// ══ DATA ══════════════════════════════════════════════════════════════
-const ACTS=[
-  {id:'read',   name:'读心练习',  icon:'👁️',  desc:'扫描今天遇到的情绪频率',         dlg:'d_read'},
-  {id:'star',   name:'汐落星守护',icon:'🌟',  desc:'为故乡汐落星注入能量',             dlg:'d_star'},
-  {id:'charge', name:'情感充能',  icon:'💫',  desc:'以人类情感为食，补充能量',         dlg:'d_charge'},
-  {id:'stream', name:'直播准备',  icon:'🎙️', desc:'整理内心，准备与米娜桑相见',       dlg:'d_stream'},
-  {id:'letter', name:'写星际来信',icon:'✉️',  desc:'从宇宙给正在内耗的人写信',         dlg:'d_letter'},
-  {id:'walk',   name:'治愈漫步',  icon:'🌸',  desc:'在地球的小路上收集人间温暖',       dlg:'d_walk'},
+const SAVE='ximi_v4';
+const EMOTIONS=[
+  {id:'heal',   name:'治愈',  emoji:'🌸',bg:'rgba(144,238,144,0.15)',border:'rgba(144,238,144,0.5)',glow:'rgba(144,238,144,0.4)',type:'good'},
+  {id:'gentle', name:'温柔',  emoji:'🌙',bg:'rgba(255,182,193,0.15)',border:'rgba(255,182,193,0.5)',glow:'rgba(255,182,193,0.4)',type:'good'},
+  {id:'strength',name:'力量', emoji:'⚡',bg:'rgba(255,215,0,0.15)',  border:'rgba(255,215,0,0.5)',  glow:'rgba(255,215,0,0.4)',  type:'good'},
+  {id:'joy',    name:'快乐',  emoji:'✨',bg:'rgba(255,105,180,0.15)',border:'rgba(255,105,180,0.5)',glow:'rgba(255,105,180,0.4)',type:'good'},
+  {id:'drain',  name:'内耗',  emoji:'💭',bg:'rgba(60,60,80,0.35)',   border:'rgba(90,90,110,0.4)', glow:'rgba(60,60,80,0.2)',   type:'bad'},
+  {id:'lonely', name:'孤独',  emoji:'🌑',bg:'rgba(30,30,60,0.4)',    border:'rgba(55,55,95,0.4)',  glow:'rgba(30,30,60,0.15)',  type:'bad'},
+  {id:'beg',    name:'求回应',emoji:'🔁',bg:'rgba(100,20,20,0.35)',  border:'rgba(150,40,40,0.4)', glow:'rgba(100,20,20,0.15)', type:'bad'},
 ];
+const EM=Object.fromEntries(EMOTIONS.map(e=>[e.id,e]));
+const DAYS=[
+  {n:1,sub:'汐落星重建·第一日',theme:'寻找第一束治愈之光',        targets:['heal','gentle'],            avoids:['drain'],              spawn:1100,speed:52, max:7, time:45},
+  {n:2,sub:'落地生根',          theme:'温柔也是一种力量',          targets:['gentle','strength'],        avoids:['lonely'],             spawn:1000,speed:60, max:8, time:43},
+  {n:3,sub:'慢慢来',            theme:'以感恩之情充能',            targets:['heal','joy'],               avoids:['drain','beg'],        spawn:950, speed:66, max:9, time:42},
+  {n:4,sub:'心之所向',          theme:'不内耗的第一天',            targets:['strength','gentle'],        avoids:['drain','lonely'],     spawn:900, speed:73, max:9, time:40},
+  {n:5,sub:'温柔坚定',          theme:'同时收集快乐与力量',        targets:['joy','strength'],           avoids:['drain','beg','lonely'],spawn:830,speed:80, max:10,time:40},
+  {n:6,sub:'星光将至',          theme:'汐落星快要修好了',          targets:['heal','joy','gentle'],      avoids:['drain','lonely'],     spawn:760, speed:90, max:11,time:38},
+  {n:7,sub:'今天也是美好的一天',theme:'收集所有温暖，送回汐落星',   targets:['heal','gentle','strength','joy'],avoids:['drain'],       spawn:700, speed:100,max:12,time:40},
+];
+const DLG_GOOD=[
+  [{s:'汐弥',t:'喵~！今天的情感频率非常正！'},{s:'汐弥',t:'我把收集到的所有治愈，都打包送到汐落星了。'},{s:'汐弥',t:'……那颗星，又亮了一点点。'}],
+  [{s:'汐弥',t:'嗯！米娜桑们今天状态很好。'},{s:'汐弥',t:'我感受到了很多力量型情感——'},{s:'汐弥',t:'"温柔坚定"，这四个字，你们真的做到了。'}],
+  [{s:'汐弥',t:'收集量超标！汐弥能量条满了。'},{s:'汐弥',t:'这些情感对我来说都是食物，谢谢你们……'},{s:'汐弥',t:'（悄悄把多余的温柔塞进口袋）'}],
+  [{s:'汐弥',t:'今天完全没有内耗！'},{s:'汐弥',t:'不是因为情绪消失了，'},{s:'汐弥',t:'是因为每一种情绪，都被好好感受了。'}],
+  [{s:'汐弥',t:'七天的情感，汐弥全收到了。'},{s:'汐弥',t:'以情感为食的我，在地球，吃得很饱。'},{s:'汐弥',t:'……谢谢你陪着汐弥走完这七天。'}],
+];
+const DLG_OK=[
+  [{s:'汐弥',t:'还不错……今天的情感频率，我基本都读取到了。'},{s:'汐弥',t:'明天继续，好吗？'}],
+  [{s:'汐弥',t:'中途有几个内耗泡泡碰到了。'},{s:'汐弥',t:'没关系，内耗也是真实的——'},{s:'汐弥',t:'只是今天，它比治愈跑得更快。明天注意一下。'}],
+];
+const DLG_LOW=[
+  [{s:'旁白',t:'汐弥安静地坐着，尾巴慢慢地摇摆。'},{s:'汐弥',t:'……没关系的。'},{s:'汐弥',t:'今天能量不够，是因为今天本来就不容易。'},{s:'汐弥',t:'明天，我们再试一次。'}],
+];
+const END_TEXT=`七天过去了。\n\n汐弥站在窗边，看着夜空中那颗越来越亮的星。\n\n"汐落星……你听到了吗？"\n\n她把这七天收集到的所有温暖，\n全部握在爪子里，轻轻送出去。\n\n远处，一颗星闪了一下。\n\n"喵——"\n\n她笑了。\n\n"以情感为食的我，在地球，吃得很饱。"`;
 
-const DLG={
-  d_read:[
-    {s:'汐弥',t:'喵~ 你的情绪频率，我已经读取完毕了。',x:'scan'},
-    {s:'汐弥',t:'今天有人在问："为什么我开了直播，却还是觉得很孤独？"',x:'thoughtful'},
-    {s:'汐弥',t:'因为你在求回应，不在传递。这两件事，感觉完全不一样。',x:'warm'},
-    {s:'汐弥',t:'试试看——下次直播，先假装观众都不在。你还会说话吗？',x:'happy'},
-  ],
-  d_star:[
-    {s:'旁白',t:'汐弥闭上眼睛，将一束粉色的光送向遥远的汐落星。',x:'default'},
-    {s:'汐弥',t:'……喵，今天又重建了一点点。',x:'warm'},
-    {s:'汐弥',t:'汐落星被打碎之前，是整个星际最温暖的地方。',x:'thoughtful'},
-    {s:'汐弥',t:'我会把它修好的。用我在地球上收集到的所有温暖。',x:'happy'},
-  ],
-  d_charge:[
-    {s:'旁白',t:'汐弥张开双手，感受着今天流经网络的所有情感。',x:'default'},
-    {s:'汐弥',t:'嗯……有人在难过，有人在兴奋，有人在偷偷哭泣。',x:'thoughtful'},
-    {s:'汐弥',t:'我都感受到了。每一种情绪对我来说都是食物。',x:'scan'},
-    {s:'汐弥',t:'所以你放心——你的感受，从来没有被浪费过。',x:'warm'},
-  ],
-  d_stream:[
-    {s:'旁白',t:'汐弥对着镜子深呼吸，猫耳轻轻抖动。',x:'default'},
-    {s:'汐弥',t:'米娜桑今天会来吗？',x:'thoughtful'},
-    {s:'汐弥',t:'……不对。不是"会来吗"，是"来的人，我都很珍惜"。',x:'warm'},
-    {s:'汐弥',t:'不内耗的第一步，是把"求"字从心里去掉。准备好了，开播喵~',x:'happy'},
-  ],
-  d_letter:[
-    {s:'汐弥',t:'今天的信，写给那些正在内耗的主播。',x:'thoughtful'},
-    {s:'汐弥',t:'"你在直播间笑着，下播后却累到发呆——那不是假笑，是你给了太多。"',x:'warm'},
-    {s:'旁白',t:'汐弥用爪子蘸了蘸星尘墨水，认真地写下最后一行——',x:'default'},
-    {s:'汐弥',t:'"温柔坚定，不是矛盾。是给自己的盔甲，也是给别人的光。"',x:'happy'},
-  ],
-  d_walk:[
-    {s:'旁白',t:'汐弥漫步在地球的小区里，尾巴悄悄地摇摆着。',x:'default'},
-    {s:'汐弥',t:'地球有一种奇怪的气息……叫做"平静"。',x:'thoughtful'},
-    {s:'汐弥',t:'在汐落星，所有东西都在高速运转。没人教我怎么慢下来。',x:'warm'},
-    {s:'汐弥',t:'喵……也许，治愈别人之前，先治愈自己。这就是今天学到的。',x:'happy'},
-  ],
-};
+let curDay=1,energy=0,scores=[],combo=0,comboTimer=null;
+let bubbles=[],rafId=null,spawnTimer=null,countTimer=null,timeLeft=0;
+let dlgLines=[],dlgIdx=0;
 
-const DAY_SUBS=['','汐落星重建·第一日','落地生根','慢慢来','心之所向','温柔坚定','星光将至','今天也是美好的一天'];
-const SUM_MSGS=['','第一天，汐弥踩在地球的土地上，将第一束光送回了汐落星。','她慢慢发现，地球人的情感，比任何星际能量都丰富。','"不用着急。"汐弥写在日记里，"好的重建，需要时间。"','今天读到了很深的情绪频率。汐落星，又暖了一点点。','温柔坚定——这四个字，汐弥今天终于真正理解了。','快要了。汐弥感觉汐落星的星光，越来越近。','七天，满满的。每一天都算数，每一份情感都被感受了。'];
-const ENDING=`七天过去了。
+function $(id){return document.getElementById(id);}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');}
+function saveGame(){localStorage.setItem(SAVE,JSON.stringify({day:curDay,scores}));}
+function loadSave(){const d=localStorage.getItem(SAVE);return d?JSON.parse(d):null;}
 
-汐弥站在窗边，看着夜空中那颗越来越亮的星。
+function startNew(){localStorage.removeItem(SAVE);curDay=1;scores=[];showBrief();}
+function loadGame(){const s=loadSave();if(!s){startNew();return;}curDay=s.day;scores=s.scores;showBrief();}
 
-"汐落星……你听到了吗？"
+window.onload=()=>{const s=loadSave();if(s&&s.day>1)$('btn-cont').style.display='';};
 
-她把这七天收集到的所有温暖，
-全部握在爪子里，轻轻送出去。
+function showBrief(){
+  const d=DAYS[curDay-1];
+  $('br-label').textContent=`DAY ${d.n}`;
+  $('br-title').textContent=d.sub;
+  $('br-theme').textContent=d.theme;
+  const tt=$('br-targets');tt.innerHTML='';
+  d.targets.forEach(id=>{const e=EM[id];const t=document.createElement('div');t.className='em-tag';t.textContent=e.emoji+' '+e.name;t.style.cssText=`background:${e.bg};border-color:${e.border};color:#fff;`;tt.appendChild(t);});
+  const av=$('br-avoids');av.innerHTML='';
+  d.avoids.forEach(id=>{const e=EM[id];const t=document.createElement('div');t.className='em-tag';t.textContent=e.emoji+' '+e.name;t.style.cssText=`background:${e.bg};border-color:${e.border};color:#aaa;`;av.appendChild(t);});
+  show('sb');
+}
 
-远处，一颗星闪了一下。
+function startGame(){
+  const d=DAYS[curDay-1];
+  energy=0;combo=0;bubbles=[];
+  $('g-daylabel').textContent=`DAY ${d.n} · ${d.sub}`;
+  updateHUD();
+  show('sg');
+  timeLeft=d.time;
+  $('g-timer').textContent=timeLeft;
+  $('g-timer').classList.remove('warn');
+  clearAllBubbles();
+  spawnTimer=setInterval(()=>spawnBubble(d),d.spawn);
+  countTimer=setInterval(tick,1000);
+  rafId=requestAnimationFrame(()=>animFrame(d));
+}
 
-"喵——"
+function tick(){
+  timeLeft--;
+  $('g-timer').textContent=timeLeft;
+  if(timeLeft<=10)$('g-timer').classList.add('warn');
+  if(timeLeft<=0)endGame();
+}
 
-她笑了。
+function animFrame(d){
+  const field=$('g-field');
+  const fh=field.clientHeight;
+  bubbles=bubbles.filter(b=>{
+    if(!b.el.parentNode)return false;
+    b.y-=d.speed/60;
+    b.el.style.top=b.y+'px';
+    if(b.y<-80){b.el.remove();return false;}
+    return true;
+  });
+  rafId=requestAnimationFrame(()=>animFrame(d));
+}
 
-"以情感为食的我，在地球，吃得很饱。"
+function buildPool(d){
+  const pool=[];
+  d.targets.forEach(id=>{pool.push(id,id,id);});
+  d.avoids.forEach(id=>{pool.push(id);});
+  return pool;
+}
 
-✦ The End ✦`;
+function spawnBubble(d){
+  const field=$('g-field');
+  if(bubbles.length>=d.max)return;
+  const pool=buildPool(d);
+  const id=pool[Math.floor(Math.random()*pool.length)];
+  const em=EM[id];
+  const size=50+Math.floor(Math.random()*18);
+  const fw=field.clientWidth;
+  const minX=135,maxX=fw-size-10;
+  const x=minX+Math.random()*(maxX-minX);
+  const y=field.clientHeight-size-5;
+  const el=document.createElement('div');
+  el.className='bubble';
+  el.style.cssText=`width:${size}px;height:${size}px;left:${x}px;top:${y}px;background:${em.bg};border-color:${em.border};box-shadow:0 0 10px ${em.glow};`;
+  el.innerHTML=`<div class="b-emoji">${em.emoji}</div><div class="b-name">${em.name}</div>`;
+  el.addEventListener('click',e=>{e.stopPropagation();clickBubble(el,em,x+size/2,y+size/2);});
+  field.appendChild(el);
+  bubbles.push({el,y,id});
+}
 
-const EXPRS={
-  happy:{l:'happy',r:'happy'},
-  thoughtful:{l:'',r:''},
-  warm:{l:'warm',r:'warm'},
-  sleepy:{l:'closed',r:'closed'},
-  scan:{l:'scan',r:'scan'},
-  narrator:{l:'',r:''},
-  default:{l:'',r:''},
-};
+function clickBubble(el,em,cx,cy){
+  if(!el.parentNode)return;
+  const idx=bubbles.findIndex(b=>b.el===el);
+  if(idx>-1)bubbles.splice(idx,1);
+  el.classList.add('burst');
+  setTimeout(()=>el.remove(),300);
+  const port=$('g-portrait');
+  if(em.type==='good'){
+    clearTimeout(comboTimer);
+    combo++;
+    comboTimer=setTimeout(()=>{combo=0;},1500);
+    const mult=combo>=5?3:combo>=3?2:1;
+    const gain=6*mult;
+    energy=Math.min(100,energy+gain);
+    port.classList.remove('hit-good','hit-bad');void port.offsetWidth;port.classList.add('hit-good');
+    showPop(cx,cy,`+${gain}${combo>=3?' x'+mult:''}`,combo>=5?'#ffd700':combo>=3?'#ff6eb4':'#90ee90');
+  } else {
+    combo=0;
+    energy=Math.max(0,energy-5);
+    port.classList.remove('hit-good','hit-bad');void port.offsetWidth;port.classList.add('hit-bad');
+    showPop(cx,cy,'-5','#ff4444');
+  }
+  updateHUD();
+}
 
-// ══ PARTICLES ═════════════════════════════════════════════════════════
-function spawnParticle(){
+function showPop(x,y,txt,color){
+  const field=$('g-field');
   const p=document.createElement('div');
-  p.className='particle';
-  const size=1+Math.random()*3;
-  const isPink=Math.random()>0.5;
-  p.style.cssText=`
-    width:${size}px;height:${size}px;
-    left:${Math.random()*100}vw;
-    background:${isPink?'rgba(255,0,128,0.7)':'rgba(244,160,192,0.5)'};
-    box-shadow:0 0 ${size*2}px ${isPink?'rgba(255,0,128,0.5)':'rgba(244,160,192,0.4)'};
-    animation-duration:${4+Math.random()*6}s;
-    animation-delay:${Math.random()*5}s;
-  `;
-  document.getElementById('bgp').appendChild(p);
-  setTimeout(()=>p.remove(),(10+Math.random()*6)*1000);
-}
-setInterval(spawnParticle,600);
-for(let i=0;i<12;i++) spawnParticle();
-
-// ══ STATE ═════════════════════════════════════════════════════════════
-const SAVE='ximi_v3';
-let gs={day:1,sel:[],done:[]};
-function save(){localStorage.setItem(SAVE,JSON.stringify(gs));}
-function load(){try{return JSON.parse(localStorage.getItem(SAVE));}catch{return null;}}
-function clear(){localStorage.removeItem(SAVE);}
-
-// ══ SCREEN ════════════════════════════════════════════════════════════
-function show(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active','in'));
-  const el=document.getElementById(id);
-  el.classList.add('active','in');
+  p.className='score-pop';
+  p.textContent=txt;
+  p.style.cssText=`left:${x}px;top:${y}px;color:${color};transform:translateX(-50%);`;
+  field.appendChild(p);
+  setTimeout(()=>p.remove(),950);
 }
 
-// ══ EXPRESSION ════════════════════════════════════════════════════════
-function setExpr(lId,rId,expr){
-  const e=EXPRS[expr]||EXPRS.default;
-  const l=document.getElementById(lId);
-  const r=document.getElementById(rId);
-  if(l){l.className='eye'+(e.l?' '+e.l:'');}
-  if(r){r.className='eye'+(e.r?' '+e.r:'');}
-}
-function reactXimi(el,type){
-  if(!el)return;
-  el.classList.remove('react-happy','react-pulse');
-  void el.offsetWidth;
-  el.classList.add('react-'+type);
-  setTimeout(()=>el.classList.remove('react-'+type),500);
+function updateHUD(){
+  $('g-bar').style.width=energy+'%';
+  $('g-pct').textContent=Math.round(energy)+'%';
 }
 
-// ══ TITLE ═════════════════════════════════════════════════════════════
-function initTitle(){
-  const sv=load();
-  if(sv&&sv.day>1&&sv.day<=7) document.getElementById('btn-c').style.display='inline-block';
-  document.getElementById('btn-s').onclick=()=>{clear();gs={day:1,sel:[],done:[]};startDay();};
-  document.getElementById('btn-c').onclick=()=>{gs=load();startDay();};
+function clearAllBubbles(){
+  const field=$('g-field');
+  bubbles.forEach(b=>{if(b.el.parentNode)b.el.remove();});
+  bubbles=[];
 }
 
-// ══ CONSTELLATION ═════════════════════════════════════════════════════
-const CX=150,CY=150,R=105;
-const ANGLES=[270,330,30,90,150,210];
-
-function buildConstellation(){
-  const cw=document.getElementById('cw');
-  // Remove old orbs
-  cw.querySelectorAll('.orb').forEach(o=>o.remove());
-  // Draw SVG lines
-  const svg=document.getElementById('const-svg');
-  svg.innerHTML='';
-  // hexagon lines
-  for(let i=0;i<6;i++){
-    const a0=ANGLES[i]*Math.PI/180;
-    const a1=ANGLES[(i+1)%6]*Math.PI/180;
-    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',CX+R*Math.cos(a0));
-    line.setAttribute('y1',CY+R*Math.sin(a0));
-    line.setAttribute('x2',CX+R*Math.cos(a1));
-    line.setAttribute('y2',CY+R*Math.sin(a1));
-    line.className.baseVal='const-line';
-    line.dataset.pair=i+'-'+((i+1)%6);
-    svg.appendChild(line);
-  }
-  // center lines
-  for(let i=0;i<6;i++){
-    const a=ANGLES[i]*Math.PI/180;
-    const line=document.createElementNS('http://www.w3.org/2000/svg','line');
-    line.setAttribute('x1',CX); line.setAttribute('y1',CY);
-    line.setAttribute('x2',CX+R*Math.cos(a));
-    line.setAttribute('y2',CY+R*Math.sin(a));
-    line.className.baseVal='const-line';
-    line.dataset.center=i;
-    svg.appendChild(line);
-  }
-  // Create orbs
-  ACTS.forEach((act,i)=>{
-    const angle=ANGLES[i]*Math.PI/180;
-    const x=CX+R*Math.cos(angle);
-    const y=CY+R*Math.sin(angle);
-    const orb=document.createElement('div');
-    orb.className='orb';
-    orb.dataset.id=act.id;
-    orb.style.left=x+'px';
-    orb.style.top=y+'px';
-    orb.innerHTML=`
-      <div class="orb-inner">
-        <div class="orb-icon">${act.icon}</div>
-        <div class="orb-tooltip">${act.desc}</div>
-      </div>
-      <div class="orb-name">${act.name}</div>
-    `;
-    orb.onclick=()=>toggleAct(act.id);
-    cw.appendChild(orb);
-  });
-  updateOrbs();
+function endGame(){
+  clearInterval(spawnTimer);clearInterval(countTimer);cancelAnimationFrame(rafId);
+  clearAllBubbles();
+  scores[curDay-1]=Math.round(energy);
+  saveGame();
+  showDialogue();
 }
 
-function updateOrbs(){
-  const orbs=document.querySelectorAll('.orb');
-  orbs.forEach(orb=>{
-    const id=orb.dataset.id;
-    const sel=gs.sel.includes(id);
-    const full=gs.sel.length>=3&&!sel;
-    orb.className='orb'+(sel?' selected':'')+(full?' disabled':'');
-  });
-  // Update SVG lines
-  const svg=document.getElementById('const-svg');
-  svg.querySelectorAll('[data-center]').forEach(line=>{
-    const i=parseInt(line.dataset.center);
-    const actId=ACTS[i].id;
-    const sel=gs.sel.includes(actId);
-    line.className.baseVal='const-line'+(sel?' active':'');
-  });
-  // Update center eyes
-  if(gs.sel.length===0) setExpr('c-el','c-er','default');
-  else if(gs.sel.length===3) setExpr('c-el','c-er','happy');
-  else setExpr('c-el','c-er','thoughtful');
-}
-
-// ══ DAY ═══════════════════════════════════════════════════════════════
-function startDay(){
-  gs.sel=[];
-  document.getElementById('day-badge').textContent='第 '+gs.day+' 天';
-  document.getElementById('day-subtitle').textContent=DAY_SUBS[gs.day]||'';
-  renderSlots();
-  buildConstellation();
-  const btn=document.getElementById('btn-confirm');
-  btn.disabled=true;
-  btn.onclick=startDlgs;
-  show('sd');
-}
-
-function renderSlots(){
-  const row=document.getElementById('slots-row');
-  row.innerHTML='';
-  for(let i=0;i<3;i++){
-    const d=document.createElement('div');
-    const id=gs.sel[i];
-    d.className='slot'+(id?' filled':'');
-    d.textContent=id?(ACTS.find(a=>a.id===id)?.icon||'？'):'？';
-    row.appendChild(d);
-  }
-}
-
-function toggleAct(id){
-  const i=gs.sel.indexOf(id);
-  if(i>=0) gs.sel.splice(i,1);
-  else if(gs.sel.length<3) gs.sel.push(id);
-  document.getElementById('btn-confirm').disabled=gs.sel.length!==3;
-  renderSlots();
-  updateOrbs();
-  reactXimi(document.getElementById('center-ximi'),gs.sel.length===3?'happy':'pulse');
-}
-
-// ══ DIALOGUE ══════════════════════════════════════════════════════════
-let dQ=[],dQi=0,dLi=0,typing=false,curTxt='',timer=null;
-
-function startDlgs(){
-  dQ=gs.sel.map(id=>{
-    const a=ACTS.find(x=>x.id===id);
-    return{lines:DLG[a.dlg]||[],name:a.name,icon:a.icon};
-  });
-  dQi=0;dLi=0;
+function showDialogue(){
+  const sc=scores[curDay-1];
+  let pool;
+  if(sc>=80)pool=DLG_GOOD[Math.min(curDay-1,DLG_GOOD.length-1)];
+  else if(sc>=50)pool=DLG_OK[Math.floor(Math.random()*DLG_OK.length)];
+  else pool=DLG_LOW[0];
+  dlgLines=pool;dlgIdx=0;
+  renderLine();
   show('sdlg');
-  nextDlg();
 }
 
-function nextDlg(){
-  if(dQi>=dQ.length){showSum();return;}
-  document.getElementById('dlg-badge').textContent='✦ '+dQ[dQi].name;
-  dLi=0;showLine();
+function renderLine(){
+  const l=dlgLines[dlgIdx];
+  $('dlg-speaker').textContent=l.s;
+  $('dlg-text').textContent=l.t;
 }
 
-function showLine(){
-  const lines=dQ[dQi].lines;
-  if(dLi>=lines.length){dQi++;nextDlg();return;}
-  const ln=lines[dLi];
-  setExpr('d-el','d-er',ln.x);
-  reactXimi(document.getElementById('dlg-ximi'),ln.x==='happy'?'happy':'pulse');
-  const spkr=document.getElementById('dlg-spkr');
-  spkr.textContent=ln.s==='旁白'?'':ln.s;
-  spkr.style.opacity=ln.s==='旁白'?'0':'1';
-  const tc=document.getElementById('dlg-tc');
-  const cur=document.getElementById('dlg-cur');
-  tc.textContent='';
-  cur.style.display='inline-block';
-  typing=true;curTxt=ln.t;
-  let i=0;clearInterval(timer);
-  timer=setInterval(()=>{
-    if(i<curTxt.length){tc.textContent+=curTxt[i++];}
-    else{clearInterval(timer);typing=false;cur.style.display='none';}
-  },34);
-}
-
-document.getElementById('sdlg').onclick=()=>{
-  if(typing){
-    clearInterval(timer);typing=false;
-    document.getElementById('dlg-tc').textContent=curTxt;
-    document.getElementById('dlg-cur').style.display='none';
-    return;
-  }
-  dLi++;showLine();
+window.nextLine=function(){
+  dlgIdx++;
+  if(dlgIdx<dlgLines.length){renderLine();return;}
+  showSummary();
 };
 
-// ══ SUMMARY ═══════════════════════════════════════════════════════════
-function showSum(){
-  document.getElementById('sum-icons').innerHTML=
-    gs.sel.map(id=>`<div class="sum-icon-wrap">${ACTS.find(a=>a.id===id)?.icon||''}</div>`).join('');
-  document.getElementById('sum-msg').textContent=SUM_MSGS[gs.day]||'今天也辛苦了。';
-  const btn=document.getElementById('btn-next');
-  if(gs.day>=7){btn.textContent='查看结局 ✦';btn.onclick=showEnd;}
-  else{btn.textContent='明天继续 →';btn.onclick=()=>{gs.done.push(gs.day);gs.day++;save();startDay();};}
+function showSummary(){
+  const sc=scores[curDay-1];
+  $('sum-label').textContent=`DAY ${curDay} 完成`;
+  $('sum-pct').textContent=sc+'%';
+  $('sum-stars').textContent=sc>=85?'★★★':sc>=65?'★★☆':sc>=45?'★☆☆':'☆☆☆';
+  const msgs={85:'完美收集！汐落星的光又亮了一格。',65:'做得不错！继续加油。',45:'还可以，明天会更好。',0:'今天有点难……但汐弥还在。'};
+  const keys=Object.keys(msgs).map(Number).sort((a,b)=>b-a);
+  $('sum-msg').textContent=msgs[keys.find(k=>sc>=k)??0];
+  if(curDay===7)$('sum-btn').textContent='查看结局 ✦';
+  else $('sum-btn').textContent=`第${curDay+1}天继续 →`;
   show('ssum');
 }
 
-// ══ ENDING ════════════════════════════════════════════════════════════
-function showEnd(){
-  document.getElementById('end-txt').textContent=ENDING;
-  document.getElementById('btn-restart').onclick=()=>{
-    clear();gs={day:1,sel:[],done:[]};
-    document.getElementById('btn-c').style.display='none';
-    show('st');
-  };
+window.sumNext=function(){
+  if(curDay===7){showEnding();return;}
+  curDay++;
+  saveGame();
+  showBrief();
+};
+
+function showEnding(){
+  $('end-text').textContent=END_TEXT;
   show('send');
 }
 
-// ══ INIT ══════════════════════════════════════════════════════════════
-initTitle();
+window.startNew=startNew;
+window.loadGame=loadGame;
+window.startGame=startGame;
 </script>
 </body>
 </html>
