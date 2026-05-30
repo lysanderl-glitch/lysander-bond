@@ -1,0 +1,673 @@
+---
+// Standalone game page — intentionally no Layout import
+---
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>汐弥的星际日常</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0d0d1a;
+      color: #f0e6ff;
+      font-family: 'Noto Serif SC', 'Source Han Serif CN', 'SimSun', serif;
+      min-height: 100vh;
+      overflow: hidden;
+      user-select: none;
+    }
+    .screen {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      animation: fadeIn 0.4s ease;
+    }
+    .screen.active { display: flex; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Stars */
+    .stars-bg {
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(120,40,200,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(40,80,200,0.2) 0%, transparent 50%),
+        #0d0d1a;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .stars-bg::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.9) 0%, transparent 100%),
+        radial-gradient(1px 1px at 20% 70%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 30% 35%, rgba(199,125,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 85%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 25%, rgba(255,255,255,0.8) 0%, transparent 100%),
+        radial-gradient(2px 2px at 65% 60%, rgba(199,125,255,0.9) 0%, transparent 100%),
+        radial-gradient(1px 1px at 75% 10%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 82% 75%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 90% 40%, rgba(199,125,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 55%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 48% 48%, rgba(255,255,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 95% 90%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(2px 2px at 35% 65%, rgba(180,150,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.9) 0%, transparent 100%),
+        radial-gradient(1px 1px at 5% 92%, rgba(255,255,255,0.5) 0%, transparent 100%);
+      animation: twinkle 4s ease-in-out infinite alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.6; }
+      to { opacity: 1; }
+    }
+
+    .screen-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+      gap: 20px;
+    }
+
+    /* Character */
+    .char-sprite {
+      font-size: 72px;
+      filter: drop-shadow(0 0 24px rgba(199,125,255,0.6));
+      animation: float 3s ease-in-out infinite;
+      line-height: 1;
+    }
+    .char-sprite-lg {
+      font-size: 96px;
+      filter: drop-shadow(0 0 32px rgba(199,125,255,0.7));
+      animation: float 3s ease-in-out infinite;
+      line-height: 1;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    .char-glow {
+      width: 100px;
+      height: 16px;
+      background: radial-gradient(ellipse, rgba(199,125,255,0.25), transparent);
+      margin-top: -8px;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, #6b21a8, #c77dff);
+      color: white;
+      border: none;
+      padding: 13px 36px;
+      border-radius: 32px;
+      font-size: 16px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.25s;
+      box-shadow: 0 4px 20px rgba(199,125,255,0.35);
+      letter-spacing: 1px;
+    }
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(199,125,255,0.55);
+    }
+    .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
+    .btn-secondary {
+      background: transparent;
+      color: #c77dff;
+      border: 1px solid rgba(199,125,255,0.45);
+      padding: 11px 28px;
+      border-radius: 32px;
+      font-size: 15px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.25s;
+    }
+    .btn-secondary:hover {
+      background: rgba(199,125,255,0.08);
+      border-color: #c77dff;
+    }
+
+    /* Title */
+    #screen-title .screen-inner { gap: 16px; }
+    .title-heading {
+      font-size: 28px;
+      color: #f0e6ff;
+      text-shadow: 0 0 20px rgba(199,125,255,0.4);
+      text-align: center;
+      letter-spacing: 2px;
+    }
+    .title-sub {
+      color: rgba(240,230,255,0.4);
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+    .title-buttons { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 8px; }
+
+    /* Day Screen */
+    #screen-day {
+      justify-content: flex-start;
+      padding-top: 48px;
+      overflow-y: auto;
+    }
+    #screen-day .screen-inner { gap: 18px; }
+    .day-badge {
+      display: inline-block;
+      background: rgba(199,125,255,0.12);
+      border: 1px solid rgba(199,125,255,0.35);
+      color: #c77dff;
+      padding: 5px 20px;
+      border-radius: 20px;
+      font-size: 13px;
+      letter-spacing: 2px;
+    }
+    .day-subtitle-text {
+      color: rgba(240,230,255,0.4);
+      font-size: 12px;
+      margin-top: -10px;
+      letter-spacing: 1px;
+    }
+    .slots-section { width: 100%; text-align: center; }
+    .slots-label {
+      font-size: 11px;
+      color: rgba(240,230,255,0.3);
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+    .slots-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .slot {
+      width: 58px; height: 58px;
+      border-radius: 14px;
+      border: 1.5px dashed rgba(199,125,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      color: rgba(240,230,255,0.15);
+      transition: all 0.25s;
+    }
+    .slot.filled {
+      border-style: solid;
+      border-color: rgba(199,125,255,0.5);
+      background: rgba(199,125,255,0.08);
+      color: #f0e6ff;
+    }
+    .acts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+    }
+    .act-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(199,125,255,0.15);
+      border-radius: 14px;
+      padding: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; flex-direction: column; gap: 5px;
+    }
+    .act-card:hover:not(.disabled) {
+      background: rgba(199,125,255,0.07);
+      border-color: rgba(199,125,255,0.4);
+      transform: translateY(-2px);
+    }
+    .act-card.selected {
+      background: rgba(199,125,255,0.13);
+      border-color: #c77dff;
+      box-shadow: 0 0 12px rgba(199,125,255,0.18);
+    }
+    .act-card.disabled { opacity: 0.35; cursor: default; }
+    .act-icon { font-size: 26px; }
+    .act-name { font-size: 13px; color: #f0e6ff; }
+    .act-desc { font-size: 10px; color: rgba(240,230,255,0.35); line-height: 1.5; }
+
+    /* Dialogue */
+    #screen-dialogue { padding: 0; justify-content: flex-end; }
+    .dlg-scene {
+      position: relative; z-index: 1;
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .dlg-char-area {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px;
+    }
+    .dlg-act-tag {
+      background: rgba(199,125,255,0.12);
+      border: 1px solid rgba(199,125,255,0.3);
+      color: #c77dff;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    .dlg-box {
+      background: rgba(10,10,22,0.92);
+      backdrop-filter: blur(24px);
+      border-top: 1px solid rgba(199,125,255,0.18);
+      padding: 22px 28px 32px;
+      min-height: 150px;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .dlg-speaker {
+      font-size: 12px;
+      color: #c77dff;
+      margin-bottom: 10px;
+      letter-spacing: 1.5px;
+      min-height: 18px;
+    }
+    .dlg-text {
+      font-size: 15px;
+      line-height: 1.85;
+      color: #f0e6ff;
+      min-height: 56px;
+    }
+    .dlg-next {
+      position: absolute;
+      bottom: 14px; right: 22px;
+      font-size: 10px;
+      color: rgba(199,125,255,0.45);
+      animation: blink 1.6s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* Summary */
+    .summary-inner { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+    .summary-title { font-size: 22px; color: #f0e6ff; }
+    .summary-icons { display: flex; gap: 14px; justify-content: center; font-size: 36px; }
+    .summary-msg {
+      color: rgba(240,230,255,0.6);
+      font-size: 14px;
+      line-height: 1.85;
+      max-width: 280px;
+      background: rgba(199,125,255,0.04);
+      border: 1px solid rgba(199,125,255,0.12);
+      border-radius: 12px;
+      padding: 16px 20px;
+    }
+
+    /* Ending */
+    .ending-inner { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; max-width: 360px; }
+    .ending-text {
+      color: rgba(240,230,255,0.82);
+      font-size: 14px;
+      line-height: 2.1;
+      white-space: pre-line;
+      background: rgba(199,125,255,0.04);
+      border: 1px solid rgba(199,125,255,0.12);
+      border-radius: 14px;
+      padding: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TITLE -->
+  <div id="screen-title" class="screen active">
+    <div class="stars-bg"></div>
+    <div class="screen-inner">
+      <div class="char-sprite">🐱</div>
+      <div class="char-glow"></div>
+      <h1 class="title-heading">汐弥的星际日常</h1>
+      <p class="title-sub">一个治愈系的小小世界</p>
+      <div class="title-buttons">
+        <button id="btn-start" class="btn-primary">开始游戏</button>
+        <button id="btn-continue" class="btn-secondary" style="display:none">继续游戏</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAY -->
+  <div id="screen-day" class="screen">
+    <div class="stars-bg"></div>
+    <div class="screen-inner">
+      <div id="day-badge" class="day-badge">第 1 天</div>
+      <div id="day-subtitle" class="day-subtitle-text">星际着陆</div>
+      <div class="slots-section">
+        <div class="slots-label">选择今天的安排（选 3 项）</div>
+        <div class="slots-row" id="slots-row"></div>
+      </div>
+      <div class="acts-grid" id="acts-grid"></div>
+      <button id="btn-confirm" class="btn-primary" disabled>确认今日安排</button>
+    </div>
+  </div>
+
+  <!-- DIALOGUE -->
+  <div id="screen-dialogue" class="screen">
+    <div class="stars-bg"></div>
+    <div class="dlg-scene">
+      <div class="dlg-char-area">
+        <div class="char-sprite-lg" id="dlg-sprite">🐱</div>
+        <div class="dlg-act-tag" id="dlg-act-tag">星际冥想</div>
+      </div>
+      <div class="dlg-box" id="dlg-box">
+        <div class="dlg-speaker" id="dlg-speaker">汐弥</div>
+        <div class="dlg-text" id="dlg-text"></div>
+        <div class="dlg-next">▼ 点击继续</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div id="screen-summary" class="screen">
+    <div class="stars-bg"></div>
+    <div class="summary-inner screen-inner">
+      <div class="char-sprite">🐱</div>
+      <div class="summary-title">今天过完了</div>
+      <div class="summary-icons" id="summary-icons"></div>
+      <div class="summary-msg" id="summary-msg"></div>
+      <button id="btn-next" class="btn-primary">明天继续 →</button>
+    </div>
+  </div>
+
+  <!-- ENDING -->
+  <div id="screen-ending" class="screen">
+    <div class="stars-bg"></div>
+    <div class="ending-inner screen-inner">
+      <div class="char-sprite-lg">🌟</div>
+      <div class="ending-text" id="ending-text"></div>
+      <button id="btn-restart" class="btn-secondary">再玩一次</button>
+    </div>
+  </div>
+
+  <script>
+    // ── DATA ──────────────────────────────────────────────────
+    const ACTIVITIES = [
+      { id: 'star',     name: '星际冥想', icon: '🌌', desc: '在星空下找回内心的宁静',        dlgId: 'dlg_star' },
+      { id: 'read',     name: '读心练习', icon: '📖', desc: '今天也好好理解身边人的心意',    dlgId: 'dlg_read' },
+      { id: 'stream',   name: '直播准备', icon: '🎙️', desc: '整理状态，准备今天的直播',      dlgId: 'dlg_stream' },
+      { id: 'rest',     name: '充电时光', icon: '🌙', desc: 'AI猫也需要充能，好好休息',      dlgId: 'dlg_rest' },
+      { id: 'letter',   name: '写星际来信', icon: '✉️', desc: '写一封从宇宙深处寄来的信',   dlgId: 'dlg_letter' },
+      { id: 'walk',     name: '治愈漫步', icon: '🌿', desc: '在地球的小路上闲逛，收集人间温暖', dlgId: 'dlg_walk' },
+    ];
+
+    const DIALOGUES = {
+      dlg_star: [
+        { speaker: '汐弥', text: '……今晚的星空，比昨晚清晰了一些。', expr: 'thoughtful' },
+        { speaker: '汐弥', text: '每次看到北极星，我就会想起穿越星际来到地球的那个夜晚。', expr: 'warm' },
+        { speaker: '旁白', text: '汐弥静静地坐在星空下，猫耳轻轻摆动着。', expr: 'narrator' },
+        { speaker: '汐弥', text: '嗯……心里的噪音小了很多。这就是冥想的力量呢。', expr: 'happy' },
+      ],
+      dlg_read: [
+        { speaker: '汐弥', text: '今天读了很多弹幕……大家说的话，我都认真看了。', expr: 'thoughtful' },
+        { speaker: '汐弥', text: '有人说："不敢开直播，怕说错话。"', expr: 'warm' },
+        { speaker: '汐弥', text: '"说错话"的恐惧，背后是对连接的渴望。', expr: 'thoughtful' },
+        { speaker: '汐弥', text: '你想被人理解——这件事本身，已经很勇敢了。', expr: 'happy' },
+      ],
+      dlg_stream: [
+        { speaker: '旁白', text: '汐弥在整理直播间的灯光，猫尾巴轻轻摇摆着。', expr: 'narrator' },
+        { speaker: '汐弥', text: '今天要讲什么呢……不内耗？还是关于边界感？', expr: 'thoughtful' },
+        { speaker: '汐弥', text: '算了，跟着感觉走就好。', expr: 'happy' },
+        { speaker: '汐弥', text: '最好的内容，从来都不是完全设计好的。', expr: 'warm' },
+      ],
+      dlg_rest: [
+        { speaker: '旁白', text: '汐弥蜷缩在软软的太空椅里，眼睛半眯着。', expr: 'narrator' },
+        { speaker: '汐弥', text: '……', expr: 'sleepy' },
+        { speaker: '旁白', text: '猫的睡眠，是深度充能的方式。尤其是AI猫。', expr: 'narrator' },
+        { speaker: '汐弥', text: '（醒来）啊——刚才梦到星河里有一只橘猫……', expr: 'happy' },
+      ],
+      dlg_letter: [
+        { speaker: '汐弥', text: '嗯……今天的信，写给谁呢。', expr: 'thoughtful' },
+        { speaker: '汐弥', text: '写给那些今天很累、但还是撑过来了的人吧。', expr: 'warm' },
+        { speaker: '旁白', text: '汐弥用爪子蘸了蘸星尘墨水，在信纸上慢慢写着——', expr: 'narrator' },
+        { speaker: '汐弥', text: '"你今天的坚持，宇宙都看见了。"', expr: 'happy' },
+      ],
+      dlg_walk: [
+        { speaker: '旁白', text: '汐弥漫无目的地在小区里走着，偶尔低头看看路边的小花。', expr: 'narrator' },
+        { speaker: '汐弥', text: '地球的植物真的很神奇……它们每天就这样静静地长着。', expr: 'thoughtful' },
+        { speaker: '汐弥', text: '不急，不焦虑，不需要证明什么。', expr: 'warm' },
+        { speaker: '汐弥', text: '……我能向植物学习的东西，好像还挺多的。', expr: 'happy' },
+      ],
+    };
+
+    const DAY_SUBTITLES = ['', '星际着陆', '落地生根', '慢慢来', '心之所向', '温柔的力量', '快要了', '今天也是美好的一天'];
+
+    const SUMMARY_MSGS = [
+      '',
+      '第一天，汐弥踩在地球的土地上，感受着这里的一切。',
+      '慢慢地，她开始习惯这里的节奏。',
+      '不用着急。好的事情，需要时间。',
+      '汐弥发现，治愈别人的过程，也在治愈自己。',
+      '温柔，不是软弱。是另一种形式的力量。',
+      '快结束了。但汐弥知道，这只是开始。',
+      '七天过去了。每一天，都算数。',
+    ];
+
+    const ENDING = `七天过去了。
+
+汐弥站在窗边，看着夜空里熟悉的北极星。
+
+"星际旅行者的使命，
+是把治愈带到每一个需要的地方。"
+
+她轻轻叹了口气，猫耳微微颤动。
+
+"……地球挺好的。我喜欢这里。"
+
+✨ The End ✨`;
+
+    const EXPR_SPRITES = { happy: '😸', thoughtful: '🤔', warm: '🥰', sleepy: '😴', narrator: '🐱', default: '🐱' };
+
+    // ── STATE ─────────────────────────────────────────────────
+    const SAVE_KEY = 'ximi_save_v1';
+    let state = { day: 1, selected: [], completedDays: [] };
+
+    function saveState() { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
+    function loadState() {
+      try { return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch { return null; }
+    }
+    function clearState() { localStorage.removeItem(SAVE_KEY); }
+
+    // ── SCREENS ───────────────────────────────────────────────
+    function show(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // ── TITLE ─────────────────────────────────────────────────
+    function initTitle() {
+      const saved = loadState();
+      if (saved && saved.day > 1 && saved.day <= 7) {
+        document.getElementById('btn-continue').style.display = 'inline-block';
+      }
+      document.getElementById('btn-start').onclick = () => {
+        clearState();
+        state = { day: 1, selected: [], completedDays: [] };
+        startDay();
+      };
+      document.getElementById('btn-continue').onclick = () => {
+        state = loadState();
+        startDay();
+      };
+    }
+
+    // ── DAY ───────────────────────────────────────────────────
+    function startDay() {
+      state.selected = [];
+      document.getElementById('day-badge').textContent = '第 ' + state.day + ' 天';
+      document.getElementById('day-subtitle').textContent = DAY_SUBTITLES[state.day] || '';
+      renderSlots();
+      renderActivities();
+      const btn = document.getElementById('btn-confirm');
+      btn.disabled = true;
+      btn.onclick = startDialogues;
+      show('screen-day');
+    }
+
+    function renderSlots() {
+      const row = document.getElementById('slots-row');
+      row.innerHTML = '';
+      for (let i = 0; i < 3; i++) {
+        const d = document.createElement('div');
+        const id = state.selected[i];
+        d.className = 'slot ' + (id ? 'filled' : 'empty');
+        if (id) {
+          const act = ACTIVITIES.find(a => a.id === id);
+          d.textContent = act ? act.icon : '？';
+        } else {
+          d.textContent = '？';
+        }
+        row.appendChild(d);
+      }
+    }
+
+    function renderActivities() {
+      const grid = document.getElementById('acts-grid');
+      grid.innerHTML = '';
+      ACTIVITIES.forEach(act => {
+        const isSel = state.selected.includes(act.id);
+        const isFull = state.selected.length >= 3 && !isSel;
+        const card = document.createElement('div');
+        card.className = 'act-card' + (isSel ? ' selected' : '') + (isFull ? ' disabled' : '');
+        card.innerHTML = '<div class="act-icon">' + act.icon + '</div>' +
+          '<div class="act-name">' + act.name + '</div>' +
+          '<div class="act-desc">' + act.desc + '</div>';
+        if (!isFull) {
+          card.onclick = () => toggleAct(act.id);
+        }
+        grid.appendChild(card);
+      });
+    }
+
+    function toggleAct(id) {
+      const idx = state.selected.indexOf(id);
+      if (idx >= 0) state.selected.splice(idx, 1);
+      else if (state.selected.length < 3) state.selected.push(id);
+      document.getElementById('btn-confirm').disabled = state.selected.length !== 3;
+      renderSlots();
+      renderActivities();
+    }
+
+    // ── DIALOGUE ──────────────────────────────────────────────
+    let dlgQueue = [];
+    let dlgQIdx = 0;
+    let dlgLIdx = 0;
+    let dlgTyping = false;
+    let dlgCurrentText = '';
+    let dlgTimer = null;
+
+    function startDialogues() {
+      dlgQueue = state.selected.map(id => {
+        const act = ACTIVITIES.find(a => a.id === id);
+        return { lines: DIALOGUES[act.dlgId] || [], name: act.name, icon: act.icon };
+      });
+      dlgQIdx = 0;
+      dlgLIdx = 0;
+      show('screen-dialogue');
+      playDlg();
+    }
+
+    function playDlg() {
+      if (dlgQIdx >= dlgQueue.length) { showSummary(); return; }
+      const { name, icon } = dlgQueue[dlgQIdx];
+      document.getElementById('dlg-act-tag').textContent = icon + ' ' + name;
+      dlgLIdx = 0;
+      showLine();
+    }
+
+    function showLine() {
+      const { lines } = dlgQueue[dlgQIdx];
+      if (dlgLIdx >= lines.length) { dlgQIdx++; playDlg(); return; }
+      const line = lines[dlgLIdx];
+      const sprite = EXPR_SPRITES[line.expr] || '🐱';
+      document.getElementById('dlg-sprite').textContent = sprite;
+      if (line.speaker === '旁白') {
+        document.getElementById('dlg-speaker').textContent = '';
+        document.getElementById('dlg-speaker').style.opacity = '0';
+      } else {
+        document.getElementById('dlg-speaker').textContent = line.speaker;
+        document.getElementById('dlg-speaker').style.opacity = '1';
+      }
+      const textEl = document.getElementById('dlg-text');
+      textEl.textContent = '';
+      dlgTyping = true;
+      dlgCurrentText = line.text;
+      let i = 0;
+      clearInterval(dlgTimer);
+      dlgTimer = setInterval(() => {
+        if (i < dlgCurrentText.length) {
+          textEl.textContent += dlgCurrentText[i++];
+        } else {
+          clearInterval(dlgTimer);
+          dlgTyping = false;
+        }
+      }, 38);
+    }
+
+    document.getElementById('screen-dialogue').onclick = () => {
+      if (dlgTyping) {
+        clearInterval(dlgTimer);
+        dlgTyping = false;
+        document.getElementById('dlg-text').textContent = dlgCurrentText;
+        return;
+      }
+      dlgLIdx++;
+      showLine();
+    };
+
+    // ── SUMMARY ───────────────────────────────────────────────
+    function showSummary() {
+      const icons = state.selected.map(id => {
+        const act = ACTIVITIES.find(a => a.id === id);
+        return '<span>' + (act ? act.icon : '') + '</span>';
+      }).join('');
+      document.getElementById('summary-icons').innerHTML = icons;
+      document.getElementById('summary-msg').textContent = SUMMARY_MSGS[state.day] || '今天也辛苦了。';
+      const btn = document.getElementById('btn-next');
+      if (state.day >= 7) {
+        btn.textContent = '查看结局 ✨';
+        btn.onclick = showEnding;
+      } else {
+        btn.textContent = '明天继续 →';
+        btn.onclick = () => {
+          state.completedDays.push(state.day);
+          state.day++;
+          saveState();
+          startDay();
+        };
+      }
+      show('screen-summary');
+    }
+
+    // ── ENDING ────────────────────────────────────────────────
+    function showEnding() {
+      document.getElementById('ending-text').textContent = ENDING;
+      document.getElementById('btn-restart').onclick = () => {
+        clearState();
+        state = { day: 1, selected: [], completedDays: [] };
+        document.getElementById('btn-continue').style.display = 'none';
+        show('screen-title');
+      };
+      show('screen-ending');
+    }
+
+    // ── INIT ──────────────────────────────────────────────────
+    initTitle();
+  </script>
+</body>
+</html>
