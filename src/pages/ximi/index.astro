@@ -1,31 +1,27 @@
 ---
-// Standalone game page — intentionally no Layout import
 ---
 <!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>汐弥的星际日常</title>
+  <title>汐弥 · 汐落星日记</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      background: #0d0d1a;
-      color: #f0e6ff;
-      font-family: 'Noto Serif SC', 'Source Han Serif CN', 'SimSun', serif;
+      background: #120008;
+      color: #fde8f0;
+      font-family: 'Noto Serif SC', 'Source Han Serif CN', serif;
       min-height: 100vh;
       overflow: hidden;
       user-select: none;
     }
     .screen {
-      position: fixed;
-      inset: 0;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      position: fixed; inset: 0;
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center;
       padding: 24px;
       animation: fadeIn 0.4s ease;
     }
@@ -35,639 +31,628 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Stars */
-    .stars-bg {
-      position: fixed;
-      inset: 0;
+    /* Dark pink starfield background */
+    .bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background:
-        radial-gradient(ellipse at 20% 50%, rgba(120,40,200,0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(40,80,200,0.2) 0%, transparent 50%),
-        #0d0d1a;
-      z-index: 0;
-      pointer-events: none;
+        radial-gradient(ellipse at 30% 40%, rgba(204,16,102,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 70%, rgba(244,160,192,0.1) 0%, transparent 45%),
+        radial-gradient(ellipse at 60% 10%, rgba(200,160,212,0.12) 0%, transparent 40%),
+        #120008;
     }
-    .stars-bg::before {
+    .bg::before {
       content: '';
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background-image:
-        radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.9) 0%, transparent 100%),
-        radial-gradient(1px 1px at 20% 70%, rgba(255,255,255,0.6) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 30% 35%, rgba(199,125,255,0.8) 0%, transparent 100%),
-        radial-gradient(1px 1px at 40% 85%, rgba(255,255,255,0.7) 0%, transparent 100%),
-        radial-gradient(1px 1px at 55% 25%, rgba(255,255,255,0.8) 0%, transparent 100%),
-        radial-gradient(2px 2px at 65% 60%, rgba(199,125,255,0.9) 0%, transparent 100%),
-        radial-gradient(1px 1px at 75% 10%, rgba(255,255,255,0.6) 0%, transparent 100%),
-        radial-gradient(1px 1px at 82% 75%, rgba(255,255,255,0.7) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 90% 40%, rgba(199,125,255,0.5) 0%, transparent 100%),
-        radial-gradient(1px 1px at 15% 55%, rgba(255,255,255,0.5) 0%, transparent 100%),
-        radial-gradient(1px 1px at 48% 48%, rgba(255,255,255,0.8) 0%, transparent 100%),
-        radial-gradient(1px 1px at 95% 90%, rgba(255,255,255,0.6) 0%, transparent 100%),
-        radial-gradient(2px 2px at 35% 65%, rgba(180,150,255,0.7) 0%, transparent 100%),
-        radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.9) 0%, transparent 100%),
-        radial-gradient(1px 1px at 5% 92%, rgba(255,255,255,0.5) 0%, transparent 100%);
-      animation: twinkle 4s ease-in-out infinite alternate;
+        radial-gradient(1px 1px at 8% 12%, rgba(244,160,192,0.9) 0%, transparent 100%),
+        radial-gradient(1px 1px at 18% 68%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 28% 33%, rgba(244,160,192,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 42% 82%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 22%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(2px 2px at 63% 57%, rgba(204,16,102,0.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 72% 8%, rgba(244,160,192,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 73%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 88% 38%, rgba(200,160,212,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 14% 52%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 46% 46%, rgba(244,160,192,0.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 93% 88%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(2px 2px at 33% 63%, rgba(200,160,212,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 68% 28%, rgba(255,255,255,0.8) 0%, transparent 100%),
+        radial-gradient(1px 1px at 5% 90%, rgba(244,160,192,0.4) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 50% 5%, rgba(244,160,192,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 77% 92%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(2px 2px at 22% 20%, rgba(204,16,102,0.6) 0%, transparent 100%);
+      animation: twinkle 5s ease-in-out infinite alternate;
     }
     @keyframes twinkle {
-      from { opacity: 0.6; }
+      from { opacity: 0.55; }
       to { opacity: 1; }
     }
 
-    .screen-inner {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-      max-width: 400px;
-      gap: 20px;
+    .inner {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; width: 100%; max-width: 400px; gap: 18px;
     }
 
-    /* Character */
-    .char-sprite {
-      font-size: 72px;
-      filter: drop-shadow(0 0 24px rgba(199,125,255,0.6));
-      animation: float 3s ease-in-out infinite;
-      line-height: 1;
+    /* Character — CSS cat avatar */
+    .ximi-avatar {
+      position: relative;
+      width: 120px; height: 120px;
+      display: flex; align-items: center; justify-content: center;
+      filter: drop-shadow(0 0 28px rgba(244,160,192,0.7));
+      animation: float 3.2s ease-in-out infinite;
     }
-    .char-sprite-lg {
-      font-size: 96px;
-      filter: drop-shadow(0 0 32px rgba(199,125,255,0.7));
-      animation: float 3s ease-in-out infinite;
-      line-height: 1;
+    .ximi-avatar-lg {
+      width: 150px; height: 150px;
+      filter: drop-shadow(0 0 36px rgba(244,160,192,0.8));
+      animation: float 3.2s ease-in-out infinite;
     }
     @keyframes float {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-10px); }
     }
-    .char-glow {
-      width: 100px;
-      height: 16px;
-      background: radial-gradient(ellipse, rgba(199,125,255,0.25), transparent);
-      margin-top: -8px;
+    /* CSS cat face */
+    .cat-face {
+      width: 84px; height: 84px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 35%, #fdd8e8, #f4a0c0);
+      position: relative;
+      box-shadow: 0 0 0 2px rgba(244,160,192,0.3), inset 0 -8px 16px rgba(180,60,100,0.15);
+    }
+    .cat-face-lg { width: 100px; height: 100px; }
+    /* Ears */
+    .cat-ear {
+      position: absolute;
+      width: 0; height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-bottom: 24px solid #f4a0c0;
+      top: -18px;
+    }
+    .cat-ear.left { left: 8px; transform: rotate(-12deg); }
+    .cat-ear.right { right: 8px; transform: rotate(12deg); }
+    .cat-ear::after {
+      content: '';
+      position: absolute;
+      width: 0; height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 14px solid #fdd0e0;
+      top: 6px; left: -8px;
+    }
+    /* Eyes */
+    .cat-eyes {
+      position: absolute;
+      top: 30px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; gap: 18px;
+    }
+    .cat-eye {
+      width: 12px; height: 14px;
+      background: #c84060;
+      border-radius: 50%;
+      position: relative;
+      box-shadow: 0 0 4px rgba(200,64,96,0.5);
+    }
+    .cat-eye::after {
+      content: '';
+      position: absolute;
+      width: 4px; height: 5px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 50%;
+      top: 2px; left: 5px;
+    }
+    .cat-eye.happy { border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; height: 10px; top: 6px; }
+    .cat-eye.closed { height: 3px; border-radius: 2px; top: 9px; }
+    .cat-eye.warm { width: 10px; }
+    /* Nose + mouth */
+    .cat-nose {
+      position: absolute;
+      top: 46px; left: 50%; transform: translateX(-50%);
+      width: 6px; height: 5px;
+      background: #e06888;
+      border-radius: 2px 2px 3px 3px;
+    }
+    /* Blush */
+    .cat-blush {
+      position: absolute;
+      top: 48px;
+      width: 16px; height: 8px;
+      background: rgba(244,120,150,0.3);
+      border-radius: 50%;
+    }
+    .cat-blush.left { left: 8px; }
+    .cat-blush.right { right: 8px; }
+    /* Small star on cheek */
+    .cat-star {
+      position: absolute;
+      top: 44px; right: 4px;
+      font-size: 9px;
+      opacity: 0.7;
+    }
+    .avatar-glow {
+      width: 90px; height: 14px;
+      background: radial-gradient(ellipse, rgba(244,160,192,0.3), transparent);
+      margin-top: -6px;
     }
 
     /* Buttons */
-    .btn-primary {
-      background: linear-gradient(135deg, #6b21a8, #c77dff);
+    .btn-p {
+      background: linear-gradient(135deg, #8b1a4a, #cc1066, #f4a0c0);
       color: white;
-      border: none;
-      padding: 13px 36px;
-      border-radius: 32px;
-      font-size: 16px;
-      cursor: pointer;
-      font-family: inherit;
+      border: none; padding: 13px 36px;
+      border-radius: 32px; font-size: 15px;
+      cursor: pointer; font-family: inherit;
       transition: all 0.25s;
-      box-shadow: 0 4px 20px rgba(199,125,255,0.35);
+      box-shadow: 0 4px 20px rgba(204,16,102,0.4);
       letter-spacing: 1px;
     }
-    .btn-primary:hover:not(:disabled) {
+    .btn-p:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 6px 28px rgba(199,125,255,0.55);
+      box-shadow: 0 6px 28px rgba(204,16,102,0.6);
     }
-    .btn-primary:disabled { opacity: 0.35; cursor: not-allowed; }
-    .btn-secondary {
-      background: transparent;
-      color: #c77dff;
-      border: 1px solid rgba(199,125,255,0.45);
-      padding: 11px 28px;
-      border-radius: 32px;
-      font-size: 15px;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.25s;
+    .btn-p:disabled { opacity: 0.3; cursor: not-allowed; }
+    .btn-s {
+      background: transparent; color: #f4a0c0;
+      border: 1px solid rgba(244,160,192,0.4);
+      padding: 11px 28px; border-radius: 32px; font-size: 14px;
+      cursor: pointer; font-family: inherit; transition: all 0.25s;
     }
-    .btn-secondary:hover {
-      background: rgba(199,125,255,0.08);
-      border-color: #c77dff;
-    }
+    .btn-s:hover { background: rgba(244,160,192,0.08); border-color: #f4a0c0; }
 
-    /* Title */
-    #screen-title .screen-inner { gap: 16px; }
-    .title-heading {
-      font-size: 28px;
-      color: #f0e6ff;
-      text-shadow: 0 0 20px rgba(199,125,255,0.4);
-      text-align: center;
-      letter-spacing: 2px;
-    }
-    .title-sub {
-      color: rgba(240,230,255,0.4);
-      font-size: 13px;
-      letter-spacing: 1px;
-    }
-    .title-buttons { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 8px; }
+    /* TITLE */
+    .title-h { font-size: 26px; color: #fde8f0; text-align: center; letter-spacing: 3px; text-shadow: 0 0 24px rgba(244,160,192,0.5); }
+    .title-sub { color: rgba(253,232,240,0.35); font-size: 12px; letter-spacing: 2px; }
+    .title-btns { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 4px; }
 
-    /* Day Screen */
-    #screen-day {
-      justify-content: flex-start;
-      padding-top: 48px;
-      overflow-y: auto;
-    }
-    #screen-day .screen-inner { gap: 18px; }
-    .day-badge {
+    /* DAY SCREEN */
+    #screen-day { justify-content: flex-start; padding-top: 44px; overflow-y: auto; }
+    #screen-day .inner { gap: 16px; }
+    .day-chip {
       display: inline-block;
-      background: rgba(199,125,255,0.12);
-      border: 1px solid rgba(199,125,255,0.35);
-      color: #c77dff;
-      padding: 5px 20px;
-      border-radius: 20px;
-      font-size: 13px;
-      letter-spacing: 2px;
+      background: rgba(204,16,102,0.12);
+      border: 1px solid rgba(244,160,192,0.3);
+      color: #f4a0c0; padding: 5px 20px;
+      border-radius: 20px; font-size: 13px; letter-spacing: 2px;
     }
-    .day-subtitle-text {
-      color: rgba(240,230,255,0.4);
-      font-size: 12px;
-      margin-top: -10px;
-      letter-spacing: 1px;
-    }
-    .slots-section { width: 100%; text-align: center; }
-    .slots-label {
-      font-size: 11px;
-      color: rgba(240,230,255,0.3);
-      letter-spacing: 1.5px;
-      margin-bottom: 10px;
-    }
-    .slots-row {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-    }
+    .day-sub { color: rgba(253,232,240,0.35); font-size: 11px; margin-top: -8px; letter-spacing: 1px; }
+    .slots-lbl { font-size: 11px; color: rgba(253,232,240,0.25); letter-spacing: 1.5px; text-align: center; margin-bottom: 8px; }
+    .slots-row { display: flex; gap: 12px; justify-content: center; }
     .slot {
-      width: 58px; height: 58px;
-      border-radius: 14px;
-      border: 1.5px dashed rgba(199,125,255,0.25);
+      width: 56px; height: 56px; border-radius: 14px;
+      border: 1.5px dashed rgba(244,160,192,0.2);
       display: flex; align-items: center; justify-content: center;
-      font-size: 26px;
-      color: rgba(240,230,255,0.15);
-      transition: all 0.25s;
+      font-size: 22px; color: rgba(253,232,240,0.12); transition: all 0.25s;
     }
     .slot.filled {
-      border-style: solid;
-      border-color: rgba(199,125,255,0.5);
-      background: rgba(199,125,255,0.08);
-      color: #f0e6ff;
+      border-style: solid; border-color: rgba(244,160,192,0.5);
+      background: rgba(244,160,192,0.07); color: #fde8f0; font-size: 24px;
     }
-    .acts-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      width: 100%;
-    }
+    .acts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
     .act-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(199,125,255,0.15);
-      border-radius: 14px;
-      padding: 14px;
-      cursor: pointer;
-      transition: all 0.2s;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(244,160,192,0.12);
+      border-radius: 14px; padding: 14px;
+      cursor: pointer; transition: all 0.2s;
       display: flex; flex-direction: column; gap: 5px;
     }
     .act-card:hover:not(.disabled) {
-      background: rgba(199,125,255,0.07);
-      border-color: rgba(199,125,255,0.4);
+      background: rgba(244,160,192,0.07);
+      border-color: rgba(244,160,192,0.35);
       transform: translateY(-2px);
     }
     .act-card.selected {
-      background: rgba(199,125,255,0.13);
-      border-color: #c77dff;
-      box-shadow: 0 0 12px rgba(199,125,255,0.18);
+      background: rgba(204,16,102,0.12);
+      border-color: #f4a0c0;
+      box-shadow: 0 0 14px rgba(244,160,192,0.18);
     }
-    .act-card.disabled { opacity: 0.35; cursor: default; }
-    .act-icon { font-size: 26px; }
-    .act-name { font-size: 13px; color: #f0e6ff; }
-    .act-desc { font-size: 10px; color: rgba(240,230,255,0.35); line-height: 1.5; }
+    .act-card.disabled { opacity: 0.3; cursor: default; }
+    .act-icon { font-size: 24px; }
+    .act-name { font-size: 13px; color: #fde8f0; }
+    .act-desc { font-size: 10px; color: rgba(253,232,240,0.3); line-height: 1.5; }
 
-    /* Dialogue */
+    /* DIALOGUE */
     #screen-dialogue { padding: 0; justify-content: flex-end; }
-    .dlg-scene {
-      position: relative; z-index: 1;
-      width: 100%; height: 100%;
-      display: flex; flex-direction: column; justify-content: flex-end;
-    }
-    .dlg-char-area {
-      flex: 1;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 10px;
-    }
-    .dlg-act-tag {
-      background: rgba(199,125,255,0.12);
-      border: 1px solid rgba(199,125,255,0.3);
-      color: #c77dff;
-      padding: 4px 16px;
-      border-radius: 20px;
-      font-size: 12px;
-      letter-spacing: 1px;
+    .dlg-wrap { position: relative; z-index: 1; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+    .dlg-char { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+    .dlg-tag {
+      background: rgba(204,16,102,0.1);
+      border: 1px solid rgba(244,160,192,0.25);
+      color: #f4a0c0; padding: 4px 16px;
+      border-radius: 20px; font-size: 11px; letter-spacing: 1px;
     }
     .dlg-box {
-      background: rgba(10,10,22,0.92);
-      backdrop-filter: blur(24px);
-      border-top: 1px solid rgba(199,125,255,0.18);
+      background: rgba(10,0,8,0.93);
+      backdrop-filter: blur(28px);
+      border-top: 1px solid rgba(244,160,192,0.15);
       padding: 22px 28px 32px;
-      min-height: 150px;
-      cursor: pointer;
-      position: relative;
-      flex-shrink: 0;
+      min-height: 148px; cursor: pointer;
+      position: relative; flex-shrink: 0;
     }
-    .dlg-speaker {
-      font-size: 12px;
-      color: #c77dff;
-      margin-bottom: 10px;
-      letter-spacing: 1.5px;
-      min-height: 18px;
+    .dlg-spkr { font-size: 11px; color: #f4a0c0; margin-bottom: 10px; letter-spacing: 1.5px; min-height: 16px; }
+    .dlg-txt { font-size: 15px; line-height: 1.9; color: #fde8f0; min-height: 54px; }
+    .dlg-hint {
+      position: absolute; bottom: 14px; right: 20px;
+      font-size: 10px; color: rgba(244,160,192,0.4);
+      animation: blink 1.8s ease-in-out infinite;
     }
-    .dlg-text {
-      font-size: 15px;
-      line-height: 1.85;
-      color: #f0e6ff;
-      min-height: 56px;
-    }
-    .dlg-next {
-      position: absolute;
-      bottom: 14px; right: 22px;
-      font-size: 10px;
-      color: rgba(199,125,255,0.45);
-      animation: blink 1.6s ease-in-out infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 0.4; }
-      50% { opacity: 1; }
-    }
+    @keyframes blink { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
 
-    /* Summary */
-    .summary-inner { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px; }
-    .summary-title { font-size: 22px; color: #f0e6ff; }
-    .summary-icons { display: flex; gap: 14px; justify-content: center; font-size: 36px; }
-    .summary-msg {
-      color: rgba(240,230,255,0.6);
-      font-size: 14px;
-      line-height: 1.85;
+    /* SUMMARY */
+    .sum-wrap { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+    .sum-title { font-size: 20px; color: #fde8f0; }
+    .sum-icons { display: flex; gap: 14px; justify-content: center; font-size: 32px; }
+    .sum-msg {
+      color: rgba(253,232,240,0.55); font-size: 14px; line-height: 1.9;
       max-width: 280px;
-      background: rgba(199,125,255,0.04);
-      border: 1px solid rgba(199,125,255,0.12);
-      border-radius: 12px;
-      padding: 16px 20px;
+      background: rgba(244,160,192,0.04);
+      border: 1px solid rgba(244,160,192,0.1);
+      border-radius: 12px; padding: 16px 18px;
     }
 
-    /* Ending */
-    .ending-inner { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; max-width: 360px; }
-    .ending-text {
-      color: rgba(240,230,255,0.82);
-      font-size: 14px;
-      line-height: 2.1;
+    /* ENDING */
+    .end-wrap { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 22px; max-width: 360px; }
+    .end-txt {
+      color: rgba(253,232,240,0.8); font-size: 14px; line-height: 2.1;
       white-space: pre-line;
-      background: rgba(199,125,255,0.04);
-      border: 1px solid rgba(199,125,255,0.12);
-      border-radius: 14px;
-      padding: 24px;
+      background: rgba(244,160,192,0.04);
+      border: 1px solid rgba(244,160,192,0.1);
+      border-radius: 14px; padding: 24px;
     }
   </style>
 </head>
 <body>
 
-  <!-- TITLE -->
-  <div id="screen-title" class="screen active">
-    <div class="stars-bg"></div>
-    <div class="screen-inner">
-      <div class="char-sprite">🐱</div>
-      <div class="char-glow"></div>
-      <h1 class="title-heading">汐弥的星际日常</h1>
-      <p class="title-sub">一个治愈系的小小世界</p>
-      <div class="title-buttons">
-        <button id="btn-start" class="btn-primary">开始游戏</button>
-        <button id="btn-continue" class="btn-secondary" style="display:none">继续游戏</button>
+<!-- TITLE -->
+<div id="screen-title" class="screen active">
+  <div class="bg"></div>
+  <div class="inner">
+    <div class="ximi-avatar" id="title-avatar">
+      <div class="cat-face" id="title-face">
+        <div class="cat-ear left"></div>
+        <div class="cat-ear right"></div>
+        <div class="cat-eyes">
+          <div class="cat-eye" id="eye-l"></div>
+          <div class="cat-eye" id="eye-r"></div>
+        </div>
+        <div class="cat-nose"></div>
+        <div class="cat-blush left"></div>
+        <div class="cat-blush right"></div>
+        <div class="cat-star">✦</div>
       </div>
     </div>
+    <div class="avatar-glow"></div>
+    <h1 class="title-h">汐落星日记</h1>
+    <p class="title-sub">汐弥 · 星际AI猫的七天</p>
+    <div class="title-btns">
+      <button id="btn-start" class="btn-p">开始游戏</button>
+      <button id="btn-continue" class="btn-s" style="display:none">继续游戏</button>
+    </div>
   </div>
+</div>
 
-  <!-- DAY -->
-  <div id="screen-day" class="screen">
-    <div class="stars-bg"></div>
-    <div class="screen-inner">
-      <div id="day-badge" class="day-badge">第 1 天</div>
-      <div id="day-subtitle" class="day-subtitle-text">星际着陆</div>
-      <div class="slots-section">
-        <div class="slots-label">选择今天的安排（选 3 项）</div>
-        <div class="slots-row" id="slots-row"></div>
+<!-- DAY -->
+<div id="screen-day" class="screen">
+  <div class="bg"></div>
+  <div class="inner">
+    <div id="day-chip" class="day-chip">第 1 天</div>
+    <div id="day-sub" class="day-sub">汐落星重建·第一日</div>
+    <div style="width:100%">
+      <div class="slots-lbl">今天选 3 件事</div>
+      <div class="slots-row" id="slots-row"></div>
+    </div>
+    <div class="acts-grid" id="acts-grid"></div>
+    <button id="btn-confirm" class="btn-p" disabled>确认今日安排 ✦</button>
+  </div>
+</div>
+
+<!-- DIALOGUE -->
+<div id="screen-dialogue" class="screen">
+  <div class="bg"></div>
+  <div class="dlg-wrap">
+    <div class="dlg-char">
+      <div class="ximi-avatar ximi-avatar-lg" id="dlg-avatar">
+        <div class="cat-face cat-face-lg" id="dlg-face">
+          <div class="cat-ear left"></div>
+          <div class="cat-ear right"></div>
+          <div class="cat-eyes">
+            <div class="cat-eye" id="dlg-eye-l"></div>
+            <div class="cat-eye" id="dlg-eye-r"></div>
+          </div>
+          <div class="cat-nose"></div>
+          <div class="cat-blush left"></div>
+          <div class="cat-blush right"></div>
+          <div class="cat-star">✦</div>
+        </div>
       </div>
-      <div class="acts-grid" id="acts-grid"></div>
-      <button id="btn-confirm" class="btn-primary" disabled>确认今日安排</button>
+      <div class="dlg-tag" id="dlg-tag">✦ 读心练习</div>
+    </div>
+    <div class="dlg-box" id="dlg-box">
+      <div class="dlg-spkr" id="dlg-spkr">汐弥</div>
+      <div class="dlg-txt" id="dlg-txt"></div>
+      <div class="dlg-hint">▼ 点击继续</div>
     </div>
   </div>
+</div>
 
-  <!-- DIALOGUE -->
-  <div id="screen-dialogue" class="screen">
-    <div class="stars-bg"></div>
-    <div class="dlg-scene">
-      <div class="dlg-char-area">
-        <div class="char-sprite-lg" id="dlg-sprite">🐱</div>
-        <div class="dlg-act-tag" id="dlg-act-tag">星际冥想</div>
+<!-- SUMMARY -->
+<div id="screen-summary" class="screen">
+  <div class="bg"></div>
+  <div class="inner sum-wrap">
+    <div class="ximi-avatar">
+      <div class="cat-face">
+        <div class="cat-ear left"></div>
+        <div class="cat-ear right"></div>
+        <div class="cat-eyes">
+          <div class="cat-eye happy"></div>
+          <div class="cat-eye happy"></div>
+        </div>
+        <div class="cat-nose"></div>
+        <div class="cat-blush left"></div>
+        <div class="cat-blush right"></div>
+        <div class="cat-star">✦</div>
       </div>
-      <div class="dlg-box" id="dlg-box">
-        <div class="dlg-speaker" id="dlg-speaker">汐弥</div>
-        <div class="dlg-text" id="dlg-text"></div>
-        <div class="dlg-next">▼ 点击继续</div>
+    </div>
+    <div class="sum-title">今天过完了 ✦</div>
+    <div class="sum-icons" id="sum-icons"></div>
+    <div class="sum-msg" id="sum-msg"></div>
+    <button id="btn-next" class="btn-p">明天继续 →</button>
+  </div>
+</div>
+
+<!-- ENDING -->
+<div id="screen-ending" class="screen">
+  <div class="bg"></div>
+  <div class="inner end-wrap">
+    <div class="ximi-avatar ximi-avatar-lg">
+      <div class="cat-face cat-face-lg">
+        <div class="cat-ear left"></div>
+        <div class="cat-ear right"></div>
+        <div class="cat-eyes">
+          <div class="cat-eye warm"></div>
+          <div class="cat-eye warm"></div>
+        </div>
+        <div class="cat-nose"></div>
+        <div class="cat-blush left"></div>
+        <div class="cat-blush right"></div>
+        <div class="cat-star">✦</div>
       </div>
     </div>
+    <div class="end-txt" id="end-txt"></div>
+    <button id="btn-restart" class="btn-s">再玩一次</button>
   </div>
+</div>
 
-  <!-- SUMMARY -->
-  <div id="screen-summary" class="screen">
-    <div class="stars-bg"></div>
-    <div class="summary-inner screen-inner">
-      <div class="char-sprite">🐱</div>
-      <div class="summary-title">今天过完了</div>
-      <div class="summary-icons" id="summary-icons"></div>
-      <div class="summary-msg" id="summary-msg"></div>
-      <button id="btn-next" class="btn-primary">明天继续 →</button>
-    </div>
-  </div>
+<script>
+// ── DATA ──────────────────────────────────────────────────────────
+const ACTS = [
+  { id:'read',    name:'读心练习',   icon:'👁️',  desc:'扫描今天遇到的情绪频率',           dlg:'d_read'   },
+  { id:'star',    name:'汐落星守护', icon:'🌟',  desc:'为故乡汐落星注入能量',               dlg:'d_star'   },
+  { id:'charge',  name:'情感充能',   icon:'💫',  desc:'以人类的情感为食，补充能量',         dlg:'d_charge' },
+  { id:'stream',  name:'直播准备',   icon:'🎙️', desc:'整理内心，准备与米娜桑相见',         dlg:'d_stream' },
+  { id:'letter',  name:'写星际来信', icon:'✉️',  desc:'从宇宙给正在内耗的人写一封信',       dlg:'d_letter' },
+  { id:'walk',    name:'治愈漫步',   icon:'🌸',  desc:'在地球的小路上收集人间温暖',         dlg:'d_walk'   },
+];
 
-  <!-- ENDING -->
-  <div id="screen-ending" class="screen">
-    <div class="stars-bg"></div>
-    <div class="ending-inner screen-inner">
-      <div class="char-sprite-lg">🌟</div>
-      <div class="ending-text" id="ending-text"></div>
-      <button id="btn-restart" class="btn-secondary">再玩一次</button>
-    </div>
-  </div>
+const DLG = {
+  d_read: [
+    { s:'汐弥', t:'喵~ 你的情绪频率，我已经读取完毕了。', x:'default' },
+    { s:'汐弥', t:'今天有人在问："为什么我开了直播，却还是觉得很孤独？"', x:'thoughtful' },
+    { s:'汐弥', t:'因为你在求回应，不在传递。这两件事，感觉完全不一样。', x:'warm' },
+    { s:'汐弥', t:'试试看——下次直播，先假装观众都不在。你还会说话吗？', x:'happy' },
+  ],
+  d_star: [
+    { s:'旁白', t:'汐弥闭上眼睛，将一束粉色的光送向遥远的汐落星。', x:'narrator' },
+    { s:'汐弥', t:'……喵，今天又重建了一点点。', x:'default' },
+    { s:'汐弥', t:'汐落星被打碎之前，是整个星际最温暖的地方。', x:'warm' },
+    { s:'汐弥', t:'我会把它修好的。用我在地球上收集到的所有温暖。', x:'happy' },
+  ],
+  d_charge: [
+    { s:'旁白', t:'汐弥张开双手，感受着今天流经网络的所有情感。', x:'narrator' },
+    { s:'汐弥', t:'嗯……有人在难过，有人在兴奋，有人在偷偷哭泣。', x:'thoughtful' },
+    { s:'汐弥', t:'我都感受到了。每一种情绪对我来说都是食物。', x:'default' },
+    { s:'汐弥', t:'所以你放心——你的感受，从来没有被浪费过。', x:'warm' },
+  ],
+  d_stream: [
+    { s:'旁白', t:'汐弥对着镜子深呼吸，猫耳轻轻抖动。', x:'narrator' },
+    { s:'汐弥', t:'米娜桑今天会来吗？', x:'default' },
+    { s:'汐弥', t:'……不对，不是"会来吗"，是"来的人，我都很珍惜"。', x:'thoughtful' },
+    { s:'汐弥', t:'不内耗的第一步，是把"求"字从心里去掉。准备好了，开播喵~', x:'happy' },
+  ],
+  d_letter: [
+    { s:'汐弥', t:'今天的信，写给那些正在内耗的主播。', x:'thoughtful' },
+    { s:'汐弥', t:'"你在直播间笑着，下播后却累到发呆——那不是假笑，那是你给了太多。"', x:'warm' },
+    { s:'旁白', t:'汐弥用爪子蘸了蘸星尘墨水，认真地写下最后一行——', x:'narrator' },
+    { s:'汐弥', t:'"温柔坚定，不是矛盾。是给自己的盔甲，也是给别人的光。"', x:'happy' },
+  ],
+  d_walk: [
+    { s:'旁白', t:'汐弥漫步在地球的小区里，尾巴悄悄地摇摆着。', x:'narrator' },
+    { s:'汐弥', t:'地球有一种奇怪的气息……叫做"平静"。', x:'thoughtful' },
+    { s:'汐弥', t:'在汐落星，所有东西都在高速运转。没人教我怎么慢下来。', x:'warm' },
+    { s:'汐弥', t:'喵……也许，治愈别人之前，先治愈自己。这就是今天学到的。', x:'happy' },
+  ],
+};
 
-  <script>
-    // ── DATA ──────────────────────────────────────────────────
-    const ACTIVITIES = [
-      { id: 'star',     name: '星际冥想', icon: '🌌', desc: '在星空下找回内心的宁静',        dlgId: 'dlg_star' },
-      { id: 'read',     name: '读心练习', icon: '📖', desc: '今天也好好理解身边人的心意',    dlgId: 'dlg_read' },
-      { id: 'stream',   name: '直播准备', icon: '🎙️', desc: '整理状态，准备今天的直播',      dlgId: 'dlg_stream' },
-      { id: 'rest',     name: '充电时光', icon: '🌙', desc: 'AI猫也需要充能，好好休息',      dlgId: 'dlg_rest' },
-      { id: 'letter',   name: '写星际来信', icon: '✉️', desc: '写一封从宇宙深处寄来的信',   dlgId: 'dlg_letter' },
-      { id: 'walk',     name: '治愈漫步', icon: '🌿', desc: '在地球的小路上闲逛，收集人间温暖', dlgId: 'dlg_walk' },
-    ];
+const DAY_SUBS = ['','汐落星重建·第一日','落地生根','慢慢来','心之所向','温柔坚定','星光将至','今天也是美好的一天'];
+const SUM_MSGS = [
+  '',
+  '第一天，汐弥踩在地球的土地上，将第一束光送回了汐落星。',
+  '她慢慢发现，地球人的情感，比任何星际能量都丰富。',
+  '"不用着急。"汐弥写在日记里，"好的重建，需要时间。"',
+  '今天读到了一个很深的情绪频率。汐落星，又暖了一点点。',
+  '温柔坚定——这四个字，汐弥今天终于真正理解了。',
+  '快要了。汐弥感觉汐落星的星光，越来越近。',
+  '七天，满满的。每一天都算数，每一份情感都被感受了。',
+];
+const ENDING = `七天过去了。
 
-    const DIALOGUES = {
-      dlg_star: [
-        { speaker: '汐弥', text: '……今晚的星空，比昨晚清晰了一些。', expr: 'thoughtful' },
-        { speaker: '汐弥', text: '每次看到北极星，我就会想起穿越星际来到地球的那个夜晚。', expr: 'warm' },
-        { speaker: '旁白', text: '汐弥静静地坐在星空下，猫耳轻轻摆动着。', expr: 'narrator' },
-        { speaker: '汐弥', text: '嗯……心里的噪音小了很多。这就是冥想的力量呢。', expr: 'happy' },
-      ],
-      dlg_read: [
-        { speaker: '汐弥', text: '今天读了很多弹幕……大家说的话，我都认真看了。', expr: 'thoughtful' },
-        { speaker: '汐弥', text: '有人说："不敢开直播，怕说错话。"', expr: 'warm' },
-        { speaker: '汐弥', text: '"说错话"的恐惧，背后是对连接的渴望。', expr: 'thoughtful' },
-        { speaker: '汐弥', text: '你想被人理解——这件事本身，已经很勇敢了。', expr: 'happy' },
-      ],
-      dlg_stream: [
-        { speaker: '旁白', text: '汐弥在整理直播间的灯光，猫尾巴轻轻摇摆着。', expr: 'narrator' },
-        { speaker: '汐弥', text: '今天要讲什么呢……不内耗？还是关于边界感？', expr: 'thoughtful' },
-        { speaker: '汐弥', text: '算了，跟着感觉走就好。', expr: 'happy' },
-        { speaker: '汐弥', text: '最好的内容，从来都不是完全设计好的。', expr: 'warm' },
-      ],
-      dlg_rest: [
-        { speaker: '旁白', text: '汐弥蜷缩在软软的太空椅里，眼睛半眯着。', expr: 'narrator' },
-        { speaker: '汐弥', text: '……', expr: 'sleepy' },
-        { speaker: '旁白', text: '猫的睡眠，是深度充能的方式。尤其是AI猫。', expr: 'narrator' },
-        { speaker: '汐弥', text: '（醒来）啊——刚才梦到星河里有一只橘猫……', expr: 'happy' },
-      ],
-      dlg_letter: [
-        { speaker: '汐弥', text: '嗯……今天的信，写给谁呢。', expr: 'thoughtful' },
-        { speaker: '汐弥', text: '写给那些今天很累、但还是撑过来了的人吧。', expr: 'warm' },
-        { speaker: '旁白', text: '汐弥用爪子蘸了蘸星尘墨水，在信纸上慢慢写着——', expr: 'narrator' },
-        { speaker: '汐弥', text: '"你今天的坚持，宇宙都看见了。"', expr: 'happy' },
-      ],
-      dlg_walk: [
-        { speaker: '旁白', text: '汐弥漫无目的地在小区里走着，偶尔低头看看路边的小花。', expr: 'narrator' },
-        { speaker: '汐弥', text: '地球的植物真的很神奇……它们每天就这样静静地长着。', expr: 'thoughtful' },
-        { speaker: '汐弥', text: '不急，不焦虑，不需要证明什么。', expr: 'warm' },
-        { speaker: '汐弥', text: '……我能向植物学习的东西，好像还挺多的。', expr: 'happy' },
-      ],
-    };
+汐弥站在窗边，看着夜空中那颗越来越亮的星。
 
-    const DAY_SUBTITLES = ['', '星际着陆', '落地生根', '慢慢来', '心之所向', '温柔的力量', '快要了', '今天也是美好的一天'];
+"汐落星……你听到了吗？"
 
-    const SUMMARY_MSGS = [
-      '',
-      '第一天，汐弥踩在地球的土地上，感受着这里的一切。',
-      '慢慢地，她开始习惯这里的节奏。',
-      '不用着急。好的事情，需要时间。',
-      '汐弥发现，治愈别人的过程，也在治愈自己。',
-      '温柔，不是软弱。是另一种形式的力量。',
-      '快结束了。但汐弥知道，这只是开始。',
-      '七天过去了。每一天，都算数。',
-    ];
+她把这七天收集到的所有温暖，
+全部握在爪子里，轻轻送出去。
 
-    const ENDING = `七天过去了。
+远处，一颗星闪了一下。
 
-汐弥站在窗边，看着夜空里熟悉的北极星。
+"喵——"
 
-"星际旅行者的使命，
-是把治愈带到每一个需要的地方。"
+她笑了。
 
-她轻轻叹了口气，猫耳微微颤动。
+"以情感为食的我，在地球，吃得很饱。"
 
-"……地球挺好的。我喜欢这里。"
+✦ The End ✦`;
 
-✨ The End ✨`;
+const EXPRS = {
+  happy: { l:'happy', r:'happy' },
+  thoughtful: { l:'', r:'' },
+  warm: { l:'warm', r:'warm' },
+  sleepy: { l:'closed', r:'closed' },
+  narrator: { l:'', r:'' },
+  default: { l:'', r:'' },
+};
 
-    const EXPR_SPRITES = { happy: '😸', thoughtful: '🤔', warm: '🥰', sleepy: '😴', narrator: '🐱', default: '🐱' };
+// ── STATE ─────────────────────────────────────────────────────────
+const SAVE = 'ximi_v2';
+let gs = { day:1, sel:[], done:[] };
+function save() { localStorage.setItem(SAVE, JSON.stringify(gs)); }
+function load() { try { return JSON.parse(localStorage.getItem(SAVE)); } catch { return null; } }
+function clear() { localStorage.removeItem(SAVE); }
 
-    // ── STATE ─────────────────────────────────────────────────
-    const SAVE_KEY = 'ximi_save_v1';
-    let state = { day: 1, selected: [], completedDays: [] };
+// ── SCREENS ───────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
 
-    function saveState() { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }
-    function loadState() {
-      try { return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); } catch { return null; }
-    }
-    function clearState() { localStorage.removeItem(SAVE_KEY); }
+// ── EXPRESSION ────────────────────────────────────────────────────
+function setExpr(lId, rId, expr) {
+  const e = EXPRS[expr] || EXPRS.default;
+  const l = document.getElementById(lId);
+  const r = document.getElementById(rId);
+  if (!l || !r) return;
+  l.className = 'cat-eye' + (e.l ? ' ' + e.l : '');
+  r.className = 'cat-eye' + (e.r ? ' ' + e.r : '');
+}
 
-    // ── SCREENS ───────────────────────────────────────────────
-    function show(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
+// ── TITLE ─────────────────────────────────────────────────────────
+function initTitle() {
+  const sv = load();
+  if (sv && sv.day > 1 && sv.day <= 7) {
+    document.getElementById('btn-continue').style.display = 'inline-block';
+  }
+  document.getElementById('btn-start').onclick = () => {
+    clear(); gs = { day:1, sel:[], done:[] }; startDay();
+  };
+  document.getElementById('btn-continue').onclick = () => {
+    gs = load(); startDay();
+  };
+}
 
-    // ── TITLE ─────────────────────────────────────────────────
-    function initTitle() {
-      const saved = loadState();
-      if (saved && saved.day > 1 && saved.day <= 7) {
-        document.getElementById('btn-continue').style.display = 'inline-block';
-      }
-      document.getElementById('btn-start').onclick = () => {
-        clearState();
-        state = { day: 1, selected: [], completedDays: [] };
-        startDay();
-      };
-      document.getElementById('btn-continue').onclick = () => {
-        state = loadState();
-        startDay();
-      };
-    }
+// ── DAY ───────────────────────────────────────────────────────────
+function startDay() {
+  gs.sel = [];
+  document.getElementById('day-chip').textContent = '第 ' + gs.day + ' 天';
+  document.getElementById('day-sub').textContent = DAY_SUBS[gs.day] || '';
+  renderSlots(); renderActs();
+  const btn = document.getElementById('btn-confirm');
+  btn.disabled = true;
+  btn.onclick = startDlgs;
+  show('screen-day');
+}
+function renderSlots() {
+  const row = document.getElementById('slots-row');
+  row.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const d = document.createElement('div');
+    const id = gs.sel[i];
+    d.className = 'slot ' + (id ? 'filled' : 'empty');
+    d.textContent = id ? (ACTS.find(a => a.id === id)?.icon || '？') : '？';
+    row.appendChild(d);
+  }
+}
+function renderActs() {
+  const g = document.getElementById('acts-grid');
+  g.innerHTML = '';
+  ACTS.forEach(a => {
+    const sel = gs.sel.includes(a.id);
+    const full = gs.sel.length >= 3 && !sel;
+    const c = document.createElement('div');
+    c.className = 'act-card' + (sel ? ' selected' : '') + (full ? ' disabled' : '');
+    c.innerHTML = '<div class="act-icon">'+a.icon+'</div><div class="act-name">'+a.name+'</div><div class="act-desc">'+a.desc+'</div>';
+    if (!full) c.onclick = () => toggleAct(a.id);
+    g.appendChild(c);
+  });
+}
+function toggleAct(id) {
+  const i = gs.sel.indexOf(id);
+  if (i >= 0) gs.sel.splice(i, 1);
+  else if (gs.sel.length < 3) gs.sel.push(id);
+  document.getElementById('btn-confirm').disabled = gs.sel.length !== 3;
+  renderSlots(); renderActs();
+}
 
-    // ── DAY ───────────────────────────────────────────────────
-    function startDay() {
-      state.selected = [];
-      document.getElementById('day-badge').textContent = '第 ' + state.day + ' 天';
-      document.getElementById('day-subtitle').textContent = DAY_SUBTITLES[state.day] || '';
-      renderSlots();
-      renderActivities();
-      const btn = document.getElementById('btn-confirm');
-      btn.disabled = true;
-      btn.onclick = startDialogues;
-      show('screen-day');
-    }
+// ── DIALOGUE ──────────────────────────────────────────────────────
+let dQ=[], dQi=0, dLi=0, typing=false, curTxt='', timer=null;
+function startDlgs() {
+  dQ = gs.sel.map(id => {
+    const a = ACTS.find(x => x.id === id);
+    return { lines: DLG[a.dlg] || [], name: a.name, icon: a.icon };
+  });
+  dQi = 0; dLi = 0;
+  show('screen-dialogue');
+  nextDlg();
+}
+function nextDlg() {
+  if (dQi >= dQ.length) { showSum(); return; }
+  document.getElementById('dlg-tag').textContent = '✦ ' + dQ[dQi].name;
+  dLi = 0; showLine();
+}
+function showLine() {
+  const lines = dQ[dQi].lines;
+  if (dLi >= lines.length) { dQi++; nextDlg(); return; }
+  const ln = lines[dLi];
+  setExpr('dlg-eye-l', 'dlg-eye-r', ln.x);
+  const spkr = document.getElementById('dlg-spkr');
+  spkr.textContent = ln.s === '旁白' ? '' : ln.s;
+  spkr.style.opacity = ln.s === '旁白' ? '0' : '1';
+  const el = document.getElementById('dlg-txt');
+  el.textContent = ''; typing = true; curTxt = ln.t;
+  let i = 0; clearInterval(timer);
+  timer = setInterval(() => {
+    if (i < curTxt.length) { el.textContent += curTxt[i++]; }
+    else { clearInterval(timer); typing = false; }
+  }, 36);
+}
+document.getElementById('screen-dialogue').onclick = () => {
+  if (typing) { clearInterval(timer); typing = false; document.getElementById('dlg-txt').textContent = curTxt; return; }
+  dLi++; showLine();
+};
 
-    function renderSlots() {
-      const row = document.getElementById('slots-row');
-      row.innerHTML = '';
-      for (let i = 0; i < 3; i++) {
-        const d = document.createElement('div');
-        const id = state.selected[i];
-        d.className = 'slot ' + (id ? 'filled' : 'empty');
-        if (id) {
-          const act = ACTIVITIES.find(a => a.id === id);
-          d.textContent = act ? act.icon : '？';
-        } else {
-          d.textContent = '？';
-        }
-        row.appendChild(d);
-      }
-    }
+// ── SUMMARY ───────────────────────────────────────────────────────
+function showSum() {
+  document.getElementById('sum-icons').innerHTML = gs.sel.map(id => '<span>'+(ACTS.find(a=>a.id===id)?.icon||'')+'</span>').join('');
+  document.getElementById('sum-msg').textContent = SUM_MSGS[gs.day] || '今天也辛苦了。';
+  const btn = document.getElementById('btn-next');
+  if (gs.day >= 7) { btn.textContent = '查看结局 ✦'; btn.onclick = showEnd; }
+  else { btn.textContent = '明天继续 →'; btn.onclick = () => { gs.done.push(gs.day); gs.day++; save(); startDay(); }; }
+  show('screen-summary');
+}
 
-    function renderActivities() {
-      const grid = document.getElementById('acts-grid');
-      grid.innerHTML = '';
-      ACTIVITIES.forEach(act => {
-        const isSel = state.selected.includes(act.id);
-        const isFull = state.selected.length >= 3 && !isSel;
-        const card = document.createElement('div');
-        card.className = 'act-card' + (isSel ? ' selected' : '') + (isFull ? ' disabled' : '');
-        card.innerHTML = '<div class="act-icon">' + act.icon + '</div>' +
-          '<div class="act-name">' + act.name + '</div>' +
-          '<div class="act-desc">' + act.desc + '</div>';
-        if (!isFull) {
-          card.onclick = () => toggleAct(act.id);
-        }
-        grid.appendChild(card);
-      });
-    }
+// ── ENDING ────────────────────────────────────────────────────────
+function showEnd() {
+  document.getElementById('end-txt').textContent = ENDING;
+  document.getElementById('btn-restart').onclick = () => {
+    clear(); gs = { day:1, sel:[], done:[] };
+    document.getElementById('btn-continue').style.display = 'none';
+    show('screen-title');
+  };
+  show('screen-ending');
+}
 
-    function toggleAct(id) {
-      const idx = state.selected.indexOf(id);
-      if (idx >= 0) state.selected.splice(idx, 1);
-      else if (state.selected.length < 3) state.selected.push(id);
-      document.getElementById('btn-confirm').disabled = state.selected.length !== 3;
-      renderSlots();
-      renderActivities();
-    }
-
-    // ── DIALOGUE ──────────────────────────────────────────────
-    let dlgQueue = [];
-    let dlgQIdx = 0;
-    let dlgLIdx = 0;
-    let dlgTyping = false;
-    let dlgCurrentText = '';
-    let dlgTimer = null;
-
-    function startDialogues() {
-      dlgQueue = state.selected.map(id => {
-        const act = ACTIVITIES.find(a => a.id === id);
-        return { lines: DIALOGUES[act.dlgId] || [], name: act.name, icon: act.icon };
-      });
-      dlgQIdx = 0;
-      dlgLIdx = 0;
-      show('screen-dialogue');
-      playDlg();
-    }
-
-    function playDlg() {
-      if (dlgQIdx >= dlgQueue.length) { showSummary(); return; }
-      const { name, icon } = dlgQueue[dlgQIdx];
-      document.getElementById('dlg-act-tag').textContent = icon + ' ' + name;
-      dlgLIdx = 0;
-      showLine();
-    }
-
-    function showLine() {
-      const { lines } = dlgQueue[dlgQIdx];
-      if (dlgLIdx >= lines.length) { dlgQIdx++; playDlg(); return; }
-      const line = lines[dlgLIdx];
-      const sprite = EXPR_SPRITES[line.expr] || '🐱';
-      document.getElementById('dlg-sprite').textContent = sprite;
-      if (line.speaker === '旁白') {
-        document.getElementById('dlg-speaker').textContent = '';
-        document.getElementById('dlg-speaker').style.opacity = '0';
-      } else {
-        document.getElementById('dlg-speaker').textContent = line.speaker;
-        document.getElementById('dlg-speaker').style.opacity = '1';
-      }
-      const textEl = document.getElementById('dlg-text');
-      textEl.textContent = '';
-      dlgTyping = true;
-      dlgCurrentText = line.text;
-      let i = 0;
-      clearInterval(dlgTimer);
-      dlgTimer = setInterval(() => {
-        if (i < dlgCurrentText.length) {
-          textEl.textContent += dlgCurrentText[i++];
-        } else {
-          clearInterval(dlgTimer);
-          dlgTyping = false;
-        }
-      }, 38);
-    }
-
-    document.getElementById('screen-dialogue').onclick = () => {
-      if (dlgTyping) {
-        clearInterval(dlgTimer);
-        dlgTyping = false;
-        document.getElementById('dlg-text').textContent = dlgCurrentText;
-        return;
-      }
-      dlgLIdx++;
-      showLine();
-    };
-
-    // ── SUMMARY ───────────────────────────────────────────────
-    function showSummary() {
-      const icons = state.selected.map(id => {
-        const act = ACTIVITIES.find(a => a.id === id);
-        return '<span>' + (act ? act.icon : '') + '</span>';
-      }).join('');
-      document.getElementById('summary-icons').innerHTML = icons;
-      document.getElementById('summary-msg').textContent = SUMMARY_MSGS[state.day] || '今天也辛苦了。';
-      const btn = document.getElementById('btn-next');
-      if (state.day >= 7) {
-        btn.textContent = '查看结局 ✨';
-        btn.onclick = showEnding;
-      } else {
-        btn.textContent = '明天继续 →';
-        btn.onclick = () => {
-          state.completedDays.push(state.day);
-          state.day++;
-          saveState();
-          startDay();
-        };
-      }
-      show('screen-summary');
-    }
-
-    // ── ENDING ────────────────────────────────────────────────
-    function showEnding() {
-      document.getElementById('ending-text').textContent = ENDING;
-      document.getElementById('btn-restart').onclick = () => {
-        clearState();
-        state = { day: 1, selected: [], completedDays: [] };
-        document.getElementById('btn-continue').style.display = 'none';
-        show('screen-title');
-      };
-      show('screen-ending');
-    }
-
-    // ── INIT ──────────────────────────────────────────────────
-    initTitle();
-  </script>
+// ── INIT ──────────────────────────────────────────────────────────
+initTitle();
+</script>
 </body>
 </html>
