@@ -1,5 +1,6 @@
 ---
 ---
+<!-- Ximi Game v4.2 - Sprint 1-4 Optimization 2026-05-31 -->
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -7,11 +8,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
   <title>以情感为食 · 汐弥的七天情感收集</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
   <style is:global>
     :root{--pk:#FF0080;--pks:#F4A0C0;--lav:#C8A0D4;--gold:#F0C840;--dark:#0a0010;--dark2:#120018;--glow:rgba(255,0,128,0.5);}
     *{margin:0;padding:0;box-sizing:border-box;}
-    body{background:var(--dark);color:#fde8f0;font-family:'Noto Serif SC',serif;height:100vh;overflow:hidden;user-select:none;}
+    body{background:var(--dark);color:#fde8f0;font-family:'Noto Serif SC','PingFang SC','Microsoft YaHei',serif;overflow:hidden;user-select:none;}
+    body{height:100vh;}
+    @supports (height:100dvh){body{height:100dvh;}}
 
     /* BG */
     body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,0,128,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,128,0.05) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
@@ -19,6 +23,7 @@
 
     /* SCREENS */
     .screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;z-index:10;}
+    @supports (height:100dvh){.screen{height:100dvh;}}
     .screen.active{display:flex;animation:screenIn .5s ease both;}
     @keyframes screenIn{0%{opacity:0;filter:brightness(1.8) saturate(0);}100%{opacity:1;filter:brightness(1) saturate(1);}}
 
@@ -29,7 +34,9 @@
     .title-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;}
     .av-ring{width:144px;height:144px;border-radius:50%;border:3px solid var(--pk);box-shadow:0 0 24px var(--glow),0 0 60px var(--glow);overflow:hidden;animation:float 3s ease-in-out infinite;flex-shrink:0;}
     .av-ring img{width:100%;height:100%;object-fit:cover;}
-    .av-fallback{width:100%;height:100%;background:radial-gradient(circle,#ff6eb4,#8b0057);display:flex;align-items:center;justify-content:center;font-size:36px;}
+    /* Cat-ear SVG fallback for avatar */
+    .av-fallback{width:100%;height:100%;background:radial-gradient(circle,#ff6eb4,#8b0057);display:flex;align-items:center;justify-content:center;}
+    .av-fallback svg{width:72px;height:72px;}
     @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
     .t-main{font-size:28px;font-weight:600;color:#fff;text-shadow:0 0 20px var(--glow);letter-spacing:4px;text-align:center;}
     .t-sub{font-size:14px;color:var(--pks);letter-spacing:2px;}
@@ -65,7 +72,9 @@
     .game-field{flex:1;width:100%;position:relative;overflow:hidden;}
     .portrait{position:absolute;bottom:0;left:0;width:110px;height:150px;z-index:5;pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,black 50%,transparent 100%);mask-image:linear-gradient(180deg,black 50%,transparent 100%);}
     .portrait img{width:100%;height:100%;object-fit:cover;object-position:top center;}
-    .portrait-fallback{width:100%;height:100%;background:linear-gradient(180deg,#8b0057,#400028);display:flex;align-items:center;justify-content:center;font-size:40px;}
+    /* Cat-ear SVG fallback for portrait */
+    .portrait-fallback{width:100%;height:100%;background:linear-gradient(180deg,#8b0057,#400028);display:flex;align-items:center;justify-content:center;}
+    .portrait-fallback svg{width:60px;height:60px;}
     .portrait.hit-good{animation:glow-good .4s ease;}
     .portrait.hit-bad{animation:shake .4s ease;}
     @keyframes glow-good{0%,100%{filter:none;}50%{filter:drop-shadow(0 0 14px #ff6eb4);}}
@@ -82,6 +91,17 @@
     /* SCORE POPUP */
     .score-pop{position:absolute;font-size:13px;font-weight:600;pointer-events:none;z-index:30;animation:pop-up .9s ease forwards;}
     @keyframes pop-up{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-50px);}}
+
+    /* COMBO BADGE */
+    #combo-badge{padding:2px 8px;border-radius:10px;transition:all .2s;}
+    #combo-badge.c2{color:#fff;background:rgba(255,0,128,0.2);border:1px solid rgba(255,0,128,0.4);}
+    #combo-badge.c3{color:#ff6eb4;background:rgba(255,0,128,0.3);animation:pulse-badge .6s ease infinite alternate;}
+    #combo-badge.c5{color:#ffd700;background:rgba(255,215,0,0.2);border:1px solid rgba(255,215,0,0.5);animation:pulse-badge .4s ease infinite alternate;}
+    @keyframes pulse-badge{from{box-shadow:0 0 4px currentColor;}to{box-shadow:0 0 12px currentColor;}}
+
+    /* ENERGY SHAKE */
+    @keyframes shake-small{0%,100%{transform:translateX(0);}33%{transform:translateX(-3px);}66%{transform:translateX(3px);}}
+    .shake-small{animation:shake-small .3s ease;}
 
     /* DIALOGUE */
     .dlg-box{background:rgba(12,0,18,0.95);border:1px solid rgba(255,0,128,0.35);border-radius:12px;max-width:500px;width:100%;padding:0;overflow:hidden;}
@@ -103,9 +123,22 @@
     .end-box{max-width:460px;width:100%;text-align:center;}
     .end-text{font-size:15px;line-height:2.2;color:#f0d8e8;white-space:pre-line;margin-bottom:24px;}
     .end-fin{font-size:16px;color:var(--gold);letter-spacing:4px;text-shadow:0 0 16px rgba(240,200,64,0.6);}
+    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
   </style>
 </head>
 <body>
+
+<!-- Cat-ear SVG template (inline, used as fallback) -->
+<svg style="display:none" id="catear-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
+  <circle cx="40" cy="48" r="24" fill="#ff6eb4" opacity="0.9"/>
+  <polygon points="18,30 26,8 34,30" fill="#ff6eb4"/>
+  <polygon points="22,28 26,12 30,28" fill="#ffb6d9"/>
+  <polygon points="46,30 54,8 62,30" fill="#ff6eb4"/>
+  <polygon points="50,28 54,12 58,28" fill="#ffb6d9"/>
+  <circle cx="34" cy="50" r="3" fill="#8b0057" opacity="0.6"/>
+  <circle cx="46" cy="50" r="3" fill="#8b0057" opacity="0.6"/>
+  <ellipse cx="40" cy="55" rx="4" ry="3" fill="#ffb6d9"/>
+</svg>
 
 <!-- TITLE -->
 <div id="st" class="screen active">
@@ -116,7 +149,7 @@
   <div class="title-content">
     <div class="av-ring">
       <img id="av-title" src="https://i0.hdslb.com/bfs/face/ced9670b1bff022a8fb01c58d048aca279d4987d.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="av-fallback" style="display:none">🌸</div>
+      <div class="av-fallback" style="display:none"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="48" r="24" fill="#ff6eb4" opacity="0.9"/><polygon points="18,30 26,8 34,30" fill="#ff6eb4"/><polygon points="22,28 26,12 30,28" fill="#ffb6d9"/><polygon points="46,30 54,8 62,30" fill="#ff6eb4"/><polygon points="50,28 54,12 58,28" fill="#ffb6d9"/><circle cx="34" cy="50" r="3" fill="#8b0057" opacity="0.6"/><circle cx="46" cy="50" r="3" fill="#8b0057" opacity="0.6"/><ellipse cx="40" cy="55" rx="4" ry="3" fill="#ffb6d9"/></svg></div>
     </div>
     <div class="t-main">以情感为食</div>
     <div class="t-sub">汐弥 · 七天情感收集</div>
@@ -130,6 +163,7 @@
 <!-- BRIEF -->
 <div id="sb" class="screen">
   <div class="brief-box">
+    <div id="br-progress" style="display:flex;gap:6px;justify-content:center;margin-bottom:16px;"></div>
     <div class="day-label" id="br-label">DAY 1</div>
     <div class="day-title" id="br-title">汐落星重建·第一日</div>
     <div class="day-theme" id="br-theme">寻找第一束治愈之光</div>
@@ -150,6 +184,7 @@
   <div class="hud">
     <div class="hud-row1">
       <div class="hud-day" id="g-daylabel"></div>
+      <div id="combo-badge" style="display:none;font-size:12px;font-weight:600;letter-spacing:1px;"></div>
       <div class="hud-timer" id="g-timer">45</div>
     </div>
     <div class="energy-bar-wrap"><div class="energy-bar-fill" id="g-bar" style="width:0%"></div></div>
@@ -160,8 +195,14 @@
   </div>
   <div class="game-field" id="g-field">
     <div class="portrait" id="g-portrait">
-      <img src="https://i0.hdslb.com/bfs/face/ced9670b1bff022a8fb01c58d048aca279d4987d.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="portrait-fallback" style="display:none">🌸</div>
+      <!-- PORTRAIT: Replace src with official art URL when provided by 总裁 -->
+      <img src="https://i2.hdslb.com/bfs/archive/d8e8512d1744fc36f62bd07353e50ca81d8e91db.jpg" onerror="this.src='https://i0.hdslb.com/bfs/face/ced9670b1bff022a8fb01c58d048aca279d4987d.jpg';this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex';}">
+      <div class="portrait-fallback" style="display:none"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="48" r="24" fill="#ff6eb4" opacity="0.9"/><polygon points="18,30 26,8 34,30" fill="#ff6eb4"/><polygon points="22,28 26,12 30,28" fill="#ffb6d9"/><polygon points="46,30 54,8 62,30" fill="#ff6eb4"/><polygon points="50,28 54,12 58,28" fill="#ffb6d9"/><circle cx="34" cy="50" r="3" fill="#8b0057" opacity="0.6"/><circle cx="46" cy="50" r="3" fill="#8b0057" opacity="0.6"/><ellipse cx="40" cy="55" rx="4" ry="3" fill="#ffb6d9"/></svg></div>
+    </div>
+    <!-- PAUSE OVERLAY -->
+    <div id="pause-overlay" style="display:none;position:absolute;inset:0;background:rgba(10,0,16,0.85);z-index:50;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;" onclick="resumeGame()">
+      <div style="font-size:32px">⏸</div>
+      <div style="color:#f4a0c0;letter-spacing:2px;font-size:14px">已暂停 · 点击继续</div>
     </div>
   </div>
 </div>
@@ -192,6 +233,7 @@
 <!-- ENDING -->
 <div id="send" class="screen">
   <div class="end-box">
+    <div id="end-recap" style="display:flex;gap:8px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;"></div>
     <div class="end-text" id="end-text"></div>
     <div class="end-fin">✦  The End  ✦</div>
     <br>
@@ -220,25 +262,39 @@ const DAYS=[
   {n:6,sub:'星光将至',          theme:'汐落星快要修好了',          targets:['heal','joy','gentle'],      avoids:['drain','lonely'],     spawn:760, speed:90, max:11,time:38},
   {n:7,sub:'今天也是美好的一天',theme:'收集所有温暖，送回汐落星',   targets:['heal','gentle','strength','joy'],avoids:['drain'],       spawn:700, speed:100,max:12,time:40},
 ];
+
+// 7 entries total for DLG_GOOD (index 0-6)
 const DLG_GOOD=[
   [{s:'汐弥',t:'喵~！今天的情感频率非常正！'},{s:'汐弥',t:'我把收集到的所有治愈，都打包送到汐落星了。'},{s:'汐弥',t:'……那颗星，又亮了一点点。'}],
   [{s:'汐弥',t:'嗯！米娜桑们今天状态很好。'},{s:'汐弥',t:'我感受到了很多力量型情感——'},{s:'汐弥',t:'"温柔坚定"，这四个字，你们真的做到了。'}],
   [{s:'汐弥',t:'收集量超标！汐弥能量条满了。'},{s:'汐弥',t:'这些情感对我来说都是食物，谢谢你们……'},{s:'汐弥',t:'（悄悄把多余的温柔塞进口袋）'}],
-  [{s:'汐弥',t:'今天完全没有内耗！'},{s:'汐弥',t:'不是因为情绪消失了，'},{s:'汐弥',t:'是因为每一种情绪，都被好好感受了。'}],
+  [{s:'汐弥',t:'今天完全没有内耗！'},{s:'汐弥',t:'不是因为情绪消失了，'},{s:'汐弥',t:'是因为每一种情绪，都被好好感受了。\n……这就是主播不内耗终极心法啊。'}],
   [{s:'汐弥',t:'七天的情感，汐弥全收到了。'},{s:'汐弥',t:'以情感为食的我，在地球，吃得很饱。'},{s:'汐弥',t:'……谢谢你陪着汐弥走完这七天。'}],
+  [{s:'汐弥',t:'星光将至……我感觉汐落星在颤动。'},{s:'汐弥',t:'今天的治愈、快乐、温柔——三种同时进来的感觉，'},{s:'汐弥',t:'就像被抱了三下。'}],
+  [{s:'汐弥',t:'…全收到了。'},{s:'汐弥',t:'七种温暖，一颗正在修复的星，还有陪着我的你。'},{s:'汐弥',t:'汐落星今晚会亮的。谢谢你。'}],
 ];
+
 const DLG_OK=[
   [{s:'汐弥',t:'还不错……今天的情感频率，我基本都读取到了。'},{s:'汐弥',t:'明天继续，好吗？'}],
   [{s:'汐弥',t:'中途有几个内耗泡泡碰到了。'},{s:'汐弥',t:'没关系，内耗也是真实的——'},{s:'汐弥',t:'只是今天，它比治愈跑得更快。明天注意一下。'}],
+  [{s:'汐弥',t:'今天差了一点点。'},{s:'汐弥',t:'没事，我把没抓到的情感记下来了。'},{s:'汐弥',t:'明天，稳一点。'}],
+  [{s:'汐弥',t:'有几个内耗碰到了……'},{s:'汐弥',t:'没关系，内耗也是真实存在的。'},{s:'汐弥',t:'识别它，然后绕开它。这才是不内耗的心法。'}],
 ];
+
 const DLG_LOW=[
   [{s:'旁白',t:'汐弥安静地坐着，尾巴慢慢地摇摆。'},{s:'汐弥',t:'……没关系的。'},{s:'汐弥',t:'今天能量不够，是因为今天本来就不容易。'},{s:'汐弥',t:'明天，我们再试一次。'}],
+  [{s:'旁白',t:'汐弥把今天收集到的一点点温暖，小心地收好了。'},{s:'汐弥',t:'即使很少，也是真实的。'},{s:'汐弥',t:'……谢谢你今天还在。'}],
+  [{s:'汐弥',t:'今天有点乱。'},{s:'汐弥',t:'但乱也没关系。'},{s:'汐弥',t:'汐落星不会因为一天就停止修复的。'}],
 ];
+
 const END_TEXT=`七天过去了。\n\n汐弥站在窗边，看着夜空中那颗越来越亮的星。\n\n"汐落星……你听到了吗？"\n\n她把这七天收集到的所有温暖，\n全部握在爪子里，轻轻送出去。\n\n远处，一颗星闪了一下。\n\n"喵——"\n\n她笑了。\n\n"以情感为食的我，在地球，吃得很饱。"`;
 
 let curDay=1,energy=0,scores=[],combo=0,comboTimer=null;
 let bubbles=[],rafId=null,spawnTimer=null,countTimer=null,timeLeft=0;
 let dlgLines=[],dlgIdx=0;
+let isPaused=false,danmakuTimer=null;
+
+const DANMAKU_MSGS=['主播不内耗！','喵~','米娜桑！','✨治愈到了','喵喵喵'];
 
 function $(id){return document.getElementById(id);}
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');}
@@ -259,23 +315,65 @@ function showBrief(){
   d.targets.forEach(id=>{const e=EM[id];const t=document.createElement('div');t.className='em-tag';t.textContent=e.emoji+' '+e.name;t.style.cssText=`background:${e.bg};border-color:${e.border};color:#fff;`;tt.appendChild(t);});
   const av=$('br-avoids');av.innerHTML='';
   d.avoids.forEach(id=>{const e=EM[id];const t=document.createElement('div');t.className='em-tag';t.textContent=e.emoji+' '+e.name;t.style.cssText=`background:${e.bg};border-color:${e.border};color:#aaa;`;av.appendChild(t);});
+  // 7-day progress dots
+  const prog=$('br-progress');
+  prog.innerHTML='';
+  for(let i=1;i<=7;i++){
+    const dot=document.createElement('div');
+    const done=scores[i-1]!==undefined;
+    const current=i===curDay;
+    dot.style.cssText=`width:${current?12:8}px;height:${current?12:8}px;border-radius:50%;background:${done?'var(--pk)':current?'rgba(255,0,128,0.5)':'rgba(255,255,255,0.15)'};border:1px solid ${current?'var(--pk)':'transparent'};transition:all .3s;`;
+    prog.appendChild(dot);
+  }
   show('sb');
 }
 
 function startGame(){
   const d=DAYS[curDay-1];
-  energy=0;combo=0;bubbles=[];
+  energy=0;combo=0;bubbles=[];isPaused=false;
   $('g-daylabel').textContent=`DAY ${d.n} · ${d.sub}`;
   updateHUD();
+  updateComboBadge();
   show('sg');
   timeLeft=d.time;
   $('g-timer').textContent=timeLeft;
   $('g-timer').classList.remove('warn');
+  $('pause-overlay').style.display='none';
   clearAllBubbles();
   spawnTimer=setInterval(()=>spawnBubble(d),d.spawn);
   countTimer=setInterval(tick,1000);
   rafId=requestAnimationFrame(()=>animFrame(d));
+  startDanmakuSpawner(d);
 }
+
+// Tab visibility pause
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){pauseGame();}else{resumeGame();}
+});
+
+function pauseGame(){
+  if(!rafId&&!spawnTimer)return; // not in game
+  isPaused=true;
+  clearInterval(spawnTimer);spawnTimer=null;
+  clearInterval(countTimer);countTimer=null;
+  cancelAnimationFrame(rafId);rafId=null;
+  clearTimeout(danmakuTimer);danmakuTimer=null;
+  const overlay=$('pause-overlay');
+  if(overlay)overlay.style.display='flex';
+}
+
+function resumeGame(){
+  if(!isPaused)return;
+  isPaused=false;
+  const overlay=$('pause-overlay');
+  if(overlay)overlay.style.display='none';
+  const d=DAYS[curDay-1];
+  spawnTimer=setInterval(()=>spawnBubble(d),d.spawn);
+  countTimer=setInterval(tick,1000);
+  rafId=requestAnimationFrame(()=>animFrame(d));
+  startDanmakuSpawner(d);
+}
+window.resumeGame=resumeGame;
 
 function tick(){
   timeLeft--;
@@ -286,11 +384,27 @@ function tick(){
 
 function animFrame(d){
   const field=$('g-field');
+  const fw=field.clientWidth;
   bubbles=bubbles.filter(b=>{
     if(!b.el.parentNode)return false;
-    b.y-=d.speed/60;
+    b.y-=(d.speed/60)*b.speedMod;
+    b.x+=b.dx;
+    // boundary bounce
+    if(b.x<130||b.x>fw-60)b.dx*=-1;
     b.el.style.top=b.y+'px';
-    if(b.y<-80){b.el.remove();return false;}
+    b.el.style.left=b.x+'px';
+    if(b.y<-80){
+      b.el.remove();
+      // light penalty for escaped good bubbles from day 3+
+      if(curDay>=3&&EM[b.id]&&EM[b.id].type==='good'){
+        energy=Math.max(0,energy-1);
+        updateHUD();
+        const bar=$('g-bar');
+        bar.classList.add('shake-small');
+        setTimeout(()=>bar.classList.remove('shake-small'),300);
+      }
+      return false;
+    }
     return true;
   });
   rafId=requestAnimationFrame(()=>animFrame(d));
@@ -318,9 +432,12 @@ function spawnBubble(d){
   el.className='bubble';
   el.style.cssText=`width:${size}px;height:${size}px;left:${x}px;top:${y}px;background:${em.bg};border-color:${em.border};box-shadow:0 0 10px ${em.glow};`;
   el.innerHTML=`<div class="b-emoji">${em.emoji}</div><div class="b-name">${em.name}</div>`;
+  const speedMod=0.7+Math.random()*0.6;
+  const dx=(Math.random()-0.5)*0.6;
+  const finalDx=em.type==='bad'?dx*1.8:dx;
   el.addEventListener('click',e=>{e.stopPropagation();clickBubble(el,em,x+size/2,y+size/2);});
   field.appendChild(el);
-  bubbles.push({el,y,id});
+  bubbles.push({el,y,x,id,dx:finalDx,speedMod});
 }
 
 function clickBubble(el,em,cx,cy){
@@ -333,19 +450,103 @@ function clickBubble(el,em,cx,cy){
   if(em.type==='good'){
     clearTimeout(comboTimer);
     combo++;
-    comboTimer=setTimeout(()=>{combo=0;},1500);
+    comboTimer=setTimeout(()=>{combo=0;updateComboBadge();},1500);
     const mult=combo>=5?3:combo>=3?2:1;
     const gain=6*mult;
     energy=Math.min(100,energy+gain);
     port.classList.remove('hit-good','hit-bad');void port.offsetWidth;port.classList.add('hit-good');
     showPop(cx,cy,`+${gain}${combo>=3?' x'+mult:''}`,combo>=5?'#ffd700':combo>=3?'#ff6eb4':'#90ee90');
+    spawnParticles(cx,cy,em.glow);
+    updateComboBadge();
+    // 一键三连彩蛋 at combo 3
+    if(combo===3){
+      const toast=document.createElement('div');
+      toast.style.cssText='position:absolute;top:20px;left:50%;transform:translateX(-50%);font-size:18px;letter-spacing:6px;animation:pop-up .9s ease forwards;z-index:40;pointer-events:none;';
+      toast.textContent='👍🪙⭐';
+      const field=$('g-field');
+      field.appendChild(toast);
+      setTimeout(()=>toast.remove(),950);
+    }
   } else {
     combo=0;
     energy=Math.max(0,energy-5);
     port.classList.remove('hit-good','hit-bad');void port.offsetWidth;port.classList.add('hit-bad');
     showPop(cx,cy,'-5','#ff4444');
+    updateComboBadge();
   }
   updateHUD();
+}
+
+function updateComboBadge(){
+  const b=$('combo-badge');
+  if(!b)return;
+  b.className='';
+  if(combo===0){b.style.display='none';return;}
+  b.style.display='';
+  if(combo>=5){b.className='c5';b.textContent='⚡ x3+';}
+  else if(combo>=3){b.className='c3';b.textContent='🔥 x2';}
+  else{b.className='c2';b.textContent='🔥 x'+combo;}
+}
+
+function spawnParticles(x,y,color){
+  const field=$('g-field');
+  for(let i=0;i<6;i++){
+    const p=document.createElement('div');
+    const angle=(i/6)*Math.PI*2;
+    const dist=30+Math.random()*20;
+    p.style.cssText=`position:absolute;width:6px;height:6px;border-radius:50%;background:${color};left:${x}px;top:${y}px;pointer-events:none;z-index:25;transform:translate(-50%,-50%);transition:all .5s ease;opacity:1;`;
+    field.appendChild(p);
+    requestAnimationFrame(()=>{
+      p.style.left=(x+Math.cos(angle)*dist)+'px';
+      p.style.top=(y+Math.sin(angle)*dist)+'px';
+      p.style.opacity='0';
+      p.style.transform='translate(-50%,-50%) scale(0)';
+    });
+    setTimeout(()=>p.remove(),520);
+  }
+}
+
+function spawnDanmaku(d){
+  const field=$('g-field');
+  const fh=field.clientHeight;
+  const y=40+Math.random()*(fh*0.6);
+  const el=document.createElement('div');
+  const msg=DANMAKU_MSGS[Math.floor(Math.random()*DANMAKU_MSGS.length)];
+  el.style.cssText=`position:absolute;left:-120px;top:${y}px;background:rgba(255,0,128,0.18);border:1px solid rgba(255,0,128,0.4);border-radius:20px;padding:4px 12px;color:#fde8f0;font-size:12px;white-space:nowrap;cursor:pointer;z-index:15;pointer-events:auto;`;
+  el.textContent='💬 '+msg;
+  el.addEventListener('click',e=>{
+    e.stopPropagation();
+    energy=Math.min(100,energy+10);
+    updateHUD();
+    showPop(field.clientWidth/2,y,'+10 弹幕！','#ff6eb4');
+    const port=$('g-portrait');
+    port.classList.remove('hit-good','hit-bad');void port.offsetWidth;port.classList.add('hit-good');
+    el.remove();
+  });
+  field.appendChild(el);
+  let lx=-120;
+  const speed=1.2;
+  function moveDanmaku(){
+    lx+=speed;
+    el.style.left=lx+'px';
+    if(lx<field.clientWidth+20&&el.parentNode){
+      requestAnimationFrame(moveDanmaku);
+    } else {
+      if(el.parentNode)el.remove();
+    }
+  }
+  requestAnimationFrame(moveDanmaku);
+}
+
+function startDanmakuSpawner(d){
+  function scheduleNext(){
+    const delay=8000+Math.random()*4000;
+    danmakuTimer=setTimeout(()=>{
+      if(!isPaused)spawnDanmaku(d);
+      scheduleNext();
+    },delay);
+  }
+  scheduleNext();
 }
 
 function showPop(x,y,txt,color){
@@ -364,13 +565,15 @@ function updateHUD(){
 }
 
 function clearAllBubbles(){
-  const field=$('g-field');
   bubbles.forEach(b=>{if(b.el.parentNode)b.el.remove();});
   bubbles=[];
 }
 
 function endGame(){
-  clearInterval(spawnTimer);clearInterval(countTimer);cancelAnimationFrame(rafId);
+  clearInterval(spawnTimer);spawnTimer=null;
+  clearInterval(countTimer);countTimer=null;
+  cancelAnimationFrame(rafId);rafId=null;
+  clearTimeout(danmakuTimer);danmakuTimer=null;
   clearAllBubbles();
   scores[curDay-1]=Math.round(energy);
   saveGame();
@@ -382,7 +585,7 @@ function showDialogue(){
   let pool;
   if(sc>=80)pool=DLG_GOOD[Math.min(curDay-1,DLG_GOOD.length-1)];
   else if(sc>=50)pool=DLG_OK[Math.floor(Math.random()*DLG_OK.length)];
-  else pool=DLG_LOW[0];
+  else pool=DLG_LOW[Math.floor(Math.random()*DLG_LOW.length)];
   dlgLines=pool;dlgIdx=0;
   renderLine();
   show('sdlg');
@@ -421,9 +624,38 @@ window.sumNext=function(){
 };
 
 function showEnding(){
+  // fill recap
+  const recap=$('end-recap');
+  recap.innerHTML='';
+  let allPerfect=true;
+  scores.forEach((sc,i)=>{
+    const stars=sc>=85?'★★★':sc>=65?'★★☆':sc>=45?'★☆☆':'☆☆☆';
+    if(stars!=='★★★')allPerfect=false;
+    const card=document.createElement('div');
+    card.style.cssText='text-align:center;background:rgba(255,0,128,0.08);border:1px solid rgba(255,0,128,0.2);border-radius:8px;padding:6px 10px;min-width:44px;';
+    card.innerHTML=`<div style="font-size:9px;color:#8a6070;letter-spacing:1px">DAY ${i+1}</div><div style="font-size:13px;color:${sc>=85?'#ffd700':sc>=65?'#ff6eb4':'#8a6070'}">${stars}</div>`;
+    recap.appendChild(card);
+  });
+  if(allPerfect){
+    const badge=document.createElement('div');
+    badge.style.cssText='width:100%;text-align:center;color:#ffd700;font-size:13px;letter-spacing:3px;text-shadow:0 0 12px rgba(255,215,0,0.6);margin-top:4px;animation:float 2s ease-in-out infinite;';
+    badge.textContent='✦ 七天满星 · 汐落星全亮 ✦';
+    recap.appendChild(badge);
+  }
   $('end-text').textContent=END_TEXT;
   show('send');
 }
+
+// Keyboard support
+document.addEventListener('keydown',e=>{
+  if(e.key===' '||e.key==='Enter'){
+    e.preventDefault();
+    const dlgScreen=$('sdlg');
+    if(dlgScreen.classList.contains('active')){nextLine();return;}
+    const sumScreen=$('ssum');
+    if(sumScreen.classList.contains('active')){sumNext();return;}
+  }
+});
 
 window.startNew=startNew;
 window.loadGame=loadGame;
