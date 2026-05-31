@@ -161,12 +161,35 @@ const intelCollection = defineCollection({
   }),
 });
 
+// DE-4 运行清单 (run-manifest) — INTEL-PIPELINE-REMEDIATION v3 Phase 2.
+// Per-stage shards manifest/{date}/{stage}.json + the aggregate _overall.json are
+// MIRRORED here from synapse-ops by scripts/intelligence/mirror_manifest.py (with
+// a copy business assertion). This is the structural truth ledger of the intel
+// pipeline. The frontend READS it (genuine-vs-honest-empty display) in DE-5
+// (Phase 3) — registering the collection now makes the mirrored JSON discoverable
+// via getCollection('intelligence-manifest') without coupling Phase 2 to the
+// (Phase-3) display schema. JSON is parsed via the glob loader's parser; no strict
+// zod schema (like synapse-core) so shards load unchanged as the schema evolves.
+// The glob loader auto-parses .json by extension (no explicit parser needed —
+// that option belongs to the `file` loader, not `glob`, in Astro 6). No strict
+// zod schema (like synapse-core) so shards load unchanged as the schema evolves.
+const intelManifestCollection = defineCollection({
+  loader: glob({
+    pattern: '**/*.json',
+    base: './src/content/intelligence/manifest',
+    // date-sharded paths (e.g. 2026-05-31/scan.json) — keep the dir-prefixed id
+    // unique across days and stages.
+    generateId: ({ entry }) => entry.replace(/\.json$/, ''),
+  }),
+});
+
 export const collections = {
   blog: blogCollection,
   'synapse-core': synapseCoreCollection,
   'intelligence-daily': intelDailyCollection,
   'intelligence-decisions': intelDecisionsCollection,
   'intelligence-results': intelResultsCollection,
+  'intelligence-manifest': intelManifestCollection,
   weekly: weeklyCollection,
   intel: intelCollection,
 };

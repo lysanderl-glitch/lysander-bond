@@ -1,0 +1,3 @@
+# Placeholder so the intelligence-manifest content collection base dir always exists.
+# DE-4 run-manifest shards (manifest/{date}/*.json) are mirrored here by
+# synapse-ops scripts/intelligence/mirror_manifest.py at publish time (Phase 2).
