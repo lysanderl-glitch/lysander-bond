@@ -1,0 +1,751 @@
+---
+---
+<!-- 汐弥泡泡射击 v1.0 - 2026-05-31 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <title>汐弥泡泡射击</title>
+  <style is:global>
+    :root{--pk:#FF0080;--pks:#F4A0C0;--lav:#C8A0D4;--gold:#F0C840;--dark:#0a0010;--dark2:#120018;--glow:rgba(255,0,128,0.5);}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{height:100%;overflow:hidden;background:var(--dark);}
+    body{color:#fde8f0;font-family:'PingFang SC','Microsoft YaHei',sans-serif;user-select:none;touch-action:none;}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,0,128,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,0,128,0.04) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0;}
+
+    .screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:10;}
+    .screen.active{display:flex;animation:fadeIn .4s ease both;}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+    /* ── TITLE ── */
+    #st{background:radial-gradient(ellipse at 50% 40%,rgba(255,0,128,0.15) 0%,transparent 70%)}
+    .av-ring{width:130px;height:130px;border-radius:50%;border:3px solid var(--pk);box-shadow:0 0 24px var(--glow),0 0 60px var(--glow);overflow:hidden;margin-bottom:16px;animation:float 3s ease-in-out infinite;}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    .t-main{font-size:26px;font-weight:700;letter-spacing:4px;color:#fff;text-shadow:0 0 20px var(--glow);margin-bottom:6px;}
+    .t-sub{font-size:13px;color:var(--pks);letter-spacing:2px;margin-bottom:28px;}
+    .btn{padding:11px 30px;border:1.5px solid var(--pk);background:rgba(255,0,128,0.12);color:#fff;font-size:14px;letter-spacing:2px;cursor:pointer;border-radius:6px;transition:.2s;font-family:inherit;}
+    .btn:active{background:rgba(255,0,128,0.35);}
+    .btn-row{display:flex;gap:12px;}
+    .badge-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px;}
+    .badge{padding:4px 12px;border-radius:20px;font-size:11px;border:1px solid rgba(255,0,128,0.3);background:rgba(255,0,128,0.08);color:var(--pks);letter-spacing:1px;}
+
+    /* ── GAME SCREEN ── */
+    #sg{padding:0;justify-content:flex-start;}
+    .hud{width:100%;padding:8px 14px 6px;background:rgba(10,0,16,0.9);border-bottom:1px solid rgba(255,0,128,0.2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;z-index:20;}
+    .hud-score{font-size:20px;font-weight:700;color:#fff;text-shadow:0 0 10px var(--glow);}
+    .hud-label{font-size:10px;color:#8a6070;letter-spacing:1px;margin-bottom:2px;}
+    .hud-next-wrap{display:flex;flex-direction:column;align-items:center;}
+    .next-bubble{width:38px;height:38px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;}
+    #g-canvas-wrap{flex:1;width:100%;position:relative;overflow:hidden;}
+    #g-canvas{display:block;touch-action:none;}
+
+    /* ── GIFT NOTIFICATION ── */
+    .gift-notif{position:fixed;right:-300px;top:30%;transform:translateY(-50%);z-index:200;pointer-events:none;
+      background:linear-gradient(135deg,rgba(18,0,28,0.97),rgba(30,0,50,0.97));
+      border:1px solid;border-radius:12px 0 0 12px;padding:12px 20px 12px 16px;
+      display:flex;align-items:center;gap:12px;min-width:200px;
+      transition:right .5s cubic-bezier(.23,1,.32,1);}
+    .gift-notif.show{right:0;}
+    .gift-notif-icon{font-size:36px;animation:float 1s ease-in-out infinite;}
+    .gift-notif-text{display:flex;flex-direction:column;}
+    .gift-notif-name{font-size:15px;font-weight:700;letter-spacing:2px;}
+    .gift-notif-sub{font-size:11px;opacity:.7;margin-top:2px;}
+
+    /* ── END SCREEN ── */
+    #se{background:radial-gradient(ellipse at 50% 50%,rgba(255,0,128,0.12) 0%,transparent 70%)}
+    .end-box{background:rgba(12,0,20,0.95);border:1px solid rgba(255,0,128,0.35);border-radius:16px;padding:32px 28px;text-align:center;max-width:340px;width:90%;}
+    .end-score{font-size:64px;font-weight:700;color:var(--pk);text-shadow:0 0 30px var(--glow);line-height:1;}
+    .end-label{font-size:11px;letter-spacing:3px;color:#8a6070;margin-bottom:4px;}
+    .end-title{font-size:18px;color:#fff;margin:12px 0 4px;letter-spacing:2px;}
+    .end-sub{font-size:13px;color:var(--pks);margin-bottom:24px;}
+    .gifts-earned{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;}
+    .gift-chip{padding:6px 14px;border-radius:20px;font-size:13px;border:1px solid;letter-spacing:1px;}
+
+    /* ── PARTICLES ── */
+    .particle{position:absolute;pointer-events:none;border-radius:50%;z-index:30;}
+  </style>
+</head>
+<body>
+
+<canvas id="bg-canvas" style="position:fixed;inset:0;z-index:1;pointer-events:none;"></canvas>
+
+<!-- TITLE -->
+<div id="st" class="screen active">
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding:20px;">
+    <div class="av-ring">
+      <svg viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg" width="130" height="130">
+        <defs>
+          <radialGradient id="bg1" cx="50%" cy="60%">
+            <stop offset="0%" stop-color="#ff6eb4"/>
+            <stop offset="100%" stop-color="#8b0057"/>
+          </radialGradient>
+        </defs>
+        <rect width="130" height="130" fill="url(#bg1)"/>
+        <!-- cat ears -->
+        <polygon points="22,52 36,14 50,52" fill="#ff6eb4"/>
+        <polygon points="27,50 36,20 45,50" fill="#ffb6d9"/>
+        <polygon points="80,52 94,14 108,52" fill="#ff6eb4"/>
+        <polygon points="85,50 94,20 103,50" fill="#ffb6d9"/>
+        <!-- face -->
+        <circle cx="65" cy="78" r="40" fill="#ffe4f0"/>
+        <!-- eyes -->
+        <ellipse cx="52" cy="72" rx="6" ry="7" fill="#2a0015"/>
+        <ellipse cx="78" cy="72" rx="6" ry="7" fill="#2a0015"/>
+        <circle cx="54" cy="70" r="2" fill="#fff"/>
+        <circle cx="80" cy="70" r="2" fill="#fff"/>
+        <!-- blush -->
+        <ellipse cx="44" cy="82" rx="7" ry="4" fill="#ffb6d9" opacity=".6"/>
+        <ellipse cx="86" cy="82" rx="7" ry="4" fill="#ffb6d9" opacity=".6"/>
+        <!-- mouth -->
+        <path d="M58 88 Q65 95 72 88" stroke="#ff6eb4" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- nose -->
+        <ellipse cx="65" cy="83" rx="3" ry="2" fill="#ffb6d9"/>
+        <!-- whiskers -->
+        <line x1="20" y1="78" x2="46" y2="80" stroke="#ffb6d9" stroke-width="1.2" opacity=".7"/>
+        <line x1="20" y1="84" x2="46" y2="84" stroke="#ffb6d9" stroke-width="1.2" opacity=".7"/>
+        <line x1="84" y1="80" x2="110" y2="78" stroke="#ffb6d9" stroke-width="1.2" opacity=".7"/>
+        <line x1="84" y1="84" x2="110" y2="84" stroke="#ffb6d9" stroke-width="1.2" opacity=".7"/>
+        <!-- star accessory -->
+        <text x="95" y="25" font-size="14" fill="#ffd700" text-anchor="middle">✦</text>
+      </svg>
+    </div>
+    <div class="t-main">汐弥泡泡射击</div>
+    <div class="t-sub">送给主播的礼物游戏 ✦</div>
+    <div class="btn-row">
+      <button class="btn" onclick="startGame()">开始游戏</button>
+    </div>
+    <div class="badge-row">
+      <div class="badge">🍭 棒棒糖</div>
+      <div class="badge">💖 爱心</div>
+      <div class="badge">🌸 小花花</div>
+      <div class="badge">⭐ 星星</div>
+      <div class="badge">🎁 礼物</div>
+      <div class="badge">🌈 彩虹糖</div>
+    </div>
+    <div style="margin-top:18px;font-size:11px;color:#5a3050;letter-spacing:1px;text-align:center;line-height:1.8">
+      100分 🎆 烟花秀 · 150分 🏎️ 超级跑车<br>200分 🚀 火箭 · 250分 🏰 梦幻城堡
+    </div>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="sg" class="screen">
+  <div class="hud">
+    <div>
+      <div class="hud-label">得分</div>
+      <div class="hud-score" id="g-score">0</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div style="font-size:11px;color:#8a6070;text-align:center">汐弥<br>加油！</div>
+      <svg viewBox="0 0 50 50" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="25" cy="25" r="24" fill="#2a001a" stroke="#ff0080" stroke-width="1.5"/>
+        <polygon points="12,22 19,8 26,22" fill="#ff6eb4"/>
+        <polygon points="24,22 31,8 38,22" fill="#ff6eb4"/>
+        <polygon points="14,21 19,10 24,21" fill="#ffb6d9"/>
+        <polygon points="26,21 31,10 36,21" fill="#ffb6d9"/>
+        <circle cx="25" cy="32" r="14" fill="#ffe4f0"/>
+        <ellipse cx="20" cy="29" rx="3" ry="3.5" fill="#2a0015"/>
+        <ellipse cx="30" cy="29" rx="3" ry="3.5" fill="#2a0015"/>
+        <circle cx="21" cy="28" r="1" fill="#fff"/>
+        <circle cx="31" cy="28" r="1" fill="#fff"/>
+        <ellipse cx="17" cy="34" rx="3.5" ry="2" fill="#ffb6d9" opacity=".6"/>
+        <ellipse cx="33" cy="34" rx="3.5" ry="2" fill="#ffb6d9" opacity=".6"/>
+        <path d="M22 36 Q25 39 28 36" stroke="#ff6eb4" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="hud-next-wrap">
+      <div class="hud-label">下一个</div>
+      <div class="next-bubble" id="g-next"></div>
+    </div>
+  </div>
+  <div id="g-canvas-wrap">
+    <canvas id="g-canvas"></canvas>
+  </div>
+</div>
+
+<!-- END -->
+<div id="se" class="screen">
+  <div class="end-box">
+    <div class="end-label">最终得分</div>
+    <div class="end-score" id="e-score">0</div>
+    <div class="end-title" id="e-title">精彩表现！</div>
+    <div class="end-sub" id="e-sub">汐弥收到了你的礼物</div>
+    <div class="gifts-earned" id="e-gifts"></div>
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn" onclick="startGame()">再来一局</button>
+      <button class="btn" style="border-color:var(--lav);background:rgba(200,160,212,0.1);color:var(--lav)" onclick="goTitle()">返回</button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+// ═══ BG PARTICLES ═══
+(function(){
+  const c=document.getElementById('bg-canvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function rsz(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  rsz();window.addEventListener('resize',rsz);
+  const SYM=['✦','♡','✧','·','★','°','🌸'];
+  function mk(){return{x:Math.random()*W,y:H+10,sz:8+Math.random()*12,sp:0.25+Math.random()*0.5,op:0.06+Math.random()*0.2,sym:SYM[Math.floor(Math.random()*SYM.length)],hue:Math.random()<0.6?330:Math.random()<0.5?280:50,dx:(Math.random()-.5)*.3,wb:Math.random()*Math.PI*2,ws:0.01+Math.random()*.02};}
+  for(let i=0;i<35;i++){const p=mk();p.y=Math.random()*H;pts.push(p);}
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach((p,i)=>{
+      p.y-=p.sp;p.wb+=p.ws;p.x+=p.dx+Math.sin(p.wb)*.2;
+      ctx.save();ctx.globalAlpha=p.op;ctx.fillStyle=`hsl(${p.hue},80%,70%)`;ctx.font=`${p.sz}px serif`;ctx.textAlign='center';ctx.fillText(p.sym,p.x,p.y);ctx.restore();
+      if(p.y<-20)pts[i]=mk();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ═══ BUBBLE TYPES ═══
+const TYPES=[
+  {id:0,emoji:'🍭',name:'棒棒糖',color:'#ff69b4',dark:'#cc1468',glow:'rgba(255,105,180,.7)'},
+  {id:1,emoji:'💖',name:'爱心',  color:'#ff2255',dark:'#990022',glow:'rgba(255,34,85,.7)'},
+  {id:2,emoji:'🌸',name:'小花花',color:'#ffb7c5',dark:'#cc6080',glow:'rgba(255,183,197,.7)'},
+  {id:3,emoji:'⭐',name:'星星',  color:'#ffd700',dark:'#cc9900',glow:'rgba(255,215,0,.7)'},
+  {id:4,emoji:'🎁',name:'礼物',  color:'#b86eff',dark:'#7733cc',glow:'rgba(184,110,255,.7)'},
+  {id:5,emoji:'🌈',name:'彩虹糖',color:'#00d4e8',dark:'#007a88',glow:'rgba(0,212,232,.7)'},
+];
+const NT=TYPES.length;
+
+// ═══ GAME STATE ═══
+let canvas,ctx,W,H;
+let R; // bubble radius
+let COLS,ROWS_VISIBLE;
+let grid=[];       // grid[row][col] = typeId or -1
+let flyBubble=null;// {x,y,dx,dy,typeId}
+let curType,nextType;
+let score=0;
+let aimX=0,aimY=0,aiming=false;
+let giftsShown=new Set();
+let gameActive=false;
+
+// Grid geometry helpers
+function colX(col,row){
+  const offset=(row%2===1)?R:0;
+  return offset + col*(2*R) + R;
+}
+function rowY(row){
+  return row * (R*1.73) + R + 4;
+}
+function nearestCell(x,y){
+  let bestR=-1,bestC=-1,bestD=Infinity;
+  for(let r=0;r<grid.length+1&&r<ROWS_VISIBLE+2;r++){
+    const cols=r%2===0?COLS:COLS-1;
+    for(let c=0;c<cols;c++){
+      const cx=colX(c,r),cy=rowY(r);
+      const d=(x-cx)**2+(y-cy)**2;
+      if(d<bestD){bestD=d;bestR=r;bestC=c;}
+    }
+  }
+  return{r:bestR,c:bestC};
+}
+
+function initGrid(){
+  R=Math.min(22,Math.floor(W/20));
+  COLS=Math.floor(W/(2*R));
+  ROWS_VISIBLE=Math.floor(H*0.65/(R*1.73));
+  grid=[];
+  const initRows=Math.min(6,ROWS_VISIBLE);
+  for(let r=0;r<initRows;r++){
+    const cols=r%2===0?COLS:COLS-1;
+    const row=[];
+    for(let c=0;c<cols;c++){
+      row.push(Math.floor(Math.random()*NT));
+    }
+    grid.push(row);
+  }
+}
+
+function randType(){return Math.floor(Math.random()*NT);}
+function newBubble(){
+  curType=nextType!==undefined?nextType:randType();
+  nextType=randType();
+  const nb=document.getElementById('g-next');
+  if(nb){nb.textContent=TYPES[nextType].emoji;nb.style.background=TYPES[nextType].color+'33';nb.style.borderColor=TYPES[nextType].color;}
+}
+
+// ═══ DRAW ═══
+function drawBubble(x,y,typeId,alpha,scale){
+  if(typeId<0)return;
+  const t=TYPES[typeId];
+  alpha=alpha||1;scale=scale||1;
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.translate(x,y);
+  ctx.scale(scale,scale);
+  // glow
+  ctx.shadowColor=t.glow;
+  ctx.shadowBlur=8;
+  // gradient circle
+  const g=ctx.createRadialGradient(-R*.3,-R*.3,R*.1,0,0,R*.95);
+  g.addColorStop(0,'#fff');
+  g.addColorStop(0.3,t.color);
+  g.addColorStop(1,t.dark);
+  ctx.beginPath();
+  ctx.arc(0,0,R*.92,0,Math.PI*2);
+  ctx.fillStyle=g;
+  ctx.fill();
+  ctx.shadowBlur=0;
+  // emoji
+  ctx.font=`${R*.9}px serif`;
+  ctx.textAlign='center';
+  ctx.textBaseline='middle';
+  ctx.fillText(t.emoji,0,R*.05);
+  ctx.restore();
+}
+
+function drawShooter(){
+  const sx=W/2, sy=H-R*2.5;
+  // Arrow pointing up toward aim
+  if(aiming){
+    ctx.save();
+    ctx.strokeStyle='rgba(255,0,128,0.5)';
+    ctx.lineWidth=2;
+    ctx.setLineDash([6,8]);
+    // Draw trajectory with wall bounces
+    let tx=sx,ty=sy,tdx=(aimX-sx),tdy=(aimY-sy);
+    const len=Math.sqrt(tdx*tdx+tdy*tdy);
+    if(len>0){tdx/=len;tdy/=len;}
+    ctx.beginPath();ctx.moveTo(tx,ty);
+    for(let i=0;i<200;i++){
+      tx+=tdx*8;ty+=tdy*8;
+      if(tx<R){tx=R;tdx*=-1;}
+      if(tx>W-R){tx=W-R;tdx*=-1;}
+      if(ty<0)break;
+      ctx.lineTo(tx,ty);
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+  // Shooter platform
+  ctx.save();
+  const grad=ctx.createLinearGradient(sx-30,sy-10,sx+30,sy+10);
+  grad.addColorStop(0,'rgba(255,0,128,0.3)');
+  grad.addColorStop(1,'rgba(200,160,212,0.3)');
+  ctx.fillStyle=grad;
+  ctx.beginPath();
+  ctx.ellipse(sx,sy+R,R*1.8,R*.6,0,0,Math.PI*2);
+  ctx.fill();
+  ctx.restore();
+  // Current bubble
+  if(!flyBubble)drawBubble(sx,sy,curType,1,1);
+}
+
+function drawGrid(){
+  for(let r=0;r<grid.length;r++){
+    for(let c=0;c<grid[r].length;c++){
+      if(grid[r][c]>=0){
+        drawBubble(colX(c,r),rowY(r),grid[r][c]);
+      }
+    }
+  }
+}
+
+function drawFly(){
+  if(!flyBubble)return;
+  drawBubble(flyBubble.x,flyBubble.y,flyBubble.typeId,1,1);
+}
+
+function drawDangerLine(){
+  const dangerY=H*0.72;
+  ctx.save();
+  ctx.strokeStyle='rgba(255,0,80,0.25)';
+  ctx.lineWidth=1.5;
+  ctx.setLineDash([8,6]);
+  ctx.beginPath();ctx.moveTo(0,dangerY);ctx.lineTo(W,dangerY);ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+}
+
+function render(){
+  ctx.clearRect(0,0,W,H);
+  drawDangerLine();
+  drawGrid();
+  drawShooter();
+  drawFly();
+}
+
+// ═══ PHYSICS ═══
+let raf=null;
+function gameLoop(){
+  if(!gameActive)return;
+  if(flyBubble){
+    flyBubble.x+=flyBubble.dx;
+    flyBubble.y+=flyBubble.dy;
+    if(flyBubble.x<R){flyBubble.x=R;flyBubble.dx*=-1;}
+    if(flyBubble.x>W-R){flyBubble.x=W-R;flyBubble.dx*=-1;}
+    // Check collision with grid bubbles
+    let hit=false;
+    for(let r=0;r<grid.length&&!hit;r++){
+      for(let c=0;c<grid[r].length&&!hit;c++){
+        if(grid[r][c]<0)continue;
+        const cx=colX(c,r),cy=rowY(r);
+        const d=Math.sqrt((flyBubble.x-cx)**2+(flyBubble.y-cy)**2);
+        if(d<R*1.85){hit=true;}
+      }
+    }
+    // Hit top wall
+    if(flyBubble.y<=R)hit=true;
+    if(hit)landBubble();
+  }
+  render();
+  raf=requestAnimationFrame(gameLoop);
+}
+
+function landBubble(){
+  if(!flyBubble)return;
+  const {r,c}=nearestCell(flyBubble.x,flyBubble.y);
+  // Ensure grid rows exist
+  while(grid.length<=r)grid.push(new Array(r%2===0?COLS:COLS-1).fill(-1));
+  // Check bounds
+  const maxC=r%2===0?COLS:COLS-1;
+  const cc=Math.max(0,Math.min(c,maxC-1));
+  // If cell occupied, try adjacent
+  const placed=placeNear(r,cc,flyBubble.typeId);
+  flyBubble=null;
+  if(placed){
+    const {pr,pc}=placed;
+    checkMatches(pr,pc);
+    checkGameOver();
+  }
+  newBubble();
+}
+
+function placeNear(r,c,typeId){
+  // Try the target cell and neighbors
+  const candidates=[[r,c],[r,c-1],[r,c+1],[r-1,c],[r+1,c]];
+  for(const [tr,tc] of candidates){
+    if(tr<0)continue;
+    const maxC=tr%2===0?COLS:COLS-1;
+    if(tc<0||tc>=maxC)continue;
+    while(grid.length<=tr)grid.push(new Array(tr%2===0?COLS:COLS-1).fill(-1));
+    if(grid[tr][tc]===-1){
+      grid[tr][tc]=typeId;
+      return{pr:tr,pc:tc};
+    }
+  }
+  // Fallback: add to grid at top
+  if(grid.length>0&&grid[0].length>0){
+    for(let c2=0;c2<grid[0].length;c2++){
+      if(grid[0][c2]===-1){grid[0][c2]=typeId;return{pr:0,pc:c2};}
+    }
+  }
+  return null;
+}
+
+// ═══ MATCH LOGIC ═══
+function getNeighbors(r,c){
+  const nbrs=[];
+  // neighbors depend on even/odd row
+  const even=r%2===0;
+  const candidates=[
+    [r,c-1],[r,c+1],
+    [r-1,even?c-1:c],[r-1,even?c:c+1],
+    [r+1,even?c-1:c],[r+1,even?c:c+1],
+  ];
+  for(const[nr,nc] of candidates){
+    if(nr<0||nr>=grid.length)continue;
+    const maxC=nr%2===0?COLS:COLS-1;
+    if(nc<0||nc>=maxC)continue;
+    nbrs.push([nr,nc]);
+  }
+  return nbrs;
+}
+
+function bfs(startR,startC,matchType){
+  const visited=new Set();
+  const queue=[[startR,startC]];
+  visited.add(`${startR},${startC}`);
+  while(queue.length){
+    const[r,c]=queue.shift();
+    for(const[nr,nc] of getNeighbors(r,c)){
+      const key=`${nr},${nc}`;
+      if(visited.has(key))continue;
+      if(nr<grid.length&&nc<grid[nr].length&&grid[nr][nc]===matchType){
+        visited.add(key);
+        queue.push([nr,nc]);
+      }
+    }
+  }
+  return [...visited].map(k=>k.split(',').map(Number));
+}
+
+function checkMatches(r,c){
+  if(r>=grid.length||c>=grid[r].length||grid[r][c]<0)return;
+  const typeId=grid[r][c];
+  const matched=bfs(r,c,typeId);
+  if(matched.length>=3){
+    matched.forEach(([mr,mc])=>{
+      spawnParticles(colX(mc,mr),rowY(mr),typeId);
+      grid[mr][mc]=-1;
+    });
+    const pts=matched.length*10+(matched.length>3?(matched.length-3)*5:0);
+    addScore(pts);
+    removeFloaters();
+  }
+}
+
+function removeFloaters(){
+  // Find all bubbles connected to row 0
+  const connected=new Set();
+  const queue=[];
+  for(let c=0;c<(grid[0]?grid[0].length:0);c++){
+    if(grid[0][c]>=0){connected.add(`0,${c}`);queue.push([0,c]);}
+  }
+  while(queue.length){
+    const[r,c]=queue.shift();
+    for(const[nr,nc] of getNeighbors(r,c)){
+      const key=`${nr},${nc}`;
+      if(connected.has(key))continue;
+      if(nr<grid.length&&nc<(grid[nr]?grid[nr].length:0)&&grid[nr][nc]>=0){
+        connected.add(key);
+        queue.push([nr,nc]);
+      }
+    }
+  }
+  // Remove unconnected
+  let bonus=0;
+  for(let r=0;r<grid.length;r++){
+    for(let c=0;c<grid[r].length;c++){
+      if(grid[r][c]>=0&&!connected.has(`${r},${c}`)){
+        spawnParticles(colX(c,r),rowY(r),grid[r][c]);
+        grid[r][c]=-1;
+        bonus+=5;
+      }
+    }
+  }
+  if(bonus>0)addScore(bonus);
+}
+
+function checkGameOver(){
+  const dangerRow=Math.floor(H*0.72/(R*1.73));
+  for(let r=dangerRow;r<grid.length;r++){
+    for(let c=0;c<grid[r].length;c++){
+      if(grid[r][c]>=0){endGame();return;}
+    }
+  }
+  // Check if all cleared
+  let any=false;
+  for(let r=0;r<grid.length;r++){
+    if(grid[r].some(v=>v>=0)){any=true;break;}
+  }
+  if(!any){
+    addScore(100);
+    // Add new rows
+    for(let r=0;r<3;r++){
+      const cols=r%2===0?COLS:COLS-1;
+      grid.unshift(Array.from({length:cols},()=>Math.floor(Math.random()*NT)));
+    }
+  }
+}
+
+// ═══ SCORE & GIFTS ═══
+const GIFT_TIERS=[
+  {threshold:100,emoji:'🎆',name:'烟花秀',color:'#ff6eb4',border:'#ff0080'},
+  {threshold:150,emoji:'🏎️',name:'超级跑车',color:'#ffd700',border:'#cc9900'},
+  {threshold:200,emoji:'🚀',name:'火箭',color:'#c8a0d4',border:'#9b59b6'},
+  {threshold:250,emoji:'🏰',name:'梦幻城堡',color:'#ff0080',border:'#cc0066'},
+];
+
+function addScore(pts){
+  score+=pts;
+  const el=document.getElementById('g-score');
+  if(el)el.textContent=score;
+  // Check gift tiers
+  for(const g of GIFT_TIERS){
+    if(score>=g.threshold&&!giftsShown.has(g.threshold)){
+      giftsShown.add(g.threshold);
+      showGiftNotif(g);
+    }
+  }
+}
+
+let notifQueue=[],notifShowing=false;
+function showGiftNotif(g){
+  notifQueue.push(g);
+  if(!notifShowing)processNotifQueue();
+}
+function processNotifQueue(){
+  if(!notifQueue.length){notifShowing=false;return;}
+  notifShowing=true;
+  const g=notifQueue.shift();
+  const el=document.createElement('div');
+  el.className='gift-notif';
+  el.style.borderColor=g.border;
+  el.innerHTML=`<div class="gift-notif-icon">${g.emoji}</div><div class="gift-notif-text"><div class="gift-notif-name" style="color:${g.color}">${g.name}</div><div class="gift-notif-sub">汐弥收到了！× 1</div></div>`;
+  document.body.appendChild(el);
+  // Fireworks
+  launchScreenFirework();
+  setTimeout(()=>el.classList.add('show'),50);
+  setTimeout(()=>{el.classList.remove('show');setTimeout(()=>{el.remove();processNotifQueue();},600);},3000);
+}
+
+function launchScreenFirework(){
+  const wrap=document.getElementById('g-canvas-wrap');
+  if(!wrap)return;
+  const colors=['#ff0080','#ffd700','#ff6eb4','#c8a0d4','#00d4e8','#fff'];
+  for(let f=0;f<3;f++){
+    setTimeout(()=>{
+      const fx=W*(.2+Math.random()*.6),fy=H*(.1+Math.random()*.4);
+      for(let i=0;i<20;i++){
+        const p=document.createElement('div');
+        const angle=(i/20)*Math.PI*2,dist=50+Math.random()*60;
+        const col=colors[Math.floor(Math.random()*colors.length)];
+        const sz=4+Math.random()*5;
+        p.className='particle';
+        p.style.cssText=`width:${sz}px;height:${sz}px;background:${col};left:${fx}px;top:${fy}px;box-shadow:0 0 6px ${col};transition:all .7s ease;opacity:1;`;
+        wrap.appendChild(p);
+        requestAnimationFrame(()=>{
+          p.style.left=(fx+Math.cos(angle)*dist)+'px';
+          p.style.top=(fy+Math.sin(angle)*dist)+'px';
+          p.style.opacity='0';
+          p.style.transform='scale(0)';
+        });
+        setTimeout(()=>p.remove(),750);
+      }
+    },f*250);
+  }
+}
+
+function spawnParticles(x,y,typeId){
+  const wrap=document.getElementById('g-canvas-wrap');
+  if(!wrap)return;
+  const col=TYPES[typeId]?.color||'#ff0080';
+  for(let i=0;i<8;i++){
+    const p=document.createElement('div');
+    const angle=(i/8)*Math.PI*2,dist=20+Math.random()*20;
+    p.className='particle';
+    p.style.cssText=`width:5px;height:5px;background:${col};left:${x}px;top:${y}px;box-shadow:0 0 4px ${col};transition:all .5s ease;opacity:1;`;
+    wrap.appendChild(p);
+    requestAnimationFrame(()=>{
+      p.style.left=(x+Math.cos(angle)*dist)+'px';
+      p.style.top=(y+Math.sin(angle)*dist)+'px';
+      p.style.opacity='0';
+    });
+    setTimeout(()=>p.remove(),520);
+  }
+}
+
+// ═══ INPUT ═══
+function getCanvasXY(e){
+  const rect=canvas.getBoundingClientRect();
+  if(e.touches){
+    return{x:e.touches[0].clientX-rect.left,y:e.touches[0].clientY-rect.top};
+  }
+  return{x:e.clientX-rect.left,y:e.clientY-rect.top};
+}
+
+function onPointerMove(e){
+  if(!gameActive)return;
+  const{x,y}=getCanvasXY(e);
+  aimX=x;aimY=y;
+  aiming=y<H-R*2;
+}
+
+function onPointerUp(e){
+  if(!gameActive||flyBubble)return;
+  const{x,y}=getCanvasXY(e);
+  const sx=W/2,sy=H-R*2.5;
+  const dx=x-sx,dy=y-sy;
+  if(dy>-20)return; // must tap above shooter
+  const len=Math.sqrt(dx*dx+dy*dy);
+  if(len<5)return;
+  const speed=8;
+  flyBubble={x:sx,y:sy,dx:(dx/len)*speed,dy:(dy/len)*speed,typeId:curType};
+  aiming=false;
+}
+
+// ═══ GAME CONTROL ═══
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startGame(){
+  score=0;
+  giftsShown=new Set();
+  flyBubble=null;
+  aiming=false;
+  notifQueue=[];notifShowing=false;
+
+  canvas=document.getElementById('g-canvas');
+  const wrap=document.getElementById('g-canvas-wrap');
+  W=wrap.clientWidth;
+  H=wrap.clientHeight;
+  canvas.width=W;canvas.height=H;
+  ctx=canvas.getContext('2d');
+
+  initGrid();
+  nextType=randType();
+  newBubble();
+
+  document.getElementById('g-score').textContent='0';
+
+  // Events
+  canvas.onmousemove=onPointerMove;
+  canvas.ontouchmove=(e)=>{e.preventDefault();onPointerMove(e);};
+  canvas.onmouseup=onPointerUp;
+  canvas.ontouchend=(e)=>{e.preventDefault();onPointerUp(e);};
+  canvas.ontouchstart=(e)=>{e.preventDefault();const{x,y}=getCanvasXY(e);aimX=x;aimY=y;aiming=y<H-R*2;};
+
+  show('sg');
+  gameActive=true;
+  if(raf)cancelAnimationFrame(raf);
+  gameLoop();
+}
+
+function endGame(){
+  gameActive=false;
+  if(raf){cancelAnimationFrame(raf);raf=null;}
+  document.getElementById('e-score').textContent=score;
+
+  // Title and sub
+  const titles=[
+    [250,'传说！梦幻城堡已解锁','汐弥被你的礼物感动了 ✨'],
+    [200,'太厉害了！火箭升空','满满的爱意送到主播啦 🚀'],
+    [150,'超棒！超级跑车解锁','汐弥好开心！继续加油 🏎️'],
+    [100,'不错！烟花秀解锁','汐弥收到你的礼物了 🎆'],
+    [0,'加油！下次更好','汐弥依然爱你哦 💕'],
+  ];
+  const[,title,sub]=titles.find(([t])=>score>=t);
+  document.getElementById('e-title').textContent=title;
+  document.getElementById('e-sub').textContent=sub;
+
+  // Gifts earned
+  const giftsEl=document.getElementById('e-gifts');
+  giftsEl.innerHTML='';
+  for(const g of GIFT_TIERS){
+    if(score>=g.threshold){
+      const chip=document.createElement('div');
+      chip.className='gift-chip';
+      chip.style.cssText=`color:${g.color};border-color:${g.border};background:${g.border}22;`;
+      chip.textContent=`${g.emoji} ${g.name}`;
+      giftsEl.appendChild(chip);
+    }
+  }
+  if(giftsEl.children.length===0){
+    giftsEl.innerHTML='<div style="font-size:12px;color:#5a3050">继续努力解锁礼物！</div>';
+  }
+
+  show('se');
+}
+
+function goTitle(){
+  gameActive=false;
+  if(raf){cancelAnimationFrame(raf);raf=null;}
+  show('st');
+}
+
+window.startGame=startGame;
+window.goTitle=goTitle;
+</script>
+</body>
+</html>
