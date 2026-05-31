@@ -1,21 +1,45 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import {
+  loadOverallManifests,
+  decideHubDisplay,
+  ringStatuses,
+} from '../../lib/intelManifest';
 
-const dailyPosts = (await getCollection('intelligence-daily'))
-  .filter(p => p.data.lang === 'zh')
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 5);
+// DE-5 (2026-05-31): the manifest is the SOURCE OF DISPLAY TRUTH. We decide
+// genuine-vs-honest-empty from the DE-4 run-manifest `_overall.json`, not from the
+// mere existence of brief files. (Page stays OFFLINE behind the redirects in
+// astro.config.mjs + the getStaticPaths guards in the detail routes until PG-0
+// restore — this only wires the display logic; it does NOT make the page live.)
+const overalls = await loadOverallManifests();
+const hub = decideHubDisplay(overalls);
+const ring = ringStatuses(hub.overall);
+const honestEmpty = hub.mode === 'honest-empty';
 
-const decisions = (await getCollection('intelligence-decisions'))
-  .filter(d => d.data.lang === 'zh')
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 5);
+// In genuine mode, only show briefs for the GREEN top date (no stale-as-fresh); in
+// honest-empty mode, show nothing (the honest-empty banner stands in). Entries come
+// from getCollection() so each one's brief is guaranteed to exist (no 404).
+function gateToTopDate<T extends { data: { date: string; lang?: string } }>(
+  entries: T[]
+): T[] {
+  if (honestEmpty || !hub.topDate) return [];
+  return entries
+    .filter((e) => e.data.lang === 'zh' && e.data.date === hub.topDate)
+    .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+    .slice(0, 5);
+}
 
-const results = (await getCollection('intelligence-results'))
-  .filter(r => r.data.lang === 'zh')
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 5);
+const dailyPosts = gateToTopDate(await getCollection('intelligence-daily'));
+const decisions = gateToTopDate(await getCollection('intelligence-decisions'));
+const results = gateToTopDate(await getCollection('intelligence-results'));
+
+const RING_STATE_CLASS: Record<string, string> = {
+  green: 'border-[#fcad2a]/40 bg-[#fcad2a]/10',
+  empty: 'border-white/10 bg-white/5',
+  failed: 'border-red-500/40 bg-red-500/10',
+  idle: 'border-white/10 bg-white/5',
+};
 ---
 
 <Layout
@@ -43,26 +67,43 @@ const results = (await getCollection('intelligence-results'))
     </div>
   </section>
 
-  <!-- 5步自进化循环 -->
+  <!-- 5步自进化循环 — DE-5: data-bound to the run-manifest stage statuses -->
   <section class="py-4 px-6">
     <div class="max-w-4xl mx-auto">
       <div class="grid grid-cols-5 gap-2 md:gap-3">
-        {[
-          { step: '01', en: 'Scan', zh: '扫描' },
-          { step: '02', en: 'Bulletin', zh: '快报' },
-          { step: '03', en: 'Decision', zh: '决策' },
-          { step: '04', en: 'Track', zh: '追踪' },
-          { step: '05', en: 'Evolve', zh: '演进' },
-        ].map(s => (
-          <div class="flex flex-col items-center text-center p-3 rounded-lg bg-white/5 border border-white/10">
+        {ring.map(s => (
+          <div class={`flex flex-col items-center text-center p-3 rounded-lg border ${RING_STATE_CLASS[s.state]}`}>
             <span class="text-xs text-white/30 mb-1">{s.step}</span>
-            <span class="text-sm font-semibold text-[#fcad2a]">{s.en}</span>
+            <span class={`text-sm font-semibold ${s.state === 'failed' ? 'text-red-400' : s.state === 'green' ? 'text-[#fcad2a]' : 'text-white/50'}`}>{s.en}</span>
             <span class="text-xs text-white/50 mt-0.5">{s.zh}</span>
+            {s.state === 'failed' && <span class="text-[10px] text-red-400/70 mt-1">异常</span>}
+            {s.state === 'empty' && <span class="text-[10px] text-white/30 mt-1">空态</span>}
           </div>
         ))}
       </div>
     </div>
   </section>
+
+  {honestEmpty && (
+    <!-- DE-5 / ADR-3 honest-empty state: never render stale-as-fresh or fabricated
+         content. Shown whenever the latest trustworthy manifest is not a green day
+         with real content (degraded / honest-empty / unhealthy / no manifest). -->
+    <section class="py-8 px-6">
+      <div class="max-w-3xl mx-auto text-center p-8 rounded-2xl bg-white/5 border border-white/10">
+        <div class="text-3xl mb-3">🛠️</div>
+        <h2 class="text-xl font-semibold text-white mb-2">暂无可信情报</h2>
+        <p class="text-white/60 text-sm leading-relaxed">
+          情报管线正在重建中。为坚守"绝不以虚构或过期内容冒充新鲜情报"的原则，
+          今日展示诚实空态——产出可信的真实情报后将自动恢复展示。
+        </p>
+        {hub.overall && (
+          <p class="text-xs text-white/30 mt-4 font-mono">
+            最近清单日期：{hub.overall.date} · 状态：{hub.overall.status}
+          </p>
+        )}
+      </div>
+    </section>
+  )}
 
   <!-- 三栏内容线 -->
   <section class="py-8 px-6">

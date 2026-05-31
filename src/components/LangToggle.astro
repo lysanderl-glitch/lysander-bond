@@ -173,6 +173,26 @@ const { currentLang = 'zh' } = Astro.props;
       return !!meta && meta.getAttribute('content') === 'true';
     }
 
+    // DE-5 (2026-05-31): intelligence per-date detail routes (/intelligence/daily/<date>,
+    // /intelligence/results/<date>, /intelligence/decisions/<id>) have EN peers
+    // (the `-en.md` files). Like the blog, they are matched by PATTERN rather than a
+    // static whitelist (which cannot enumerate per-date routes). The publish pipeline
+    // emits both ZH and EN, and the EN site mirrors the same path under /en/, so the
+    // EN peer URL is deterministic — `/en` + path.
+    //
+    // OFFLINE GATE: while /intelligence is taken offline (President L5②, pending PG-0)
+    // this matcher stays inert so the toggle does not behave as if the page were live.
+    // RESTORE (post-PG-0): set INTELLIGENCE_OFFLINE = false (one line) to activate it.
+    const INTELLIGENCE_OFFLINE = true;
+
+    function isIntelligenceDetailPath(path: string): boolean {
+      const p = path.replace(/^\/en/, '');
+      return (
+        /^\/intelligence\/(daily|results)\/[^/]+$/.test(p) ||
+        /^\/intelligence\/decisions\/[^/]+$/.test(p)
+      );
+    }
+
     function computeTargetUrl(targetLang: 'en' | 'zh'): string | null {
       const path = normalizePath(window.location.pathname);
       const currentIsEn = isEnPath(path);
@@ -196,6 +216,13 @@ const { currentLang = 'zh' } = Astro.props;
           return `/en${path}`;
         }
         return null;
+      }
+
+      // DE-5: intelligence per-date detail routes have deterministic EN peers
+      // (pattern-matched, like the blog). Inert until the PG-0 restore flips
+      // INTELLIGENCE_OFFLINE to false (the page is offline until then).
+      if (!INTELLIGENCE_OFFLINE && isIntelligenceDetailPath(path)) {
+        return `/en${path}`;
       }
 
       // Other pages: explicit whitelist of paths that have /en/ versions.

@@ -104,6 +104,10 @@ const intelDecisionsCollection = defineCollection({
     deferredCount: z.number().default(0),       // number of ⏸ deferred items
     totalCount: z.number().default(0),          // total items evaluated
     topScore: z.number().optional(),            // highest composite score
+    // DE-2 (2026-05-31): explicit truthfulness of the day. 'empty' = honest-empty
+    // (今日无新情报, no fabricated/shell content); 'genuine' = real scoring day.
+    // Default 'genuine' so pre-DE-2 decision files load unchanged.
+    truthfulness: z.enum(['genuine', 'empty']).default('genuine'),
     lang: z.enum(['zh', 'en']).default('zh'),
     tags: z.array(z.string()).default([]),
     source: z.string().default('intel-action-agent'),

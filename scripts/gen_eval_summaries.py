@@ -5,7 +5,16 @@ src/content/intelligence/decisions/ from existing results files.
 
 Each output file is named {date}.md and carries the new schema:
   date, publishDate, title, topIntel, executeCount, inboxCount,
-  deferredCount, totalCount, topScore, lang, tags, source
+  deferredCount, totalCount, topScore, truthfulness, lang, tags, source
+
+DE-2 (INTEL-PIPELINE-REMEDIATION v3 Phase 3, 2026-05-31)
+--------------------------------------------------------
+A day on which the pipeline genuinely produced nothing (no execute / inbox /
+deferred items AND no actionsCount) is an HONEST-EMPTY day. It must be rendered
+as an explicit "今日无新情报" state with ``truthfulness: empty`` — NOT as a
+``totalCount: 0`` shell that looks like a real scoring day with zero results.
+A day with real items carries ``truthfulness: genuine``. This kills the
+"empty-as-real" presentation half of the 21-day fabrication incident.
 """
 
 import re
@@ -105,22 +114,64 @@ def generate(results_file: Path, overwrite: bool = False):
     if len(top_intel) > 60:
         top_intel = top_intel[:60] + "…"
 
-    total_count = len(execute_items) + len(inbox_items) + len(deferred_items)
+    parsed_count = len(execute_items) + len(inbox_items) + len(deferred_items)
+    total_count = parsed_count
     if total_count == 0:
         # Fallback: use actionsCount from frontmatter
         total_re = re.search(r'actionsCount:\s*(\d+)', raw)
         total_count = int(total_re.group(1)) if total_re else 0
 
-    title = f"{date} 情报评分裁定 — {len(execute_items)} 执行 / {len(inbox_items)} 跟踪 / {len(deferred_items)} 延迟"
     month_tag = date[:7]
+    top_score_line = f"\ntopScore: {top_score}" if top_score else ""
+
+    # DE-2: an honest-empty day = nothing scored AND no actions recorded. Render an
+    # explicit "今日无新情报" state, NOT a totalCount:0 shell that mimics a real day.
+    honest_empty = (total_count == 0)
+
+    DECISIONS_DIR.mkdir(parents=True, exist_ok=True)
+
+    if honest_empty:
+        title = f"{date} 情报评分裁定 — 今日无新情报"
+        content = f"""---
+date: "{date}"
+publishDate: {date}T10:00:00.000Z
+title: "{title}"
+topIntel: "今日无新情报"
+executeCount: 0
+inboxCount: 0
+deferredCount: 0
+totalCount: 0
+truthfulness: empty
+lang: zh
+tags:
+  - 执行决策
+  - 评分裁定
+  - 诚实空态
+  - {month_tag}
+source: intel-action-agent
+---
+
+# {date} 情报评分裁定
+
+**评估日期**：{date}
+**评分结果**：今日无新情报
+
+---
+
+> 今日情报管线未产出可信的可执行情报（诚实空态，未以任何虚构内容填充）。
+"""
+        out_path.write_text(content, encoding="utf-8")
+        print(f"[OK] {out_path.name}  HONEST-EMPTY (truthfulness=empty, totalCount=0)")
+        return True
+
+    # ── Genuine scoring day ──
+    title = f"{date} 情报评分裁定 — {len(execute_items)} 执行 / {len(inbox_items)} 跟踪 / {len(deferred_items)} 延迟"
 
     # Build body — reuse the scoring matrix section from the results file
     matrix_section = ""
     mat_match = re.search(r'(## 专家评估矩阵.*?)(?=\n## |\Z)', raw, re.DOTALL)
     if mat_match:
         matrix_section = mat_match.group(1).strip()
-
-    top_score_line = f"\ntopScore: {top_score}" if top_score else ""
 
     content = f"""---
 date: "{date}"
@@ -131,6 +182,7 @@ executeCount: {len(execute_items)}
 inboxCount: {len(inbox_items)}
 deferredCount: {len(deferred_items)}
 totalCount: {total_count}{top_score_line}
+truthfulness: genuine
 lang: zh
 tags:
   - 执行决策
@@ -154,9 +206,8 @@ source: intel-action-agent
 > 完整行动任务清单见 [执行结果报告 {date}](/intelligence/results/{date})
 """
 
-    DECISIONS_DIR.mkdir(parents=True, exist_ok=True)
     out_path.write_text(content, encoding="utf-8")
-    print(f"[OK] {out_path.name}  execute={len(execute_items)} inbox={len(inbox_items)} deferred={len(deferred_items)} topScore={top_score}")
+    print(f"[OK] {out_path.name}  execute={len(execute_items)} inbox={len(inbox_items)} deferred={len(deferred_items)} topScore={top_score} truthfulness=genuine")
     return True
 
 
