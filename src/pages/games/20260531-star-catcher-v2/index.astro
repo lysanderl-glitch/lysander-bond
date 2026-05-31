@@ -1,0 +1,377 @@
+---
+---
+<!-- 星星捕手 Star Catcher v1.0 - Dark Neon Aesthetic, Pink Accent 2026-05-31 -->
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+  <title>星星捕手</title>
+  <style is:global>
+    :root{
+      --pk:#FF2D87;--pks:#F4A0C0;--lav:#C8A0D4;--gold:#FFD700;
+      --dark:#0a0010;--dark2:#120020;--dark3:#1a0030;
+      --glow:rgba(255,45,135,0.5);--glow-gold:rgba(255,215,0,0.6);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{width:100%;height:100%;overflow:hidden;background:var(--dark);}
+    body{color:#fde8f0;font-family:'PingFang SC','Microsoft YaHei',sans-serif;user-select:none;touch-action:none;}
+    @supports (height:100dvh){body{height:100dvh;}}
+
+    /* BG grid */
+    body::before{
+      content:'';position:fixed;inset:0;
+      background-image:
+        linear-gradient(rgba(255,45,135,0.04) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,45,135,0.04) 1px,transparent 1px);
+      background-size:50px 50px;pointer-events:none;z-index:0;
+    }
+    /* Scanlines */
+    body::after{
+      content:'';position:fixed;inset:0;
+      background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 4px);
+      pointer-events:none;z-index:0;
+    }
+
+    canvas#bg{position:fixed;inset:0;z-index:1;pointer-events:none;}
+
+    /* SCREENS */
+    .screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;z-index:10;}
+    .screen.active{display:flex;animation:fadeIn .4s ease both;}
+    @keyframes fadeIn{from{opacity:0;filter:brightness(2);}to{opacity:1;filter:brightness(1);}}
+
+    /* ── TITLE SCREEN ── */
+    #s-title{background:radial-gradient(ellipse at 50% 60%,rgba(80,0,120,0.4) 0%,transparent 70%);}
+    .title-star{font-size:72px;animation:starPulse 2s ease-in-out infinite;text-shadow:0 0 30px var(--gold),0 0 60px rgba(255,215,0,0.4);}
+    @keyframes starPulse{0%,100%{transform:scale(1) rotate(-5deg);}50%{transform:scale(1.15) rotate(5deg);}}
+    .title-name{font-size:36px;font-weight:700;letter-spacing:6px;color:#fff;text-shadow:0 0 20px var(--pk),0 0 40px var(--glow);margin:16px 0 8px;}
+    .title-sub{font-size:13px;color:var(--pks);letter-spacing:3px;margin-bottom:32px;}
+    .title-rule{background:rgba(255,45,135,0.08);border:1px solid rgba(255,45,135,0.25);border-radius:12px;padding:16px 24px;max-width:320px;width:100%;margin-bottom:28px;text-align:left;}
+    .rule-item{font-size:12px;color:#d0a8c0;line-height:2;letter-spacing:1px;}
+    .rule-item span{color:var(--gold);}
+    .btn-start{padding:14px 48px;border:2px solid var(--pk);background:rgba(255,45,135,0.15);color:#fff;font-size:16px;letter-spacing:4px;cursor:pointer;border-radius:6px;font-family:inherit;transition:.2s;box-shadow:0 0 20px rgba(255,45,135,0.2);}
+    .btn-start:hover,.btn-start:active{background:rgba(255,45,135,0.35);box-shadow:0 0 30px var(--glow);}
+
+    /* ── GAME SCREEN ── */
+    #s-game{padding:0;justify-content:flex-start;}
+    .hud{flex-shrink:0;width:100%;padding:12px 20px 10px;background:rgba(10,0,20,0.9);border-bottom:1px solid rgba(255,45,135,0.2);z-index:20;display:flex;justify-content:space-between;align-items:center;}
+    .hud-score{font-size:22px;font-weight:700;color:var(--gold);text-shadow:0 0 12px var(--glow-gold);letter-spacing:2px;}
+    .hud-score-label{font-size:10px;color:var(--pks);letter-spacing:2px;margin-bottom:2px;}
+    .hud-timer{font-size:28px;font-weight:700;color:#fff;text-shadow:0 0 12px var(--pk);letter-spacing:1px;transition:color .3s;}
+    .hud-timer.warn{color:#ff3333;animation:blink .5s step-end infinite;}
+    .hud-timer-label{font-size:10px;color:var(--pks);letter-spacing:2px;margin-bottom:2px;text-align:right;}
+    @keyframes blink{50%{opacity:0.2;}}
+
+    .field{flex:1;width:100%;position:relative;overflow:hidden;background:transparent;}
+
+    /* ── STARS ── */
+    .star-item{
+      position:absolute;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      width:52px;height:52px;
+      animation:starAppear .3s ease both;
+      z-index:15;
+      -webkit-tap-highlight-color:transparent;
+    }
+    @keyframes starAppear{from{transform:scale(0) rotate(-180deg);opacity:0;}to{transform:scale(1) rotate(0deg);opacity:1;}}
+    .star-item.fading{animation:starFade .5s ease forwards;}
+    @keyframes starFade{to{transform:scale(0) rotate(180deg);opacity:0;}}
+    .star-item .star-svg{
+      width:100%;height:100%;
+      filter:drop-shadow(0 0 8px var(--gold)) drop-shadow(0 0 16px rgba(255,215,0,0.5));
+      animation:starTwinkle 1.5s ease-in-out infinite;
+    }
+    @keyframes starTwinkle{0%,100%{filter:drop-shadow(0 0 8px var(--gold)) drop-shadow(0 0 16px rgba(255,215,0,0.4));}50%{filter:drop-shadow(0 0 16px var(--gold)) drop-shadow(0 0 30px rgba(255,215,0,0.7)) brightness(1.2);}}
+
+    /* score popup */
+    .score-pop{
+      position:absolute;font-size:18px;font-weight:700;pointer-events:none;z-index:30;
+      color:var(--gold);text-shadow:0 0 10px var(--gold);
+      animation:popUp .8s ease forwards;
+    }
+    @keyframes popUp{0%{opacity:1;transform:translateX(-50%) translateY(0);}100%{opacity:0;transform:translateX(-50%) translateY(-60px);}}
+
+    /* ── END SCREEN ── */
+    #s-end{background:radial-gradient(ellipse at 50% 40%,rgba(100,0,160,0.4) 0%,transparent 70%);}
+    .end-box{background:rgba(12,0,24,0.95);border:1px solid rgba(255,45,135,0.4);border-radius:16px;padding:36px 32px;max-width:340px;width:100%;text-align:center;box-shadow:0 0 40px rgba(255,45,135,0.15);}
+    .end-title{font-size:13px;letter-spacing:4px;color:var(--pks);margin-bottom:8px;text-transform:uppercase;}
+    .end-score{font-size:72px;font-weight:700;color:var(--gold);text-shadow:0 0 30px var(--glow-gold),0 0 60px rgba(255,215,0,0.3);line-height:1;margin:8px 0;}
+    .end-unit{font-size:14px;color:var(--pks);letter-spacing:2px;margin-bottom:8px;}
+    .end-stars{font-size:32px;letter-spacing:8px;margin:12px 0;}
+    .end-msg{font-size:13px;color:#d0a8c0;margin-bottom:28px;line-height:1.8;letter-spacing:1px;}
+    .btn-replay{padding:12px 40px;border:1.5px solid var(--pk);background:rgba(255,45,135,0.15);color:#fff;font-size:14px;letter-spacing:4px;cursor:pointer;border-radius:6px;font-family:inherit;transition:.2s;}
+    .btn-replay:hover,.btn-replay:active{background:rgba(255,45,135,0.35);box-shadow:0 0 20px var(--glow);}
+  </style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<!-- TITLE -->
+<div id="s-title" class="screen active">
+  <div class="title-star">★</div>
+  <div class="title-name">星星捕手</div>
+  <div class="title-sub">STAR CATCHER</div>
+  <div class="title-rule">
+    <div class="rule-item">✦ 点击金色星星 <span>+1分</span></div>
+    <div class="rule-item">✦ 每 <span>3秒</span> 出现一颗新星</div>
+    <div class="rule-item">✦ 未收集的星星 <span>5秒</span> 后消失</div>
+    <div class="rule-item">✦ 限时 <span>30秒</span>，尽量多收集！</div>
+  </div>
+  <button class="btn-start" id="btn-start">开始游戏</button>
+</div>
+
+<!-- GAME -->
+<div id="s-game" class="screen">
+  <div class="hud">
+    <div>
+      <div class="hud-score-label">得分</div>
+      <div class="hud-score" id="score-display">0</div>
+    </div>
+    <div style="text-align:right">
+      <div class="hud-timer-label">剩余时间</div>
+      <div class="hud-timer" id="timer-display">30</div>
+    </div>
+  </div>
+  <div class="field" id="field"></div>
+</div>
+
+<!-- END -->
+<div id="s-end" class="screen">
+  <div class="end-box">
+    <div class="end-title">游戏结束</div>
+    <div class="end-score" id="end-score">0</div>
+    <div class="end-unit">颗星星</div>
+    <div class="end-stars" id="end-stars">☆☆☆</div>
+    <div class="end-msg" id="end-msg">继续加油！</div>
+    <button class="btn-replay" id="btn-replay">再玩一次</button>
+  </div>
+</div>
+
+<script is:inline>
+// ── Background: twinkling star field ──
+(function() {
+  const canvas = document.getElementById('bg');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  const DOTS = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 120; i++) {
+    DOTS.push({
+      x: Math.random(),
+      y: Math.random(),
+      r: 0.5 + Math.random() * 1.5,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.008 + Math.random() * 0.015,
+      color: Math.random() < 0.15 ? '#FF2D87' : Math.random() < 0.1 ? '#C8A0D4' : '#ffffff',
+    });
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    // Deep purple gradient sky
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, '#08001a');
+    grad.addColorStop(0.5, '#0d0020');
+    grad.addColorStop(1, '#120028');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Nebula glow
+    const ng = ctx.createRadialGradient(W * 0.3, H * 0.3, 0, W * 0.3, H * 0.3, W * 0.5);
+    ng.addColorStop(0, 'rgba(150,0,200,0.06)');
+    ng.addColorStop(1, 'transparent');
+    ctx.fillStyle = ng;
+    ctx.fillRect(0, 0, W, H);
+    const ng2 = ctx.createRadialGradient(W * 0.7, H * 0.6, 0, W * 0.7, H * 0.6, W * 0.4);
+    ng2.addColorStop(0, 'rgba(255,45,135,0.05)');
+    ng2.addColorStop(1, 'transparent');
+    ctx.fillStyle = ng2;
+    ctx.fillRect(0, 0, W, H);
+
+    DOTS.forEach(d => {
+      d.phase += d.speed;
+      const alpha = 0.2 + 0.7 * (0.5 + 0.5 * Math.sin(d.phase));
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = d.color;
+      ctx.beginPath();
+      ctx.arc(d.x * W, d.y * H, d.r, 0, Math.PI * 2);
+      ctx.fill();
+      if (d.r > 1.2) {
+        ctx.globalAlpha = alpha * 0.3;
+        ctx.beginPath();
+        ctx.arc(d.x * W, d.y * H, d.r * 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    });
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+
+// ── Game Logic ──
+const $ = id => document.getElementById(id);
+
+let score = 0, timeLeft = 30, gameRunning = false;
+let spawnTimer = null, countTimer = null;
+let stars = [];
+let starId = 0;
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+}
+
+function startGame() {
+  score = 0;
+  timeLeft = 30;
+  stars = [];
+  starId = 0;
+  gameRunning = true;
+  $('score-display').textContent = '0';
+  $('timer-display').textContent = '30';
+  $('timer-display').classList.remove('warn');
+  $('field').innerHTML = '';
+  show('s-game');
+  spawnStar();
+  spawnTimer = setInterval(spawnStar, 3000);
+  countTimer = setInterval(tick, 1000);
+}
+
+function tick() {
+  timeLeft--;
+  $('timer-display').textContent = timeLeft;
+  if (timeLeft <= 10) $('timer-display').classList.add('warn');
+  if (timeLeft <= 0) endGame();
+}
+
+function spawnStar() {
+  if (!gameRunning) return;
+  const field = $('field');
+  const fw = field.clientWidth;
+  const fh = field.clientHeight;
+  const size = 52;
+  const margin = 30;
+  const x = margin + Math.random() * (fw - size - margin * 2);
+  const y = margin + Math.random() * (fh - size - margin * 2);
+  const id = ++starId;
+
+  const el = document.createElement('div');
+  el.className = 'star-item';
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  el.innerHTML = `<svg class="star-svg" viewBox="0 0 51 48" xmlns="http://www.w3.org/2000/svg">
+    <path d="M25.5 2l5.9 11.9L46 16.1l-10.25 10 2.42 14.1L25.5 33.6l-12.67 6.6 2.42-14.1L5 16.1l14.6-2.2z"
+      fill="#FFD700" stroke="#FFB800" stroke-width="1.5" stroke-linejoin="round"/>
+  </svg>`;
+
+  let collected = false;
+
+  const collect = (e) => {
+    if (!gameRunning || collected) return;
+    e.stopPropagation();
+    collected = true;
+    removeStar(id, el);
+    score++;
+    $('score-display').textContent = score;
+    const rect = el.getBoundingClientRect();
+    const fieldRect = field.getBoundingClientRect();
+    showPop(x + size / 2, y, '+1');
+    spawnCollectParticles(x + size / 2, y + size / 2);
+  };
+
+  el.addEventListener('click', collect, {passive: false});
+  el.addEventListener('touchend', collect, {passive: false});
+
+  field.appendChild(el);
+
+  const entry = { id, el, timeout: null };
+  // Auto-remove after 5s
+  entry.timeout = setTimeout(() => {
+    if (!collected) removeStar(id, el);
+  }, 5000);
+
+  stars.push(entry);
+}
+
+function removeStar(id, el) {
+  stars = stars.filter(s => {
+    if (s.id === id) {
+      clearTimeout(s.timeout);
+      return false;
+    }
+    return true;
+  });
+  if (!el.parentNode) return;
+  el.classList.add('fading');
+  setTimeout(() => { if (el.parentNode) el.remove(); }, 500);
+}
+
+function showPop(x, y, txt) {
+  const field = $('field');
+  const p = document.createElement('div');
+  p.className = 'score-pop';
+  p.textContent = txt;
+  p.style.left = x + 'px';
+  p.style.top = y + 'px';
+  field.appendChild(p);
+  setTimeout(() => p.remove(), 850);
+}
+
+function spawnCollectParticles(cx, cy) {
+  const field = $('field');
+  const colors = ['#FFD700','#FFB800','#FF2D87','#F4A0C0','#C8A0D4','#ffffff'];
+  for (let i = 0; i < 10; i++) {
+    const p = document.createElement('div');
+    const angle = (i / 10) * Math.PI * 2;
+    const dist = 25 + Math.random() * 30;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const size = 4 + Math.random() * 5;
+    p.style.cssText = `position:absolute;width:${size}px;height:${size}px;border-radius:50%;background:${color};left:${cx}px;top:${cy}px;pointer-events:none;z-index:25;transform:translate(-50%,-50%);box-shadow:0 0 6px ${color};transition:all 0.55s ease;opacity:1;`;
+    field.appendChild(p);
+    requestAnimationFrame(() => {
+      p.style.left = (cx + Math.cos(angle) * dist) + 'px';
+      p.style.top = (cy + Math.sin(angle) * dist) + 'px';
+      p.style.opacity = '0';
+      p.style.transform = 'translate(-50%,-50%) scale(0)';
+    });
+    setTimeout(() => p.remove(), 580);
+  }
+}
+
+function endGame() {
+  gameRunning = false;
+  clearInterval(spawnTimer); spawnTimer = null;
+  clearInterval(countTimer); countTimer = null;
+  stars.forEach(s => { clearTimeout(s.timeout); if (s.el.parentNode) s.el.remove(); });
+  stars = [];
+
+  $('end-score').textContent = score;
+  $('end-stars').textContent = score >= 15 ? '★★★' : score >= 8 ? '★★☆' : score >= 3 ? '★☆☆' : '☆☆☆';
+  const msgs = [
+    [15, '传说级星星猎手！你的手速真是令人叹服！✦'],
+    [8,  '不错！你抓住了不少星星，继续冲！'],
+    [3,  '加油！多练习就能抓到更多星星～'],
+    [0,  '没关系，再来一次，星星在等你！'],
+  ];
+  $('end-msg').textContent = (msgs.find(([min]) => score >= min) || msgs[msgs.length - 1])[1];
+  show('s-end');
+}
+
+$('btn-start').addEventListener('click', startGame);
+$('btn-replay').addEventListener('click', startGame);
+$('btn-start').addEventListener('touchend', e => { e.preventDefault(); startGame(); });
+$('btn-replay').addEventListener('touchend', e => { e.preventDefault(); startGame(); });
+</script>
+</body>
+</html>
