@@ -1,6 +1,6 @@
 ---
 ---
-<!-- Ximi Game v4.2 - Sprint 1-4 Optimization 2026-05-31 -->
+<!-- Ximi Game v4.3 - Full Overhaul: Difficulty + Gift System + Dubai Ending + Interactive BG 2026-05-31 -->
 <!doctype html>
 <html lang="zh-CN">
 <head>
@@ -34,7 +34,6 @@
     .title-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;}
     .av-ring{width:144px;height:144px;border-radius:50%;border:3px solid var(--pk);box-shadow:0 0 24px var(--glow),0 0 60px var(--glow);overflow:hidden;animation:float 3s ease-in-out infinite;flex-shrink:0;}
     .av-ring img{width:100%;height:100%;object-fit:cover;}
-    /* Cat-ear SVG fallback for avatar */
     .av-fallback{width:100%;height:100%;background:radial-gradient(circle,#ff6eb4,#8b0057);display:flex;align-items:center;justify-content:center;}
     .av-fallback svg{width:72px;height:72px;}
     @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
@@ -66,13 +65,16 @@
     @keyframes blink{50%{opacity:0;}}
     .energy-bar-wrap{height:8px;background:rgba(255,255,255,0.1);border-radius:4px;overflow:hidden;}
     .energy-bar-fill{height:100%;background:linear-gradient(90deg,var(--pk),var(--pks));border-radius:4px;transition:width .3s;box-shadow:0 0 8px var(--glow);}
+    .energy-bar-fill.lv2{background:linear-gradient(90deg,#ffd700,#ffaa00);box-shadow:0 0 8px rgba(255,215,0,0.6);}
+    .energy-bar-fill.lv3{background:linear-gradient(90deg,#c8a0d4,#8b00ff);box-shadow:0 0 8px rgba(200,160,212,0.6);}
+    .energy-bar-fill.lv4{background:linear-gradient(90deg,#ff0080,#ffd700,#00ff88,#0088ff);background-size:200%;animation:rainbow-bar 1s linear infinite;box-shadow:0 0 12px rgba(255,0,128,0.8);}
+    @keyframes rainbow-bar{0%{background-position:0%}100%{background-position:200%}}
     .hud-row3{display:flex;justify-content:space-between;margin-top:4px;}
     .hud-label{font-size:10px;color:#8a6070;letter-spacing:1px;}
     .hud-pct{font-size:10px;color:var(--pk);}
     .game-field{flex:1;width:100%;position:relative;overflow:hidden;}
     .portrait{position:absolute;bottom:0;left:0;width:110px;height:150px;z-index:5;pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,black 50%,transparent 100%);mask-image:linear-gradient(180deg,black 50%,transparent 100%);}
     .portrait img{width:100%;height:100%;object-fit:cover;object-position:top center;}
-    /* Cat-ear SVG fallback for portrait */
     .portrait-fallback{width:100%;height:100%;background:linear-gradient(180deg,#8b0057,#400028);display:flex;align-items:center;justify-content:center;}
     .portrait-fallback svg{width:60px;height:60px;}
     .portrait.hit-good{animation:glow-good .4s ease;}
@@ -120,15 +122,15 @@
     .sum-msg{font-size:13px;color:var(--pks);margin-bottom:20px;}
 
     /* ENDING */
-    .end-box{max-width:460px;width:100%;text-align:center;}
-    .end-text{font-size:15px;line-height:2.2;color:#f0d8e8;white-space:pre-line;margin-bottom:24px;}
-    .end-fin{font-size:16px;color:var(--gold);letter-spacing:4px;text-shadow:0 0 16px rgba(240,200,64,0.6);}
-    @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+    .end-fin{font-size:20px;color:var(--gold);letter-spacing:6px;text-shadow:0 0 20px rgba(240,200,64,0.8),0 0 40px rgba(255,0,128,0.4);animation:float 2s ease-in-out infinite;}
   </style>
 </head>
 <body>
 
-<!-- Cat-ear SVG template (inline, used as fallback) -->
+<!-- BG CANVAS (particle layer, z-index:1) -->
+<canvas id="bg-canvas" style="position:fixed;inset:0;z-index:1;pointer-events:none;"></canvas>
+
+<!-- Cat-ear SVG template -->
 <svg style="display:none" id="catear-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
   <circle cx="40" cy="48" r="24" fill="#ff6eb4" opacity="0.9"/>
   <polygon points="18,30 26,8 34,30" fill="#ff6eb4"/>
@@ -190,12 +192,11 @@
     <div class="energy-bar-wrap"><div class="energy-bar-fill" id="g-bar" style="width:0%"></div></div>
     <div class="hud-row3">
       <div class="hud-label">情感能量</div>
-      <div class="hud-pct" id="g-pct">0%</div>
+      <div class="hud-pct" id="g-pct">0</div>
     </div>
   </div>
   <div class="game-field" id="g-field">
     <div class="portrait" id="g-portrait">
-      <!-- PORTRAIT: Official art provided by 总裁 2026-05-31 -->
       <img src="/ximi-portrait.png" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
       <div class="portrait-fallback" style="display:none"><svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="48" r="24" fill="#ff6eb4" opacity="0.9"/><polygon points="18,30 26,8 34,30" fill="#ff6eb4"/><polygon points="22,28 26,12 30,28" fill="#ffb6d9"/><polygon points="46,30 54,8 62,30" fill="#ff6eb4"/><polygon points="50,28 54,12 58,28" fill="#ffb6d9"/><circle cx="34" cy="50" r="3" fill="#8b0057" opacity="0.6"/><circle cx="46" cy="50" r="3" fill="#8b0057" opacity="0.6"/><ellipse cx="40" cy="55" rx="4" ry="3" fill="#ffb6d9"/></svg></div>
     </div>
@@ -223,25 +224,118 @@
 <div id="ssum" class="screen">
   <div class="sum-box">
     <div class="day-label" id="sum-label">DAY 1 完成</div>
-    <div class="sum-pct" id="sum-pct">0%</div>
+    <div class="sum-pct" id="sum-pct">0</div>
     <div class="sum-stars" id="sum-stars">☆☆☆</div>
     <div class="sum-msg" id="sum-msg"></div>
     <button class="btn" style="width:100%" id="sum-btn" onclick="sumNext()">第2天继续 →</button>
   </div>
 </div>
 
-<!-- ENDING -->
-<div id="send" class="screen">
-  <div class="end-box">
-    <div id="end-recap" style="display:flex;gap:8px;justify-content:center;margin-bottom:20px;flex-wrap:wrap;"></div>
-    <div class="end-text" id="end-text"></div>
-    <div class="end-fin">✦  The End  ✦</div>
-    <br>
-    <button class="btn sec" style="margin-top:16px" onclick="startNew()">再玩一次</button>
+<!-- ENDING — Dubai Photo Slideshow + Love Letter -->
+<div id="send" class="screen" style="padding:0;">
+  <!-- 全屏照片背景层 -->
+  <div id="end-photos" style="position:absolute;inset:0;z-index:0;overflow:hidden;background:#000;"></div>
+  <!-- 渐变遮罩 -->
+  <div style="position:absolute;inset:0;z-index:1;background:linear-gradient(to top, rgba(10,0,16,0.85) 0%, rgba(10,0,16,0.3) 50%, rgba(10,0,16,0.5) 100%);pointer-events:none;"></div>
+  <!-- 内容层 -->
+  <div id="end-content" style="position:relative;z-index:2;width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:32px 24px 48px;overflow:hidden;">
+    <!-- 顶部进度点 -->
+    <div id="end-dots" style="position:absolute;top:24px;left:50%;transform:translateX(-50%);display:flex;gap:8px;"></div>
+    <!-- 爱意文字 -->
+    <div id="end-letter" style="max-width:480px;margin:0 auto;text-align:center;transition:opacity 0.8s ease,transform 0.8s ease;"></div>
+    <!-- 底部按钮 -->
+    <div style="text-align:center;margin-top:24px;">
+      <div id="end-fin" class="end-fin" style="display:none;">✦ 我爱你 ✦</div>
+      <button class="btn sec" id="end-replay-btn" style="display:none;margin-top:16px" onclick="startNew()">再玩一次</button>
+    </div>
   </div>
 </div>
 
 <script is:inline>
+// ═══ BACKGROUND PARTICLE SYSTEM ═══
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], mouse = {x: -999, y: -999};
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  window.addEventListener('touchmove', e => { mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; }, {passive:true});
+
+  const SYMBOLS = ['✦','♡','✧','·','★','°'];
+
+  function createParticle() {
+    return {
+      x: Math.random() * W,
+      y: H + 10,
+      size: 8 + Math.random() * 14,
+      speed: 0.3 + Math.random() * 0.6,
+      opacity: 0.1 + Math.random() * 0.35,
+      symbol: SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)],
+      hue: Math.random() < 0.6 ? 330 : Math.random() < 0.5 ? 280 : 50,
+      drift: (Math.random() - 0.5) * 0.4,
+      wobble: Math.random() * Math.PI * 2,
+      wobbleSpeed: 0.01 + Math.random() * 0.02,
+    };
+  }
+
+  for (let i = 0; i < 40; i++) {
+    const p = createParticle();
+    p.y = Math.random() * H;
+    particles.push(p);
+  }
+
+  function drawBg() {
+    ctx.clearRect(0, 0, W, H);
+
+    const grad = ctx.createRadialGradient(W/2, H, 0, W/2, H, H * 0.7);
+    grad.addColorStop(0, 'rgba(255,0,128,0.06)');
+    grad.addColorStop(0.5, 'rgba(140,0,200,0.03)');
+    grad.addColorStop(1, 'transparent');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    const mGrad = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 120);
+    mGrad.addColorStop(0, 'rgba(255,0,128,0.07)');
+    mGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = mGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    particles.forEach((p, i) => {
+      p.y -= p.speed;
+      p.wobble += p.wobbleSpeed;
+      p.x += p.drift + Math.sin(p.wobble) * 0.3;
+
+      const dx = p.x - mouse.x, dy = p.y - mouse.y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 80) {
+        p.x += (dx / dist) * 0.8;
+        p.y += (dy / dist) * 0.8;
+      }
+
+      ctx.save();
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = `hsl(${p.hue}, 80%, 70%)`;
+      ctx.font = `${p.size}px serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText(p.symbol, p.x, p.y);
+      ctx.restore();
+
+      if (p.y < -20) particles[i] = createParticle();
+    });
+
+    requestAnimationFrame(drawBg);
+  }
+  drawBg();
+})();
+
+// ═══ GAME DATA ═══
 const SAVE='ximi_v4';
 const EMOTIONS=[
   {id:'heal',   name:'治愈',  emoji:'🌸',bg:'rgba(144,238,144,0.15)',border:'rgba(144,238,144,0.5)',glow:'rgba(144,238,144,0.4)',type:'good'},
@@ -251,19 +345,22 @@ const EMOTIONS=[
   {id:'drain',  name:'内耗',  emoji:'💭',bg:'rgba(60,60,80,0.35)',   border:'rgba(90,90,110,0.4)', glow:'rgba(60,60,80,0.2)',   type:'bad'},
   {id:'lonely', name:'孤独',  emoji:'🌑',bg:'rgba(30,30,60,0.4)',    border:'rgba(55,55,95,0.4)',  glow:'rgba(30,30,60,0.15)',  type:'bad'},
   {id:'beg',    name:'求回应',emoji:'🔁',bg:'rgba(100,20,20,0.35)',  border:'rgba(150,40,40,0.4)', glow:'rgba(100,20,20,0.15)', type:'bad'},
+  // Special bubbles
+  {id:'magpie', name:'鹊桥',  emoji:'🌉',bg:'rgba(255,182,0,0.2)',   border:'rgba(255,182,0,0.6)', glow:'rgba(255,182,0,0.5)',  type:'special'},
+  {id:'bouquet',name:'花束',  emoji:'💐',bg:'rgba(255,20,147,0.2)',  border:'rgba(255,20,147,0.6)',glow:'rgba(255,20,147,0.5)', type:'special'},
+  {id:'rose',   name:'玫瑰',  emoji:'🌹',bg:'rgba(220,20,60,0.2)',   border:'rgba(220,20,60,0.6)', glow:'rgba(220,20,60,0.5)',  type:'special'},
 ];
 const EM=Object.fromEntries(EMOTIONS.map(e=>[e.id,e]));
 const DAYS=[
-  {n:1,sub:'汐落星重建·第一日',theme:'寻找第一束治愈之光',        targets:['heal','gentle'],            avoids:['drain'],              spawn:1100,speed:52, max:7, time:45},
-  {n:2,sub:'落地生根',          theme:'温柔也是一种力量',          targets:['gentle','strength'],        avoids:['lonely'],             spawn:1000,speed:60, max:8, time:43},
-  {n:3,sub:'慢慢来',            theme:'以感恩之情充能',            targets:['heal','joy'],               avoids:['drain','beg'],        spawn:950, speed:66, max:9, time:42},
-  {n:4,sub:'心之所向',          theme:'不内耗的第一天',            targets:['strength','gentle'],        avoids:['drain','lonely'],     spawn:900, speed:73, max:9, time:40},
-  {n:5,sub:'温柔坚定',          theme:'同时收集快乐与力量',        targets:['joy','strength'],           avoids:['drain','beg','lonely'],spawn:830,speed:80, max:10,time:40},
-  {n:6,sub:'星光将至',          theme:'汐落星快要修好了',          targets:['heal','joy','gentle'],      avoids:['drain','lonely'],     spawn:760, speed:90, max:11,time:38},
-  {n:7,sub:'今天也是美好的一天',theme:'收集所有温暖，送回汐落星',   targets:['heal','gentle','strength','joy'],avoids:['drain'],       spawn:700, speed:100,max:12,time:40},
+  {n:1,sub:'汐落星重建·第一日',theme:'寻找第一束治愈之光',        targets:['heal','gentle'],            avoids:['drain'],              spawn:950, speed:68, max:7, time:45},
+  {n:2,sub:'落地生根',          theme:'温柔也是一种力量',          targets:['gentle','strength'],        avoids:['lonely'],             spawn:850, speed:78, max:8, time:43},
+  {n:3,sub:'慢慢来',            theme:'以感恩之情充能',            targets:['heal','joy'],               avoids:['drain','beg'],        spawn:800, speed:86, max:9, time:42},
+  {n:4,sub:'心之所向',          theme:'不内耗的第一天',            targets:['strength','gentle'],        avoids:['drain','lonely'],     spawn:750, speed:95, max:9, time:40},
+  {n:5,sub:'温柔坚定',          theme:'同时收集快乐与力量',        targets:['joy','strength'],           avoids:['drain','beg','lonely'],spawn:700,speed:104,max:10,time:40},
+  {n:6,sub:'星光将至',          theme:'汐落星快要修好了',          targets:['heal','joy','gentle'],      avoids:['drain','lonely'],     spawn:630, speed:117,max:11,time:38},
+  {n:7,sub:'今天也是美好的一天',theme:'收集所有温暖，送回汐落星',   targets:['heal','gentle','strength','joy'],avoids:['drain'],       spawn:570, speed:130,max:12,time:40},
 ];
 
-// 7 entries total for DLG_GOOD (index 0-6)
 const DLG_GOOD=[
   [{s:'汐弥',t:'喵~！今天的情感频率非常正！'},{s:'汐弥',t:'我把收集到的所有治愈，都打包送到汐落星了。'},{s:'汐弥',t:'……那颗星，又亮了一点点。'}],
   [{s:'汐弥',t:'嗯！米娜桑们今天状态很好。'},{s:'汐弥',t:'我感受到了很多力量型情感——'},{s:'汐弥',t:'"温柔坚定"，这四个字，你们真的做到了。'}],
@@ -273,26 +370,48 @@ const DLG_GOOD=[
   [{s:'汐弥',t:'星光将至……我感觉汐落星在颤动。'},{s:'汐弥',t:'今天的治愈、快乐、温柔——三种同时进来的感觉，'},{s:'汐弥',t:'就像被抱了三下。'}],
   [{s:'汐弥',t:'…全收到了。'},{s:'汐弥',t:'七种温暖，一颗正在修复的星，还有陪着我的你。'},{s:'汐弥',t:'汐落星今晚会亮的。谢谢你。'}],
 ];
-
 const DLG_OK=[
   [{s:'汐弥',t:'还不错……今天的情感频率，我基本都读取到了。'},{s:'汐弥',t:'明天继续，好吗？'}],
   [{s:'汐弥',t:'中途有几个内耗泡泡碰到了。'},{s:'汐弥',t:'没关系，内耗也是真实的——'},{s:'汐弥',t:'只是今天，它比治愈跑得更快。明天注意一下。'}],
   [{s:'汐弥',t:'今天差了一点点。'},{s:'汐弥',t:'没事，我把没抓到的情感记下来了。'},{s:'汐弥',t:'明天，稳一点。'}],
   [{s:'汐弥',t:'有几个内耗碰到了……'},{s:'汐弥',t:'没关系，内耗也是真实存在的。'},{s:'汐弥',t:'识别它，然后绕开它。这才是不内耗的心法。'}],
 ];
-
 const DLG_LOW=[
   [{s:'旁白',t:'汐弥安静地坐着，尾巴慢慢地摇摆。'},{s:'汐弥',t:'……没关系的。'},{s:'汐弥',t:'今天能量不够，是因为今天本来就不容易。'},{s:'汐弥',t:'明天，我们再试一次。'}],
   [{s:'旁白',t:'汐弥把今天收集到的一点点温暖，小心地收好了。'},{s:'汐弥',t:'即使很少，也是真实的。'},{s:'汐弥',t:'……谢谢你今天还在。'}],
   [{s:'汐弥',t:'今天有点乱。'},{s:'汐弥',t:'但乱也没关系。'},{s:'汐弥',t:'汐落星不会因为一天就停止修复的。'}],
 ];
 
-const END_TEXT=`七天过去了。\n\n汐弥站在窗边，看着夜空中那颗越来越亮的星。\n\n"汐落星……你听到了吗？"\n\n她把这七天收集到的所有温暖，\n全部握在爪子里，轻轻送出去。\n\n远处，一颗星闪了一下。\n\n"喵——"\n\n她笑了。\n\n"以情感为食的我，在地球，吃得很饱。"`;
+// Dubai photos data
+const DUBAI_PHOTOS = [
+  { src: '/dubai/dubai-1.jpg', orientation: 'landscape' },
+  { src: '/dubai/dubai-2.jpg', orientation: 'landscape' },
+  { src: '/dubai/dubai-3.jpg', orientation: 'landscape' },
+  { src: '/dubai/dubai-4.jpg', orientation: 'landscape' },
+  { src: '/dubai/dubai-5.jpg', orientation: 'landscape' },
+  { src: '/dubai/dubai-6.jpg', orientation: 'portrait' },
+  { src: '/dubai/dubai-7.jpg', orientation: 'landscape' },
+  { src: '/dubai/dubai-8.jpg', orientation: 'portrait' },
+];
 
+const LOVE_LETTER = [
+  { lines: ['汐弥，', '七天的情感收集结束了。', '但我想说的话，比七天还要长。'] },
+  { lines: ['这些照片，是我们在迪拜的记忆。', '每一张，我都舍不得删。'] },
+  { lines: ['谢谢你为这个家付出的一切。'] },
+  { lines: ['谢谢你深夜哄孩子入睡，', '谢谢你在我缺席的那些时刻，', '独自撑起所有的温柔。'] },
+  { lines: ['你以为我没看见，', '但我都记得。'] },
+  { lines: ['你笑着说"没事，我来"的背影，', '你疲惫却还要装作轻松的眼神，', '你为了这个家默默承担的每一天。'] },
+  { lines: ['汐弥，你不是一个人。', '我在这里，以后也会在。', '', '我爱你。', '不是口头禅，是认真的，', '是看见你就想守护的那种爱。'] },
+  { lines: ['谢谢你来到我的生命里，', '谢谢你愿意和我一起，', '把这个家，建成心里最亮的那颗星。', '', '❤ 子杨'] },
+];
+
+// ═══ GAME STATE ═══
 let curDay=1,energy=0,scores=[],combo=0,comboTimer=null;
 let bubbles=[],rafId=null,spawnTimer=null,countTimer=null,timeLeft=0;
 let dlgLines=[],dlgIdx=0;
 let isPaused=false,danmakuTimer=null;
+let spawnCount=0;
+let endPhotoIdx=0,endAutoTimer=null;
 
 const DANMAKU_MSGS=['主播不内耗！','喵~','米娜桑！','✨治愈到了','喵喵喵'];
 
@@ -315,7 +434,6 @@ function showBrief(){
   d.targets.forEach(id=>{const e=EM[id];const t=document.createElement('div');t.className='em-tag';t.textContent=e.emoji+' '+e.name;t.style.cssText=`background:${e.bg};border-color:${e.border};color:#fff;`;tt.appendChild(t);});
   const av=$('br-avoids');av.innerHTML='';
   d.avoids.forEach(id=>{const e=EM[id];const t=document.createElement('div');t.className='em-tag';t.textContent=e.emoji+' '+e.name;t.style.cssText=`background:${e.bg};border-color:${e.border};color:#aaa;`;av.appendChild(t);});
-  // 7-day progress dots
   const prog=$('br-progress');
   prog.innerHTML='';
   for(let i=1;i<=7;i++){
@@ -330,7 +448,7 @@ function showBrief(){
 
 function startGame(){
   const d=DAYS[curDay-1];
-  energy=0;combo=0;bubbles=[];isPaused=false;
+  energy=0;combo=0;bubbles=[];isPaused=false;spawnCount=0;
   $('g-daylabel').textContent=`DAY ${d.n} · ${d.sub}`;
   updateHUD();
   updateComboBadge();
@@ -346,13 +464,12 @@ function startGame(){
   startDanmakuSpawner(d);
 }
 
-// Tab visibility pause
 document.addEventListener('visibilitychange',()=>{
   if(document.hidden){pauseGame();}else{resumeGame();}
 });
 
 function pauseGame(){
-  if(!rafId&&!spawnTimer)return; // not in game
+  if(!rafId&&!spawnTimer)return;
   isPaused=true;
   clearInterval(spawnTimer);spawnTimer=null;
   clearInterval(countTimer);countTimer=null;
@@ -389,13 +506,11 @@ function animFrame(d){
     if(!b.el.parentNode)return false;
     b.y-=(d.speed/60)*b.speedMod;
     b.x+=b.dx;
-    // boundary bounce
     if(b.x<130||b.x>fw-60)b.dx*=-1;
     b.el.style.top=b.y+'px';
     b.el.style.left=b.x+'px';
     if(b.y<-80){
       b.el.remove();
-      // light penalty for escaped good bubbles from day 3+
       if(curDay>=3&&EM[b.id]&&EM[b.id].type==='good'){
         energy=Math.max(0,energy-1);
         updateHUD();
@@ -412,16 +527,23 @@ function animFrame(d){
 
 function buildPool(d){
   const pool=[];
-  d.targets.forEach(id=>{pool.push(id,id,id);});
-  d.avoids.forEach(id=>{pool.push(id);});
+  d.targets.forEach(id=>{pool.push(id,id);});
+  d.avoids.forEach(id=>{pool.push(id,id);});
   return pool;
 }
 
 function spawnBubble(d){
   const field=$('g-field');
   if(bubbles.length>=d.max)return;
-  const pool=buildPool(d);
-  const id=pool[Math.floor(Math.random()*pool.length)];
+  spawnCount++;
+  let id;
+  if(spawnCount%15===0&&Math.random()<0.7){
+    const specials=['magpie','bouquet','rose'];
+    id=specials[Math.floor(Math.random()*specials.length)];
+  } else {
+    const pool=buildPool(d);
+    id=pool[Math.floor(Math.random()*pool.length)];
+  }
   const em=EM[id];
   const size=50+Math.floor(Math.random()*18);
   const fw=field.clientWidth;
@@ -430,7 +552,9 @@ function spawnBubble(d){
   const y=field.clientHeight-size-5;
   const el=document.createElement('div');
   el.className='bubble';
-  el.style.cssText=`width:${size}px;height:${size}px;left:${x}px;top:${y}px;background:${em.bg};border-color:${em.border};box-shadow:0 0 10px ${em.glow};`;
+  // Special bubbles get a pulsing border
+  const specialStyle=em.type==='special'?`;animation:pulse-badge .8s ease infinite alternate`:'';
+  el.style.cssText=`width:${size}px;height:${size}px;left:${x}px;top:${y}px;background:${em.bg};border-color:${em.border};box-shadow:0 0 10px ${em.glow}${specialStyle};`;
   el.innerHTML=`<div class="b-emoji">${em.emoji}</div><div class="b-name">${em.name}</div>`;
   const speedMod=0.7+Math.random()*0.6;
   const dx=(Math.random()-0.5)*0.6;
@@ -438,6 +562,47 @@ function spawnBubble(d){
   el.addEventListener('click',e=>{e.stopPropagation();clickBubble(el,em,x+size/2,y+size/2);});
   field.appendChild(el);
   bubbles.push({el,y,x,id,dx:finalDx,speedMod});
+}
+
+// ═══ FIREWORK EFFECTS ═══
+function launchFirework(x, y) {
+  const field = $('g-field');
+  if (!field) return;
+  const colors = ['#ff0080','#ff6eb4','#ffd700','#ff4499','#c8a0d4','#90ee90'];
+  for (let i = 0; i < 24; i++) {
+    const p = document.createElement('div');
+    const angle = (i / 24) * Math.PI * 2;
+    const dist = 60 + Math.random() * 60;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const size = 4 + Math.random() * 6;
+    p.style.cssText = `position:absolute;width:${size}px;height:${size}px;border-radius:50%;background:${color};left:${x}px;top:${y}px;pointer-events:none;z-index:50;transform:translate(-50%,-50%);box-shadow:0 0 6px ${color};transition:all 0.7s cubic-bezier(0.25,0.46,0.45,0.94);opacity:1;`;
+    field.appendChild(p);
+    requestAnimationFrame(() => {
+      p.style.left = (x + Math.cos(angle) * dist) + 'px';
+      p.style.top = (y + Math.sin(angle) * dist) + 'px';
+      p.style.opacity = '0';
+      p.style.transform = 'translate(-50%,-50%) scale(0)';
+    });
+    setTimeout(() => p.remove(), 750);
+  }
+}
+
+function launchOverlayFirework(container, x, y) {
+  const colors = ['#ff0080','#ffd700','#ff6eb4','#c8a0d4','#90ee90','#ffffff'];
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    const angle = (i / 20) * Math.PI * 2;
+    const dist = 80 + Math.random() * 80;
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    p.style.cssText = `position:absolute;width:6px;height:6px;border-radius:50%;background:${color};left:${x}px;top:${y}px;pointer-events:none;z-index:150;transform:translate(-50%,-50%);transition:all 0.8s ease;opacity:1;`;
+    container.appendChild(p);
+    requestAnimationFrame(() => {
+      p.style.left = (x + Math.cos(angle) * dist) + 'px';
+      p.style.top = (y + Math.sin(angle) * dist) + 'px';
+      p.style.opacity = '0';
+    });
+    setTimeout(() => p.remove(), 850);
+  }
 }
 
 function clickBubble(el,em,cx,cy){
@@ -453,20 +618,33 @@ function clickBubble(el,em,cx,cy){
     comboTimer=setTimeout(()=>{combo=0;updateComboBadge();},1500);
     const mult=combo>=5?3:combo>=3?2:1;
     const gain=6*mult;
-    energy=Math.min(100,energy+gain);
+    energy=energy+gain; // no cap
     port.classList.remove('hit-good','hit-bad');void port.offsetWidth;port.classList.add('hit-good');
     showPop(cx,cy,`+${gain}${combo>=3?' x'+mult:''}`,combo>=5?'#ffd700':combo>=3?'#ff6eb4':'#90ee90');
     spawnParticles(cx,cy,em.glow);
     updateComboBadge();
-    // 一键三连彩蛋 at combo 3
     if(combo===3){
       const toast=document.createElement('div');
-      toast.style.cssText='position:absolute;top:20px;left:50%;transform:translateX(-50%);font-size:18px;letter-spacing:6px;animation:pop-up .9s ease forwards;z-index:40;pointer-events:none;';
+      toast.style.cssText='position:absolute;top:20px;left:50%;transform:translateX(-50%);font-size:24px;letter-spacing:6px;animation:pop-up 1.5s ease forwards;z-index:40;pointer-events:none;text-shadow:0 0 12px #ff6eb4;';
       toast.textContent='👍🪙⭐';
       const field=$('g-field');
       field.appendChild(toast);
-      setTimeout(()=>toast.remove(),950);
+      setTimeout(()=>toast.remove(),1550);
+      // Firework at center for combo 3
+      launchFirework(field.clientWidth/2, field.clientHeight/2);
     }
+  } else if(em.type==='special'){
+    combo++;
+    clearTimeout(comboTimer);
+    comboTimer=setTimeout(()=>{combo=0;updateComboBadge();},1500);
+    const mult=combo>=5?3:combo>=3?2:1;
+    const gain=15*mult;
+    energy=energy+gain;
+    port.classList.remove('hit-good','hit-bad');void port.offsetWidth;port.classList.add('hit-good');
+    showPop(cx,cy,`+${gain} ${em.name}！`,'#ffd700');
+    launchFirework(cx, cy);
+    updateHUD();
+    updateComboBadge();
   } else {
     combo=0;
     energy=Math.max(0,energy-5);
@@ -516,16 +694,19 @@ function spawnDanmaku(d){
   el.textContent='💬 '+msg;
   el.addEventListener('click',e=>{
     e.stopPropagation();
-    energy=Math.min(100,energy+10);
+    energy=energy+10; // no cap
     updateHUD();
     showPop(field.clientWidth/2,y,'+10 弹幕！','#ff6eb4');
     const port=$('g-portrait');
     port.classList.remove('hit-good','hit-bad');void port.offsetWidth;port.classList.add('hit-good');
+    // Firework at click position
+    const rect=field.getBoundingClientRect();
+    launchFirework(field.clientWidth/2, y);
     el.remove();
   });
   field.appendChild(el);
   let lx=-120;
-  const speed=1.2;
+  const speed=3.0;
   function moveDanmaku(){
     lx+=speed;
     el.style.left=lx+'px';
@@ -560,8 +741,16 @@ function showPop(x,y,txt,color){
 }
 
 function updateHUD(){
-  $('g-bar').style.width=energy+'%';
-  $('g-pct').textContent=Math.round(energy)+'%';
+  const barEl=$('g-bar');
+  const pctEl=$('g-pct');
+  const barWidth=Math.min(100,energy);
+  barEl.style.width=barWidth+'%';
+  // Remove all level classes
+  barEl.classList.remove('lv2','lv3','lv4');
+  if(energy>=200)barEl.classList.add('lv4');
+  else if(energy>=150)barEl.classList.add('lv3');
+  else if(energy>=100)barEl.classList.add('lv2');
+  pctEl.textContent=Math.round(energy);
 }
 
 function clearAllBubbles(){
@@ -577,14 +766,56 @@ function endGame(){
   clearAllBubbles();
   scores[curDay-1]=Math.round(energy);
   saveGame();
-  showDialogue();
+  checkGiftReward(Math.round(energy));
+}
+
+// ═══ GIFT REWARD SYSTEM ═══
+function checkGiftReward(score){
+  if(score>=250)showGiftReward('castle');
+  else if(score>=200)showGiftReward('rocket');
+  else if(score>=150)showGiftReward('car');
+  else if(score>=100)showGiftReward('firework');
+  else showDialogue();
+}
+
+function showGiftReward(type){
+  const overlay=document.createElement('div');
+  overlay.id='gift-overlay';
+  overlay.style.cssText='position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(10,0,16,0.92);animation:screenIn .5s ease both;';
+
+  const GIFTS={
+    firework:{ emoji:'🎆', label:'烟花秀',    color:'#ff6eb4', msg:'100分！送你一场烟花秀！' },
+    car:     { emoji:'🏎️', label:'超级跑车',  color:'#ffd700', msg:'150分！超级跑车登场！' },
+    rocket:  { emoji:'🚀', label:'火箭',      color:'#c8a0d4', msg:'200分！火箭升空！' },
+    castle:  { emoji:'🏰', label:'梦幻城堡',  color:'#ff0080', msg:'250分！梦幻城堡！' },
+  };
+
+  const g=GIFTS[type];
+  overlay.innerHTML=`
+    <div style="font-size:80px;animation:float 1s ease-in-out infinite;margin-bottom:16px">${g.emoji}</div>
+    <div style="font-size:22px;color:${g.color};letter-spacing:4px;text-shadow:0 0 20px ${g.color};margin-bottom:8px">${g.label}</div>
+    <div style="font-size:14px;color:#fde8f0;margin-bottom:24px">${g.msg}</div>
+    <button class="btn" onclick="document.getElementById('gift-overlay').remove();showDialogue()">继续 ▶</button>
+  `;
+  document.body.appendChild(overlay);
+
+  // Firework bursts for high scores
+  if(type==='firework'||type==='rocket'||type==='castle'){
+    const count=type==='castle'?8:5;
+    for(let f=0;f<count;f++){
+      setTimeout(()=>{
+        const rect=overlay.getBoundingClientRect();
+        launchOverlayFirework(overlay, Math.random()*rect.width, Math.random()*rect.height*0.6);
+      },f*300);
+    }
+  }
 }
 
 function showDialogue(){
   const sc=scores[curDay-1];
   let pool;
-  if(sc>=80)pool=DLG_GOOD[Math.min(curDay-1,DLG_GOOD.length-1)];
-  else if(sc>=50)pool=DLG_OK[Math.floor(Math.random()*DLG_OK.length)];
+  if(sc>=70)pool=DLG_GOOD[Math.min(curDay-1,DLG_GOOD.length-1)];
+  else if(sc>=40)pool=DLG_OK[Math.floor(Math.random()*DLG_OK.length)];
   else pool=DLG_LOW[Math.floor(Math.random()*DLG_LOW.length)];
   dlgLines=pool;dlgIdx=0;
   renderLine();
@@ -606,9 +837,9 @@ window.nextLine=function(){
 function showSummary(){
   const sc=scores[curDay-1];
   $('sum-label').textContent=`DAY ${curDay} 完成`;
-  $('sum-pct').textContent=sc+'%';
-  $('sum-stars').textContent=sc>=85?'★★★':sc>=65?'★★☆':sc>=45?'★☆☆':'☆☆☆';
-  const msgs={85:'完美收集！汐落星的光又亮了一格。',65:'做得不错！继续加油。',45:'还可以，明天会更好。',0:'今天有点难……但汐弥还在。'};
+  $('sum-pct').textContent=sc;
+  $('sum-stars').textContent=sc>=200?'★★★':sc>=120?'★★☆':sc>=70?'★☆☆':'☆☆☆';
+  const msgs={200:'传说级！汐落星满血复活！',120:'超棒！汐落星的光又亮了一大格。',70:'不错！继续保持。',0:'今天有点难……但汐弥还在。'};
   const keys=Object.keys(msgs).map(Number).sort((a,b)=>b-a);
   $('sum-msg').textContent=msgs[keys.find(k=>sc>=k)??0];
   if(curDay===7)$('sum-btn').textContent='查看结局 ✦';
@@ -623,27 +854,116 @@ window.sumNext=function(){
   showBrief();
 };
 
+// ═══ ENDING: DUBAI PHOTO SLIDESHOW ═══
 function showEnding(){
-  // fill recap
-  const recap=$('end-recap');
-  recap.innerHTML='';
-  let allPerfect=true;
-  scores.forEach((sc,i)=>{
-    const stars=sc>=85?'★★★':sc>=65?'★★☆':sc>=45?'★☆☆':'☆☆☆';
-    if(stars!=='★★★')allPerfect=false;
-    const card=document.createElement('div');
-    card.style.cssText='text-align:center;background:rgba(255,0,128,0.08);border:1px solid rgba(255,0,128,0.2);border-radius:8px;padding:6px 10px;min-width:44px;';
-    card.innerHTML=`<div style="font-size:9px;color:#8a6070;letter-spacing:1px">DAY ${i+1}</div><div style="font-size:13px;color:${sc>=85?'#ffd700':sc>=65?'#ff6eb4':'#8a6070'}">${stars}</div>`;
-    recap.appendChild(card);
+  endPhotoIdx=0;
+  if(endAutoTimer){clearInterval(endAutoTimer);endAutoTimer=null;}
+
+  const photosDiv=$('end-photos');
+  photosDiv.innerHTML='';
+
+  DUBAI_PHOTOS.forEach((photo,i)=>{
+    if(photo.orientation==='portrait'){
+      // Blurred background for portrait photos
+      const bgImg=document.createElement('img');
+      bgImg.src=photo.src;
+      bgImg.style.cssText=`position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(20px) brightness(0.4);opacity:${i===0?1:0};transition:opacity 1.2s ease;z-index:0;`;
+      bgImg.dataset.photoIdx=i;
+      bgImg.dataset.isBg='1';
+      photosDiv.appendChild(bgImg);
+    }
+    const img=document.createElement('img');
+    img.src=photo.src;
+    img.style.cssText=`position:absolute;inset:0;width:100%;height:100%;object-fit:${photo.orientation==='portrait'?'contain':'cover'};object-position:center;opacity:${i===0?1:0};transition:opacity 1.2s ease;z-index:1;`;
+    img.dataset.photoIdx=i;
+    photosDiv.appendChild(img);
   });
-  if(allPerfect){
-    const badge=document.createElement('div');
-    badge.style.cssText='width:100%;text-align:center;color:#ffd700;font-size:13px;letter-spacing:3px;text-shadow:0 0 12px rgba(255,215,0,0.6);margin-top:4px;animation:float 2s ease-in-out infinite;';
-    badge.textContent='✦ 七天满星 · 汐落星全亮 ✦';
-    recap.appendChild(badge);
-  }
-  $('end-text').textContent=END_TEXT;
+
+  // Progress dots
+  const dotsDiv=$('end-dots');
+  dotsDiv.innerHTML='';
+  DUBAI_PHOTOS.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.dataset.dot=i;
+    d.style.cssText=`width:${i===0?10:6}px;height:${i===0?10:6}px;border-radius:50%;background:${i===0?'#ff0080':'rgba(255,255,255,0.3)'};transition:all .4s;`;
+    dotsDiv.appendChild(d);
+  });
+
+  // Hide final elements until last photo
+  $('end-fin').style.display='none';
+  $('end-replay-btn').style.display='none';
+
+  renderEndLetter(0);
   show('send');
+
+  // Auto-advance every 5s
+  endAutoTimer=setInterval(nextEndPhoto,5000);
+
+  // Click to advance (remove old listener by using named function replacement)
+  const sendScreen=$('send');
+  sendScreen.onclick=function(){
+    if(endPhotoIdx<DUBAI_PHOTOS.length-1){
+      clearInterval(endAutoTimer);
+      nextEndPhoto();
+      endAutoTimer=setInterval(nextEndPhoto,5000);
+    }
+  };
+}
+
+function renderEndLetter(idx){
+  const letter=$('end-letter');
+  const data=LOVE_LETTER[idx];
+  letter.style.opacity='0';
+  letter.style.transform='translateY(20px)';
+
+  setTimeout(()=>{
+    letter.innerHTML=data.lines.map(line=>
+      line
+        ? `<div style="font-size:${line.startsWith('❤')?'18px':'15px'};line-height:2.2;color:${line.startsWith('❤')?'#ff6eb4':'#f0d8e8'};letter-spacing:1px;">${line}</div>`
+        : '<div style="height:12px"></div>'
+    ).join('');
+    letter.style.opacity='1';
+    letter.style.transform='translateY(0)';
+  },200);
+
+  // Update photo visibility
+  document.querySelectorAll('#end-photos img').forEach(el=>{
+    if(el.dataset.photoIdx!==undefined){
+      el.style.opacity=parseInt(el.dataset.photoIdx)===idx?'1':'0';
+    }
+  });
+
+  // Update dots
+  document.querySelectorAll('#end-dots [data-dot]').forEach(d=>{
+    const i=parseInt(d.dataset.dot);
+    d.style.width=i===idx?'10px':'6px';
+    d.style.height=i===idx?'10px':'6px';
+    d.style.background=i===idx?'#ff0080':i<idx?'rgba(255,0,128,0.4)':'rgba(255,255,255,0.3)';
+  });
+
+  // Last photo: show final elements + fireworks
+  if(idx===DUBAI_PHOTOS.length-1){
+    clearInterval(endAutoTimer);endAutoTimer=null;
+    setTimeout(()=>{
+      $('end-fin').style.display='block';
+      $('end-replay-btn').style.display='inline-block';
+      const sendEl=$('send');
+      for(let f=0;f<8;f++){
+        setTimeout(()=>{
+          launchOverlayFirework(sendEl, Math.random()*window.innerWidth, Math.random()*window.innerHeight*0.5);
+        },f*400);
+      }
+    },2000);
+  }
+}
+
+function nextEndPhoto(){
+  if(endPhotoIdx<DUBAI_PHOTOS.length-1){
+    endPhotoIdx++;
+    renderEndLetter(endPhotoIdx);
+  } else {
+    clearInterval(endAutoTimer);endAutoTimer=null;
+  }
 }
 
 // Keyboard support
@@ -660,6 +980,7 @@ document.addEventListener('keydown',e=>{
 window.startNew=startNew;
 window.loadGame=loadGame;
 window.startGame=startGame;
+window.showDialogue=showDialogue;
 </script>
 </body>
 </html>
