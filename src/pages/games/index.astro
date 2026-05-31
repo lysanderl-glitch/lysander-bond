@@ -1,0 +1,407 @@
+---
+---
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>游戏画廊 · Lysander 专属游戏定制</title>
+  <meta name="description" content="Lysander 专属游戏定制工作室 · 每一款游戏都是一份礼物"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pk: #FF0080;
+      --pks: #F4A0C0;
+      --lav: #C8A0D4;
+      --gold: #F0C840;
+      --dark: #0a0010;
+      --dark2: #120018;
+      --glow: rgba(255, 0, 128, 0.5);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--dark);
+      color: #fde8f0;
+      font-family: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif;
+      min-height: 100vh;
+    }
+
+    /* Background grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,0,128,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,0,128,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Layout */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      margin-bottom: 64px;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .header-eyebrow {
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      color: var(--pks);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0.8;
+    }
+
+    .header h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff 0%, var(--pks) 50%, var(--lav) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .header p {
+      font-size: 1rem;
+      color: var(--lav);
+      opacity: 0.8;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+    }
+
+    .header-divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--pk), var(--lav));
+      margin: 24px auto 0;
+      border-radius: 2px;
+    }
+
+    /* Grid */
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    /* Card */
+    .game-card {
+      background: rgba(18, 0, 24, 0.7);
+      border: 1px solid rgba(255, 0, 128, 0.2);
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      animation: fadeUp 0.9s ease both;
+    }
+
+    .game-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 40px rgba(255, 0, 128, 0.35), 0 0 80px rgba(200, 160, 212, 0.15);
+      border-color: rgba(255, 0, 128, 0.6);
+    }
+
+    /* Card cover */
+    .card-cover {
+      height: 180px;
+      position: relative;
+      background: linear-gradient(135deg, #1a0030 0%, #2d0050 40%, #1a1040 70%, #200028 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .card-cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(255,0,128,0.25) 0%, transparent 55%),
+        radial-gradient(ellipse at 70% 60%, rgba(200,160,212,0.2) 0%, transparent 55%);
+    }
+
+    .card-cover-emojis {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: 12px;
+      font-size: 2.2rem;
+      filter: drop-shadow(0 0 10px rgba(255,0,128,0.6));
+      animation: floatEmojis 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatEmojis {
+      from { transform: translateY(0px); }
+      to   { transform: translateY(-8px); }
+    }
+
+    .card-cover-title {
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: rgba(244,160,192,0.6);
+      text-transform: uppercase;
+    }
+
+    /* Status badge */
+    .status-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .status-badge.online {
+      background: rgba(0, 200, 100, 0.15);
+      border: 1px solid rgba(0, 200, 100, 0.5);
+      color: #4eff9f;
+    }
+
+    /* Card body */
+    .card-body {
+      padding: 20px 20px 24px;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .card-subtitle {
+      font-size: 0.82rem;
+      color: var(--lav);
+      opacity: 0.8;
+      margin-bottom: 14px;
+      font-weight: 300;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .tag {
+      padding: 3px 9px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      background: rgba(255, 0, 128, 0.08);
+      border: 1px solid rgba(255, 0, 128, 0.25);
+      color: var(--pks);
+      letter-spacing: 0.04em;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: rgba(253, 232, 240, 0.7);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+
+    .card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 22px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, var(--pk), #a020d0);
+      color: #fff;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      border: none;
+      cursor: pointer;
+      transition: box-shadow 0.25s ease, transform 0.2s ease;
+      text-decoration: none;
+    }
+
+    .card-cta:hover {
+      box-shadow: 0 0 20px rgba(255, 0, 128, 0.6);
+      transform: scale(1.04);
+    }
+
+    /* Coming soon placeholder card */
+    .game-card-placeholder {
+      background: rgba(18, 0, 24, 0.4);
+      border: 1px dashed rgba(255, 0, 128, 0.15);
+      border-radius: 16px;
+      min-height: 340px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      animation: fadeUp 1.1s ease both;
+    }
+
+    .placeholder-icon {
+      font-size: 2.5rem;
+      opacity: 0.3;
+    }
+
+    .placeholder-text {
+      font-size: 0.82rem;
+      color: rgba(244, 160, 192, 0.35);
+      letter-spacing: 0.12em;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      margin-top: 72px;
+      animation: fadeUp 1.2s ease both;
+    }
+
+    .footer-divider {
+      width: 40px;
+      height: 1px;
+      background: rgba(255, 0, 128, 0.3);
+      margin: 0 auto 20px;
+    }
+
+    .footer p {
+      font-size: 0.82rem;
+      color: rgba(200, 160, 212, 0.5);
+      letter-spacing: 0.15em;
+      font-weight: 300;
+    }
+
+    .footer .heart {
+      color: var(--pk);
+      opacity: 0.7;
+    }
+
+    /* Nav back link */
+    .nav-back {
+      position: fixed;
+      top: 20px;
+      left: 24px;
+      z-index: 10;
+      color: rgba(244,160,192,0.6);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-back:hover { color: var(--pks); }
+
+    /* Animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .page { padding: 48px 16px 64px; }
+      .header { margin-bottom: 40px; }
+      .game-grid { grid-template-columns: 1fr; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="/" class="nav-back">← 返回主页</a>
+
+  <div class="page">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-eyebrow">Lysander · Studio</div>
+      <h1>游戏画廊</h1>
+      <p>专属游戏定制 · 每一款都是一份礼物</p>
+      <div class="header-divider"></div>
+    </header>
+
+    <!-- Game Grid -->
+    <!--
+      路由规范:
+      /games         → 本页（游戏画廊入口）
+      /games/[id]    → 未来新游戏（在 src/pages/games/ 目录下新建独立 .astro 文件，如 starfall.astro）
+      /ximi          → 汐弥游戏（保留原路由，此处以卡片链接形式引用，不修改原文件）
+    -->
+    <main class="game-grid">
+
+      <!-- 汐弥游戏卡片 — 链接至原路由 /ximi -->
+      <a href="/ximi" class="game-card">
+        <div class="card-cover">
+          <span class="status-badge online">已上线</span>
+          <div class="card-cover-emojis">💖 🌙 ✨ 🍬 💫</div>
+          <div class="card-cover-title">XIMI · EXCLUSIVE</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">以情感为食</div>
+          <div class="card-subtitle">汐弥的七天情感收集</div>
+          <div class="card-tags">
+            <span class="tag">#情感游戏</span>
+            <span class="tag">#七天叙事</span>
+            <span class="tag">#专属定制</span>
+          </div>
+          <p class="card-desc">收集治愈、温柔、力量与快乐，七天修复汐落星。</p>
+          <span class="card-cta">开始游戏 ▶</span>
+        </div>
+      </a>
+
+      <!-- 占位卡片：更多游戏即将到来 -->
+      <div class="game-card-placeholder">
+        <div class="placeholder-icon">🎮</div>
+        <div class="placeholder-text">下一款游戏 · 敬请期待</div>
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-divider"></div>
+      <p>更多游戏即将到来 · 敬请期待 <span class="heart">♥</span></p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
