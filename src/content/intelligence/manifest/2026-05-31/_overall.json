@@ -1,0 +1,74 @@
+{
+  "date": "2026-05-31",
+  "status": "unhealthy",
+  "computed_at": "2026-05-31T08:35:24Z",
+  "computed_by": "manifest_aggregate.py",
+  "freshness_hours": 36,
+  "stages": {
+    "scan": {
+      "present": false,
+      "status": null,
+      "fresh": false,
+      "fault": "missing",
+      "item_count": 0,
+      "honest_empty": false,
+      "updated_at": null,
+      "critical": true
+    },
+    "daily": {
+      "present": true,
+      "status": "green",
+      "fresh": true,
+      "fault": null,
+      "item_count": 0,
+      "honest_empty": false,
+      "updated_at": "2026-05-31T08:35:23Z",
+      "critical": true
+    },
+    "action": {
+      "present": false,
+      "status": null,
+      "fresh": false,
+      "fault": "missing",
+      "item_count": 0,
+      "honest_empty": false,
+      "updated_at": null,
+      "critical": false
+    },
+    "outcome": {
+      "present": false,
+      "status": null,
+      "fresh": false,
+      "fault": "missing",
+      "item_count": 0,
+      "honest_empty": false,
+      "updated_at": null,
+      "critical": false
+    },
+    "evolution": {
+      "present": false,
+      "status": null,
+      "fresh": false,
+      "fault": "missing",
+      "item_count": 0,
+      "honest_empty": false,
+      "updated_at": null,
+      "critical": false
+    }
+  },
+  "findings": [
+    "scan: missing",
+    "action: missing",
+    "outcome: missing",
+    "evolution: missing"
+  ],
+  "expected_stages": [
+    "scan",
+    "daily",
+    "action",
+    "outcome",
+    "evolution"
+  ],
+  "present_count": 1,
+  "real_content": false
+}
