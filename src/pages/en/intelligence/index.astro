@@ -1,152 +1,380 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
+import fs from 'node:fs';
+import path from 'node:path';
+import {
+  loadOverallManifests,
+  decideHubDisplay,
+  ringStatuses,
+} from '../../../lib/intelManifest';
 
-const dailyPosts = (await getCollection('intelligence-daily'))
-  .filter(p => p.data.lang === 'en')
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 5);
+// ── Simple frontmatter parser (no external dep) ───────────────────────────
+function parseFrontmatter(content: string): Record<string, unknown> {
+  const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!match) return {};
+  const fm: Record<string, unknown> = {};
+  for (const line of match[1].split(/\r?\n/)) {
+    const kv = line.match(/^(\w[\w_]*)\s*:\s*(.+)$/);
+    if (!kv) continue;
+    const [, key, rawVal] = kv;
+    const val = rawVal.trim().replace(/^["']|["']$/g, '');
+    if (val === 'true') fm[key] = true;
+    else if (val === 'false') fm[key] = false;
+    else if (/^\d+$/.test(val)) fm[key] = parseInt(val, 10);
+    else fm[key] = val;
+  }
+  return fm;
+}
 
-const decisions = (await getCollection('intelligence-decisions'))
-  .filter(d => d.data.lang === 'en')
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 5);
+// ── Public Briefs ──────────────────────────────────────────────────────────
+interface PublicBrief {
+  date: string;
+  publish_gate: boolean;
+  top_discovery?: string;
+  decision_summary?: string;
+  completed_this_cycle?: number;
+  value_delta?: string;
+  scan_count?: number;
+}
 
-const results = (await getCollection('intelligence-results'))
-  .filter(r => r.data.lang === 'en')
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 5);
+let latestBrief: PublicBrief | null = null;
+
+try {
+  const briefsDir = path.resolve('./src/content/intelligence/public-briefs');
+  if (fs.existsSync(briefsDir)) {
+    const files = fs.readdirSync(briefsDir)
+      .filter((f: string) => f.endsWith('.md'))
+      .sort()
+      .reverse();
+
+    for (const file of files.slice(0, 7)) {
+      const raw = fs.readFileSync(path.join(briefsDir, file), 'utf-8');
+      const fm = parseFrontmatter(raw);
+      if (fm.publish_gate === true) {
+        latestBrief = {
+          date: String(fm.date ?? file.replace('.md', '')),
+          publish_gate: true,
+          top_discovery: fm.top_discovery ? String(fm.top_discovery) : undefined,
+          decision_summary: fm.decision_summary ? String(fm.decision_summary) : undefined,
+          completed_this_cycle: typeof fm.completed_this_cycle === 'number' ? fm.completed_this_cycle : undefined,
+          value_delta: fm.value_delta ? String(fm.value_delta) : undefined,
+          scan_count: typeof fm.scan_count === 'number' ? fm.scan_count : undefined,
+        };
+        break;
+      }
+    }
+  }
+} catch {
+  // graceful degradation
+}
+
+// ── Milestones ────────────────────────────────────────────────────────────
+interface Milestone {
+  date: string;
+  title: string;
+  title_en: string;
+  impact: string;
+  impact_en: string;
+}
+
+let milestones: Milestone[] = [];
+
+try {
+  const mPath = path.resolve('./src/content/intelligence/milestones.yaml');
+  if (fs.existsSync(mPath)) {
+    const raw = fs.readFileSync(mPath, 'utf-8');
+    const items = raw.split(/^  - /m).slice(1);
+    milestones = items.map((block) => {
+      const get = (key: string) => {
+        const m = block.match(new RegExp(`${key}:\\s*"?([^"\\n]+)"?`));
+        return m ? m[1].trim() : '';
+      };
+      return {
+        date: get('date'),
+        title: get('title'),
+        title_en: get('title_en'),
+        impact: get('impact'),
+        impact_en: get('impact_en'),
+      };
+    }).filter(m => m.date).reverse();
+  }
+} catch {
+  // graceful degradation
+}
+
+// ── System Ring ───────────────────────────────────────────────────────────
+const overalls = await loadOverallManifests();
+const hub = decideHubDisplay(overalls);
+const ring = ringStatuses(hub.overall);
 ---
 
 <Layout
-  title="Self-improve Pipeline | Lysander"
-  description="Synapse's evolution layer. A daily 5-step closed loop that turns external signals into verified capability improvements."
+  title="Synapse Self-improve Pipeline | Lysander"
+  description="Synapse scans the AI frontier every day, decides what matters, and acts. This is the live record of a system that shows its work."
   lang="en"
   darkContent={true}
 >
-  <!-- Hero -->
-  <section class="pt-24 pb-12 px-6">
-    <div class="max-w-4xl mx-auto text-center hero-stagger">
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-sm font-medium mb-6">
-        <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
-        Synapse Evolution Layer · Daily Cycle
-      </div>
-      <h1 class="text-4xl md:text-5xl font-bold text-white mb-4" style="font-family: var(--font-display, 'Fraunces', Georgia, serif); letter-spacing: -0.02em;">Self-improve Pipeline</h1>
-      <p class="text-lg text-white/60 max-w-2xl mx-auto">
-        Synapse's evolution layer. A daily 5-step closed loop that turns external signals into verified capability improvements. Not a newsletter — a system upgrade log.
-      </p>
-    </div>
-  </section>
 
-  <!-- 5-Step Self-improve Cycle -->
-  <section class="py-4 px-6">
-    <div class="max-w-4xl mx-auto">
-      <div class="grid grid-cols-5 gap-2 md:gap-3">
-        {[
-          { step: '01', en: 'Scan', sub: 'Capture signals' },
-          { step: '02', en: 'Bulletin', sub: 'Daily report' },
-          { step: '03', en: 'Decision', sub: 'VACE scoring' },
-          { step: '04', en: 'Track', sub: 'Dispatch & log' },
-          { step: '05', en: 'Evolve', sub: 'Close the loop' },
-        ].map(s => (
-          <div class="flex flex-col items-center text-center p-3 rounded-lg bg-white/5 border border-white/10">
-            <span class="text-xs text-white/30 mb-1">{s.step}</span>
-            <span class="text-sm font-semibold text-[#fcad2a]">{s.en}</span>
-            <span class="text-xs text-white/50 mt-0.5">{s.sub}</span>
+  <!-- ═══ Block 1: Hero ════════════════════════════════════════════════════ -->
+  <section class="relative overflow-hidden pt-20 pb-16 px-6" style="background: linear-gradient(135deg, #0A1628 0%, #0d1f3c 50%, #011830 100%);">
+    <svg class="absolute inset-0 w-full h-full opacity-10 pointer-events-none" viewBox="0 0 1200 500" fill="none" preserveAspectRatio="xMidYMid slice">
+      <circle cx="900" cy="150" r="200" fill="#FCAD2A" opacity="0.04"/>
+      <circle cx="300" cy="350" r="150" fill="#028CDC" opacity="0.05"/>
+      <circle cx="600" cy="250" r="3" fill="#FCAD2A"/><circle cx="750" cy="180" r="2" fill="#028CDC"/>
+      <circle cx="450" cy="300" r="2" fill="#FCAD2A"/><circle cx="850" cy="220" r="2.5" fill="#028CDC"/>
+      <line x1="600" y1="250" x2="750" y2="180" stroke="#FCAD2A" stroke-width="0.5" opacity="0.4"/>
+      <line x1="750" y1="180" x2="850" y2="220" stroke="#028CDC" stroke-width="0.5" opacity="0.3"/>
+      <line x1="450" y1="300" x2="600" y2="250" stroke="#028CDC" stroke-width="0.5" opacity="0.3"/>
+    </svg>
+
+    <div class="max-w-6xl mx-auto relative z-10">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+
+        <!-- Left: Copy -->
+        <div class="hero-stagger">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FCAD2A]/10 border border-[#FCAD2A]/30 text-[#FCAD2A] text-xs font-semibold mb-6 tracking-wider uppercase">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] animate-pulse"></span>
+            Self-improve Pipeline
           </div>
-        ))}
+          <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-5 leading-[1.1]" style="font-family: var(--font-display, 'Fraunces', Georgia, serif); letter-spacing: -0.02em;">
+            The AI System That Shows Its Work
+          </h1>
+          <p class="text-lg text-white/65 leading-relaxed mb-8 max-w-lg">
+            Every day, Synapse scans the AI frontier, decides what matters, and acts. This is the live record — not a newsletter, but a system upgrade log.
+          </p>
+
+          <!-- Key numbers -->
+          <div class="flex flex-wrap gap-6 mb-8">
+            <div class="text-center">
+              <div class="text-2xl font-bold text-[#FCAD2A]">{latestBrief?.scan_count ?? '—'}</div>
+              <div class="text-xs text-white/40 mt-1">Sources scanned today</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold text-white">47</div>
+              <div class="text-xs text-white/40 mt-1">Core Agents</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold text-white">{milestones.length}</div>
+              <div class="text-xs text-white/40 mt-1">Evolution milestones</div>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-3">
+            <a href="#today-snapshot" class="px-6 py-3 bg-[#FCAD2A] text-[#0A1628] font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all text-sm">
+              View Today's Record
+            </a>
+            <a href="#evolution-timeline" class="px-6 py-3 bg-white/5 text-white font-semibold rounded-xl border border-white/10 hover:bg-white/10 transition-all text-sm">
+              Evolution Timeline →
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Today's snapshot card -->
+        <div id="today-snapshot">
+          {latestBrief ? (
+            <div class="rounded-2xl border border-[#FCAD2A]/30 bg-[#FCAD2A]/5 p-6 relative overflow-hidden">
+              <div class="flex items-center justify-between mb-5">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-[#FCAD2A] animate-pulse"></span>
+                  <span class="text-xs font-semibold text-[#FCAD2A] uppercase tracking-wider">Today's Snapshot</span>
+                </div>
+                <time class="text-xs text-white/40 font-mono">{latestBrief.date}</time>
+              </div>
+
+              <div class="space-y-4">
+                <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="text-base">🔍</span>
+                    <span class="text-xs font-semibold text-white/50 uppercase tracking-wider">Today's Discovery</span>
+                  </div>
+                  <p class="text-sm text-white leading-relaxed">
+                    {latestBrief.top_discovery ?? 'System scanning normally — no major signals today'}
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                  <div class="flex items-center gap-2 mb-2">
+                    <span class="text-base">⚡</span>
+                    <span class="text-xs font-semibold text-white/50 uppercase tracking-wider">Decision</span>
+                  </div>
+                  <p class="text-sm text-white leading-relaxed">
+                    {latestBrief.decision_summary ?? 'Assessment in progress'}
+                  </p>
+                </div>
+
+                {latestBrief.value_delta && (
+                  <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                    <div class="flex items-center gap-2 mb-2">
+                      <span class="text-base">✅</span>
+                      <span class="text-xs font-semibold text-white/50 uppercase tracking-wider">Last Cycle's Result</span>
+                    </div>
+                    <p class="text-sm text-white leading-relaxed">
+                      {latestBrief.value_delta}
+                    </p>
+                    {latestBrief.completed_this_cycle !== undefined && latestBrief.completed_this_cycle > 0 && (
+                      <p class="text-xs text-[#FCAD2A]/70 mt-2">
+                        {latestBrief.completed_this_cycle} tasks closed this cycle
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <div class="flex items-center gap-2 mb-5">
+                <span class="w-2 h-2 rounded-full bg-white/30"></span>
+                <span class="text-xs font-semibold text-white/40 uppercase tracking-wider">Today's Snapshot</span>
+              </div>
+              <div class="text-center py-8">
+                <div class="text-3xl mb-3">🔄</div>
+                <p class="text-white/60 text-sm">System is in analysis mode today</p>
+                <p class="text-white/30 text-xs mt-2">Usually updated before 08:00 Dubai time</p>
+              </div>
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Three-column content -->
-  <section class="py-8 px-6">
-    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
-
-      <!-- Daily Intel -->
-      <div data-reveal="left">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-            <span class="text-sky-400">📡</span> Daily Intel
-          </h2>
-          <a href="/en/intelligence/daily" class="text-sm text-sky-400 hover:text-sky-300">All reports →</a>
+  <!-- ═══ Block 2: Archive entry points ════════════════════════════════════ -->
+  <section class="py-10 px-6 border-b border-white/10" data-reveal>
+    <div class="max-w-6xl mx-auto">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-1">System Activity</p>
+          <h2 class="text-lg font-bold text-white">Full Intelligence Archive</h2>
         </div>
-        <div class="space-y-3">
-          {dailyPosts.length === 0 ? (
-            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-sm text-center">
-              <p class="text-white/40 mb-2">English intel summaries launching —</p>
-              <a href="/intelligence/" class="text-sky-400 hover:text-sky-300">read today's full report in Chinese now →</a>
-            </div>
-          ) : dailyPosts.map(post => (
-            <a href={`/en/intelligence/daily/${post.data.date}`}
-               class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-sky-500/40 transition-colors group">
-              <time class="text-xs text-white/40">{post.data.date}</time>
-              <h3 class="text-sm font-medium text-white group-hover:text-sky-400 mt-1 line-clamp-2">{post.data.title}</h3>
-              <div class="flex gap-2 mt-2">
-                <span class="text-xs text-white/40">{post.data.itemCount} items</span>
-                {post.data.topScore && <span class="text-xs text-sky-400">Top {post.data.topScore}</span>}
-              </div>
-            </a>
-          ))}
-        </div>
+        <a href="/en/synapse/intelligence" class="hidden md:inline-flex items-center gap-1.5 text-xs text-white/40 hover:text-white/70 transition-colors border border-white/10 px-3 py-1.5 rounded-lg">
+          View Pipeline Overview →
+        </a>
       </div>
 
-      <!-- Decisions -->
-      <div data-reveal>
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-            <span class="text-[#e9b94a]">⚖️</span> Decisions
-          </h2>
-          <a href="/en/intelligence/decisions" class="text-sm text-[#e9b94a] hover:text-[#c96442] transition-colors">All decisions →</a>
-        </div>
-        <div class="space-y-3">
-          {decisions.length === 0 ? (
-            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-sm text-center">
-              <p class="text-white/40 mb-2">English decisions archive coming soon —</p>
-              <a href="/intelligence/decisions" class="text-[#e9b94a] hover:text-[#c96442]">view Chinese archive →</a>
-            </div>
-          ) : decisions.map(d => (
-            <a href={`/en/intelligence/decisions/${d.data.date}`}
-               class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-[#e9b94a]/40 transition-colors group">
-              <time class="text-xs text-white/40">{d.data.date}</time>
-              <h3 class="text-sm font-medium text-white group-hover:text-[#e9b94a] mt-1 line-clamp-2">{d.data.topIntel}</h3>
-              <div class="flex gap-2 mt-2 flex-wrap">
-                {d.data.executeCount > 0 && <span class="text-xs text-[#e9b94a]">⚡ {d.data.executeCount} executed</span>}
-                {d.data.inboxCount > 0 && <span class="text-xs text-sky-400">📥 {d.data.inboxCount} tracked</span>}
-                {d.data.topScore && <span class="text-xs text-white/40">top {d.data.topScore}</span>}
-              </div>
-            </a>
-          ))}
-        </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <a href="/en/intelligence/daily" class="group flex flex-col gap-3 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-sky-500/40 transition-all">
+          <div class="text-2xl">📡</div>
+          <div>
+            <div class="text-white font-semibold mb-1">Daily Intel</div>
+            <div class="text-white/50 text-sm">AI frontier signal picks, auto-generated 08:00 Dubai</div>
+          </div>
+          <div class="text-sky-400 text-sm font-medium mt-auto group-hover:translate-x-1 transition-transform">View Archive →</div>
+        </a>
+        <a href="/en/intelligence/decisions" class="group flex flex-col gap-3 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#FCAD2A]/40 transition-all">
+          <div class="text-2xl">⚖️</div>
+          <div>
+            <div class="text-white font-semibold mb-1">Decisions</div>
+            <div class="text-white/50 text-sm">What's worth acting on, why, and what happened</div>
+          </div>
+          <div class="text-[#FCAD2A] text-sm font-medium mt-auto group-hover:translate-x-1 transition-transform">Browse Decisions →</div>
+        </a>
+        <a href="/en/intelligence/results" class="group flex flex-col gap-3 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-green-500/40 transition-all">
+          <div class="text-2xl">✅</div>
+          <div>
+            <div class="text-white font-semibold mb-1">Outcomes</div>
+            <div class="text-white/50 text-sm">Real capability changes from completed actions</div>
+          </div>
+          <div class="text-green-400 text-sm font-medium mt-auto group-hover:translate-x-1 transition-transform">See Outcomes →</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ Block 3: Evolution Timeline ══════════════════════════════════════ -->
+  <section id="evolution-timeline" class="py-16 px-6" data-reveal>
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-12">
+        <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-3">Evolution Timeline</p>
+        <h2 class="text-3xl font-bold text-white mb-3" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">
+          From Practice to Principle
+        </h2>
+        <p class="text-white/50 max-w-xl mx-auto text-sm leading-relaxed">
+          Each milestone is a node in the system's real evolution — not plans, but things that have already happened.
+        </p>
       </div>
 
-      <!-- Results -->
-      <div data-reveal="right">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-            <span class="text-green-400">🔄</span> Outcomes
-          </h2>
-          <a href="/en/intelligence/results" class="text-sm text-green-400 hover:text-green-300">All results →</a>
-        </div>
-        <div class="space-y-3">
-          {results.length === 0 ? (
-            <div class="p-4 rounded-lg bg-white/5 border border-white/10 text-sm text-center">
-              <p class="text-white/40 mb-2">English outcomes launching —</p>
-              <a href="/intelligence/results" class="text-green-400 hover:text-green-300">view Chinese archive →</a>
-            </div>
-          ) : results.map(r => (
-            <a href={`/en/intelligence/results/${r.data.date}`}
-               class="block p-4 rounded-lg bg-white/5 border border-white/10 hover:border-green-500/40 transition-colors group">
-              <time class="text-xs text-white/40">{r.data.date}</time>
-              <h3 class="text-sm font-medium text-white group-hover:text-green-400 mt-1 line-clamp-2">{r.data.title}</h3>
-              <div class="flex gap-2 mt-2">
-                <span class="text-xs text-white/40">{r.data.actionsCount} actions</span>
-                <span class="text-xs text-green-400">{r.data.completedCount} completed</span>
+      {milestones.length > 0 ? (
+        <div class="relative pl-8 md:pl-0">
+          <div class="absolute left-3 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-px bg-gradient-to-b from-[#FCAD2A]/50 via-[#FCAD2A]/20 to-transparent"></div>
+
+          <div class="space-y-6">
+            {milestones.map((m, i) => (
+              <div class="relative flex items-start">
+                <div class="absolute left-[-21px] md:left-1/2 md:-translate-x-1/2 w-4 h-4 mt-1 flex items-center justify-center">
+                  <div class={`w-3 h-3 rounded-full border-2 border-[#0A1628] ${i === 0 ? 'bg-[#FCAD2A] shadow-[0_0_8px_rgba(252,173,42,0.6)]' : 'bg-[#FCAD2A]/60'}`}></div>
+                </div>
+                <div class={`w-full md:w-[calc(50%-2rem)] p-4 rounded-xl bg-white/5 border border-white/10 hover:border-[#FCAD2A]/25 transition-colors ${i % 2 === 0 ? 'md:mr-auto' : 'md:ml-auto'}`}>
+                  <time class="text-xs font-mono text-[#FCAD2A]/70">{m.date}</time>
+                  <h3 class="text-sm font-semibold text-white mt-1">{m.title_en}</h3>
+                  <p class="text-xs text-white/50 mt-1 leading-relaxed">{m.impact_en}</p>
+                </div>
               </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        <div class="text-center py-12 text-white/40 text-sm">Loading evolution data…</div>
+      )}
+    </div>
+  </section>
+
+  <!-- ═══ Block 4: Thought Leadership (placeholder) ═════════════════════ -->
+  <section class="py-16 px-6 border-t border-white/10" data-reveal>
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-10">
+        <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-3">System Design Insights</p>
+        <h2 class="text-3xl font-bold text-white mb-3" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">
+          From Practice to Principle
+        </h2>
+        <p class="text-white/50 max-w-xl mx-auto text-sm leading-relaxed">
+          Frameworks and lessons from real operations — not tutorials, but design principles distilled from continuous real-world failures.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-5">
+        <div class="p-6 rounded-xl border border-dashed border-[#FCAD2A]/30 bg-[#FCAD2A]/5 flex flex-col items-center justify-center text-center min-h-[180px]">
+          <div class="text-2xl mb-3">✍️</div>
+          <p class="text-sm font-semibold text-white/70 mb-2">First article coming soon</p>
+          <p class="text-xs text-white/40 leading-relaxed">
+            Case studies from real pipeline operations — waiting for the next milestone worth sharing
+          </p>
+        </div>
+
+        <div class="md:col-span-2 p-6 rounded-xl border border-white/5 bg-white/3 flex flex-col justify-center">
+          <div class="text-center py-4 flex flex-col gap-3 items-center">
+            <p class="text-xs text-white/20 uppercase tracking-wider">Insights Area</p>
+            <p class="text-xs text-white/30 max-w-sm leading-relaxed">
+              Once the pipeline identifies events worth documenting, this section will feature end-to-end case analyses from discovery to action
+            </p>
+            <a href="/en/blog" class="text-xs text-[#FCAD2A]/60 hover:text-[#FCAD2A] transition-colors">
+              Browse existing blog posts →
             </a>
-          ))}
+          </div>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- ═══ Block 5: CTA ══════════════════════════════════════════════════ -->
+  <section class="py-16 px-6" style="background: linear-gradient(135deg, #0A1628 0%, #011830 100%);">
+    <div class="max-w-2xl mx-auto text-center">
+      <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-4">For Your Team</p>
+      <h2 class="text-3xl font-bold text-white mb-4" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">
+        See How Synapse Can Work for Your Team →
+      </h2>
+      <p class="text-white/55 mb-8 leading-relaxed">
+        Synapse ships with the evolution layer included. Your first cycle starts the morning you open Claude Code.
+      </p>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a href="/en/synapse/get-started" class="px-7 py-3 bg-[#FCAD2A] text-[#0A1628] font-bold rounded-xl hover:bg-[#FCAD2A]/90 transition-all text-sm">
+          Get Started
+        </a>
+        <a href="/en/academy" class="px-7 py-3 bg-white/5 text-white font-semibold rounded-xl border border-white/10 hover:bg-white/10 transition-all text-sm">
+          Visit Academy
+        </a>
+      </div>
+    </div>
+  </section>
+
 </Layout>

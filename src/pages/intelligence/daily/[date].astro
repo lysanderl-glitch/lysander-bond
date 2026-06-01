@@ -3,9 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  // OFFLINE (President L5②, 2026-05-30): /intelligence taken offline pending PG-0.
-  // Build no detail pages. RESTORE: delete the next line.
-  return [];
+  // RESTORED (2026-06-01): intelligence hub redesigned and relaunched.
   const posts = await getCollection('intelligence-daily');
   // Only ZH entries own the /intelligence/daily/[date] canonical route.
   // EN stub files share the same `date` frontmatter field and would overwrite
