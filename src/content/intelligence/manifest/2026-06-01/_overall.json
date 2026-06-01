@@ -1,0 +1,75 @@
+{
+  "date": "2026-06-01",
+  "status": "green",
+  "computed_at": "2026-06-01T09:04:01Z",
+  "computed_by": "manifest_aggregate.py",
+  "freshness_hours": 36,
+  "stages": {
+    "scan": {
+      "present": true,
+      "status": "green",
+      "fresh": true,
+      "fault": null,
+      "not_due": false,
+      "item_count": 4,
+      "honest_empty": false,
+      "updated_at": "2026-06-01T08:35:56Z",
+      "critical": true
+    },
+    "daily": {
+      "present": true,
+      "status": "green",
+      "fresh": true,
+      "fault": null,
+      "not_due": false,
+      "item_count": 4,
+      "honest_empty": false,
+      "updated_at": "2026-06-01T09:03:59Z",
+      "critical": true
+    },
+    "action": {
+      "present": true,
+      "status": "green",
+      "fresh": true,
+      "fault": null,
+      "not_due": false,
+      "item_count": 1,
+      "honest_empty": false,
+      "updated_at": "2026-05-31T23:59:23Z",
+      "critical": false
+    },
+    "outcome": {
+      "present": true,
+      "status": "green",
+      "fresh": true,
+      "fault": null,
+      "not_due": false,
+      "item_count": 1,
+      "honest_empty": false,
+      "updated_at": "2026-06-01T03:54:36Z",
+      "critical": false
+    },
+    "evolution": {
+      "present": true,
+      "status": "green",
+      "fresh": true,
+      "fault": null,
+      "not_due": false,
+      "item_count": 1,
+      "honest_empty": false,
+      "updated_at": "2026-06-01T05:51:43Z",
+      "critical": false
+    }
+  },
+  "findings": [],
+  "not_due_stages": [],
+  "expected_stages": [
+    "scan",
+    "daily",
+    "action",
+    "outcome",
+    "evolution"
+  ],
+  "present_count": 5,
+  "real_content": true
+}

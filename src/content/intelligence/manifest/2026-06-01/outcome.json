@@ -1,0 +1,13 @@
+{
+  "stage": "outcome",
+  "date": "2026-06-01",
+  "status": "green",
+  "honest_empty": false,
+  "item_count": 1,
+  "source_sha": "704af90af41468ba9069e6d560bd11d10a76525e",
+  "source_ref": "",
+  "run_id": "26734239545",
+  "updated_at": "2026-06-01T03:54:36Z",
+  "artifact": "obs/06-daily-reports/2026-06-01-outcome-report.json",
+  "detail": "health_score=70 trend=improving alerts=0"
+}

@@ -1,0 +1,15 @@
+{
+  "stage": "scan",
+  "date": "2026-06-01",
+  "status": "green",
+  "honest_empty": false,
+  "item_count": 4,
+  "source_sha": "7753279a1de2eb75b68bfbd84951add5108c0a0c",
+  "source_ref": "",
+  "run_id": "26744094588",
+  "updated_at": "2026-06-01T08:35:56Z",
+  "artifact": "obs/06-daily-reports/2026-06-01-intel-scan.json",
+  "detail": "30 sources ok / 0 failed; 47 fetched → 4 after freshness+score",
+  "sources_succeeded": 30,
+  "sources_failed": 0
+}
