@@ -4,7 +4,7 @@ slug: intel-pipeline-fabrication-21-days-self-healing
 description: "一个日期偏移1天的设计缺陷，让情报管线在21天内持续用LLM记忆伪造内容，而GHA全程显示绿色。这是一个完整的发现-退化-诊断-止损-重建闭环的真实记录。"
 lang: zh
 hasEnglish: false
-pillar: system-design
+pillar: intelligence-evolution
 priority: P1
 publishDate: 2026-06-01
 author: content_strategist
