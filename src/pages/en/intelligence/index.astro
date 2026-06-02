@@ -38,30 +38,46 @@ interface PublicBrief {
 }
 
 let latestBrief: PublicBrief | null = null;
+let briefTranslationPending = false;
 
 try {
   const briefsDir = path.resolve('./src/content/intelligence/public-briefs');
   if (fs.existsSync(briefsDir)) {
-    const files = fs.readdirSync(briefsDir)
-      .filter((f: string) => f.endsWith('.md'))
-      .sort()
-      .reverse();
+    // Collect unique date prefixes from all .md files, sorted newest first
+    const allFiles = fs.readdirSync(briefsDir).filter((f: string) => f.endsWith('.md'));
+    // Extract dates: files are named YYYY-MM-DD.md or YYYY-MM-DD-en.md
+    const dateSet = new Set<string>();
+    for (const f of allFiles) {
+      const m = f.match(/^(\d{4}-\d{2}-\d{2})/);
+      if (m) dateSet.add(m[1]);
+    }
+    const dates = Array.from(dateSet).sort().reverse();
 
-    for (const file of files.slice(0, 7)) {
-      const raw = fs.readFileSync(path.join(briefsDir, file), 'utf-8');
+    for (const date of dates.slice(0, 7)) {
+      const enFile = path.join(briefsDir, `${date}-en.md`);
+      const zhFile = path.join(briefsDir, `${date}.md`);
+
+      // Prefer EN brief; fall back to zh brief (which would mean translation is pending)
+      const targetFile = fs.existsSync(enFile) ? enFile : (fs.existsSync(zhFile) ? zhFile : null);
+      if (!targetFile) continue;
+
+      const raw = fs.readFileSync(targetFile, 'utf-8');
       const fm = parseFrontmatter(raw);
-      if (fm.publish_gate === true) {
-        latestBrief = {
-          date: String(fm.date ?? file.replace('.md', '')),
-          publish_gate: true,
-          top_discovery: fm.top_discovery ? String(fm.top_discovery) : undefined,
-          decision_summary: fm.decision_summary ? String(fm.decision_summary) : undefined,
-          completed_this_cycle: typeof fm.completed_this_cycle === 'number' ? fm.completed_this_cycle : undefined,
-          value_delta: fm.value_delta ? String(fm.value_delta) : undefined,
-          scan_count: typeof fm.scan_count === 'number' ? fm.scan_count : undefined,
-        };
-        break;
-      }
+      if (fm.publish_gate !== true) continue;
+
+      const isEnBrief = targetFile === enFile;
+      briefTranslationPending = !isEnBrief;
+
+      latestBrief = {
+        date: String(fm.date ?? date),
+        publish_gate: true,
+        top_discovery: (!briefTranslationPending && fm.top_discovery) ? String(fm.top_discovery) : undefined,
+        decision_summary: (!briefTranslationPending && fm.decision_summary) ? String(fm.decision_summary) : undefined,
+        completed_this_cycle: typeof fm.completed_this_cycle === 'number' ? fm.completed_this_cycle : undefined,
+        value_delta: (!briefTranslationPending && fm.value_delta) ? String(fm.value_delta) : undefined,
+        scan_count: typeof fm.scan_count === 'number' ? fm.scan_count : undefined,
+      };
+      break;
     }
   }
 } catch {
@@ -171,7 +187,7 @@ const ring = ringStatuses(hub.overall);
 
         <!-- Right: Today's snapshot card -->
         <div id="today-snapshot">
-          {latestBrief ? (
+          {latestBrief && !briefTranslationPending ? (
             <div class="rounded-2xl border border-[#FCAD2A]/30 bg-[#FCAD2A]/5 p-6 relative overflow-hidden">
               <div class="flex items-center justify-between mb-5">
                 <div class="flex items-center gap-2">
@@ -218,6 +234,21 @@ const ring = ringStatuses(hub.overall);
                     )}
                   </div>
                 )}
+              </div>
+            </div>
+          ) : latestBrief && briefTranslationPending ? (
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-6">
+              <div class="flex items-center justify-between mb-5">
+                <div class="flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-white/30 animate-pulse"></span>
+                  <span class="text-xs font-semibold text-white/40 uppercase tracking-wider">Today's Snapshot</span>
+                </div>
+                <time class="text-xs text-white/30 font-mono">{latestBrief.date}</time>
+              </div>
+              <div class="text-center py-6">
+                <div class="text-3xl mb-3">🌐</div>
+                <p class="text-white/60 text-sm font-medium">Translation in progress</p>
+                <p class="text-white/30 text-xs mt-2">English version usually ready within 30 minutes of the daily run</p>
               </div>
             </div>
           ) : (
