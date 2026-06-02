@@ -6,7 +6,7 @@ export async function getStaticPaths() {
   // RESTORED (2026-06-01): intelligence hub redesigned and relaunched.
   const items = await getCollection('intelligence-decisions');
   return items
-    .filter(item => item.data.date)
+    .filter(item => item.data.date && item.data.lang === 'en')
     .map(item => ({
       params: { id: item.data.date },
       props: { item },

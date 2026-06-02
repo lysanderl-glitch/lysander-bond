@@ -5,7 +5,8 @@ import { getCollection, render } from 'astro:content';
 export async function getStaticPaths() {
   // RESTORED (2026-06-01): intelligence hub redesigned and relaunched.
   const items = await getCollection('intelligence-results');
-  return items.map(item => ({
+  const enItems = items.filter(item => item.data.lang === 'en');
+  return enItems.map(item => ({
     params: { date: item.data.date },
     props: { item },
   }));
