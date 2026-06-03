@@ -1,0 +1,43 @@
+name: ATDD P0 Gate (Cross-repo dispatch)
+
+on:
+  repository_dispatch:
+    types: [run-atdd-gate]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: atdd-gate
+  cancel-in-progress: false
+
+jobs:
+  atdd-gate:
+    name: ATDD P0 TC Verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log dispatch source
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          echo "Triggered by: ${{ github.event.client_payload.source_repo }}"
+          echo "Source SHA:   ${{ github.event.client_payload.source_sha }}"
+          echo "Event type:   ${{ github.event.action }}"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install QA dependencies
+        run: pip install -r .github/scripts/requirements-qa.txt
+
+      - name: ATDD CI Gate — P0 TC Verification
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: python .github/scripts/run_atdd_gate.py
