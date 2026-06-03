@@ -38,14 +38,14 @@ milestones:
   - date: "2026-05-20"
     title: "Intel Eval Framework v3.0 上线"
     title_en: "Intel Eval Framework v3.0 Live"
-    impact: "VACE+WSCORE 双维度评分框架，情报优先级判断精度显著提升"
-    impact_en: "VACE+WSCORE dual-dimension scoring; intel prioritization accuracy significantly improved"
+    impact: "情报评估框架全面升级，评估精准度与优先级判断能力显著提升"
+    impact_en: "Intelligence evaluation framework fully upgraded; assessment precision and prioritization accuracy significantly improved"
 
   - date: "2026-05-30"
     title: "HR 体系整改完成"
     title_en: "HR System Overhaul Complete"
-    impact: "知识保留率 KAR 75.3%，40 条 CI 检查项，Agent 团队质量基线建立"
-    impact_en: "Knowledge retention KAR 75.3%; 40 CI checks; Agent team quality baseline established"
+    impact: "团队知识体系重构完成，质量检查体系全面建立，Agent 团队能力基线确立"
+    impact_en: "Team knowledge system restructured; quality assurance framework fully established; Agent team capability baseline set"
 
   - date: "2026-05-31"
     title: "AI 游戏工厂 E2E 验证通过"
