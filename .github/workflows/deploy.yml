@@ -51,3 +51,26 @@ jobs:
             # them correctly. Removed — detail pages are now served as built.
             sudo nginx -t && sudo systemctl reload nginx
             echo "Deployment completed successfully"
+
+      - name: Wait for nginx reload
+        run: sleep 30
+        # Allow nginx reload + CDN propagation before running ATDD verification
+
+      - name: Set up Python for QA
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install QA dependencies
+        run: pip install -r .github/scripts/requirements-qa.txt
+
+      - name: ATDD CI Gate — P0 TC Verification
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+          VERIFY_TIMEOUT: '30'
+        run: python .github/scripts/run_atdd_gate.py
+        # Silent Fail 防御: HTTP 200 ≠ 业务 artifact 正确生成
+        # P0 通过率 < 100% → workflow fail（不影响已完成的 deploy，但记录问题）
+        # P1 通过率 < 80% → warning（不阻断）
+        # 注意：CI Gate 在 deploy 之后运行，失败不回滚 deploy，
+        # 但会在 GHA 中标记 workflow 失败，触发 on-failure 通知
