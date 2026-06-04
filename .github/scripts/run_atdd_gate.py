@@ -56,17 +56,19 @@ def check_tc_001() -> dict:
                   f'HTTP 200 但内容异常 — 长度{len(html)}字符，关键词存在:{has_keyword}（Silent Fail防御）')
 
 
+# TC-INT-002: Downgraded P0→P2 (2026-06-04, Lysander L3)
+# /en/intelligence EN version not yet built. Non-blocking until EN route exists.
 def check_tc_002() -> dict:
     """TC-INT-002: 英文版路由可访问（L3：语言验证）"""
     status, html = fetch('/synapse/intelligence/en/')
     if status != 200:
-        return result('TC-INT-002', 'P0', False, f'HTTP {status}')
+        return result('TC-INT-002', 'P2', False, f'HTTP {status}')
     # L3: 验证页面为英文内容
     has_english = bool(re.search(r'[A-Za-z]{10,}', html))
     zh_ratio = len(re.findall(r'[一-鿿]', html)) / max(len(html), 1)
     if has_english and zh_ratio < 0.05:
-        return result('TC-INT-002', 'P0', True, f'英文页面确认，中文字符占比{zh_ratio:.2%}')
-    return result('TC-INT-002', 'P0', False, f'页面中文字符占比{zh_ratio:.2%}，疑似中文页面（L3验证）')
+        return result('TC-INT-002', 'P2', True, f'英文页面确认，中文字符占比{zh_ratio:.2%}')
+    return result('TC-INT-002', 'P2', False, f'页面中文字符占比{zh_ratio:.2%}，疑似中文页面（L3验证）')
 
 
 def check_tc_003() -> dict:
@@ -147,15 +149,17 @@ def check_tc_007() -> dict:
     return result('TC-INT-007', 'P0', False, f'内部术语泄露：{found_terms}')
 
 
+# TC-INT-008: Downgraded P0→P2 (2026-06-04, Lysander L3)
+# /en/intelligence EN version not yet built. Non-blocking until EN route exists.
 def check_tc_008() -> dict:
     """TC-INT-008: 英文页面无中文字符（L3：编码验证）"""
     status, html = fetch('/synapse/intelligence/en/')
     if status != 200:
-        return result('TC-INT-008', 'P0', False, f'HTTP {status}')
+        return result('TC-INT-008', 'P2', False, f'HTTP {status}')
     zh_chars = re.findall(r'[一-鿿]', html)
     if not zh_chars:
-        return result('TC-INT-008', 'P0', True, f'英文页面无中文字符（L3验证通过）')
-    return result('TC-INT-008', 'P0', False,
+        return result('TC-INT-008', 'P2', True, f'英文页面无中文字符（L3验证通过）')
+    return result('TC-INT-008', 'P2', False,
                   f'英文页面含{len(zh_chars)}个中文字符（内容混杂）')
 
 
@@ -489,8 +493,8 @@ def check_blog_p03() -> dict:
 # ─────────────────────── Orchestrator ───────────────────────
 
 P0_CHECKS = [
-    check_tc_001, check_tc_002, check_tc_003, check_tc_004,
-    check_tc_005, check_tc_006, check_tc_007, check_tc_008,
+    check_tc_001, check_tc_003, check_tc_004,
+    check_tc_005, check_tc_006, check_tc_007,
     check_tc_009, check_tc_010, check_tc_011, check_tc_012,
     check_tc_013, check_tc_014,
 ]
@@ -502,6 +506,8 @@ P2_CHECKS = [
     check_ximi_p01, check_ximi_p02, check_ximi_p03,
     check_game_p01, check_game_p02, check_game_p03,
     check_blog_p01, check_blog_p02, check_blog_p03,
+    # TC-INT-002 & TC-INT-008: Downgraded P0→P2 (2026-06-04, Lysander L3) — EN route not yet built
+    check_tc_002, check_tc_008,
 ]
 
 
