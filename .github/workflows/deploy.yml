@@ -65,12 +65,37 @@ jobs:
         run: pip install -r .github/scripts/requirements-qa.txt
 
       - name: ATDD CI Gate — P0 TC Verification
+        id: atdd_gate
         env:
           SITE_URL: ${{ secrets.SITE_URL }}
           VERIFY_TIMEOUT: '30'
-        run: python .github/scripts/run_atdd_gate.py
+        run: |
+          python .github/scripts/run_atdd_gate.py 2>&1 | tee /tmp/gate_output.txt
+          exit ${PIPESTATUS[0]}
         # Silent Fail 防御: HTTP 200 ≠ 业务 artifact 正确生成
         # P0 通过率 < 100% → workflow fail（不影响已完成的 deploy，但记录问题）
         # P1 通过率 < 80% → warning（不阻断）
         # 注意：CI Gate 在 deploy 之后运行，失败不回滚 deploy，
         # 但会在 GHA 中标记 workflow 失败，触发 on-failure 通知
+
+      - name: P3-A4 — Generate Living Documentation
+        if: always()
+        env:
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          ATDD_GATE_OUTPUT: /tmp/gate_output.txt
+        run: |
+          REPORT_DATE=$(TZ=Asia/Dubai date +%Y-%m-%d)
+          REPORT_PATH="/tmp/atdd-qa-${REPORT_DATE}.md"
+          python .github/scripts/generate_living_doc.py "${REPORT_PATH}"
+          echo "LIVING_DOC_PATH=${REPORT_PATH}" >> "$GITHUB_ENV"
+          echo "LIVING_DOC_DATE=${REPORT_DATE}" >> "$GITHUB_ENV"
+          echo "--- Living Doc Preview (first 20 lines) ---"
+          head -20 "${REPORT_PATH}"
+
+      - name: P3-A4 — Upload Living Documentation as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: atdd-qa-report-${{ github.run_id }}
+          path: /tmp/atdd-qa-*.md
+          retention-days: 30
