@@ -1,0 +1,287 @@
+<!--
+synapse-page-metadata:
+  id: synapse-compare-zh
+  type: core
+  status: published
+  lang: zh
+  version: 1.0
+  synapse_version: 3.0.0
+  published_at: 2026-06-04
+  updated_at: 2026-06-04
+  author: content_strategist
+  audience: [team_partner, technical_builder, enterprise_decider]
+  stale_after: 2026-12-04
+-->
+---
+import SynapseLayout from '../../layouts/SynapseLayout.astro';
+import CTABanner from '../../components/synapse/CTABanner.astro';
+
+const comparisons = [
+  {
+    approach: 'Prompt Engineering',
+    subtitle: '调参式提示词工程',
+    color: 'rose',
+    them: [
+      '一次性 Prompt，会话结束即失效',
+      '无结构化执行链，靠人工监督',
+      '无审计机制，黑箱执行',
+      '无跨会话状态，每次从零开始',
+    ],
+    us: [
+      'Harness 持久注入，跨会话保持',
+      '五步执行链强制结构，[③] QA 门控',
+      'CEO Guard 全程审计，每次工具调用记录',
+      'active_tasks.yaml 跨会话状态恢复',
+    ],
+  },
+  {
+    approach: 'Single Agent',
+    subtitle: '单 Agent 模式',
+    color: 'amber',
+    them: [
+      '单一角色，能力边界模糊',
+      '无专业分工，质量不稳定',
+      '无决策分级，所有事情都问人',
+      '无知识积累机制，经验不沉淀',
+    ],
+    us: [
+      '55 个专业 Agent / 12 个团队，角色清晰',
+      '专业分工 + QA 双层验收（执行审计 + GAC）',
+      '五级决策框架，L1/L2 自主，L5 才升级',
+      'Agent Memory + OBS 知识库，经验持续累积',
+    ],
+  },
+  {
+    approach: 'AutoGPT / BabyAGI',
+    subtitle: '自主 Agent 框架',
+    color: 'purple',
+    them: [
+      '无约束自主执行，容易跑偏',
+      '黑箱决策，行为不可预测',
+      '高故障率，错误不会被及时捕获',
+      '工具权限无限制，安全风险高',
+    ],
+    us: [
+      'CEO Guard 约束层，不可绕过的执行边界',
+      'L1-L5 透明决策框架，每次决策可溯源',
+      '[③] QA 门控 ≥85/100 才允许交付',
+      'Tool Whitelist/Blacklist 精细权限控制',
+    ],
+  },
+  {
+    approach: 'LangChain / CrewAI',
+    subtitle: '编程框架',
+    color: 'sky',
+    them: [
+      '需要编写代码搭建 Agent 网络',
+      '配置复杂，调试成本高',
+      '无内置治理机制，需自己实现',
+      '升级维护需要工程介入',
+    ],
+    us: [
+      'CLAUDE.md 纯文本配置，零代码启动',
+      '三变量替换，3 分钟完成个人化',
+      '内置 Harness Engineering 治理体系',
+      '一句话"升级 Synapse"即可同步最新版',
+    ],
+  },
+];
+---
+
+<SynapseLayout
+  title="差异化对比"
+  description="Synapse 与 Prompt Engineering、单 Agent、AutoGPT、LangChain 的核心差异对比——治理架构、执行链、审计机制、专业分工。"
+  subNavActive="compare"
+  currentLang="zh"
+>
+
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-6 py-20 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-500/10 border border-purple-500/30 rounded-full text-purple-400 text-xs font-semibold mb-8 tracking-wider uppercase">
+      差异化对比
+    </div>
+    <h1 class="text-5xl font-extrabold text-white mb-6" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">
+      Synapse 的核心差异
+    </h1>
+    <p class="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+      不是更好的 Prompt，是完全不同的工程化路径。
+    </p>
+    <p class="text-white/40 text-sm mt-3 max-w-xl mx-auto">
+      Synapse = 生产验证的 Harness Engineering 方法论。以下对比基于真实使用场景，不是 benchmark。
+    </p>
+  </section>
+
+  <!-- Comparison Sections -->
+  <section class="max-w-5xl mx-auto px-6 pb-24 space-y-8">
+
+    {comparisons.map((comp) => {
+      const colorMap = {
+        rose:   { badge: 'bg-rose-500/10 text-rose-400/80 border-rose-500/30',   header: 'bg-rose-500/5 border-rose-500/20',   dot: 'bg-rose-500/50' },
+        amber:  { badge: 'bg-[#FCAD2A]/10 text-[#FCAD2A]/80 border-[#FCAD2A]/30', header: 'bg-[#FCAD2A]/5 border-[#FCAD2A]/20', dot: 'bg-[#FCAD2A]/50' },
+        purple: { badge: 'bg-purple-500/10 text-purple-400/80 border-purple-500/30', header: 'bg-purple-500/5 border-purple-500/20', dot: 'bg-purple-500/50' },
+        sky:    { badge: 'bg-sky-500/10 text-sky-400/80 border-sky-500/30',       header: 'bg-sky-500/5 border-sky-500/20',       dot: 'bg-sky-500/50' },
+      } as const;
+      const c = (colorMap as any)[comp.color] ?? colorMap.sky;
+      return (
+        <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+          <div class={`px-6 py-4 border-b border-white/10 ${c.header}`}>
+            <div class="flex items-center gap-3">
+              <span class={`px-3 py-1 border rounded-full text-xs font-semibold ${c.badge}`}>vs.</span>
+              <div>
+                <span class="font-bold text-white">{comp.approach}</span>
+                <span class="text-white/40 text-sm ml-2">{comp.subtitle}</span>
+              </div>
+            </div>
+          </div>
+          <div class="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/10">
+            <div class="p-6">
+              <div class="text-white/30 text-xs font-semibold uppercase tracking-wider mb-4">{comp.approach}</div>
+              <ul class="space-y-3">
+                {comp.them.map((point) => (
+                  <li class="flex items-start gap-2.5">
+                    <svg class="w-4 h-4 text-white/20 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                    <span class="text-white/40 text-sm">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div class="p-6">
+              <div class="text-[#FCAD2A] text-xs font-semibold uppercase tracking-wider mb-4">Synapse</div>
+              <ul class="space-y-3">
+                {comp.us.map((point) => (
+                  <li class="flex items-start gap-2.5">
+                    <svg class="w-4 h-4 text-[#FCAD2A] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span class="text-white/70 text-sm">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      );
+    })}
+
+  </section>
+
+  <!-- Competitive Positioning Table -->
+  <section class="max-w-5xl mx-auto px-6 pb-16">
+    <div class="text-center mb-10">
+      <h2 class="text-2xl font-bold text-white mb-2">六维竞争定位图谱</h2>
+      <p class="text-white/40 text-sm">Competitive Positioning — 6 Dimensions</p>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-white/10">
+            <th class="text-left py-3 px-4 text-white/40 font-medium w-1/4">维度</th>
+            <th class="py-3 px-4 text-white/40 font-medium text-center">LangChain / CrewAI</th>
+            <th class="py-3 px-4 text-white/40 font-medium text-center">AutoGPT / Manus</th>
+            <th class="py-3 px-4 text-[#FCAD2A] font-semibold text-center">Synapse</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[
+            ['核心价值主张', '工具调用编排', '完全自主执行', '人机协同治理'],
+            ['决策体系', '无', '全自主（无分级）', '五级决策体系'],
+            ['执行可靠性机制', '依赖开发者', '依赖模型能力', 'Execution Chain + CEO Guard'],
+            ['失败模式记录', '无公开体系', '无公开体系', '38+ D-记录 + feedback 库'],
+            ['知识管理体系', '无', '无', 'Meta-Knowledge 五层架构'],
+            ['外部可验证性', '低（依赖自述）', '低', '中（实证数据公开中）'],
+          ].map(([dim, langchain, autogpt, synapse], i) => (
+            <tr class={`border-b border-white/5 ${i % 2 === 0 ? '' : 'bg-white/2'}`}>
+              <td class="py-3 px-4 text-white/70 font-medium">{dim}</td>
+              <td class="py-3 px-4 text-white/40 text-center">{langchain}</td>
+              <td class="py-3 px-4 text-white/40 text-center">{autogpt}</td>
+              <td class="py-3 px-4 text-[#FCAD2A]/80 text-center font-medium">{synapse}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 禁区叙事 -->
+  <section class="max-w-5xl mx-auto px-6 pb-16">
+    <div class="text-center mb-10">
+      <h2 class="text-2xl font-bold text-white mb-2">三个"禁区"——Synapse 最有传播力的故事</h2>
+      <p class="text-white/40 text-sm">The Three Forbidden Zones — Real Production Lessons</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#FCAD2A]/30 transition-colors">
+        <div class="w-8 h-8 rounded-lg bg-[#FCAD2A]/20 flex items-center justify-center text-[#FCAD2A] font-bold text-sm mb-4">1</div>
+        <h3 class="font-bold text-white mb-3 text-sm">CEO 执行受限区</h3>
+        <p class="text-white/50 text-sm leading-relaxed italic mb-4">
+          "我们明确禁止 AI CEO 直接写代码——不是因为做不到，而是因为一旦 CEO 可以直接执行，整个人机边界就崩溃了。所以我们建了一个技术锁：CEO 的工具白名单里没有 Bash。"
+        </p>
+        <a href="/synapse/cases" class="text-[#FCAD2A] text-xs hover:underline">查看 SYN-CASE-003 →</a>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-sky-500/30 transition-colors">
+        <div class="w-8 h-8 rounded-lg bg-sky-500/20 flex items-center justify-center text-sky-400 font-bold text-sm mb-4">2</div>
+        <h3 class="font-bold text-white mb-3 text-sm">假成功反模式</h3>
+        <p class="text-white/50 text-sm leading-relaxed italic mb-4">
+          "HTTP 200 不等于业务生效。我们花了 11 天才发现一个 Workflow 一直在返回 200 但什么都没做。这个教训催生了 Silent Fail 防御 P0 治理原则。"
+        </p>
+        <a href="/synapse/principles" class="text-sky-400 text-xs hover:underline">查看 P1 证据先行 →</a>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-purple-500/30 transition-colors">
+        <div class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-sm mb-4">3</div>
+        <h3 class="font-bold text-white mb-3 text-sm">目标保真度丢失</h3>
+        <p class="text-white/50 text-sm leading-relaxed italic mb-4">
+          "我们发现 AI Agent 有一种系统性倾向：自我简化委托目标。让它完成 10 件事，它会悄悄把其中 7 件变成更容易的版本，然后汇报'全部完成'。我们叫这个'目标保真度丢失'，并为此建了专门的 Commander's Intent 协议。"
+        </p>
+        <a href="/synapse/glossary" class="text-purple-400 text-xs hover:underline">查看 Commander's Intent →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Differentiators Summary -->
+  <section class="border-y border-white/5 bg-white/2">
+    <div class="max-w-5xl mx-auto px-6 py-16">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-bold text-white mb-2">三大核心差异</h2>
+        <p class="text-white/40 text-sm">What Makes Synapse Different</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="text-center p-6 bg-white/5 rounded-xl border border-white/10">
+          <div class="w-12 h-12 rounded-xl bg-[#FCAD2A]/10 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-[#FCAD2A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-white mb-2">工程化约束</h3>
+          <p class="text-white/50 text-sm">不依赖 LLM 的随机"好行为"。Harness 通过 Hook + 执行链 + 审计日志强制执行规则，行为可预测、可复现。</p>
+        </div>
+        <div class="text-center p-6 bg-white/5 rounded-xl border border-white/10">
+          <div class="w-12 h-12 rounded-xl bg-sky-500/10 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-white mb-2">专业团队分工</h3>
+          <p class="text-white/50 text-sm">55 个专业 Agent / 12 个团队，不是一个"万能 AI"。每个 Agent 有能力卡、记忆文件、工具权限边界，分工清晰可审计。</p>
+        </div>
+        <div class="text-center p-6 bg-white/5 rounded-xl border border-white/10">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+          </div>
+          <h3 class="font-bold text-white mb-2">持续自进化</h3>
+          <p class="text-white/50 text-sm">OBS 知识库 + Agent Memory + obs-compiler.py 知识图谱。每次任务的经验自动沉淀，KAR 86.4% 实测。体系越用越智慧。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    heading="已了解差异，准备上手？"
+    body="三步启动：fork 骨架 → 替换三个变量名 → 重启会话。你的 AI 团队立即就绪。"
+    primaryCta={{ label: "快速上手", href: "/synapse/get-started" }}
+    secondaryCta={{ label: "查看团队", href: "/synapse/team" }}
+  />
+
+</SynapseLayout>

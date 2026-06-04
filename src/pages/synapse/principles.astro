@@ -1,0 +1,296 @@
+<!--
+synapse-page-metadata:
+  id: synapse-principles-zh
+  type: core
+  status: published
+  lang: zh
+  version: 1.0
+  synapse_version: 3.0.0
+  published_at: 2026-06-04
+  updated_at: 2026-06-04
+  author: content_strategist
+  audience: [team_partner, technical_builder, enterprise_decider]
+  stale_after: 2026-12-04
+-->
+---
+import SynapseLayout from '../../layouts/SynapseLayout.astro';
+import CTABanner from '../../components/synapse/CTABanner.astro';
+---
+
+<SynapseLayout
+  title="核心原则"
+  description="Synapse 七条核心原则——驱动 AI 团队行为的底层价值取向。P1 证据先行、P2 权责就近、P3 上下文锚定、P4 完整交付链、P5 约束先行、P6 最小不可逆、P7 输出完整性。"
+  subNavActive="principles"
+  currentLang="zh"
+>
+
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-6 py-20 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-sky-500/10 border border-sky-500/30 rounded-full text-sky-400 text-xs font-semibold mb-8 tracking-wider uppercase">
+      Layer 1 — 永久激活
+    </div>
+    <h1 class="text-5xl font-extrabold text-white mb-6" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">
+      七条核心原则
+    </h1>
+    <p class="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+      Synapse Principle-Driven Architecture v1.0 — L5 总裁批准（D-2026-06-01-001）
+    </p>
+    <p class="text-white/40 text-sm mt-3 max-w-xl mx-auto">
+      原则先于规则。每次任务执行前，这 7 条原则自动注入执行上下文，作为所有 Agent 判断的首要框架。
+    </p>
+  </section>
+
+  <!-- Principles Grid -->
+  <section class="max-w-5xl mx-auto px-6 pb-20">
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- P1 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#FCAD2A]/30 transition-colors">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-8 h-8 rounded-lg bg-[#FCAD2A]/20 flex items-center justify-center text-[#FCAD2A] font-bold text-sm">P1</span>
+          <h3 class="text-lg font-bold text-white">证据先行</h3>
+          <span class="text-xs text-white/30 font-mono ml-auto">Evidence-First</span>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-3">
+          任何"已完成"的断言，必须有独立的业务层实证，而不能只看技术状态码。
+          HTTP 200 不等于任务成功——系统说"发送成功"，不等于对方收到了。
+        </p>
+        <div class="bg-[#FCAD2A]/5 border border-[#FCAD2A]/20 rounded-lg p-3 mb-4">
+          <p class="text-[#FCAD2A]/70 text-xs font-semibold mb-1">真实教训</p>
+          <p class="text-white/40 text-xs leading-relaxed">某工作流连续运行 11 天，每天返回 200 状态码，技术层面"正常"。直到人工检查才发现：业务字段 <code class="text-[#FCAD2A]/60">ok=false</code>，11 天的数据从未真正写入。</p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-[#FCAD2A]/10 text-[#FCAD2A]/70 rounded text-xs">三层诊断</span>
+          <span class="px-2 py-0.5 bg-[#FCAD2A]/10 text-[#FCAD2A]/70 rounded text-xs">假成功防御</span>
+          <span class="px-2 py-0.5 bg-[#FCAD2A]/10 text-[#FCAD2A]/70 rounded text-xs">业务层断言</span>
+        </div>
+      </div>
+
+      <!-- P2 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-sky-500/30 transition-colors">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-8 h-8 rounded-lg bg-sky-500/20 flex items-center justify-center text-sky-400 font-bold text-sm">P2</span>
+          <h3 class="text-lg font-bold text-white">权责就近</h3>
+          <span class="text-xs text-white/30 font-mono ml-auto">Subsidiarity</span>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-3">
+          决策权应归属于最靠近信息源、且具备判断能力的那一层，而不是层层上报。
+          技术性的无风险决策由 AI 自主完成，涉及价值取向的决策交由人类批准。
+        </p>
+        <div class="bg-sky-500/5 border border-sky-500/20 rounded-lg p-3 mb-4">
+          <p class="text-sky-400/70 text-xs font-semibold mb-1">禁区案例</p>
+          <p class="text-white/40 text-xs leading-relaxed">AI 被要求"修复一个小 bug"，自行判断需要重构整个模块，花三小时完成大量改动后才提交——已完全超出授权范围。AI 不该"遇事不决全部上报"，也不该"自我扩权悄悄做大"。</p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400/70 rounded text-xs">五级决策</span>
+          <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400/70 rounded text-xs">自主执行</span>
+          <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400/70 rounded text-xs">权力边界</span>
+        </div>
+      </div>
+
+      <!-- P3 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-purple-500/30 transition-colors">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-sm">P3</span>
+          <h3 class="text-lg font-bold text-white">上下文锚定</h3>
+          <span class="text-xs text-white/30 font-mono ml-auto">Context-Anchor</span>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-3">
+          任何操作必须在正确的时间、正确的环境、正确的数据源下执行，而不能依赖过时的上下文。
+          Synapse 通过结构化的状态文件（active_tasks.yaml）确保 AI 读取的是最新状态。
+        </p>
+        <div class="bg-purple-500/5 border border-purple-500/20 rounded-lg p-3 mb-4">
+          <p class="text-purple-400/70 text-xs font-semibold mb-1">禁区案例</p>
+          <p class="text-white/40 text-xs leading-relaxed">跨会话任务第一次记录了"下一步：等待确认"。三天后新会话中，AI 没有读取状态文件，直接重新开始执行，覆盖了已完成的部分。</p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-purple-500/10 text-purple-400/70 rounded text-xs">SSOT 保护</span>
+          <span class="px-2 py-0.5 bg-purple-500/10 text-purple-400/70 rounded text-xs">双锚定</span>
+          <span class="px-2 py-0.5 bg-purple-500/10 text-purple-400/70 rounded text-xs">状态恢复</span>
+        </div>
+      </div>
+
+      <!-- P4 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-green-500/30 transition-colors">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400 font-bold text-sm">P4</span>
+          <h3 class="text-lg font-bold text-white">完整交付链</h3>
+          <span class="text-xs text-white/30 font-mono ml-auto">Full-Chain Delivery</span>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-3">
+          承诺的范围内必须完整交付——不能只完成技术部分，把"最后一公里"留给用户。
+          从计划到执行，从执行到验证，从验证到用户可用，每步形成闭环。
+        </p>
+        <div class="bg-green-500/5 border border-green-500/20 rounded-lg p-3 mb-4">
+          <p class="text-green-400/70 text-xs font-semibold mb-1">禁区案例</p>
+          <p class="text-white/40 text-xs leading-relaxed">新功能代码"已完成"，但版本号没更新、CHANGELOG 没记录、Git tag 没打、GitHub 没推送。五步少了四步，用户根本无法知道这个版本发布了什么。</p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-green-500/10 text-green-400/70 rounded text-xs">五步闭环</span>
+          <span class="px-2 py-0.5 bg-green-500/10 text-green-400/70 rounded text-xs">零遗留</span>
+          <span class="px-2 py-0.5 bg-green-500/10 text-green-400/70 rounded text-xs">用户可用</span>
+        </div>
+      </div>
+
+      <!-- P5 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#c96442]/30 transition-colors">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-8 h-8 rounded-lg bg-[#c96442]/20 flex items-center justify-center text-[#c96442] font-bold text-sm">P5</span>
+          <h3 class="text-lg font-bold text-white">约束先行</h3>
+          <span class="text-xs text-white/30 font-mono ml-auto">Constraint-First</span>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-3">
+          在执行任何操作之前，必须先理解系统的真实状态和边界约束。
+          AI 执行速度快，一旦方向错误造成的影响往往已经扩散，"先做再说"的代价极高。
+        </p>
+        <div class="bg-[#c96442]/5 border border-[#c96442]/20 rounded-lg p-3 mb-4">
+          <p class="text-[#c96442]/70 text-xs font-semibold mb-1">禁区案例</p>
+          <p class="text-white/40 text-xs leading-relaxed">AI 被要求"清理旧文件"，没有先检查哪些是归档文件、哪些是活跃文件，按文件名模式批量删除，结果删掉了仍在使用的配置文件。</p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-[#c96442]/10 text-[#c96442]/70 rounded text-xs">价值优先</span>
+          <span class="px-2 py-0.5 bg-[#c96442]/10 text-[#c96442]/70 rounded text-xs">复用原则</span>
+          <span class="px-2 py-0.5 bg-[#c96442]/10 text-[#c96442]/70 rounded text-xs">操作前检查</span>
+        </div>
+      </div>
+
+      <!-- P6 -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-rose-500/30 transition-colors">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-8 h-8 rounded-lg bg-rose-500/20 flex items-center justify-center text-rose-400 font-bold text-sm">P6</span>
+          <h3 class="text-lg font-bold text-white">最小不可逆</h3>
+          <span class="text-xs text-white/30 font-mono ml-auto">Minimum-Irreversibility</span>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-3">
+          当有多条路径可以达成目标时，默认选择可撤销风险最小的那条。
+          先备份再修改、先测试再部署、先标记废弃再删除——在不确定时优先可逆路径。
+        </p>
+        <div class="bg-rose-500/5 border border-rose-500/20 rounded-lg p-3 mb-4">
+          <p class="text-rose-400/70 text-xs font-semibold mb-1">禁区案例</p>
+          <p class="text-white/40 text-xs leading-relaxed">清理"不再使用的"n8n 工作流，AI 直接调用删除 API。但那个工作流还被另一个系统引用，删除后引发连锁故障。如果先停用、观察三天，这次故障本可避免。</p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400/70 rounded text-xs">一次到位</span>
+          <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400/70 rounded text-xs">可回滚</span>
+          <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400/70 rounded text-xs">兜底原则</span>
+        </div>
+      </div>
+
+      <!-- P7 — spans full width on desktop -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-indigo-500/30 transition-colors md:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 font-bold text-sm">P7</span>
+          <h3 class="text-lg font-bold text-white">输出完整性</h3>
+          <span class="text-xs text-white/30 font-mono ml-auto">Output-Integrity</span>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <p class="text-white/55 text-sm leading-relaxed mb-3">
+              交付物必须满足下游消费者的完整使用条件——输出必须是下一个 Agent 或用户可以直接使用的，而不是需要人工补全的草稿。
+            </p>
+            <div class="bg-indigo-500/5 border border-indigo-500/20 rounded-lg p-3">
+              <p class="text-indigo-400/70 text-xs font-semibold mb-1">禁区案例</p>
+              <p class="text-white/40 text-xs leading-relaxed">knowledge_engineer 创建了一批内容优质的知识文档，但有的缺少 <code class="text-indigo-400/60">stale_after</code> 字段，有的 <code class="text-indigo-400/60">type</code> 使用非标准值。这些文档无法被知识路由系统索引，实际上从未被任何 Agent 读取过。</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-white/40 text-xs font-semibold uppercase tracking-wider mb-3">输出完整性检查项</p>
+            {[
+              '知识型交付物必须含 frontmatter + trigger_keywords + stale_after 三项',
+              '多 Agent 目标保真度：sub-agent 不得自我简化委托目标',
+              '多仓操作须有明确顺序和回滚路径',
+              '提交验收的唯一依据 = GAC 实测达标 + 执行审计独立核实',
+            ].map((item) => (
+              <div class="flex items-start gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-indigo-400/50 mt-1.5 flex-shrink-0"></span>
+                <span class="text-white/50 text-xs">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="mt-4 flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400/70 rounded text-xs">目标保真度</span>
+          <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400/70 rounded text-xs">GAC 验收</span>
+          <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400/70 rounded text-xs">多仓原子性</span>
+          <span class="px-2 py-0.5 bg-indigo-500/10 text-indigo-400/70 rounded text-xs">下游可用</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Principles Synthesis -->
+  <section class="max-w-5xl mx-auto px-6 pb-16">
+    <div class="bg-gradient-to-r from-sky-500/10 via-purple-500/5 to-[#FCAD2A]/10 border border-white/10 rounded-2xl p-8">
+      <h2 class="text-xl font-bold text-white mb-6">七条原则如何共同构成治理基础</h2>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="flex items-start gap-3">
+          <span class="text-[#FCAD2A] font-bold text-sm w-20 flex-shrink-0">P1 + P3</span>
+          <div>
+            <p class="text-white/70 text-sm font-medium mb-1">解决"信息失真"问题</p>
+            <p class="text-white/40 text-xs">确保 AI 基于真实、最新的状态做判断，而不是假象</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-sky-400 font-bold text-sm w-20 flex-shrink-0">P2 + P5</span>
+          <div>
+            <p class="text-white/70 text-sm font-medium mb-1">解决"权力边界"问题</p>
+            <p class="text-white/40 text-xs">AI 知道自己可以决策什么，不可以决策什么</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-green-400 font-bold text-sm w-20 flex-shrink-0">P4 + P7</span>
+          <div>
+            <p class="text-white/70 text-sm font-medium mb-1">解决"交付质量"问题</p>
+            <p class="text-white/40 text-xs">确保每次任务都形成真正的闭环，而不是"差不多完成了"</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-rose-400 font-bold text-sm w-20 flex-shrink-0">P6</span>
+          <div>
+            <p class="text-white/70 text-sm font-medium mb-1">兜底原则</p>
+            <p class="text-white/40 text-xs">其他原则满足后，在剩余不确定性中选择风险最小的路径</p>
+          </div>
+        </div>
+      </div>
+      <p class="mt-6 text-white/40 text-sm italic border-t border-white/10 pt-5">
+        这七条原则取代了 Synapse 早期的数十条规则。规则容易产生漏洞，原则则可以推导出规则——即使在前所未见的场景中，也能做出符合 Synapse 价值观的判断。
+      </p>
+    </div>
+  </section>
+
+  <!-- How principles inject -->
+  <section class="border-y border-white/5 bg-white/2">
+    <div class="max-w-5xl mx-auto px-6 py-16">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-bold text-white mb-2">三层注入架构</h2>
+        <p class="text-white/40 text-sm">Principle Injection Architecture</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6 text-center">
+        <div class="p-6 bg-white/5 rounded-xl border border-white/10">
+          <div class="text-3xl font-bold text-[#FCAD2A] mb-3">Layer 1</div>
+          <h3 class="font-semibold text-white mb-2">CLAUDE.md 永久层</h3>
+          <p class="text-white/50 text-sm">核心原则文件在每次会话启动时自动加载，不可跳过</p>
+        </div>
+        <div class="p-6 bg-white/5 rounded-xl border border-white/10">
+          <div class="text-3xl font-bold text-sky-400 mb-3">Layer 2</div>
+          <h3 class="font-semibold text-white mb-2">Stage [0.5] 显式确认</h3>
+          <p class="text-white/50 text-sm">任务开始时输出 PRINCIPLES_LOADED 确认标记，缺失扣 10 分</p>
+        </div>
+        <div class="p-6 bg-white/5 rounded-xl border border-white/10">
+          <div class="text-3xl font-bold text-purple-400 mb-3">Layer 3</div>
+          <h3 class="font-semibold text-white mb-2">Dispatch Prompt 注入</h3>
+          <p class="text-white/50 text-sm">每个专业 Agent 派发时携带适用原则的精简摘要</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    heading="了解原则如何驱动执行"
+    body="查看工作原理，理解七条原则如何在 Harness 执行链每一步中强制执行。"
+    primaryCta={{ label: "工作原理", href: "/synapse/how-it-works" }}
+    secondaryCta={{ label: "快速上手", href: "/synapse/get-started" }}
+  />
+
+</SynapseLayout>

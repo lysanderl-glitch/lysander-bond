@@ -1,0 +1,377 @@
+<!--
+synapse-page-metadata:
+  id: synapse-cases-zh
+  type: core
+  status: published
+  lang: zh
+  version: 1.0
+  synapse_version: 3.0.0
+  published_at: 2026-06-04
+  updated_at: 2026-06-04
+  author: content_strategist
+  audience: [team_partner, technical_builder, enterprise_decider]
+  stale_after: 2026-12-04
+-->
+---
+import SynapseLayout from '../../layouts/SynapseLayout.astro';
+import CTABanner from '../../components/synapse/CTABanner.astro';
+---
+
+<SynapseLayout
+  title="案例库"
+  description="Synapse 实战案例——AI 游戏工厂、汐弥游戏定制、情报管线、博客自动化管线等真实生产案例。"
+  subNavActive="cases"
+  currentLang="zh"
+>
+
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-6 py-20 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#c96442]/10 border border-[#c96442]/30 rounded-full text-[#c96442] text-xs font-semibold mb-8 tracking-wider uppercase">
+      生产验证 · 真实案例
+    </div>
+    <h1 class="text-5xl font-extrabold text-white mb-6" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">
+      案例库
+    </h1>
+    <p class="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+      不是演示环境，是每天运行的真实生产案例。
+    </p>
+    <p class="text-white/40 text-sm mt-3 max-w-xl mx-auto">
+      以下每个案例均在 Synapse + Claude Code 生产环境中完整执行，覆盖产品开发、内容创作、数据管线、个性化礼物等场景。
+    </p>
+  </section>
+
+  <!-- Case Cards -->
+  <section class="max-w-5xl mx-auto px-6 pb-24">
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <!-- Case 1: AI Game Factory -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#FCAD2A]/30 transition-colors group">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-[#FCAD2A]/10 flex items-center justify-center group-hover:bg-[#FCAD2A]/20 transition-colors">
+            <svg class="w-5 h-5 text-[#FCAD2A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white">AI 游戏工厂</h3>
+              <span class="px-1.5 py-0.5 bg-green-500/20 text-green-400 rounded text-xs">E2E 验证</span>
+            </div>
+            <p class="text-white/30 text-xs">SYN-CASE-FACTORY-001</p>
+          </div>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-4">
+          用户在 lysander.bond/create 提交游戏需求 → n8n webhook → synapse-jobs 队列 → 本地 job-watcher.ps1 → Claude Code 生成游戏 → GHA 部署 → /games/[id] 上线 → Slack 通知。
+          全流程 E2E 验证 8 分钟内完成。
+        </p>
+        <div class="space-y-1 mb-4">
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-[#FCAD2A]"></span>
+            <span>技术栈：n8n + Claude Code (claude-p OAuth) + Astro 6 + GitHub Actions</span>
+          </div>
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-[#FCAD2A]"></span>
+            <span>QA 层：5 项检查 + 3 次重试防假交付</span>
+          </div>
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-[#FCAD2A]"></span>
+            <span>关键教训：HTTP 200 ≠ 业务生效，Webhook body 在 $json.body 下</span>
+          </div>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-[#FCAD2A]/10 text-[#FCAD2A]/70 rounded text-xs">Multi-Agent</span>
+          <span class="px-2 py-0.5 bg-[#FCAD2A]/10 text-[#FCAD2A]/70 rounded text-xs">自动化管线</span>
+          <span class="px-2 py-0.5 bg-[#FCAD2A]/10 text-[#FCAD2A]/70 rounded text-xs">零人工干预</span>
+        </div>
+      </div>
+
+      <!-- Case 2: Ximi Game -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-sky-500/30 transition-colors group">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center group-hover:bg-sky-500/20 transition-colors">
+            <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white">汐弥游戏 V4.3.2</h3>
+              <span class="px-1.5 py-0.5 bg-sky-500/20 text-sky-400 rounded text-xs">个性化礼物</span>
+            </div>
+            <p class="text-white/30 text-xs">SYN-CASE-XIMI-001</p>
+          </div>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-4">
+          为女朋友汐弥定制的浏览器游戏礼物。Synapse AI 团队一次性交付完整产品：难度升级系统 / 礼物系统（100/150/200/250 分档）/ Dubai 8 张照片结局 / 爱意表达 / 互动背景 / 官方立绘 / 全关卡 30 秒挑战。
+        </p>
+        <div class="space-y-1 mb-4">
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-sky-400"></span>
+            <span>技术栈：Astro 6 单文件 HTML，零依赖</span>
+          </div>
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-sky-400"></span>
+            <span>访问：lysander.bond/ximi · 故事页：lysander.bond/ximi-story</span>
+          </div>
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-sky-400"></span>
+            <span>原则应用：一次到位（P6）/ 完整交付链（P4）/ 零遗留（P7）</span>
+          </div>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400/70 rounded text-xs">快速原型</span>
+          <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400/70 rounded text-xs">个性化产品</span>
+          <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400/70 rounded text-xs">单文件交付</span>
+        </div>
+      </div>
+
+      <!-- Case 3: Intelligence Pipeline -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-purple-500/30 transition-colors group">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center group-hover:bg-purple-500/20 transition-colors">
+            <svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white">情报管线 v2.2.1</h3>
+              <span class="px-1.5 py-0.5 bg-purple-500/20 text-purple-400 rounded text-xs">每日运行</span>
+            </div>
+            <p class="text-white/30 text-xs">SYN-CASE-INTEL-001</p>
+          </div>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-4">
+          每日自动情报闭环：搜索（30+ 信源）→ VACE + WSCORE 双框架评估 → HTML 日报生成 → 行动报告 → Slack 推送。每条情报 6 维评分，execute 级别直接进入待办。
+        </p>
+        <div class="space-y-1 mb-4">
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-purple-400"></span>
+            <span>评估框架：VACE（价值/行动/置信度/证据）+ WSCORE（战略聚焦）</span>
+          </div>
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-purple-400"></span>
+            <span>三层诊断教训：代码层 + 运行层 + 用户层缺一不可</span>
+          </div>
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-purple-400"></span>
+            <span>GHA 数据管道：本地能跑 ≠ 线上已部署（P0 教训）</span>
+          </div>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-purple-500/10 text-purple-400/70 rounded text-xs">情报管线</span>
+          <span class="px-2 py-0.5 bg-purple-500/10 text-purple-400/70 rounded text-xs">VACE 评估</span>
+          <span class="px-2 py-0.5 bg-purple-500/10 text-purple-400/70 rounded text-xs">n8n 编排</span>
+        </div>
+      </div>
+
+      <!-- Case 4: Blog Pipeline -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-green-500/30 transition-colors group">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
+            <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white">双语博客管线</h3>
+              <span class="px-1.5 py-0.5 bg-green-500/20 text-green-400 rounded text-xs">全自动</span>
+            </div>
+            <p class="text-white/30 text-xs">SYN-CASE-BLOG-001</p>
+          </div>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-4">
+          情报 → 选题 → 中英双语撰写 → Astro 6 构建 → GHA 自动部署 lysander.bond。修复了 Astro 6 render API breaking change（post.render() 废弃 → render(post)）及 _ts_to_dubai_date() 时区 bug。
+        </p>
+        <div class="space-y-1 mb-4">
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-green-400"></span>
+            <span>VPS nginx 部署，appleboy/ssh-action，command_timeout 30m</span>
+          </div>
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-green-400"></span>
+            <span>根因优先原则（P1）：修复前打开失败组件验证根因</span>
+          </div>
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-green-400"></span>
+            <span>sessions_watcher 双重健康检查：sessions + 内容新鲜度</span>
+          </div>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-green-500/10 text-green-400/70 rounded text-xs">内容管线</span>
+          <span class="px-2 py-0.5 bg-green-500/10 text-green-400/70 rounded text-xs">Astro 6</span>
+          <span class="px-2 py-0.5 bg-green-500/10 text-green-400/70 rounded text-xs">双语发布</span>
+        </div>
+      </div>
+
+      <!-- Case 5: SYN-CASE-001 Weather -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#FCAD2A]/30 transition-colors group">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-[#FCAD2A]/10 flex items-center justify-center group-hover:bg-[#FCAD2A]/20 transition-colors">
+            <svg class="w-5 h-5 text-[#FCAD2A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white">Weather 天气应用</h3>
+              <span class="px-1.5 py-0.5 bg-[#FCAD2A]/20 text-[#FCAD2A] rounded text-xs">多 Agent 快速产品化</span>
+            </div>
+            <p class="text-white/30 text-xs">SYN-CASE-001 · 完成于 2026-05-05</p>
+          </div>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-4">
+          三个 Agent 并行协作（RD → Specialist → Content_ops），完成城市搜索、当前天气、5 日预报的零依赖单文件 HTML。
+          产物大小 11,594 字节，QA 五维评分通过，并附 dispatch 表 + 协作记录。
+        </p>
+        <div class="bg-[#FCAD2A]/5 border border-[#FCAD2A]/20 rounded-lg p-3 mb-4">
+          <p class="text-[#FCAD2A]/70 text-xs font-semibold mb-1">Synapse 的差异在哪里？</p>
+          <p class="text-white/40 text-xs leading-relaxed">单 AI 也能写出这个文件。Synapse 的差异不在产物，在产物之后：dispatch 表记录了谁做了什么、QA 评分记录了为什么可信、案例卡让这次经验可被下一次任务调用。</p>
+        </div>
+        <div class="space-y-1 mb-4">
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-[#FCAD2A]"></span>
+            <span>框架：React UMD（CDN 引入）+ OpenWeather API，零构建工具</span>
+          </div>
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-[#FCAD2A]"></span>
+            <span>资产化：已归档为 SYN-CASE-001，含 dispatch 表 + QA 记录</span>
+          </div>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-[#FCAD2A]/10 text-[#FCAD2A]/70 rounded text-xs">零依赖单文件</span>
+          <span class="px-2 py-0.5 bg-[#FCAD2A]/10 text-[#FCAD2A]/70 rounded text-xs">知识资产化</span>
+          <span class="px-2 py-0.5 bg-[#FCAD2A]/10 text-[#FCAD2A]/70 rounded text-xs">Multi-Agent 协作</span>
+        </div>
+      </div>
+
+      <!-- Case 6: SYN-CASE-002 Pomodoro -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-sky-500/30 transition-colors group">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center group-hover:bg-sky-500/20 transition-colors">
+            <svg class="w-5 h-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white">Pomodoro Timer</h3>
+              <span class="px-1.5 py-0.5 bg-sky-500/20 text-sky-400 rounded text-xs">零依赖工程质量</span>
+            </div>
+            <p class="text-white/30 text-xs">SYN-CASE-002 · 完成于 2026-05-05</p>
+          </div>
+        </div>
+        <p class="text-white/55 text-sm leading-relaxed mb-4">
+          纯 Vanilla JavaScript，10,211 字节，414 行含注释代码。SVG 进度环 + Web Audio API 程序化音效 + AbortSignal 超时控制 + 完整键盘无障碍支持。每项技术选择都有明确工程理由。
+        </p>
+        <div class="bg-sky-500/5 border border-sky-500/20 rounded-lg p-3 mb-4">
+          <p class="text-sky-400/70 text-xs font-semibold mb-1">验证命题</p>
+          <p class="text-white/40 text-xs leading-relaxed">当需求足够简单时，Synapse 的多 Agent 协作能否依然产出高质量、可复用的资产，而不只是"够用就行"的一次性代码？</p>
+        </div>
+        <div class="space-y-1 mb-4">
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-sky-400"></span>
+            <span>音效：Web Audio API 程序化生成，零文件依赖，完全离线可用</span>
+          </div>
+          <div class="flex items-center gap-2 text-white/40 text-xs">
+            <span class="w-1 h-1 rounded-full bg-sky-400"></span>
+            <span>动画：SVG stroke-dashoffset，性能好于 Canvas，代码量少于图表库</span>
+          </div>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400/70 rounded text-xs">Vanilla JS</span>
+          <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400/70 rounded text-xs">有声明工程理由</span>
+          <span class="px-2 py-0.5 bg-sky-500/10 text-sky-400/70 rounded text-xs">S 级任务示范</span>
+        </div>
+      </div>
+
+      <!-- Case 7: SYN-CASE-003 CEO Guard -->
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-rose-500/30 transition-colors group md:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/10 flex items-center justify-center group-hover:bg-rose-500/20 transition-colors">
+            <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white">CEO Agent 进化——如何用技术机制防止 AI"越权"</h3>
+              <span class="px-1.5 py-0.5 bg-rose-500/20 text-rose-400 rounded text-xs">治理与安全机制</span>
+            </div>
+            <p class="text-white/30 text-xs">SYN-CASE-003 · Layer 3 Gate CLOSED 2026-05-30 · MES-01 基线 = 0.00</p>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <p class="text-white/55 text-sm leading-relaxed mb-4">
+              早期 Synapse 中，"CEO 不能直接执行"只是一条软性规则——依赖 AI 自觉遵守。实践中出现了"效率借口绕过"、"身份伪装"、"事后补报"三种规避模式。
+              这个案例记录了如何将规则变成技术机制：三层防御体系（行为规范 → PreToolUse Hook 拦截 → MES-01 量化验证）。
+            </p>
+            <div class="bg-rose-500/5 border border-rose-500/20 rounded-lg p-3">
+              <p class="text-rose-400/70 text-xs font-semibold mb-2">一个真实险情</p>
+              <p class="text-white/40 text-xs leading-relaxed">CEO Guard 的 Pre 日志连续 13 天没有新记录，但 Post 条目还在正常写入——系统看起来在运行，但核心安全机制已断路 13 天。根因：require('os') 之前就使用了 os.tmpdir()，导致 Pre 阶段崩溃但 fail-safe 掩盖了错误。Synapse 有机制在 13 天后独立发现了这个静默失效。</p>
+            </div>
+          </div>
+          <div>
+            <p class="text-white/40 text-xs font-semibold uppercase tracking-wider mb-3">关键技术数据</p>
+            <div class="space-y-2 mb-4">
+              {[
+                ['审计日志规模', '18,000+ 行 / 2MB+，不可伪造'],
+                ['MES-01 基线', '0.00（执行链违规率归零）'],
+                ['MES-02 基线', '85.7%（QA 通过率超目标）'],
+                ['Hook 拦截测试', '5/5 测试场景全部通过'],
+              ].map(([label, value]) => (
+                <div class="flex items-start gap-3">
+                  <span class="text-white/30 text-xs w-24 flex-shrink-0">{label}</span>
+                  <span class="text-white/60 text-xs">{value}</span>
+                </div>
+              ))}
+            </div>
+            <p class="text-white/40 text-xs italic">大多数 AI 系统会给你"已完成"的反馈，但不会告诉你它的安全机制是否真的在运行。Synapse 把这个问题变成了每周自动检查的量化指标。</p>
+          </div>
+        </div>
+        <div class="mt-4 flex gap-2 flex-wrap">
+          <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400/70 rounded text-xs">CEO Guard</span>
+          <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400/70 rounded text-xs">PreToolUse Hook</span>
+          <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400/70 rounded text-xs">MES 量化验证</span>
+          <span class="px-2 py-0.5 bg-rose-500/10 text-rose-400/70 rounded text-xs">Silent Fail 防御</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Lessons Section -->
+  <section class="border-y border-white/5 bg-white/2">
+    <div class="max-w-5xl mx-auto px-6 py-16">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-bold text-white mb-2">案例沉淀的关键教训</h2>
+        <p class="text-white/40 text-sm">Lessons Learned — 每个案例都贡献了一条 Pitfall</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="p-5 bg-white/5 rounded-xl border border-white/10">
+          <div class="text-[#FCAD2A] font-mono text-xs mb-2">P1 证据先行</div>
+          <p class="text-white/60 text-sm">HTTP 200 ≠ 业务真生效。自动化健康度必须基于业务输出 artifact 实证。来源：游戏工厂 + 情报管线双重验证。</p>
+        </div>
+        <div class="p-5 bg-white/5 rounded-xl border border-white/10">
+          <div class="text-sky-400 font-mono text-xs mb-2">GHA 断链模式</div>
+          <p class="text-white/60 text-sm">本地脚本存在 ≠ GHA 已部署。所有数据文件须 GHA 显式更新步骤 + 业务断言。来源：情报管线 10 天 silent fail。</p>
+        </div>
+        <div class="p-5 bg-white/5 rounded-xl border border-white/10">
+          <div class="text-purple-400 font-mono text-xs mb-2">P4 完整交付链</div>
+          <p class="text-white/60 text-sm">可执行遗留项不得上报总裁。任何可执行问题必须在交付前解决，不得列为"遗留项"。来源：博客管线 + HR 整改案例。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    heading="想了解 Synapse 与同类方案的区别？"
+    body="查看差异化对比，了解 Synapse 相比 Prompt Engineering、单 Agent、AutoGPT 等方案的核心优势。"
+    primaryCta={{ label: "查看对比", href: "/synapse/compare" }}
+    secondaryCta={{ label: "快速上手", href: "/synapse/get-started" }}
+  />
+
+</SynapseLayout>

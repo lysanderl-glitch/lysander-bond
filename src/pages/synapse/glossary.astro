@@ -1,0 +1,417 @@
+<!--
+synapse-page-metadata:
+  id: synapse-glossary-zh
+  type: core
+  status: published
+  lang: zh
+  version: 1.0
+  synapse_version: 3.0.0
+  published_at: 2026-06-04
+  updated_at: 2026-06-04
+  author: knowledge_engineer
+  audience: [team_partner, technical_builder, enterprise_decider]
+  stale_after: 2026-12-04
+-->
+---
+import SynapseLayout from '../../layouts/SynapseLayout.astro';
+import CTABanner from '../../components/synapse/CTABanner.astro';
+
+const terms = [
+  // --- A ---
+  {
+    term: 'Active Team Context',
+    zhName: '活跃团队上下文',
+    category: '核心概念',
+    color: 'amber',
+    definition: '在每次任务开始时注入 AI 上下文的团队状态摘要，包含当前进行中的项目、近期决策和关键约束。',
+    examples: ['每次 Lysander 启动新会话时，会自动读取 active-team-context.md 以快速同步状态'],
+  },
+  {
+    term: 'Agent Memory',
+    zhName: 'Agent 记忆',
+    category: '核心概念',
+    color: 'amber',
+    definition: '每个专属 AI 角色的持久化学习记录，包含近期经验、失败模式和操作规范，在每次调用该角色时注入其上下文。',
+    examples: ['harness_engineer 执行前，Lysander 读取 harness_engineer-memory.md 以继承上次的经验教训'],
+  },
+  // --- C ---
+  {
+    term: 'CEO Execution Restricted Zone',
+    zhName: 'CEO 执行隔离区',
+    category: '执行机制',
+    color: 'sky',
+    definition: 'Synapse 对 AI CEO（Lysander）设置的操作边界——禁止直接执行文件写入、系统命令等破坏性操作，所有执行必须通过调度专属子 Agent 完成。',
+    examples: ['Lysander 需要修改文件时，必须先创建调度表，再调用执行层 Agent 完成操作'],
+  },
+  {
+    term: 'CEO Guard',
+    zhName: '执行层拦截机制',
+    category: '执行机制',
+    color: 'sky',
+    definition: '在 AI 尝试调用受限工具之前自动注入审计提醒，并将所有工具调用记录到审计日志（ceo-guard-audit.log）中。工具链层的硬拦截，不依赖 AI 自觉遵守。',
+    examples: ['主对话 Tool Blacklist: Bash / Edit / Write / WebSearch', '每次工具调用都会触发 CEO Guard 检查，无论会话中是否明确提及约束'],
+  },
+  {
+    term: "Commander's Intent",
+    zhName: '指挥官意图',
+    category: '执行机制',
+    color: 'sky',
+    definition: '借鉴军事指挥原则——上级向下属传达目标和边界，而不是逐步指令。调度 Agent 时必须传达完整目标和验收标准，让 Agent 自主规划实现路径。',
+    examples: ['Lysander 调度 harness_engineer 时，必须说明"目标是什么""完成的标准是什么"'],
+  },
+  {
+    term: 'Context-Anchor',
+    zhName: '上下文锚定（核心原则 P3）',
+    category: '核心原则',
+    color: 'purple',
+    definition: '七条核心原则之一。要求任何操作必须在正确的时间、环境、数据源下执行，避免基于过时信息做出错误决策。',
+    examples: ['跨会话任务继续时，Agent 必须先读取 active_tasks.yaml 获取最新状态，而不是基于上次会话的记忆行动'],
+  },
+  // --- D ---
+  {
+    term: 'D-Record',
+    zhName: 'D 编号决策记录',
+    category: '决策框架',
+    color: 'purple',
+    definition: 'Synapse 的决策归档系统。每个重要决策（L3 及以上级别）必须生成唯一编号文档（如 D-2026-06-01-001），记录决策背景、选项分析、最终决定和执行记录。',
+    examples: ['选择技术架构方向、修改体系核心规则等，必须在执行前创建 D-记录'],
+  },
+  {
+    term: 'Digital Garden',
+    zhName: '数字花园',
+    category: '知识管理',
+    color: 'indigo',
+    definition: '知识像花园中的植物一样持续生长和修剪，内容有不同的成熟度（幼苗/已验证/长青），随时间演进，而不是像发表文章那样一次性完成。',
+    examples: ['Synapse 的 obs/ 目录采用数字花园模式，每条知识有 maturity 字段标注其成熟度'],
+  },
+  {
+    term: 'Dispatch',
+    zhName: '调度 / 派单',
+    category: '执行机制',
+    color: 'sky',
+    definition: 'Lysander 将具体执行任务分配给专属 Agent 的过程。必须包含：执行者 ID、任务目标、工具权限范围和验收标准。',
+    examples: ['每次需要写文件或执行命令时，Lysander 必须先创建调度表，明确"谁来做""用什么工具""做到什么程度算完成"'],
+  },
+  // --- E ---
+  {
+    term: 'Entropy Budget',
+    zhName: '熵增预算',
+    category: 'Harness 治理',
+    color: 'rose',
+    definition: '对配置文件（尤其是 CLAUDE.md）规模的硬性限制，防止规则无限膨胀导致系统复杂度失控。当前 CLAUDE.md 的行数硬限制为 250 行。',
+    examples: ['添加新规则前，必须评估是否需要删除旧规则以维持预算', 'Phase 2 完成于 2026-05-31'],
+  },
+  {
+    term: 'Evergreen Notes',
+    zhName: '长青笔记',
+    category: '知识管理',
+    color: 'indigo',
+    definition: '经过充分验证、长期有效、不会快速过时的知识文档。与"临时笔记"相对，是经过提炼、反复检验的"知识结晶"。',
+    examples: ['核心原则、术语表、方法论框架等被归类为 evergreen，设置较长的 stale_after 日期（6-12 个月）'],
+  },
+  {
+    term: 'Execution Chain',
+    zhName: '执行链',
+    category: '执行机制',
+    color: 'sky',
+    definition: 'Synapse 完成任务的标准流程：目标确认 → 调度表输出 → Agent 调用 → 执行 → QA 审查 → 结果交付，共六阶段，任何阶段不可跳过。',
+    examples: ['[0.5] 含 8 步：目标重述 / Pending 审查 / 对齐 / 分级 / 派发 / 派发表 / 拦截器 / GAC 定义'],
+  },
+  // --- F ---
+  {
+    term: 'Full-Chain Delivery',
+    zhName: '完整交付链（核心原则 P4）',
+    category: '核心原则',
+    color: 'green',
+    definition: '七条核心原则之一。要求承诺范围内的所有步骤必须完整执行，不能只完成技术部分而将"最后一公里"留给用户。',
+    examples: ['功能开发完成后，必须串联版本号更新、CHANGELOG 记录、Git commit、打 tag、推送 GitHub 五个步骤，缺一不可'],
+  },
+  // --- G ---
+  {
+    term: 'GAC',
+    zhName: '目标达成标准',
+    category: '质量保障',
+    color: 'green',
+    definition: 'Goal Achievement Criteria。在任务开始时定义的 2-4 个可量化的验收条件，用于在任务完成后独立验证是否真正达成目标。',
+    examples: ['执行 CLAUDE.md 优化任务时，预先定义 GAC：①行数 ≤250；②所有 P0 约束保留；③frontmatter lint 零错误'],
+  },
+  // --- H ---
+  {
+    term: 'Harness',
+    zhName: '体系框架',
+    category: '核心概念',
+    color: 'amber',
+    definition: 'AI Agent 的约束层。Agent = Model + Harness。包含 Guides（前馈控制）、Workflow（结构化流程）、Constraints（约束系统）三层，决定 Agent 的行为边界。',
+    examples: ['CLAUDE.md 是 Harness 的主配置文件', 'CEO Guard 是 Harness 约束层的实现'],
+  },
+  {
+    term: 'Harness Engineering',
+    zhName: '约束工程',
+    category: '方法论',
+    color: 'amber',
+    definition: '不是 Prompt 调参，是工程化的约束设计。通过前馈控制和传感反馈让 Agent 不再反复犯同样的错误——可审计、可迭代、可复用。',
+    examples: ['Guides = 前馈（任务开始前注入的上下文）', 'Sensors = 反馈（执行后的 QA 门控）'],
+  },
+  {
+    term: 'Hub-and-Spoke',
+    zhName: '中心辐射结构',
+    category: '知识管理',
+    color: 'indigo',
+    definition: '知识组织架构模式——一个中心索引（Hub）连接多个专题分区（Spoke），每个 Spoke 专注一类内容，Hub 负责全局导航。',
+    examples: ['obs/10-meta-knowledge/ 采用 Hub-and-Spoke 结构，_index.md 是 Hub，principles/ frameworks/ cases/ 等是各个 Spoke'],
+  },
+  // --- K ---
+  {
+    term: 'KAR',
+    zhName: '知识激活率',
+    category: '知识管理',
+    color: 'indigo',
+    definition: 'Knowledge Activation Rate。衡量知识库中有效知识文档被 Agent 实际引用的比例，目标 ≥ 85%。KAR 过低意味着知识库存在大量"僵尸文件"。',
+    examples: ['当前基线 86.4%，目标 ≥ 90%', 'weekly-audit 每周检查 KAR 趋势'],
+  },
+  // --- L ---
+  {
+    term: 'L1-L5 Decision Levels',
+    zhName: '五级决策体系',
+    category: '决策框架',
+    color: 'purple',
+    definition: '根据风险程度和影响范围决定决策权归属：L1（自动执行）→ L2（专家评审）→ L3（Lysander 决策）→ L4（战略对齐，通知总裁）→ L5（价值裁决，总裁决定）。',
+    examples: ['技术 bug 修复为 L1，可自主执行', '修改 CLAUDE.md P0 规则为 L4，需通知总裁', '公司商业化方向为 L5，必须总裁拍板'],
+  },
+  // --- M ---
+  {
+    term: 'Maturity',
+    zhName: '成熟度',
+    category: '知识管理',
+    color: 'indigo',
+    definition: '知识文档的发展阶段，分三级：seedling（幼苗，初始想法）、validated（已验证，经过实践检验）、evergreen（长青，稳定有效的核心知识）。',
+    examples: ['新建分析文档初始为 seedling', '经过实战验证的 SOP 升级为 validated', '七条核心原则标记为 evergreen'],
+  },
+  {
+    term: 'MES 系列指标',
+    zhName: '多 Agent 执行评分指标',
+    category: '质量保障',
+    color: 'green',
+    definition: 'Multi-Agent Execution Scorecard。MES-01（执行链违规率，基线=0.00）、MES-02（QA 通过率，基线=85.7%）、MES-03（跨会话任务连续性）。',
+    examples: ['每次 weekly-audit 时检查 MES 指标，判断体系是否在正轨上运行'],
+  },
+  {
+    term: 'Meta-Knowledge',
+    zhName: '元知识',
+    category: '知识管理',
+    color: 'indigo',
+    definition: '关于"如何知道"和"如何运作"的知识，而不是具体事实。在 Synapse 中，元知识包括：治理原则、方法论框架、术语定义和体系状态报告。',
+    examples: ['obs/10-meta-knowledge/ 目录专门存放 Synapse 的元知识，与日常运营记录（obs/00-08/）分开管理'],
+  },
+  {
+    term: 'Multi-Agent',
+    zhName: '多 Agent 协作',
+    category: '核心概念',
+    color: 'amber',
+    definition: '多个专属 AI 角色并行或串行协作完成复杂任务的架构模式。每个 Agent 有独立的上下文、工具权限和职责范围，由 Lysander 统一调度。',
+    examples: ['创建产品报告时：research_agent 调研 → analyst_agent 分析 → content_agent 撰写 → qa_agent 验收，四个 Agent 串行协作'],
+  },
+  // --- P ---
+  {
+    term: 'PARA',
+    zhName: '项目-领域-资源-归档框架',
+    category: '知识管理',
+    color: 'indigo',
+    definition: '知识管理框架，将所有信息分为四类：Projects（有截止日期的任务）、Areas（持续关注的领域）、Resources（参考资料）、Archives（历史存档）。',
+    examples: ['Synapse 的 obs/ 目录结构部分借鉴了 PARA 理念'],
+  },
+  {
+    term: 'Phase Gate',
+    zhName: '阶段门控',
+    category: '执行机制',
+    color: 'sky',
+    definition: '在项目阶段之间设置的质量检查点，只有通过门控验收，才能进入下一阶段。防止"半成品向前滚"的问题。',
+    examples: ['Synapse 能力进化项目分多个阶段，每个阶段完成后必须通过 Phase Gate 验收（有量化标准）'],
+  },
+  // --- R ---
+  {
+    term: 'RACI',
+    zhName: '责任矩阵',
+    category: '执行机制',
+    color: 'sky',
+    definition: 'Responsible-Accountable-Consulted-Informed。明确任务中各角色责任的框架，避免"大家都以为别人会做"的情况。',
+    examples: ['制定执行链调度表时，使用 RACI 框架确保每个步骤都有明确的责任归属'],
+  },
+  // --- S ---
+  {
+    term: 'Silent Fail',
+    zhName: '假成功反模式',
+    category: '质量保障',
+    color: 'rose',
+    definition: '系统表面上成功（返回 200 状态码、无报错），但实际业务目标未达成的失败模式。Synapse 将其列为 P0 反模式，要求所有关键操作必须有业务层断言。',
+    examples: ['Slack 通知显示"发送成功"，但实际通知从未到达用户——HTTP 200 只表示请求被接受，不代表业务执行成功'],
+  },
+  {
+    term: 'SSOT',
+    zhName: '单一信任源',
+    category: '数据治理',
+    color: 'rose',
+    definition: 'Single Source of Truth。同一事实只有一个权威来源。引用时必须 Read 原文件，不凭记忆。Synapse 中每个外部资源引用必须全名 + ID 双重锚定。',
+    examples: ['active_tasks.yaml = 任务状态 SSOT', 'CLAUDE.md = Harness 配置 SSOT'],
+  },
+  {
+    term: 'Staleness',
+    zhName: '知识过期',
+    category: '知识管理',
+    color: 'indigo',
+    definition: '知识文档超过其 stale_after 日期后，内容可能不再准确，需要人工审查和更新。过期不等于删除，但过期文档在被引用前需先核实时效性。',
+    examples: ['weekly-audit 期间，knowledge_engineer 扫描所有已过期文档，评估哪些需要更新、归档或延长 stale_after'],
+  },
+  {
+    term: 'State Report',
+    zhName: '状态报告',
+    category: '知识管理',
+    color: 'indigo',
+    definition: 'Synapse 体系的定期健康度快照，记录关键指标（KAR、MES 系列）、重大变更和下阶段计划。通常按月生成，是体系演进轨迹的重要留存。',
+    examples: ['每月末，harness_engineer 生成月度 State Report，Lysander 审批后存入 obs/10-meta-knowledge/state-reports/'],
+  },
+  {
+    term: 'Subsidiarity',
+    zhName: '权责就近（核心原则 P2）',
+    category: '核心原则',
+    color: 'purple',
+    definition: '七条核心原则之一。决策权应归属于最靠近信息源、且具备判断能力的那一层，而不是层层上报或越级自主。',
+    examples: ['工具选型由 harness_engineer 自主决定（L1）', '体系方向调整由 Lysander 决定（L3）', '公司商业化方向由总裁决定（L5）'],
+  },
+  // --- W ---
+  {
+    term: 'Weekly Audit',
+    zhName: '周审计',
+    category: 'Harness 治理',
+    color: 'rose',
+    definition: 'Synapse 每周日固定执行的体系健康度检查，包含六个维度：配置文件行数、Agent 评分、frontmatter 合规率、知识漂移检测、过期任务清理、决策和执行链完整性。',
+    examples: ['若连续两周未执行 weekly-audit，会自动触发 L4 升级通知总裁'],
+  },
+  {
+    term: 'WF-09 / Workflow Version Lock',
+    zhName: '工作流版本锁定',
+    category: '自动化管线',
+    color: 'sky',
+    definition: '对关键自动化工作流实施的版本保护机制，任何修改都必须附带 [WF09-AUTHORIZED-YYYY-MM-DD] 标记和 D-记录，防止未经审查的变更破坏稳定运行的流程。',
+    examples: ['版本基线 versionId af28eac6（counter 53）', '11 天 silent fail 教训促成版本锁定治理'],
+  },
+  {
+    term: 'Wikilink',
+    zhName: '双向链接',
+    category: '知识图谱',
+    color: 'amber',
+    definition: 'OBS 知识库中的双括号链接格式（[[文件名]]）。obs-compiler.py 自动注入 wikilinks 块，连接决策记录、产品档案、SOP 文档，在 Obsidian Graph View 中可视化知识网络。',
+    examples: ['[[product-profile]] 链接到产品档案', '[[decision-index]] 链接到决策索引'],
+  },
+  {
+    term: 'Worktree',
+    zhName: '工作树隔离',
+    category: '执行机制',
+    color: 'sky',
+    definition: 'Git 的 worktree 功能允许同一仓库在多个目录中并行工作，每个 worktree 可以检出不同的分支。在 Synapse 中用于 Agent 在隔离环境中安全执行任务。',
+    examples: ['当需要同时处理多个功能时，Synapse 为每个任务创建独立的 worktree，避免不同任务之间的文件修改相互干扰'],
+  },
+  // --- Z ---
+  {
+    term: 'Zettelkasten',
+    zhName: '卡片盒笔记法',
+    category: '知识管理',
+    color: 'indigo',
+    definition: '知识管理方法，将每个想法写成独立的"原子笔记"，通过双向链接建立知识网络。强调知识的连接而不是层级归类。',
+    examples: ['Synapse 的 obs/ 知识库文件之间通过 wikilink 建立连接，obs-compiler 自动维护反向链接，形成知识网络而不是孤立的文档树'],
+  },
+];
+
+const categoryColors: Record<string, string> = {
+  '核心概念': 'amber',
+  '方法论': 'amber',
+  '执行机制': 'sky',
+  '质量保障': 'green',
+  '决策框架': 'purple',
+  '数据治理': 'rose',
+  '知识管理': 'indigo',
+  '知识图谱': 'amber',
+  '自动化管线': 'sky',
+  'Harness 治理': 'rose',
+  '核心原则': 'purple',
+};
+
+function colorClass(color: string, type: 'bg' | 'text' | 'border') {
+  const map: Record<string, Record<string, string>> = {
+    amber: { bg: 'bg-[#FCAD2A]/10', text: 'text-[#FCAD2A]/80', border: 'border-[#FCAD2A]/30' },
+    sky:   { bg: 'bg-sky-500/10',   text: 'text-sky-400/80',   border: 'border-sky-500/30'   },
+    green: { bg: 'bg-green-500/10', text: 'text-green-400/80', border: 'border-green-500/30' },
+    purple:{ bg: 'bg-purple-500/10',text: 'text-purple-400/80',border: 'border-purple-500/30'},
+    rose:  { bg: 'bg-rose-500/10',  text: 'text-rose-400/80',  border: 'border-rose-500/30'  },
+    indigo:{ bg: 'bg-indigo-500/10',text: 'text-indigo-400/80',border: 'border-indigo-500/30'},
+  };
+  return map[color]?.[type] ?? '';
+}
+---
+
+<SynapseLayout
+  title="术语表"
+  description="Synapse 核心术语表——Harness、CEO Guard、GAC、SSOT、WF-09 等关键概念的权威定义。"
+  subNavActive="glossary"
+  currentLang="zh"
+>
+
+  <!-- Hero -->
+  <section class="max-w-5xl mx-auto px-6 py-20 text-center">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FCAD2A]/10 border border-[#FCAD2A]/30 rounded-full text-[#FCAD2A] text-xs font-semibold mb-8 tracking-wider uppercase">
+      {terms.length} 个核心术语 · Synapse Glossary v1.0
+    </div>
+    <h1 class="text-5xl font-extrabold text-white mb-6" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">
+      术语表
+    </h1>
+    <p class="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+      读懂 Synapse 的语言，才能真正驾驭它。
+    </p>
+    <p class="text-white/40 text-sm mt-3">Synapse Glossary — 权威定义，持续更新</p>
+  </section>
+
+  <!-- Terms -->
+  <section class="max-w-5xl mx-auto px-6 pb-24">
+    <div class="space-y-4">
+      {terms.map((item) => (
+        <div class={`bg-white/5 border border-white/10 rounded-2xl p-6 hover:${colorClass(item.color, 'border')} transition-colors`}>
+          <div class="flex items-start gap-4 flex-wrap">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-3 flex-wrap mb-3">
+                <h3 class="text-xl font-bold text-white">{item.term}</h3>
+                {(item as any).zhName && (
+                  <span class="text-white/40 text-sm">{(item as any).zhName}</span>
+                )}
+                {(item as any).pronunciation && (
+                  <span class="text-white/30 text-sm font-mono">{(item as any).pronunciation}</span>
+                )}
+                <span class={`px-2 py-0.5 ${colorClass(item.color, 'bg')} ${colorClass(item.color, 'text')} rounded text-xs`}>
+                  {item.category}
+                </span>
+              </div>
+              <p class="text-white/60 text-sm leading-relaxed mb-4">{item.definition}</p>
+              {item.examples.length > 0 && (
+                <div class="space-y-1">
+                  {item.examples.map((ex) => (
+                    <div class="flex items-start gap-2">
+                      <span class={`w-1.5 h-1.5 rounded-full ${colorClass(item.color, 'bg').replace('/10', '')} mt-1.5 flex-shrink-0`}></span>
+                      <span class="text-white/40 text-xs">{ex}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <CTABanner
+    heading="概念已掌握？来看实际案例"
+    body="理论不如实战。查看真实的 Synapse 应用案例，了解这些概念如何在生产环境中协作。"
+    primaryCta={{ label: "查看案例", href: "/synapse/cases" }}
+    secondaryCta={{ label: "快速上手", href: "/synapse/get-started" }}
+  />
+
+</SynapseLayout>
