@@ -17,25 +17,25 @@ jobs:
 
     steps:
       - name: Checkout lysander-bond
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout Synapse-Mini (for publish script)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: lysanderl-oss/Synapse
           path: synapse-mini
 
       - name: Checkout synapse-ops (for intel data)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: lysanderl-glitch/synapse-ops
           token: ${{ secrets.SYNAPSE_OPS_PAT }}
           path: synapse-ops
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
 
