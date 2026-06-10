@@ -72,19 +72,35 @@ def check_tc_002() -> dict:
 
 
 def check_tc_003() -> dict:
-    """TC-INT-003: 当日内容存在（L3：日期验证）"""
-    today = dubai_today()
-    status, html = fetch('/synapse/intelligence/')
+    """TC-INT-003: 情报数据新鲜度（L3：日期验证）
+
+    修正 2026-06-10：/synapse/intelligence/ 是静态营销页（唯一日期来自 metadata 注释），
+    动态日刊归档在 /intelligence/daily/。日刊数据 D 在 D 日 23:1x UTC（Dubai D+1 凌晨）
+    才发布，因此"页面必须含 Dubai 今日日期"是结构性必败断言（2026-06-04 之后连续失败的根因）。
+    正确断言：日刊归档最新条目距 Dubai 今日 ≤ 2 天（仍可捕获 silent-fail 停更）。
+    """
+    today = (datetime.now(timezone.utc) + timedelta(hours=4)).date()
+    status, html = fetch('/intelligence/daily/')
     if status != 200:
-        return result('TC-INT-003', 'P0', False, f'HTTP {status}')
-    if today in html:
-        return result('TC-INT-003', 'P0', True, f'页面包含今日日期{today}（L3内容验证）')
-    # 检查是否有昨天的日期（可接受，但需说明）
-    yesterday = (datetime.now(timezone.utc) + timedelta(hours=4) - timedelta(days=1)).strftime('%Y-%m-%d')
-    if yesterday in html:
+        return result('TC-INT-003', 'P0', False, f'HTTP {status} — /intelligence/daily/ 不可访问')
+    valid_dates = []
+    for d_str in re.findall(r'(20\d\d-\d\d-\d\d)', html):
+        try:
+            d = date.fromisoformat(d_str)
+            if d <= today:  # 忽略未来日期条目
+                valid_dates.append(d)
+        except ValueError:
+            pass
+    if not valid_dates:
         return result('TC-INT-003', 'P0', False,
-                      f'页面显示昨日{yesterday}而非今日{today} — 数据未更新（Silent Fail）')
-    return result('TC-INT-003', 'P0', False, f'页面无今日日期{today}（Silent Fail防御）')
+                      f'日刊归档页无任何有效日期条目（Silent Fail防御）')
+    most_recent = max(valid_dates)
+    gap = (today - most_recent).days
+    if gap > 2:
+        return result('TC-INT-003', 'P0', False,
+                      f'日刊停更{gap}天 — 最新条目{most_recent}，今日{today}（Silent Fail）')
+    return result('TC-INT-003', 'P0', True,
+                  f'日刊归档最新条目{most_recent}（距今{gap}天 ≤ 2天阈值，L3验证通过）')
 
 
 def check_tc_004() -> dict:
@@ -217,18 +233,34 @@ def check_tc_012() -> dict:
 
 
 def check_tc_013() -> dict:
-    """TC-INT-013: 数据跨仓同步验证（L4：页面内容与数据文件一致性）"""
-    today = dubai_today()
-    # L4: 验证页面显示的日期与预期一致（模拟跨仓验证）
-    status, html = fetch('/synapse/intelligence/')
+    """TC-INT-013: 数据跨仓同步验证（L4：仓库数据文件与线上页面一致性）
+
+    修正 2026-06-10：原实现检查静态营销页 /synapse/intelligence/ 是否含 Dubai 今日日期，
+    属结构性必败断言（见 TC-INT-003 注释）。真正的 L4 跨仓断言：本次部署 checkout 中
+    src/content/intelligence/daily/ 的最新数据日期，必须出现在线上 /intelligence/daily/
+    页面中（仓库数据 = 线上 artifact，直接捕获"构建成功但数据未上线"的 Silent Fail）。
+    """
+    import glob
+    import os.path as op
+    repo_root = op.abspath(op.join(op.dirname(op.abspath(__file__)), '..', '..'))
+    daily_dir = op.join(repo_root, 'src', 'content', 'intelligence', 'daily')
+    repo_dates = []
+    for f in glob.glob(op.join(daily_dir, '*.md')):
+        m = re.match(r'(20\d\d-\d\d-\d\d)', op.basename(f))
+        if m:
+            repo_dates.append(m.group(1))
+    if not repo_dates:
+        return result('TC-INT-013', 'P0', False,
+                      f'仓库内无日刊数据文件（{daily_dir}）— 无法执行跨仓同步验证')
+    latest_repo_date = max(repo_dates)
+    status, html = fetch('/intelligence/daily/')
     if status != 200:
-        return result('TC-INT-013', 'P0', False, f'HTTP {status}')
-    if today in html:
+        return result('TC-INT-013', 'P0', False, f'HTTP {status} — /intelligence/daily/ 不可访问')
+    if latest_repo_date in html:
         return result('TC-INT-013', 'P0', True,
-                      f'今日日期{today}在页面中存在（L4跨仓同步验证代理）')
-    # 检查是否是构建延迟
+                      f'仓库最新日刊{latest_repo_date}已同步到线上页面（L4跨仓同步验证）')
     return result('TC-INT-013', 'P0', False,
-                  f'今日{today}数据未同步到页面（Silent Fail：GHA构建成功但数据未更新）')
+                  f'仓库最新日刊{latest_repo_date}未出现在线上页面（Silent Fail：构建成功但数据未上线）')
 
 
 def check_tc_014() -> dict:
@@ -555,7 +587,9 @@ def main():
             print(f"WARNING: P2 non-blocking failures: {failed} (does not block deploy)")
 
     gate_pass = p0_passed == p0_total
-    print(f"\n{'CI Gate PASS -- deploy allowed' if gate_pass else 'CI Gate FAIL -- deploy blocked (P0 not fully passed)'}")
+    # Note: this gate runs AFTER the SSH deploy steps in deploy.yml — a FAIL here
+    # means post-deploy verification failed, NOT that the deploy was blocked.
+    print(f"\n{'CI Gate PASS -- post-deploy verification OK' if gate_pass else 'CI Gate FAIL -- post-deploy verification failed (P0 not fully passed)'}")
 
     if not gate_pass:
         sys.exit(1)
