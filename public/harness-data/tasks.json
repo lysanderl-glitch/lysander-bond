@@ -1,18 +1,49 @@
 {
   "in_progress": [
-    "INTEL-20260419-003",
-    "KM-PHASE3-001",
-    "SYNAPSE-P2-001",
-    "PMO-AUTO-V27-001",
-    "LYSANDER-AI-HUB-001"
+    "INTEL-PIPELINE-REMEDIATION-V3",
+    "STOCK-SYSTEM-2026",
+    "SYNAPSE-MKS-001",
+    "CDE-AGENT-CAPABILITY-SYSTEM",
+    "PRF-P0-PILOT-0-2026-06-06"
   ],
-  "blocked": [
-    "PHX-WORKSPACE-SWITCH-001",
-    "SITE-20260502-001"
+  "blocked": [],
+  "details": [
+    {
+      "id": "INTEL-PIPELINE-REMEDIATION-V3",
+      "title": "INTEL 情报管线整改 V3 — 反造假基础层 + Run-Manifest 免疫系统（重建已授权，执行中）",
+      "team": "harness_ops",
+      "priority": "P0"
+    },
+    {
+      "id": "STOCK-SYSTEM-2026",
+      "title": "Stock-System — 自动化 A股市场操作标准化体系（产品开发，进入第二站产品设计）",
+      "team": "product_ops",
+      "priority": "P1"
+    },
+    {
+      "id": "SYNAPSE-MKS-001",
+      "title": "Synapse Meta-Knowledge Architecture v1.1.0 — Phase 1执行",
+      "team": "obs",
+      "priority": "P1"
+    },
+    {
+      "id": "CDE-AGENT-CAPABILITY-SYSTEM",
+      "title": "CDE Agent 能力体系 — 需求闭环转入执行",
+      "team": "janusd_delivery",
+      "priority": "P1"
+    },
+    {
+      "id": "PRF-P0-PILOT-0-2026-06-06",
+      "title": "PRF-P0-PILOT run claim — stale task scan 2026-06-06",
+      "team": "harness_ops",
+      "priority": "S"
+    }
   ],
   "count": {
     "in_progress": 5,
-    "blocked": 2,
-    "total": 7
-  }
+    "blocked": 0,
+    "total": 5
+  },
+  "generated_at": "2026-06-10T11:43:00.000Z",
+  "source": "active_tasks_yaml"
 }

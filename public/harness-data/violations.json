@@ -1,12 +1,16 @@
 {
-  "today": 0,
-  "this_week": 0,
-  "high_risk": 0,
+  "today": 1,
+  "this_week": 1,
+  "high_risk": 11,
   "recent": [
     "[2026-05-05 09:24:40] POST session=307c1c75 context=sub_agent tool=Bash",
     "[2026-05-05 09:24:19] POST session=307c1c75 context=sub_agent tool=Bash",
     "[2026-05-05 09:24:13] POST session=307c1c75 context=sub_agent tool=Bash",
     "[2026-05-05 09:17:04] POST session=307c1c75 context=sub_agent tool=Bash",
     "[2026-05-05 09:16:59] POST session=307c1c75 context=sub_agent tool=Bash"
-  ]
+  ],
+  "generated_at": "2026-06-10T11:43:00.000Z",
+  "summary_source_generated_at": "2026-06-03T17:30:01+00:00Z",
+  "source": "synapse-ops/harness-data/violations-summary.json",
+  "note": "Raw log not synced. Counts extracted locally and pushed to synapse-ops."
 }
