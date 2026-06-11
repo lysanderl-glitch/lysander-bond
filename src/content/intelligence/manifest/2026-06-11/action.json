@@ -1,0 +1,13 @@
+{
+  "stage": "action",
+  "date": "2026-06-11",
+  "status": "empty",
+  "honest_empty": true,
+  "item_count": 0,
+  "source_sha": "73087e50955bebbc13cbe806328dad288d3b3d93",
+  "source_ref": "2026-06-10",
+  "run_id": "27243937921",
+  "updated_at": "2026-06-10T00:07:11Z",
+  "artifact": "obs/06-daily-reports/2026-06-11-action-report.md",
+  "detail": "upstream daily report MISSING (2026-06-10-intelligence-daily.html (missing)) — honest-empty action"
+}
