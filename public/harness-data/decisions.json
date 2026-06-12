@@ -11,8 +11,8 @@
       "date": "2026-06-10"
     },
     {
-      "id": "d-2026-06-07-001-ceo-governance-audit-and-synapse-value-eval",
-      "title": "001: CEO Agent 治理审计结论 + Synapse 体系价值综合评估授权",
+      "id": "D-2026-06-07-004",
+      "title": "ssot-conflict-resolution",
       "date": "2026-06-07"
     },
     {
@@ -21,8 +21,8 @@
       "date": "2026-06-07"
     },
     {
-      "id": "D-2026-06-07-004",
-      "title": "ssot-conflict-resolution",
+      "id": "d-2026-06-07-001-ceo-governance-audit-and-synapse-value-eval",
+      "title": "001: CEO Agent 治理审计结论 + Synapse 体系价值综合评估授权",
       "date": "2026-06-07"
     },
     {
@@ -46,12 +46,12 @@
       "date": "2026-06-05"
     },
     {
-      "id": "D-2026-06-05-002",
-      "title": "002: OBS RAG v2 校准式 All-In 迁移",
+      "id": "d-2026-0605-002",
+      "title": "决策记录 D-2026-0605-002",
       "date": "2026-06-05"
     }
   ],
   "total_scanned": 142,
-  "generated_at": "2026-06-11T06:43:02.000Z",
+  "generated_at": "2026-06-12T06:28:03.000Z",
   "source": "decision_log_md"
 }
