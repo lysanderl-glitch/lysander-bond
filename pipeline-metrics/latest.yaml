@@ -1,14 +1,14 @@
-generated_at: '2026-06-13T23:03:04.368783+00:00'
-generated_at_dubai: 2026-06-14 03:03 Dubai
+generated_at: '2026-06-14T23:08:31.344673+00:00'
+generated_at_dubai: 2026-06-15 03:08 Dubai
 generated_by: pipeline-metrics-refresh.py
 source: pipeline-daily-sync.yml (D-2026-04-29-001)
 content_collections:
   blog_zh: 102
   blog_en: 101
-  intelligence_daily: 59
+  intelligence_daily: 61
   intelligence_decisions: 36
   intelligence_results: 46
-total_content_files: 344
+total_content_files: 346
 health:
   stale_threshold_hours: 26
   status: fresh
