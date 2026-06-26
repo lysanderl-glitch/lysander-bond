@@ -9,7 +9,7 @@
     "[2026-05-05 09:17:04] POST session=307c1c75 context=sub_agent tool=Bash",
     "[2026-05-05 09:16:59] POST session=307c1c75 context=sub_agent tool=Bash"
   ],
-  "generated_at": "2026-06-25T05:59:48.000Z",
+  "generated_at": "2026-06-26T06:03:55.000Z",
   "summary_source_generated_at": "2026-06-03T17:30:01+00:00Z",
   "source": "synapse-ops/harness-data/violations-summary.json",
   "note": "Raw log not synced. Counts extracted locally and pushed to synapse-ops."
