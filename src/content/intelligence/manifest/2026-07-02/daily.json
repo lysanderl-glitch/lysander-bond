@@ -1,0 +1,13 @@
+{
+  "stage": "daily",
+  "date": "2026-07-02",
+  "status": "green",
+  "honest_empty": false,
+  "item_count": 7,
+  "source_sha": "9dc7f54017f114488ecd2f7897cc2396f14a230a",
+  "source_ref": "2026-07-02",
+  "run_id": "28627408720",
+  "updated_at": "2026-07-02T23:12:40Z",
+  "artifact": "obs/06-daily-reports/2026-07-02-intelligence-daily.html",
+  "detail": "generated 7 item(s) from scan, all trace-verified"
+}
