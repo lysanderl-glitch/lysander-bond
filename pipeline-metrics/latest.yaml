@@ -1,5 +1,5 @@
-generated_at: '2026-07-04T22:56:26.573601+00:00'
-generated_at_dubai: 2026-07-05 02:56 Dubai
+generated_at: '2026-07-05T22:59:28.031341+00:00'
+generated_at_dubai: 2026-07-06 02:59 Dubai
 generated_by: pipeline-metrics-refresh.py
 source: pipeline-daily-sync.yml (D-2026-04-29-001)
 content_collections:
