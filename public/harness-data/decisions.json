@@ -1,24 +1,14 @@
 {
   "recent": [
     {
-      "id": "D-2026-06-10-002",
-      "title": "Harness Entropy Reduction",
-      "date": "2026-06-10"
-    },
-    {
       "id": "d-2026-06-10-001-governance-contraction-option-a",
       "title": "001: 批准方案 A —— CEO 治理体系收缩（砍 + 硬化 + 换度量）",
       "date": "2026-06-10"
     },
     {
-      "id": "D-2026-06-07-004",
-      "title": "ssot-conflict-resolution",
-      "date": "2026-06-07"
-    },
-    {
-      "id": "d-2026-06-07-003-websearch-webfetch-reclassification",
-      "title": "003: WebSearch/WebFetch 重新分类为感知工具",
-      "date": "2026-06-07"
+      "id": "D-2026-06-10-002",
+      "title": "Harness Entropy Reduction",
+      "date": "2026-06-10"
     },
     {
       "id": "d-2026-06-07-001-ceo-governance-audit-and-synapse-value-eval",
@@ -31,27 +21,37 @@
       "date": "2026-06-07"
     },
     {
+      "id": "d-2026-06-07-003-websearch-webfetch-reclassification",
+      "title": "003: WebSearch/WebFetch 重新分类为感知工具",
+      "date": "2026-06-07"
+    },
+    {
+      "id": "D-2026-06-07-004",
+      "title": "ssot-conflict-resolution",
+      "date": "2026-06-07"
+    },
+    {
       "id": "d-2026-0606-001",
       "title": "决策记录 D-2026-0606-001",
       "date": "2026-06-06"
     },
     {
-      "id": "D-2026-0605-001",
-      "title": "001：CDE Agent 能力体系需求关键决策",
-      "date": "2026-06-05"
-    },
-    {
-      "id": "D-2026-06-05-001",
-      "title": "001: OBS 第二大脑 RAG 体系升级路线图",
+      "id": "D-2026-06-05-002",
+      "title": "002: OBS RAG v2 校准式 All-In 迁移",
       "date": "2026-06-05"
     },
     {
       "id": "d-2026-0605-002",
       "title": "决策记录 D-2026-0605-002",
       "date": "2026-06-05"
+    },
+    {
+      "id": "D-2026-06-05-001",
+      "title": "001: OBS 第二大脑 RAG 体系升级路线图",
+      "date": "2026-06-05"
     }
   ],
   "total_scanned": 142,
-  "generated_at": "2026-07-15T04:44:10.000Z",
+  "generated_at": "2026-07-16T04:54:29.000Z",
   "source": "decision_log_md"
 }
