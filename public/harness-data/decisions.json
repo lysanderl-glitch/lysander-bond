@@ -11,11 +11,6 @@
       "date": "2026-06-10"
     },
     {
-      "id": "d-2026-06-07-001-ceo-governance-audit-and-synapse-value-eval",
-      "title": "001: CEO Agent 治理审计结论 + Synapse 体系价值综合评估授权",
-      "date": "2026-06-07"
-    },
-    {
       "id": "d-2026-06-07-002-behavioral-audit-north-star-freeze",
       "title": "002: 行为合规体系建立",
       "date": "2026-06-07"
@@ -23,6 +18,11 @@
     {
       "id": "d-2026-06-07-003-websearch-webfetch-reclassification",
       "title": "003: WebSearch/WebFetch 重新分类为感知工具",
+      "date": "2026-06-07"
+    },
+    {
+      "id": "d-2026-06-07-001-ceo-governance-audit-and-synapse-value-eval",
+      "title": "001: CEO Agent 治理审计结论 + Synapse 体系价值综合评估授权",
       "date": "2026-06-07"
     },
     {
@@ -52,6 +52,6 @@
     }
   ],
   "total_scanned": 142,
-  "generated_at": "2026-07-23T05:18:32.000Z",
+  "generated_at": "2026-07-24T05:14:28.000Z",
   "source": "decision_log_md"
 }
