@@ -1,7 +1,7 @@
 {
   "date": "2026-08-07",
   "status": "unhealthy",
-  "computed_at": "2026-08-07T01:30:59Z",
+  "computed_at": "2026-08-07T22:40:58Z",
   "computed_by": "manifest_aggregate.py",
   "freshness_hours": 36,
   "stages": {
@@ -24,7 +24,7 @@
       "not_due": false,
       "item_count": 7,
       "honest_empty": false,
-      "updated_at": "2026-08-07T01:30:57Z",
+      "updated_at": "2026-08-07T22:40:56Z",
       "critical": true
     },
     "action": {
@@ -42,8 +42,8 @@
       "present": false,
       "status": null,
       "fresh": false,
-      "fault": null,
-      "not_due": true,
+      "fault": "missing",
+      "not_due": false,
       "item_count": 0,
       "honest_empty": false,
       "updated_at": null,
@@ -53,8 +53,8 @@
       "present": false,
       "status": null,
       "fresh": false,
-      "fault": null,
-      "not_due": true,
+      "fault": "missing",
+      "not_due": false,
       "item_count": 0,
       "honest_empty": false,
       "updated_at": null,
@@ -62,12 +62,12 @@
     }
   },
   "findings": [
-    "scan: missing"
+    "scan: missing",
+    "outcome: missing",
+    "evolution: missing"
   ],
   "not_due_stages": [
-    "action",
-    "outcome",
-    "evolution"
+    "action"
   ],
   "expected_stages": [
     "scan",

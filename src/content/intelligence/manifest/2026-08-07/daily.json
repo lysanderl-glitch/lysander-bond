@@ -4,10 +4,10 @@
   "status": "green",
   "honest_empty": false,
   "item_count": 7,
-  "source_sha": "7149abbeeb7a92265ce456fbed8f55dbc410c259",
+  "source_sha": "ba6d9c89f492e984cf697d2c17a186c5d7d51643",
   "source_ref": "2026-08-07",
-  "run_id": "31138224860",
-  "updated_at": "2026-08-07T01:30:57Z",
+  "run_id": "31224601120",
+  "updated_at": "2026-08-07T22:40:56Z",
   "artifact": "obs/06-daily-reports/2026-08-07-intelligence-daily.html",
   "detail": "generated 7 item(s) from scan, all trace-verified"
 }
