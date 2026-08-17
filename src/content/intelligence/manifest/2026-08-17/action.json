@@ -1,0 +1,13 @@
+{
+  "stage": "action",
+  "date": "2026-08-17",
+  "status": "green",
+  "honest_empty": false,
+  "item_count": 1,
+  "source_sha": "b35f7ad8a236702daa4f2402a80b49ae81e537b6",
+  "source_ref": "2026-08-16",
+  "run_id": "31978428943",
+  "updated_at": "2026-08-16T23:12:23Z",
+  "artifact": "obs/06-daily-reports/2026-08-17-action-report.md",
+  "detail": "action report generated from 2026-08-16-intelligence-daily.html"
+}
