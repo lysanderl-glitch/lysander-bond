@@ -3,11 +3,11 @@
   "date": "2026-08-29",
   "status": "green",
   "honest_empty": false,
-  "item_count": 8,
-  "source_sha": "a57d150807304f0ec35ee0b0743bd244fc94deef",
+  "item_count": 6,
+  "source_sha": "5a36610f5df102403fe01741bc775b29f8764c9b",
   "source_ref": "2026-08-29",
-  "run_id": "33231751815",
-  "updated_at": "2026-08-29T03:36:00Z",
+  "run_id": "33282182896",
+  "updated_at": "2026-08-29T23:58:41Z",
   "artifact": "obs/06-daily-reports/2026-08-29-intelligence-daily.html",
-  "detail": "generated 8 item(s) from scan, all trace-verified"
+  "detail": "generated 6 item(s) from scan, all trace-verified"
 }
