@@ -34,3 +34,8 @@ src/content/synapse-core/methodology/harness-engineering.md
 src/content/synapse-core/methodology/proposal.md
 src/data/synapse-core/glossary.yaml
 src/data/synapse-core/onboarding-steps.yaml
+
+# quant 回测数据缓存（几 GB，不入库）
+quant/.cache/
+quant/**/__pycache__/
+quant/.pytest_cache/

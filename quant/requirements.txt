@@ -1,0 +1,9 @@
+# 核心依赖（回测引擎本体只需要这两个）
+pandas>=2.0
+numpy>=1.24
+
+# 真实行情抓取（二选一即可，本地有网环境安装）
+# akshare 提供最全的板块/成分股/财务接口，推荐
+akshare>=1.14.0
+# eastmoney 直连 provider 只需 requests，无需 akshare
+requests>=2.28
