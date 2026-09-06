@@ -103,7 +103,20 @@ python -m sector_leader sweep --source akshare --out output
 
 # 4) 样本内 / 样本外
 python -m sector_leader walkforward --source akshare
+
+# 5) 单只个股的规范体检：逐条打分，看哪几条过、哪几条不过
+python -m sector_leader screen --source akshare --code 000070 \
+    --start 2024-09-01 --end 2026-09-06 --full-universe
 ```
+
+`screen` 的输出是一张打分表，不是买卖建议。它把 A/B/C/D 每一条规范的
+**要求**和**实际数值**并排列出，并统计通过 / 未通过 / 需人工核实的条数。
+`--full-universe` 会装载全部板块，让 RPS 相对全市场排名（慢，但不加这个
+参数 RPS 只相对该股所属板块的几十只成分股计算，会严重失真）。
+
+工具覆盖不到、必须你自己查公告的三件事：**大股东质押比例、近期重要股东
+减持、公司及高管的监管处罚 / 立案调查记录**。这三项属于一票否决，任何
+技术面和业绩面的漂亮数字都不能抵消。
 
 无网环境用 `--source synthetic` 验证管线本身。
 

@@ -110,6 +110,7 @@ class SectorScreener:
         out["board_name"] = board_name
         out["close"] = close
         out["ma_s"], out["ma_l"] = df["ma_s"], df["ma_l"]
+        out["ma_l_slope"] = df["ma_l_slope"]
         out["trend_ok"] = trend_ok.fillna(False)
         out["reversal_ok"] = reversal_ok.fillna(False)
         out["pullback_ok"] = pullback_ok.fillna(False)

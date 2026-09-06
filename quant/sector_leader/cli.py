@@ -16,7 +16,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from . import metrics, report
+from . import metrics, report, screen as screen_mod
 from .backtest import Backtester
 from .config import StrategyConfig
 from .datasource import get_source
@@ -147,6 +147,79 @@ def _slice_market(md, start, end):
     return sub
 
 
+def cmd_screen(args) -> None:
+    """对单只个股做规范 A/B/C/D 逐条体检。"""
+    if not args.code:
+        raise SystemExit("请用 --code 指定 6 位股票代码，例如 --code 000070")
+    code = str(args.code).zfill(6)
+
+    cfg = StrategyConfig(start=args.start, end=args.end)
+    if getattr(args, "chase", None):
+        cfg.entry.chase_reference = args.chase
+    if getattr(args, "confirm_mode", None):
+        cfg.sector.confirm_mode = args.confirm_mode
+
+    source = get_source(args.source, cfg.start, cfg.end)
+    boards = source.sector_list()
+
+    print(f"[1/3] 定位 {code} 所属行业板块 …")
+    hits = []
+    for row in boards.itertuples():
+        key = row.board_name if source.name == "akshare" else row.board_code
+        try:
+            if code in source.sector_members(key):
+                hits.append({"board_code": row.board_code, "board_name": row.board_name})
+        except Exception as exc:
+            print(f"    跳过 {row.board_name}: {exc}")
+    if not hits:
+        raise SystemExit(f"在 {len(boards)} 个行业板块中未找到 {code}。"
+                         "请确认代码正确，且该股未退市 / 未停牌摘牌。")
+    print(f"    命中板块：{', '.join(h['board_name'] for h in hits)}")
+
+    # RPS 是横截面指标。只装载命中板块时，RPS 是相对这几十只股票排的，
+    # 不是相对全市场 —— 会明显失真。--full-universe 装载全部板块以修正。
+    load_boards = boards if args.full_universe else pd.DataFrame(hits)
+    if not args.full_universe:
+        print("    ⚠️ 未加 --full-universe：RPS 仅相对所属板块成分股计算，会失真")
+
+    print(f"[2/3] 载入行情与财务（{len(load_boards)} 个板块）…")
+    md = load_market(source, cfg, load_boards, verbose=args.verbose)
+
+    if code not in md.close.columns:
+        raise SystemExit(f"{code} 在 {cfg.start}~{cfg.end} 区间内无行情数据。")
+
+    date = pd.Timestamp(args.date) if args.date else md.calendar[-1]
+    if date not in md.calendar:
+        prior = md.calendar[md.calendar <= date]
+        if len(prior) == 0:
+            raise SystemExit(f"{date:%Y-%m-%d} 早于数据区间起点。")
+        date = prior[-1]
+        print(f"    指定日非交易日，回退到最近交易日 {date:%Y-%m-%d}")
+
+    name_hit = md.meta[md.meta["code"] == code]
+    name = str(name_hit.iloc[0]["name"]) if not name_hit.empty else ""
+
+    print("[3/3] 逐条比对规范 …")
+    rows = []
+    for h in hits:
+        board = h["board_code"]
+        if board not in md.sector_signals:
+            print(f"    板块 {h['board_name']} 指数数据不足，跳过")
+            continue
+        checks = screen_mod.evaluate(md, cfg, code, date, board)
+        print(screen_mod.render(checks, code, name, h["board_name"], date, source.name))
+        rows.extend({"板块": h["board_name"], "组": c.group, "条款": c.rule,
+                     "要求": c.requirement, "实际": c.actual, "通过": c.passed}
+                    for c in checks)
+
+    if rows and args.out:
+        out = Path(args.out)
+        out.mkdir(parents=True, exist_ok=True)
+        path = out / f"screen_{code}_{date:%Y%m%d}.csv"
+        pd.DataFrame(rows).to_csv(path, index=False)
+        print(f"[已写出] {path}")
+
+
 def cmd_selftest(args) -> None:
     """在有网环境验证 provider 的字段映射，再开始大规模抓取。"""
     source = get_source(args.source, args.start, args.end)
@@ -184,18 +257,22 @@ def main(argv=None) -> None:
     p.add_argument("--start", default="2023-09-01")
     p.add_argument("--end", default="2025-08-31")
     p.add_argument("--capital", type=float, default=None)
-    p.add_argument("--out", default="quant/output")
+    p.add_argument("--out", default="output", help="输出目录（相对当前目录）")
     p.add_argument("--max-boards", type=int, default=None, dest="max_boards")
     p.add_argument("--chase", choices=["ma_extension", "campaign_start"], default=None,
                    help="禁止追高的口径：乖离率 或 距板块启动涨幅")
     p.add_argument("--confirm-mode", dest="confirm_mode", default=None,
                    choices=["either", "reversal", "pullback"],
                    help="板块确认路径：原文的任一成立 / 只做反转启动 / 只做回调")
+    p.add_argument("--code", default=None, help="screen 命令的 6 位股票代码，如 000070")
+    p.add_argument("--date", default=None, help="体检截止交易日，默认取区间最后一天")
+    p.add_argument("--full-universe", action="store_true", dest="full_universe",
+                   help="screen 时装载全部板块，使 RPS 相对全市场计算（慢但准确）")
     p.add_argument("-v", "--verbose", action="store_true")
-    p.add_argument("command", choices=["backtest", "sweep", "walkforward", "selftest"])
+    p.add_argument("command", choices=["backtest", "sweep", "walkforward", "selftest", "screen"])
     args = p.parse_args(argv)
-    {"backtest": cmd_backtest, "sweep": cmd_sweep,
-     "walkforward": cmd_walkforward, "selftest": cmd_selftest}[args.command](args)
+    {"backtest": cmd_backtest, "sweep": cmd_sweep, "walkforward": cmd_walkforward,
+     "selftest": cmd_selftest, "screen": cmd_screen}[args.command](args)
 
 
 if __name__ == "__main__":
