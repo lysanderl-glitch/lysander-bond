@@ -37,22 +37,22 @@ jobs:
       - name: Add server to known_hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H 118.196.41.252 >> ~/.ssh/known_hosts
+          ssh-keyscan -p "${{ secrets.VOLCANO_SSH_PORT }}" -H 118.196.41.252 >> ~/.ssh/known_hosts
 
       - name: Rsync dist/ to server
         run: |
           rsync -avz --delete \
-            -e "ssh -o StrictHostKeyChecking=no" \
+            -e "ssh -p ${{ secrets.VOLCANO_SSH_PORT }} -o StrictHostKeyChecking=no" \
             dist/ \
             root@118.196.41.252:/home/synapsehd-website/dist/
 
       - name: Reload nginx
         run: |
-          ssh -o StrictHostKeyChecking=no root@118.196.41.252 "nginx -t && systemctl reload nginx"
+          ssh -p "${{ secrets.VOLCANO_SSH_PORT }}" -o StrictHostKeyChecking=no root@118.196.41.252 "nginx -t && systemctl reload nginx"
 
       - name: Set Cache-Control headers via nginx conf.d snippet
         run: |
-          ssh -o StrictHostKeyChecking=no root@118.196.41.252 \
+          ssh -p "${{ secrets.VOLCANO_SSH_PORT }}" -o StrictHostKeyChecking=no root@118.196.41.252 \
             "printf 'add_header Cache-Control \"no-cache, must-revalidate\" always;\n' > /etc/nginx/conf.d/cache-headers.conf && nginx -t && systemctl reload nginx"
 
       - name: Verify deployment
