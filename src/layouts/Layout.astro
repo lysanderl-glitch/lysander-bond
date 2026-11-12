@@ -126,6 +126,9 @@ const t = isEn
       footerResAbout: '关于我们',
       footerCopyright: '© 2026 Synapse. Harness Engineering for AI Teams.',
     };
+
+// ICP 备案号：仅在 synapsehd.com（国内备案域名）构建时显示
+const showIcp = Astro.site?.hostname?.endsWith('synapsehd.com') ?? false;
 ---
 
 <!doctype html>
@@ -227,6 +230,9 @@ const t = isEn
         </div>
         <div class="border-t border-white/5 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center text-xs text-white/30 gap-2">
           <p>{t.footerCopyright}</p>
+          {showIcp && (
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="hover:text-[#FCAD2A]">粤ICP备2026054824号-1</a>
+          )}
           <p>lysanderl@janusd.com</p>
         </div>
       </div>
