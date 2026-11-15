@@ -1,5 +1,8 @@
 name: Deploy to Volcano (synapsehd.com)
 
+# 硬规则（2026-11-15，不许逾越）：火山服务器只发布静态网页（dist/）。
+# 不得在火山服务器上部署后端、运行 Claude、或运行任何调用 Claude 的程序。
+# 数字分身、照片、视频等动态功能只在腾讯 Lighthouse（https://lysander.bond/me/）。
 # push to main 自动触发 + 手动备用触发
 # ⚠️ 前置条件：GitHub 仓库 Settings → Secrets → VOLCANO_SSH_KEY 需总裁手动配置
 on:
