@@ -1,0 +1,295 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Synapse — AI Agent 团队协作运营体系">
+
+  <!-- ════ Hero: Abstract gradient + geometric network ════ -->
+  <section class="relative overflow-hidden" style="background: linear-gradient(135deg, #0A1628 0%, #0d1f3c 40%, #013A7D 100%); min-height: 520px;">
+    <!-- Abstract synapse network SVG -->
+    <svg class="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 1200 600" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <circle cx="900" cy="200" r="3" fill="#FCAD2A"/><circle cx="1000" cy="300" r="2" fill="#028CDC"/><circle cx="800" cy="350" r="2.5" fill="#028CDC"/>
+      <circle cx="950" cy="150" r="1.5" fill="#FCAD2A"/><circle cx="1050" cy="250" r="2" fill="#028CDC"/><circle cx="850" cy="100" r="1.5" fill="#FCAD2A"/>
+      <circle cx="750" cy="250" r="2" fill="#028CDC"/><circle cx="1100" cy="180" r="1.5" fill="#FCAD2A"/><circle cx="700" cy="400" r="2" fill="#028CDC"/>
+      <circle cx="980" cy="420" r="1.5" fill="#028CDC"/><circle cx="1080" cy="380" r="2" fill="#FCAD2A"/><circle cx="820" cy="480" r="1.5" fill="#028CDC"/>
+      <line x1="900" y1="200" x2="1000" y2="300" stroke="#028CDC" stroke-width="0.5" opacity="0.6"/>
+      <line x1="900" y1="200" x2="800" y2="350" stroke="#FCAD2A" stroke-width="0.5" opacity="0.4"/>
+      <line x1="1000" y1="300" x2="1050" y2="250" stroke="#028CDC" stroke-width="0.5" opacity="0.5"/>
+      <line x1="800" y1="350" x2="750" y2="250" stroke="#028CDC" stroke-width="0.5" opacity="0.4"/>
+      <line x1="900" y1="200" x2="950" y2="150" stroke="#FCAD2A" stroke-width="0.5" opacity="0.5"/>
+      <line x1="950" y1="150" x2="1100" y2="180" stroke="#FCAD2A" stroke-width="0.3" opacity="0.3"/>
+      <line x1="1000" y1="300" x2="1080" y2="380" stroke="#FCAD2A" stroke-width="0.3" opacity="0.3"/>
+      <line x1="800" y1="350" x2="700" y2="400" stroke="#028CDC" stroke-width="0.3" opacity="0.3"/>
+      <line x1="1050" y1="250" x2="1100" y2="180" stroke="#028CDC" stroke-width="0.3" opacity="0.4"/>
+      <line x1="700" y1="400" x2="820" y2="480" stroke="#028CDC" stroke-width="0.3" opacity="0.3"/>
+      <line x1="980" y1="420" x2="1080" y2="380" stroke="#FCAD2A" stroke-width="0.3" opacity="0.3"/>
+      <circle cx="900" cy="200" r="40" fill="#FCAD2A" opacity="0.03"/><circle cx="1000" cy="300" r="30" fill="#028CDC" opacity="0.04"/>
+    </svg>
+
+    <div class="max-w-5xl mx-auto px-6 pt-24 pb-20 relative z-10 text-white">
+      <div class="max-w-2xl hero-stagger">
+        <p class="text-sm font-semibold tracking-widest text-[#FCAD2A] uppercase mb-6">Synapse Framework</p>
+        <h1 class="text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-[1.1] tracking-tight" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">
+          构建可靠的<br>
+          <span class="text-[#FCAD2A]">AI 智能体团队</span>
+        </h1>
+        <p class="text-lg text-white/55 mt-6 leading-relaxed max-w-lg">
+          基于 Harness Engineering 的 AI 协作运营体系。<br>12 个团队、55 个核心 Agent，CEO Guard 审计日志连续 35 天累积 16,079 条记录。
+        </p>
+        <div class="flex flex-wrap gap-4 mt-8">
+          <a href="/academy" class="btn-primary px-7 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-md font-bold text-sm inline-block">了解学院</a>
+          <a href="/synapse" class="btn-outline px-7 py-3 border border-[#FCAD2A]/40 bg-[#FCAD2A]/10 text-[#FCAD2A] rounded-md font-semibold text-sm inline-block">了解 Synapse →</a>
+          <a href="/blog" class="btn-outline px-7 py-3 border border-white/15 rounded-md font-medium text-sm text-white/70 inline-block hover:bg-white/5 transition-colors">阅读博客</a>
+        </div>
+        <p class="text-sm font-mono text-[#FCAD2A]/70 mt-4">12 团队 · 55 Agent · 16,079 条审计记录 · 29 份 D 编号决策</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ Formula bar ════ -->
+  <section class="border-b border-[var(--color-border)]">
+    <div class="max-w-5xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-center gap-4 text-center">
+      <p class="text-sm text-[var(--color-muted)]">Harness Engineering Core Principle</p>
+      <p class="text-xl font-bold text-[var(--color-text)]">Agent = Model + <span class="text-[#FCAD2A]">Harness</span></p>
+      <p class="text-sm text-[var(--color-muted)]">模型人人可用，Harness 才是壁垒</p>
+    </div>
+  </section>
+
+  <!-- ════ Guides + Sensors ════ -->
+  <section class="max-w-5xl mx-auto px-6 py-16" data-reveal>
+    <div class="text-center mb-10">
+      <h2 class="text-2xl font-bold text-[var(--color-text)]">Harness 的两大控制机制</h2>
+      <p class="text-[var(--color-muted)] mt-2 text-sm">前馈引导 + 反馈检验，让 AI Agent 可靠运转</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6" data-stagger>
+      <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #013A7D;">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-8 h-8 rounded-md bg-[#013A7D]/8 flex items-center justify-center text-sm font-bold text-[#013A7D]">G</div>
+          <h3 class="font-bold text-[var(--color-text)]">Guides — 前馈控制</h3>
+        </div>
+        <p class="text-[var(--color-text-light)] text-sm mb-4">在 AI 行动之前，引导它做正确的事</p>
+        <div class="space-y-2.5 text-sm text-[var(--color-text-light)]">
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#013A7D] shrink-0"></span>CLAUDE.md — 角色、规则、流程配置</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#013A7D] shrink-0"></span>Decision Rules — 五级决策约束框架</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#013A7D] shrink-0"></span>Agent Profiles — 能力档案与路由规则</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#013A7D] shrink-0"></span>Team Dispatch — 强制派单制度</div>
+        </div>
+      </div>
+      <div class="p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #028CDC;">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-8 h-8 rounded-md bg-[#028CDC]/8 flex items-center justify-center text-sm font-bold text-[#028CDC]">S</div>
+          <h3 class="font-bold text-[var(--color-text)]">Sensors — 反馈控制</h3>
+        </div>
+        <p class="text-[var(--color-text-light)] text-sm mb-4">在 AI 行动之后，检查它是否做对了</p>
+        <div class="space-y-2.5 text-sm text-[var(--color-text-light)]">
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#028CDC] shrink-0"></span>QA Auto Review — 四维度质量门禁</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#028CDC] shrink-0"></span>Chain Audit — 执行链完整性检查</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#028CDC] shrink-0"></span>Expert Panel — 多专家交叉评分</div>
+          <div class="flex gap-2 items-center"><span class="w-1 h-1 rounded-full bg-[#028CDC] shrink-0"></span>HR Audit Engine — 全员能力定期评估</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-line max-w-5xl mx-auto"></div>
+
+  <!-- ════ Services ════ -->
+  <section class="bg-[#F7F8FA] py-16" data-reveal>
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-bold text-[var(--color-text)]">服务</h2>
+        <p class="text-[var(--color-muted)] mt-2 text-sm">从诊断到落地到持续进化</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6" data-stagger>
+        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #FCAD2A;">
+          <div class="text-xs font-bold text-[#FCAD2A] tracking-wider uppercase mb-3">Assessment</div>
+          <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Synapse Assessment</h3>
+          <p class="text-[var(--color-text-light)] text-sm leading-relaxed mb-4">2天诊断评估，对标 Harness Engineering 行业标准，输出定制化路线图。</p>
+          <p class="text-xs font-semibold text-[var(--color-muted)]">按需面议 · 2 Days</p>
+          <p class="text-xs text-[var(--color-muted)] mt-1">Pricing finalized in Phase 3 — see opc-strategy-2026-05-27</p>
+        </div>
+        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #028CDC;">
+          <div class="text-xs font-bold text-[#028CDC] tracking-wider uppercase mb-3">Implementation</div>
+          <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">Synapse Implementation</h3>
+          <p class="text-[var(--color-text-light)] text-sm leading-relaxed mb-4">完整体系落地：执行链、决策体系、Agent 团队、情报系统、HR 审计。</p>
+          <p class="text-xs font-semibold text-[var(--color-muted)]">按需面议 · 2-4 Weeks</p>
+          <p class="text-xs text-[var(--color-muted)] mt-1">Pricing finalized in Phase 3 — see opc-strategy-2026-05-27</p>
+        </div>
+        <div class="group p-6 bg-white rounded-xl border border-[var(--color-border)] card-glow" style="border-top: 2px solid #013A7D;">
+          <div class="text-xs font-bold text-[#013A7D] tracking-wider uppercase mb-3">Certification</div>
+          <h3 class="text-lg font-bold text-[var(--color-text)] mb-2">SCP Training</h3>
+          <p class="text-[var(--color-text-light)] text-sm leading-relaxed mb-4">8小时理论+实操，学员带走一套可运行的 AI Agent 运营体系。</p>
+          <p class="text-xs font-semibold text-[var(--color-muted)]">按需面议</p>
+          <p class="text-xs text-[var(--color-muted)] mt-1">Pricing finalized in Phase 3 — see opc-strategy-2026-05-27</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ Trust: Product preview + data ════ -->
+  <section class="max-w-5xl mx-auto px-6 py-16" data-reveal>
+    <div class="text-center mb-10">
+      <h2 class="text-2xl font-bold text-[var(--color-text)]">真实数据，不只是概念</h2>
+      <p class="text-[var(--color-muted)] mt-2 text-sm">来自 Synapse 体系真实运行环境的数据</p>
+    </div>
+
+    <!-- Browser window mockup showing operation.html -->
+    <div class="mb-10 rounded-xl overflow-hidden border border-[var(--color-border)] shadow-lg">
+      <div class="bg-[#f0f0f0] px-4 py-2.5 flex items-center gap-2 border-b border-[#e0e0e0]">
+        <div class="flex gap-1.5">
+          <div class="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
+          <div class="w-3 h-3 rounded-full bg-[#febc2e]"></div>
+          <div class="w-3 h-3 rounded-full bg-[#28c840]"></div>
+        </div>
+        <div class="flex-1 mx-4">
+          <div class="bg-white rounded-md px-3 py-1 text-xs text-[#999] text-center">synapse-dashboard — 12 teams · 55 agents · 35-day audit log</div>
+        </div>
+      </div>
+      <div class="bg-[#0A1628] p-6 md:p-8">
+        <div class="grid grid-cols-4 gap-3 mb-6">
+          <div class="text-center p-3 bg-white/[0.04] rounded-lg border border-white/5">
+            <div class="text-2xl font-black text-[#FCAD2A]">12</div>
+            <div class="text-[10px] text-white/40 mt-1">Teams</div>
+          </div>
+          <div class="text-center p-3 bg-white/[0.04] rounded-lg border border-white/5">
+            <div class="text-2xl font-black text-[#028CDC]">55</div>
+            <div class="text-[10px] text-white/40 mt-1">Agents</div>
+          </div>
+          <div class="text-center p-3 bg-white/[0.04] rounded-lg border border-white/5">
+            <div class="text-2xl font-black text-[#FCAD2A]">16,079</div>
+            <div class="text-[10px] text-white/40 mt-1">Audit Log · 35 days</div>
+          </div>
+          <div class="text-center p-3 bg-white/[0.04] rounded-lg border border-white/5">
+            <div class="text-2xl font-black text-[#028CDC]">29</div>
+            <div class="text-[10px] text-white/40 mt-1">Decisions Logged</div>
+          </div>
+        </div>
+
+        <!-- ══ 审计痕迹组件：把"数字"坐实为"痕迹" ══ -->
+        <div class="grid md:grid-cols-2 gap-4">
+          <!-- 3B 脱敏审计日志切片 -->
+          <div class="p-4 bg-white/[0.03] rounded-lg border border-white/5">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-xs font-semibold text-white/70">CEO Guard 审计切片</div>
+              <div class="text-[10px] text-white/30 font-mono">logs/ceo-guard-audit.log</div>
+            </div>
+            <p class="text-[11px] text-white/45 leading-relaxed mb-3">CEO Guard hook 在每一次工具调用前后留痕。下面是审计日志的脱敏切片：时间、阶段、工具类型。命令内容与会话标识已脱敏，但留痕这件事本身是不可伪造的治理证据。</p>
+            <div class="space-y-1.5 font-mono text-[11px]">
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:07</span><span class="text-[#FCAD2A]/80">PRE</span><span class="text-white/55">Bash</span></div>
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:08</span><span class="text-[#028CDC]/80">POST</span><span class="text-white/55">Bash</span></div>
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:09</span><span class="text-[#FCAD2A]/80">PRE</span><span class="text-white/55">Bash</span></div>
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:39</span><span class="text-[#FCAD2A]/80">PRE</span><span class="text-white/55">Edit</span></div>
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:39</span><span class="text-[#028CDC]/80">POST</span><span class="text-white/55">Edit</span></div>
+              <div class="flex items-center gap-2"><span class="text-white/40">2026-04-23 05:40</span><span class="text-[#FCAD2A]/80">PRE</span><span class="text-white/55">Edit</span></div>
+            </div>
+          </div>
+
+          <!-- 3C 可展示 D-record 清单 -->
+          <div class="p-4 bg-white/[0.03] rounded-lg border border-white/5">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-xs font-semibold text-white/70">可展示治理决策（D-record）</div>
+              <div class="text-[10px] text-white/30 font-mono">标题 · 日期 · 级别</div>
+            </div>
+            <p class="text-[11px] text-white/45 leading-relaxed mb-3">每条治理机制决策都带编号归档，作"事故 → 宪法"的决策证据。</p>
+            <div class="space-y-2">
+              <div class="flex items-start gap-2">
+                <span class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-[#FCAD2A]/15 text-[#FCAD2A] shrink-0 mt-0.5">L4</span>
+                <div><div class="text-xs text-white/70 leading-snug">WF-09 全局唯一 Slack 通知路径约束</div><div class="text-[10px] text-white/35 font-mono">D-2026-05-19-002 · 2026-05-19</div></div>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-[#FCAD2A]/15 text-[#FCAD2A] shrink-0 mt-0.5">L4</span>
+                <div><div class="text-xs text-white/70 leading-snug">Worktree → Main 强制同步规则（P0 防护）</div><div class="text-[10px] text-white/35 font-mono">D-2026-0512-001 · 2026-05-12</div></div>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-[#FCAD2A]/15 text-[#FCAD2A] shrink-0 mt-0.5">L4</span>
+                <div><div class="text-xs text-white/70 leading-snug">周审查机制 + 4 项治理结构</div><div class="text-[10px] text-white/35 font-mono">D-2026-0427-001 · 2026-04-27</div></div>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-[#028CDC]/15 text-[#028CDC] shrink-0 mt-0.5">L3</span>
+                <div><div class="text-xs text-white/70 leading-snug">CLAUDE.md edit checklist — pre-commit hook 强制</div><div class="text-[10px] text-white/35 font-mono">D-2026-0427-003 · 2026-04-27</div></div>
+              </div>
+              <div class="flex items-start gap-2">
+                <span class="text-[9px] px-1.5 py-0.5 rounded font-mono bg-[#028CDC]/15 text-[#028CDC] shrink-0 mt-0.5">L3</span>
+                <div><div class="text-xs text-white/70 leading-snug">Agent 记忆协作机制 v1 启用</div><div class="text-[10px] text-white/35 font-mono">D-2026-04-28-001 · 2026-04-28</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ 运营故事：当成功是一个谎言 ══ -->
+    <article class="bg-white rounded-xl border border-[var(--color-border)] shadow-sm p-8 md:p-10 mb-8">
+      <p class="text-xs font-semibold tracking-widest text-[#FCAD2A] uppercase mb-3">Build in Public · 运营故事</p>
+      <h3 class="text-2xl font-bold text-[var(--color-text)] mb-6" style="font-family: var(--font-display, 'Fraunces', Georgia, serif);">当成功是一个谎言</h3>
+      <div class="space-y-4 text-[var(--color-text-light)] leading-relaxed">
+        <p>2026 年 5 月初，我们发现了一件令人不安的事：Synapse 的 Slack 通知已经<strong class="text-[var(--color-text)]">静默失效了 11 天以上</strong>，而系统全程报告"成功"。</p>
+        <p>根因是一个经典陷阱：调用方拿到 HTTP 200 就默认成功，而 Slack 真正的回执 <code class="px-1.5 py-0.5 rounded bg-[#F7F8FA] text-[#013A7D] text-sm font-mono">{`{"ok":false,"error":"not_authed"}`}</code> 写在响应体里，<strong class="text-[var(--color-text)]">没有人去读那个响应体</strong>。更隐蔽的是——连健康心跳本身也走同一条链路，于是"监控的监控"也一起失效了。这就是监控悖论：当哨兵和被守卫的城门用同一把锁，锁坏了，哨兵也哑了。</p>
+        <p>为什么 11 天没人发现？因为管线每一环都亮着绿灯。GHA run 状态是绿的，HTTP 状态码是 200 的，技术层面"一切正常"——只是业务层面什么都没送达。技术成功掩盖了业务失效。</p>
+        <p>我们没有把它当成一次性 bug 修掉就算。我们把这次事故<strong class="text-[var(--color-text)]">沉淀成了制度</strong>：</p>
+        <ul class="space-y-3 pl-1">
+          <li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] shrink-0 mt-2"></span><span>一条 P0 治理原则写进了系统宪法——<strong class="text-[var(--color-text)]">Silent Fail Defense Principle</strong>：「HTTP 2xx / status=success ≠ 业务真生效；所有外部服务调用必须断言响应体业务字段（如 <code class="px-1 py-0.5 rounded bg-[#F7F8FA] text-[#013A7D] text-sm font-mono">ok=true</code>），断言失败必须抛异常并标记上游任务失败，禁止静默 stdout 警告；元监控必须独立于被监控管线。」<span class="text-[var(--color-muted)] text-sm">（来源：<code class="font-mono">CLAUDE.md</code>，标注 <code class="font-mono">[ADDED: 2026-05-05]</code>）</span></span></li>
+          <li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] shrink-0 mt-2"></span><span>两周后，又收紧出一条配套铁律——<strong class="text-[var(--color-text)]">WF-09 唯一通知路径</strong>：所有 Slack 通知必须经由单一受治理的工作流，任何绕过都是违规。<span class="text-[var(--color-muted)] text-sm">（来源：<code class="font-mono">CLAUDE.md</code> <code class="font-mono">[ADDED: 2026-05-19]</code>；决策 <code class="font-mono">D-2026-05-19-002</code>）</span></span></li>
+          <li class="flex gap-3"><span class="w-1.5 h-1.5 rounded-full bg-[#FCAD2A] shrink-0 mt-2"></span><span>唯一的豁免，是那条<strong class="text-[var(--color-text)]">独立于主管线的元监控通道</strong>——专门用来在主路径整体失效时，从另一条道把警报送出来。<span class="text-[var(--color-muted)] text-sm">（来源：一份独立于主管线的元监控脚本，授权豁免）</span></span></li>
+        </ul>
+        <p>这就是我们说"Harness 不是宣称、是痕迹"的含义：你看到的不是一句口号，是一条带日期的规则、一份带编号的决策、和一行可审计的日志。事故没有被掩盖，它被记下来、被制度化、并且永久改变了系统的行为。</p>
+      </div>
+    </article>
+
+    <!-- Quote -->
+    <div class="bg-white border-l-3 border-[#FCAD2A] rounded-r-xl p-6 shadow-sm" style="border-left: 3px solid #FCAD2A;">
+      <p class="text-[var(--color-text)] italic leading-relaxed">
+        "事故变成宪法 —— 一次 WF-09 silent-fail 事故，沉淀为一条 P0 规则、一条审计日志、一份 D 编号决策。Harness 不是宣称，是这些痕迹。"
+      </p>
+      <p class="text-[var(--color-muted)] text-sm mt-2">— Synapse 体系实践数据</p>
+    </div>
+  </section>
+
+  <div class="glow-line max-w-5xl mx-auto"></div>
+
+  <!-- ════ Automation Pipeline ════ -->
+  <section class="bg-[#F7F8FA] py-16" data-reveal>
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-bold text-[var(--color-text)]">把运营节律写进日程，不是替你做决定</h2>
+        <p class="text-[var(--color-muted)] mt-2 text-sm">每日 3 节律：任务恢复 → 情报采集 → 执行管线；总裁在 L4 知会、L5 裁决两个节点介入。</p>
+      </div>
+      <div class="grid md:grid-cols-4 gap-4" data-stagger>
+        <div class="group relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center card-glow">
+          <div class="text-xs font-mono font-bold text-[#FCAD2A] mb-3">06:00</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm">任务恢复</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-2">检查未完成工作<br>自动续接执行</p>
+          <div class="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 text-[var(--color-border)]">→</div>
+        </div>
+        <div class="group relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center card-glow">
+          <div class="text-xs font-mono font-bold text-[#028CDC] mb-3">08:00</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm">情报采集</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-2">搜索 AI 前沿<br>筛选 3-5 条精华</p>
+          <div class="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 text-[var(--color-border)]">→</div>
+        </div>
+        <div class="group relative p-5 bg-white rounded-xl border border-[var(--color-border)] text-center card-glow">
+          <div class="text-xs font-mono font-bold text-[#013A7D] mb-3">10:00</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm">执行管线</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-2">评估 → 评审 → 执行<br>4 专家评分制</p>
+          <div class="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 text-[var(--color-border)]">→</div>
+        </div>
+        <div class="group p-5 bg-white rounded-xl border border-[var(--color-border)] text-center card-glow">
+          <div class="text-xs font-mono font-bold text-[#FCAD2A] mb-3">MON</div>
+          <h4 class="font-semibold text-[var(--color-text)] text-sm">团队审计</h4>
+          <p class="text-xs text-[var(--color-muted)] mt-2">全员质量评分<br>自动修复提升</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ CTA ════ -->
+  <section class="py-16">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="rounded-2xl p-10 text-center" style="background: linear-gradient(135deg, #0A1628 0%, #013A7D 100%);">
+        <h2 class="text-2xl font-bold text-white mb-3">准备好构建你的 AI 团队了吗？</h2>
+        <p class="text-white/40 mb-6 text-sm max-w-md mx-auto">从 2 天评估开始。理解你的 AI 管理成熟度，获取定制化的 Synapse 路线图。</p>
+        <a href="mailto:lysanderl@janusd.com?subject=Synapse%20Inquiry" class="btn-primary inline-block px-8 py-3 bg-[#FCAD2A] text-[#0A1628] rounded-md font-bold text-sm">立即联系</a>
+      </div>
+    </div>
+  </section>
+</Layout>
