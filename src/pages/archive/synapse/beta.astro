@@ -16,11 +16,11 @@ synapse-page-metadata:
   stale_after: 2026-10-26
 -->
 ---
-import SynapseLayout from '../../layouts/SynapseLayout.astro';
-import Hero from '../../components/synapse/Hero.astro';
-import PillarSection from '../../components/synapse/PillarSection.astro';
-import FeatureCard from '../../components/synapse/FeatureCard.astro';
-import CTABanner from '../../components/synapse/CTABanner.astro';
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import Hero from '../../../components/synapse/Hero.astro';
+import PillarSection from '../../../components/synapse/PillarSection.astro';
+import FeatureCard from '../../../components/synapse/FeatureCard.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
 
 const principles = [
   {
@@ -43,14 +43,14 @@ const principles = [
   description="Synapse 当前处于内部测试阶段。我们正在与内部团队一起打磨体系；外部接入将在准入条件满足后开放。"
   subNavActive=""
   currentLang="zh"
-  altLang={{ lang: 'en', href: '/en/synapse/beta' }}
+  altLang={{ lang: 'en', href: '/en/archive/synapse/beta' }}
 >
   <Hero
     eyebrow="Internal Testing / 内部测试"
     title="Synapse — Internal Testing."
     subtitle="我们正在与内部团队一起打磨 Synapse。外部接入将在准入条件满足后开放。"
-    primaryCta={{ label: 'Currently invitation-only — Learn more', href: '/synapse/how-it-works' }}
-    secondaryCta={{ label: '了解工作原理', href: '/synapse/how-it-works' }}
+    primaryCta={{ label: 'Currently invitation-only — Learn more', href: '/archive/synapse/how-it-works' }}
+    secondaryCta={{ label: '了解工作原理', href: '/archive/synapse/how-it-works' }}
   />
 
   <PillarSection
@@ -83,7 +83,7 @@ const principles = [
   <CTABanner
     heading="先了解 Synapse 是什么"
     body="在外部接入开放之前，可以先读一遍 Harness Engineering 方法论。当外部接入开放时，你已经知道哪一部分最契合你的团队。"
-    primaryCta={{ label: '了解 Synapse 工作原理', href: '/synapse/how-it-works' }}
-    secondaryCta={{ label: '查看体系全景', href: '/synapse' }}
+    primaryCta={{ label: '了解 Synapse 工作原理', href: '/archive/synapse/how-it-works' }}
+    secondaryCta={{ label: '查看体系全景', href: '/archive/synapse' }}
   />
 </SynapseLayout>

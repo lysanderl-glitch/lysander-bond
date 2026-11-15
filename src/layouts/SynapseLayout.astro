@@ -29,7 +29,7 @@ const selfLang = currentLang === 'zh' ? 'zh-CN' : 'en';
 // hreflang now injected globally by Layout.astro from Astro.url.pathname
 ---
 
-<Layout title={fullTitle} description={description} darkContent={true} lang={selfLang}>
+<Layout title={fullTitle} description={description} darkContent={true} lang={selfLang} noindex={true}>
   <SynapseSubNav active={subNavActive} currentLang={currentLang} />
   <slot />
 </Layout>

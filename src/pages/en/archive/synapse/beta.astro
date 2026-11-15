@@ -1,9 +1,9 @@
 ---
-import SynapseLayout from '../../../layouts/SynapseLayout.astro';
-import Hero from '../../../components/synapse/Hero.astro';
-import PillarSection from '../../../components/synapse/PillarSection.astro';
-import FeatureCard from '../../../components/synapse/FeatureCard.astro';
-import CTABanner from '../../../components/synapse/CTABanner.astro';
+import SynapseLayout from '../../../../layouts/SynapseLayout.astro';
+import Hero from '../../../../components/synapse/Hero.astro';
+import PillarSection from '../../../../components/synapse/PillarSection.astro';
+import FeatureCard from '../../../../components/synapse/FeatureCard.astro';
+import CTABanner from '../../../../components/synapse/CTABanner.astro';
 
 const principles = [
   {
@@ -26,14 +26,14 @@ const principles = [
   description="Synapse is currently in internal testing. We're refining Synapse with internal teams; external access will open once readiness criteria are met."
   subNavActive=""
   currentLang="en"
-  altLang={{ lang: 'zh', href: '/synapse/beta' }}
+  altLang={{ lang: 'zh', href: '/archive/synapse/beta' }}
 >
   <Hero
     eyebrow="Internal Testing"
     title="Synapse — Internal Testing."
     subtitle="We're refining Synapse with internal teams. External access will open once readiness criteria are met."
-    primaryCta={{ label: 'Currently invitation-only — Learn more', href: '/en/synapse/how-it-works' }}
-    secondaryCta={{ label: 'Read the Methodology', href: '/en/synapse/how-it-works' }}
+    primaryCta={{ label: 'Currently invitation-only — Learn more', href: '/en/archive/synapse/how-it-works' }}
+    secondaryCta={{ label: 'Read the Methodology', href: '/en/archive/synapse/how-it-works' }}
   />
 
   <PillarSection
@@ -66,7 +66,7 @@ const principles = [
   <CTABanner
     heading="Learn what Synapse is, first"
     body="Read the Harness Engineering methodology before external access opens. When it does, you'll already know which parts fit your team."
-    primaryCta={{ label: 'See How It Works', href: '/en/synapse/how-it-works' }}
-    secondaryCta={{ label: 'Explore Synapse', href: '/en/synapse' }}
+    primaryCta={{ label: 'See How It Works', href: '/en/archive/synapse/how-it-works' }}
+    secondaryCta={{ label: 'Explore Synapse', href: '/en/archive/synapse' }}
   />
 </SynapseLayout>

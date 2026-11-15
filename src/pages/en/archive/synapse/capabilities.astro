@@ -16,11 +16,11 @@ synapse-page-metadata:
   stale_after: 2026-10-23
 -->
 ---
-import SynapseLayout from '../../../layouts/SynapseLayout.astro';
-import Hero from '../../../components/synapse/Hero.astro';
-import PillarSection from '../../../components/synapse/PillarSection.astro';
-import AgentTeamCard from '../../../components/synapse/AgentTeamCard.astro';
-import CTABanner from '../../../components/synapse/CTABanner.astro';
+import SynapseLayout from '../../../../layouts/SynapseLayout.astro';
+import Hero from '../../../../components/synapse/Hero.astro';
+import PillarSection from '../../../../components/synapse/PillarSection.astro';
+import AgentTeamCard from '../../../../components/synapse/AgentTeamCard.astro';
+import CTABanner from '../../../../components/synapse/CTABanner.astro';
 
 const coreTeams = [
   {
@@ -112,14 +112,14 @@ const optionalModules = [
   description="Twelve specialist teams covering the full operating surface of a modern business, orchestrated by a single AI CEO persona."
   subNavActive="capabilities"
   currentLang="en"
-  altLang={{ lang: 'zh', href: '/synapse/capabilities' }}
+  altLang={{ lang: 'zh', href: '/archive/synapse/capabilities' }}
 >
   <Hero
     eyebrow="Capabilities"
     title="Twelve teams. One operator."
     subtitle="Strategy, engineering, content, growth, knowledge, compliance, delivery — Synapse covers the full operating surface of a modern business, orchestrated by a single AI CEO persona."
-    primaryCta={{ label: 'Try It Yourself', href: '/en/synapse/get-started' }}
-    secondaryCta={{ label: 'See How It Works', href: '/en/synapse/how-it-works' }}
+    primaryCta={{ label: 'Try It Yourself', href: '/en/archive/synapse/get-started' }}
+    secondaryCta={{ label: 'See How It Works', href: '/en/archive/synapse/how-it-works' }}
   />
 
   <PillarSection
@@ -164,7 +164,7 @@ const optionalModules = [
   <CTABanner
     heading="See it running"
     body="The whole team is documented, graded, and version-controlled."
-    primaryCta={{ label: 'Meet the Team', href: '/en/synapse/team' }}
+    primaryCta={{ label: 'Meet the Team', href: '/en/archive/synapse/team' }}
     secondaryCta={{ label: 'Visit Academy', href: '/en/academy' }}
   />
 </SynapseLayout>

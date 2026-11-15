@@ -13,8 +13,8 @@ synapse-page-metadata:
   stale_after: 2026-12-04
 -->
 ---
-import SynapseLayout from '../../layouts/SynapseLayout.astro';
-import CTABanner from '../../components/synapse/CTABanner.astro';
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
 
 const terms = [
   // --- A ---
@@ -410,8 +410,8 @@ function colorClass(color: string, type: 'bg' | 'text' | 'border') {
   <CTABanner
     heading="概念已掌握？来看实际案例"
     body="理论不如实战。查看真实的 Synapse 应用案例，了解这些概念如何在生产环境中协作。"
-    primaryCta={{ label: "查看案例", href: "/synapse/cases" }}
-    secondaryCta={{ label: "快速上手", href: "/synapse/get-started" }}
+    primaryCta={{ label: "查看案例", href: "/archive/synapse/cases" }}
+    secondaryCta={{ label: "快速上手", href: "/archive/synapse/get-started" }}
   />
 
 </SynapseLayout>

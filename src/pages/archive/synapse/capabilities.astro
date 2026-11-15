@@ -16,11 +16,11 @@ synapse-page-metadata:
   stale_after: 2026-10-23
 -->
 ---
-import SynapseLayout from '../../layouts/SynapseLayout.astro';
-import Hero from '../../components/synapse/Hero.astro';
-import PillarSection from '../../components/synapse/PillarSection.astro';
-import AgentTeamCard from '../../components/synapse/AgentTeamCard.astro';
-import CTABanner from '../../components/synapse/CTABanner.astro';
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import Hero from '../../../components/synapse/Hero.astro';
+import PillarSection from '../../../components/synapse/PillarSection.astro';
+import AgentTeamCard from '../../../components/synapse/AgentTeamCard.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
 
 const coreTeams = [
   {
@@ -112,14 +112,14 @@ const optionalModules = [
   description="十二个专业团队，覆盖现代企业的完整运营面，由一位 AI CEO 统筹编排。"
   subNavActive="capabilities"
   currentLang="zh"
-  altLang={{ lang: 'en', href: '/en/synapse/capabilities' }}
+  altLang={{ lang: 'en', href: '/en/archive/synapse/capabilities' }}
 >
   <Hero
     eyebrow="Capabilities / 能力"
     title="十二个专业团队，一位 AI CEO"
     subtitle="战略、工程、内容、增长、知识、合规、交付——Synapse 覆盖现代企业的完整运营面，由一位 AI CEO 统筹编排。"
-    primaryCta={{ label: '亲自试试', href: '/synapse/get-started' }}
-    secondaryCta={{ label: '了解工作原理', href: '/synapse/how-it-works' }}
+    primaryCta={{ label: '亲自试试', href: '/archive/synapse/get-started' }}
+    secondaryCta={{ label: '了解工作原理', href: '/archive/synapse/how-it-works' }}
   />
 
   <PillarSection
@@ -164,7 +164,7 @@ const optionalModules = [
   <CTABanner
     heading="看它运行起来"
     body="整支团队都已文档化、分级、版本受控。"
-    primaryCta={{ label: '认识团队', href: '/synapse/team' }}
+    primaryCta={{ label: '认识团队', href: '/archive/synapse/team' }}
     secondaryCta={{ label: '了解学院', href: '/academy' }}
   />
 </SynapseLayout>

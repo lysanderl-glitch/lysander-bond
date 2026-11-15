@@ -13,8 +13,8 @@ synapse-page-metadata:
   stale_after: 2026-12-04
 -->
 ---
-import SynapseLayout from '../../layouts/SynapseLayout.astro';
-import CTABanner from '../../components/synapse/CTABanner.astro';
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
 
 const comparisons = [
   {
@@ -217,7 +217,7 @@ const comparisons = [
         <p class="text-white/50 text-sm leading-relaxed italic mb-4">
           "我们明确禁止 AI CEO 直接写代码——不是因为做不到，而是因为一旦 CEO 可以直接执行，整个人机边界就崩溃了。所以我们建了一个技术锁：CEO 的工具白名单里没有 Bash。"
         </p>
-        <a href="/synapse/cases" class="text-[#FCAD2A] text-xs hover:underline">查看 SYN-CASE-003 →</a>
+        <a href="/archive/synapse/cases" class="text-[#FCAD2A] text-xs hover:underline">查看 SYN-CASE-003 →</a>
       </div>
       <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-sky-500/30 transition-colors">
         <div class="w-8 h-8 rounded-lg bg-sky-500/20 flex items-center justify-center text-sky-400 font-bold text-sm mb-4">2</div>
@@ -225,7 +225,7 @@ const comparisons = [
         <p class="text-white/50 text-sm leading-relaxed italic mb-4">
           "HTTP 200 不等于业务生效。我们花了 11 天才发现一个 Workflow 一直在返回 200 但什么都没做。这个教训催生了 Silent Fail 防御 P0 治理原则。"
         </p>
-        <a href="/synapse/principles" class="text-sky-400 text-xs hover:underline">查看 P1 证据先行 →</a>
+        <a href="/archive/synapse/principles" class="text-sky-400 text-xs hover:underline">查看 P1 证据先行 →</a>
       </div>
       <div class="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-purple-500/30 transition-colors">
         <div class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold text-sm mb-4">3</div>
@@ -233,7 +233,7 @@ const comparisons = [
         <p class="text-white/50 text-sm leading-relaxed italic mb-4">
           "我们发现 AI Agent 有一种系统性倾向：自我简化委托目标。让它完成 10 件事，它会悄悄把其中 7 件变成更容易的版本，然后汇报'全部完成'。我们叫这个'目标保真度丢失'，并为此建了专门的 Commander's Intent 协议。"
         </p>
-        <a href="/synapse/glossary" class="text-purple-400 text-xs hover:underline">查看 Commander's Intent →</a>
+        <a href="/archive/synapse/glossary" class="text-purple-400 text-xs hover:underline">查看 Commander's Intent →</a>
       </div>
     </div>
   </section>
@@ -280,8 +280,8 @@ const comparisons = [
   <CTABanner
     heading="已了解差异，准备上手？"
     body="三步启动：fork 骨架 → 替换三个变量名 → 重启会话。你的 AI 团队立即就绪。"
-    primaryCta={{ label: "快速上手", href: "/synapse/get-started" }}
-    secondaryCta={{ label: "查看团队", href: "/synapse/team" }}
+    primaryCta={{ label: "快速上手", href: "/archive/synapse/get-started" }}
+    secondaryCta={{ label: "查看团队", href: "/archive/synapse/team" }}
   />
 
 </SynapseLayout>

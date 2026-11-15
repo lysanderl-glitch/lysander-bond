@@ -16,11 +16,11 @@ synapse-page-metadata:
   stale_after: 2026-10-23
 -->
 ---
-import SynapseLayout from '../../layouts/SynapseLayout.astro';
-import Hero from '../../components/synapse/Hero.astro';
-import PillarSection from '../../components/synapse/PillarSection.astro';
-import TimelineItem from '../../components/synapse/TimelineItem.astro';
-import CTABanner from '../../components/synapse/CTABanner.astro';
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import Hero from '../../../components/synapse/Hero.astro';
+import PillarSection from '../../../components/synapse/PillarSection.astro';
+import TimelineItem from '../../../components/synapse/TimelineItem.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
 
 const steps = [
   {
@@ -56,14 +56,14 @@ const steps = [
   description="Agent = 模型 + 约束（Harness）。Synapse 是 Harness Engineering 的参考实现——这是 2026 年生产级 AI 团队的工程学科。"
   subNavActive="how-it-works"
   currentLang="zh"
-  altLang={{ lang: 'en', href: '/en/synapse/how-it-works' }}
+  altLang={{ lang: 'en', href: '/en/archive/synapse/how-it-works' }}
 >
   <Hero
     eyebrow="How It Works / 工作原理"
     title="Agent = 模型 + 约束（Harness）"
     subtitle="人人都能调用同样的模型。真正决定可靠性的是约束。Synapse 是 Harness Engineering 的参考实现——这是 2026 年生产级 AI 团队的工程学科。"
     primaryCta={{ label: '阅读博客文章', href: '/blog/harness-engineering-guide' }}
-    secondaryCta={{ label: '认识团队', href: '/synapse/team' }}
+    secondaryCta={{ label: '认识团队', href: '/archive/synapse/team' }}
   />
 
   <PillarSection
@@ -142,7 +142,7 @@ const steps = [
   <CTABanner
     heading="准备自己跑一遍？"
     body="下载配置包。clone 一次，替换 CLAUDE.md 中三个变量名，重启 Claude Code 会话——首次派单即可运行。"
-    primaryCta={{ label: '立即上手', href: '/synapse/get-started' }}
+    primaryCta={{ label: '立即上手', href: '/archive/synapse/get-started' }}
     secondaryCta={{ label: '了解学院', href: '/academy' }}
   />
 </SynapseLayout>

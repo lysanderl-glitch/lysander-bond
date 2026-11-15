@@ -10,9 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "sync-content": "node scripts/sync_from_core.mjs",
-    "prebuild": "node scripts/sync_from_core.mjs"
+    "sync-content": "node scripts/sync_from_core.mjs"
   },
+  "//synapse-archive-2026-11-15": "2026-11-15 Synapse 归档下线：prebuild 自动同步已停用。src/content/synapse-core 与 src/data/synapse-core 冻结为归档快照。如需恢复，重新加入 \"prebuild\": \"node scripts/sync_from_core.mjs\"。",
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
     "astro": "^6.1.3"

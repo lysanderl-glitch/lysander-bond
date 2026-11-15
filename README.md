@@ -1,13 +1,32 @@
-# lysander.bond — Synapse public site
+# lysander.bond
 
 > **Limited Preview — Internal Testing.** By using, you accept LICENSE
-> ([BSL-1.1](./LICENSE.md)) + [USAGE_TERMS](./USAGE_TERMS.md). Synapse is
-> currently being refined with internal teams; external access opens once
-> readiness criteria are met.
+> ([BSL-1.1](./LICENSE.md)) + [USAGE_TERMS](./USAGE_TERMS.md).
 
-This repo is the public site for **Synapse** — an AI team operating
-system built on Harness Engineering. The site is built with Astro and
-deployed via GitHub Actions.
+Astro 静态站点，经 GitHub Actions 构建后部署到自有服务器（nginx）。
+
+## ⚠️ 2026-11-15 — Synapse 体系已归档下线
+
+Synapse（基于 Harness Engineering 的 AI 团队操作系统）经验证不再适用于
+当前规划，相关内容整体归档：
+
+| 项目 | 处置 |
+| :--- | :--- |
+| 内容页（18 个 zh/en） | 迁至 `/archive/synapse/*`，带 `robots noindex`，已排除出 sitemap |
+| 旧 URL | 由 `astro.config.mjs` 的 `redirects` 静态重定向到归档路径，不产生 404 |
+| 主导航「产品 / Product」 | 已移除 |
+| 首页 / 情报页推广入口 | 已移除 |
+| `src/content/synapse-core` | 冻结为归档快照，`prebuild` 自动同步已停用（见 `ARCHIVED.md`） |
+| `src/components/synapse/*` | 原地保留，仅供归档页使用 |
+
+**刻意保留未动**：
+- `/synapse/version.json` 与 `/api/synapse/version.json` —— 已安装客户端
+  轮询的版本检查端点，迁移会使其失效。
+- `src/content/blog/**` 中涉及 Synapse 的历史文章 —— 属于历史写作记录，
+  本次未在归档范围内。
+
+**待办**：首页与 `/intelligence` 的正文文案仍在描述 Synapse，待新定位
+（数字分身板块）确定后统一改写；主导航的产品入口同步补回。
 
 ## 🚀 Project Structure
 

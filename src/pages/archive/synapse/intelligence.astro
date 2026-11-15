@@ -16,11 +16,11 @@ synapse-page-metadata:
   stale_after: 2026-10-23
 -->
 ---
-import SynapseLayout from '../../layouts/SynapseLayout.astro';
-import Hero from '../../components/synapse/Hero.astro';
-import PillarSection from '../../components/synapse/PillarSection.astro';
-import TimelineItem from '../../components/synapse/TimelineItem.astro';
-import CTABanner from '../../components/synapse/CTABanner.astro';
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import Hero from '../../../components/synapse/Hero.astro';
+import PillarSection from '../../../components/synapse/PillarSection.astro';
+import TimelineItem from '../../../components/synapse/TimelineItem.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
 
 const pipeline = [
   {
@@ -56,7 +56,7 @@ const pipeline = [
   description="Synapse 系统演进层。每日 5 步闭合循环，将外部信号转化为系统能力的实质提升。"
   subNavActive="intelligence"
   currentLang="zh"
-  altLang={{ lang: 'en', href: '/en/synapse/intelligence' }}
+  altLang={{ lang: 'en', href: '/en/archive/synapse/intelligence' }}
 >
   <Hero
     eyebrow="Self-improve Pipeline / 自进化管线"
@@ -193,7 +193,7 @@ const pipeline = [
   <CTABanner
     heading="搭建属于你的自进化管线"
     body="Synapse 自带这条演进机制。你的第一个循环，从你第一次打开 Claude Code 的那个清晨开始。"
-    primaryCta={{ label: '立即上手', href: '/synapse/get-started' }}
+    primaryCta={{ label: '立即上手', href: '/archive/synapse/get-started' }}
     secondaryCta={{ label: '了解学院', href: '/academy' }}
   />
 </SynapseLayout>

@@ -16,11 +16,11 @@ synapse-page-metadata:
   stale_after: 2026-10-23
 -->
 ---
-import SynapseLayout from '../../../layouts/SynapseLayout.astro';
-import Hero from '../../../components/synapse/Hero.astro';
-import PillarSection from '../../../components/synapse/PillarSection.astro';
-import TimelineItem from '../../../components/synapse/TimelineItem.astro';
-import CTABanner from '../../../components/synapse/CTABanner.astro';
+import SynapseLayout from '../../../../layouts/SynapseLayout.astro';
+import Hero from '../../../../components/synapse/Hero.astro';
+import PillarSection from '../../../../components/synapse/PillarSection.astro';
+import TimelineItem from '../../../../components/synapse/TimelineItem.astro';
+import CTABanner from '../../../../components/synapse/CTABanner.astro';
 
 const steps = [
   {
@@ -56,14 +56,14 @@ const steps = [
   description="Agent = Model + Harness. Synapse is a reference implementation of Harness Engineering — the 2026 engineering discipline for production AI teams."
   subNavActive="how-it-works"
   currentLang="en"
-  altLang={{ lang: 'zh', href: '/synapse/how-it-works' }}
+  altLang={{ lang: 'zh', href: '/archive/synapse/how-it-works' }}
 >
   <Hero
     eyebrow="How It Works"
     title="Agent = Model + Harness."
     subtitle="Everyone has access to the same models. The harness is where reliability is engineered. Synapse is a reference implementation of Harness Engineering — the 2026 engineering discipline for production AI teams."
     primaryCta={{ label: 'Read the Blog Post', href: '/blog/harness-engineering-guide' }}
-    secondaryCta={{ label: 'See the Team', href: '/en/synapse/team' }}
+    secondaryCta={{ label: 'See the Team', href: '/en/archive/synapse/team' }}
   />
 
   <PillarSection
@@ -142,7 +142,7 @@ const steps = [
   <CTABanner
     heading="Ready to run it yourself?"
     body="Download the configuration bundle. Clone, swap three variables in CLAUDE.md, restart your Claude Code session — and the first dispatch can run."
-    primaryCta={{ label: 'Get Started', href: '/en/synapse/get-started' }}
+    primaryCta={{ label: 'Get Started', href: '/en/archive/synapse/get-started' }}
     secondaryCta={{ label: 'Visit Academy', href: '/en/academy' }}
   />
 </SynapseLayout>

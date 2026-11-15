@@ -6,6 +6,8 @@ interface Props {
   description?: string;
   darkContent?: boolean;
   lang?: string;
+  /** 2026-11-15: 归档页用。输出 robots noindex，并跳过 canonical/hreflang。 */
+  noindex?: boolean;
 }
 
 const {
@@ -13,6 +15,7 @@ const {
   description = 'Synapse — 基于 Harness Engineering 的 AI Agent 团队协作运营体系',
   darkContent = false,
   lang = 'zh-CN',
+  noindex = false,
 } = Astro.props;
 
 // Normalize: any value of `lang` that starts with "en" means English UI;
@@ -24,16 +27,17 @@ const toggleLang: 'en' | 'zh' = isEn ? 'en' : 'zh';
 // Dynamic nav prefix: EN pages link to /en/*, ZH pages keep root paths
 // 2026-04-26: IA consolidation — main nav slimmed 8 → 5 items
 // 2026-04-28: Pricing removed, replaced with Academy in main nav.
+// 2026-11-15: Synapse 体系归档下线 —— 主导航移除「产品 / Product」入口，
+// 原指向 /synapse 的 product 与 forge 两个键一并删除（forge 此前已无引用）。
+// 归档内容仍可经 /archive/synapse/* 访问，但不在导航中暴露。
+// TODO(下一轮): 数字分身板块上线后，在此处补回对应导航入口。
 const navLinks = isEn
   ? {
       home: '/en/',
-      product: '/en/synapse',
       getStarted: '/en/academy/get-synapse',
       blog: '/en/blog',
       academy: '/en/academy',
       about: '/en/about',
-      // Retained for footer
-      forge: '/en/synapse',
       academyGet: '/en/academy/get-synapse',
       academyTeam: '/en/academy/team',
       academySkills: '/en/academy/skills',
@@ -42,13 +46,10 @@ const navLinks = isEn
     }
   : {
       home: '/',
-      product: '/synapse',
       getStarted: '/academy/get-synapse',
       blog: '/blog',
       academy: '/academy',
       about: '/about',
-      // Retained for footer
-      forge: '/synapse',
       academyGet: '/academy/get-synapse',
       academyTeam: '/academy/team',
       academySkills: '/academy/skills',
@@ -77,7 +78,6 @@ const canonicalHref = isEn ? enHref : zhHref;
 // Header / Footer copy tables
 const t = isEn
   ? {
-      navProduct: 'Product',
       navGetStarted: 'Get Started',
       navBlog: 'Blog',
       navAcademy: 'Academy',
@@ -102,7 +102,6 @@ const t = isEn
       footerCopyright: '© 2026 Synapse. Harness Engineering for AI Teams.',
     }
   : {
-      navProduct: '产品',
       navGetStarted: '上手',
       navBlog: '博客',
       navAcademy: '学院',
@@ -143,10 +142,16 @@ const t = isEn
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Phase 4: Warm Editorial font stack — Fraunces (display) + IBM Plex Sans (body) + JetBrains Mono -->
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="alternate" hreflang="zh-CN" href={zhHref} />
-    <link rel="alternate" hreflang="en" href={enHref} />
-    <link rel="alternate" hreflang="x-default" href={zhHref} />
-    <link rel="canonical" href={canonicalHref} />
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <>
+        <link rel="alternate" hreflang="zh-CN" href={zhHref} />
+        <link rel="alternate" hreflang="en" href={enHref} />
+        <link rel="alternate" hreflang="x-default" href={zhHref} />
+        <link rel="canonical" href={canonicalHref} />
+      </>
+    )}
     <slot name="head" />
   </head>
   <body class="min-h-screen flex flex-col bg-white">
@@ -163,7 +168,6 @@ const t = isEn
           <span class="text-lg font-bold text-[#FCAD2A]">Synapse</span>
         </a>
         <div class="hidden md:flex items-center gap-5 text-sm font-medium">
-          <a href={navLinks.product} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navProduct}</a>
           <a href={navLinks.getStarted} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navGetStarted}</a>
           <a href={navLinks.blog} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navBlog}</a>
           <a href={navLinks.academy} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navAcademy}</a>

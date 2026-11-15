@@ -16,11 +16,11 @@ synapse-page-metadata:
   stale_after: 2026-10-23
 -->
 ---
-import SynapseLayout from '../../../layouts/SynapseLayout.astro';
-import Hero from '../../../components/synapse/Hero.astro';
-import PillarSection from '../../../components/synapse/PillarSection.astro';
-import AgentTeamCard from '../../../components/synapse/AgentTeamCard.astro';
-import CTABanner from '../../../components/synapse/CTABanner.astro';
+import SynapseLayout from '../../../../layouts/SynapseLayout.astro';
+import Hero from '../../../../components/synapse/Hero.astro';
+import PillarSection from '../../../../components/synapse/PillarSection.astro';
+import AgentTeamCard from '../../../../components/synapse/AgentTeamCard.astro';
+import CTABanner from '../../../../components/synapse/CTABanner.astro';
 
 const featuredTeams = [
   {
@@ -59,14 +59,14 @@ const featuredTeams = [
   description="Fifty-five active core specialists across twelve teams. Every one has a machine-readable capability card, an A/B/C grade, and a clear place in the routing table."
   subNavActive="team"
   currentLang="en"
-  altLang={{ lang: 'zh', href: '/synapse/team' }}
+  altLang={{ lang: 'zh', href: '/archive/synapse/team' }}
 >
   <Hero
     eyebrow="Team"
     title="A team that shows up pre-assembled."
     subtitle="Fifty-five active core specialists across twelve teams. Every one has a machine-readable capability card, an A/B/C grade, and a clear place in the routing table. No blank slates. No generalists pretending to specialize."
-    primaryCta={{ label: 'See All Capabilities', href: '/en/synapse/capabilities' }}
-    secondaryCta={{ label: 'Get the Bundle', href: '/en/synapse/get-started' }}
+    primaryCta={{ label: 'See All Capabilities', href: '/en/archive/synapse/capabilities' }}
+    secondaryCta={{ label: 'Get the Bundle', href: '/en/archive/synapse/get-started' }}
   />
 
   <PillarSection
@@ -129,7 +129,7 @@ const featuredTeams = [
   <CTABanner
     heading="Hire the team by forking the skeleton."
     body="Every specialist is pre-configured, graded, and ready to dispatch."
-    primaryCta={{ label: 'Get Started', href: '/en/synapse/get-started' }}
+    primaryCta={{ label: 'Get Started', href: '/en/archive/synapse/get-started' }}
     secondaryCta={{ label: 'Visit Academy', href: '/en/academy' }}
   />
 </SynapseLayout>

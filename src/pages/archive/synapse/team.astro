@@ -16,11 +16,11 @@ synapse-page-metadata:
   stale_after: 2026-10-23
 -->
 ---
-import SynapseLayout from '../../layouts/SynapseLayout.astro';
-import Hero from '../../components/synapse/Hero.astro';
-import PillarSection from '../../components/synapse/PillarSection.astro';
-import AgentTeamCard from '../../components/synapse/AgentTeamCard.astro';
-import CTABanner from '../../components/synapse/CTABanner.astro';
+import SynapseLayout from '../../../layouts/SynapseLayout.astro';
+import Hero from '../../../components/synapse/Hero.astro';
+import PillarSection from '../../../components/synapse/PillarSection.astro';
+import AgentTeamCard from '../../../components/synapse/AgentTeamCard.astro';
+import CTABanner from '../../../components/synapse/CTABanner.astro';
 
 const featuredTeams = [
   {
@@ -59,14 +59,14 @@ const featuredTeams = [
   description="55 位核心专家，12 个团队。每位都有机器可读的能力卡、A/B/C 分级、以及路由表中的清晰定位。"
   subNavActive="team"
   currentLang="zh"
-  altLang={{ lang: 'en', href: '/en/synapse/team' }}
+  altLang={{ lang: 'en', href: '/en/archive/synapse/team' }}
 >
   <Hero
     eyebrow="Team / 团队"
     title="一支开箱即用的团队"
     subtitle="55 位核心专家，12 个团队。每位都有机器可读的能力卡、A/B/C 分级、清晰的派单定位。零白板，零冒充通才。"
-    primaryCta={{ label: '查看全部能力', href: '/synapse/capabilities' }}
-    secondaryCta={{ label: '获取配置包', href: '/synapse/get-started' }}
+    primaryCta={{ label: '查看全部能力', href: '/archive/synapse/capabilities' }}
+    secondaryCta={{ label: '获取配置包', href: '/archive/synapse/get-started' }}
   />
 
   <PillarSection
@@ -129,7 +129,7 @@ const featuredTeams = [
   <CTABanner
     heading="fork 骨架，招齐这支团队"
     body="每位专家都已预配置、已分级、随时可派单。"
-    primaryCta={{ label: '立即上手', href: '/synapse/get-started' }}
+    primaryCta={{ label: '立即上手', href: '/archive/synapse/get-started' }}
     secondaryCta={{ label: '了解学院', href: '/academy' }}
   />
 </SynapseLayout>

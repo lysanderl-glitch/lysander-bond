@@ -103,14 +103,16 @@ const { currentLang = 'zh' } = Astro.props;
       '/about',
       // '/intelligence' removed — page taken offline (President L5②, 2026-05-30).
       // RESTORE: re-add '/intelligence' to this set.
-      '/synapse',
-      '/synapse/capabilities',
-      '/synapse/how-it-works',
-      '/synapse/team',
-      '/synapse/intelligence',
+      // 2026-11-15: Synapse 归档下线，路径迁至 /archive/synapse/*。
+      // 归档页仍保留中英双语，故语言切换继续可用。
+      '/archive/synapse',
+      '/archive/synapse/capabilities',
+      '/archive/synapse/how-it-works',
+      '/archive/synapse/team',
+      '/archive/synapse/intelligence',
       '/academy',
-      '/synapse/get-started',
-      '/synapse/beta',
+      '/archive/synapse/get-started',
+      '/archive/synapse/beta',
       '/academy',
       '/academy/get-synapse',
       '/academy/team',
