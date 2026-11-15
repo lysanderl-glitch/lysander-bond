@@ -9,8 +9,8 @@ interface Props {
 }
 
 const {
-  title = 'Synapse — AI Agent 协作运营体系',
-  description = 'Synapse — 基于 Harness Engineering 的 AI Agent 团队协作运营体系',
+  title = 'Lysander Liu 刘子杨',
+  description = 'Lysander Liu（刘子杨）的个人站：项目集交付、AI 实践记录与数字分身。',
   darkContent = false,
   lang = 'zh-CN',
 } = Astro.props;
@@ -58,6 +58,8 @@ const navLinks = isEn
 
 // hreflang alternate URLs (auto-derived from current path)
 const currentPath = Astro.url.pathname;
+// 2026-11-15: the site is now a personal site. Everything Synapse-era is kept as an archive and marked as such.
+const isArchive = /^\/(en\/)?(synapse|academy|intelligence|intel|weekly|this-week|about|create|ximi)/.test(currentPath);
 let zhPath: string;
 let enPath: string;
 if (isEn) {
@@ -77,6 +79,10 @@ const canonicalHref = isEn ? enHref : zhHref;
 // Header / Footer copy tables
 const t = isEn
   ? {
+      navArchive: 'Synapse (archived)',
+      navPrivate: 'Sign in',
+      navHome: 'Home',
+      archiveNote: 'Archived. Synapse was built and run as an AI team operating system; after validation in practice it did not hold up as a general approach. These pages are kept as a record, not as a recommendation.',
       navProduct: 'Product',
       navGetStarted: 'Get Started',
       navBlog: 'Blog',
@@ -102,6 +108,10 @@ const t = isEn
       footerCopyright: '© 2026 Synapse. Harness Engineering for AI Teams.',
     }
   : {
+      navArchive: 'Synapse（归档）',
+      navPrivate: '登录',
+      navHome: '首页',
+      archiveNote: '已归档。Synapse 曾作为 AI 团队操作系统搭建并运行；经过实践验证，它并不适用于原先设想的场景。这些页面保留作为记录，不再作为推荐方案。',
       navProduct: '产品',
       navGetStarted: '上手',
       navBlog: '博客',
@@ -163,15 +173,13 @@ const showIcp = Astro.site?.hostname?.endsWith('synapsehd.com') ?? false;
             <path d="M31.87 7.93L28.1 7.52v28.57l3.77-.38V7.93Z" fill="#013A7D"/>
             <path d="M33.13 8.05v27.52c.98-.21 1.68-.77 1.68-1.51V9.55c0-.73-.7-1.29-1.68-1.5Z" fill="#028CDC"/>
           </svg>
-          <span class="text-lg font-bold text-[#FCAD2A]">Synapse</span>
+          <span class="text-lg font-bold text-[#FCAD2A]">Lysander</span>
         </a>
         <div class="hidden md:flex items-center gap-5 text-sm font-medium">
-          <a href={navLinks.product} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navProduct}</a>
-          <a href={navLinks.getStarted} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navGetStarted}</a>
+          <a href={navLinks.home} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navHome}</a>
           <a href={navLinks.blog} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navBlog}</a>
-          <a href={navLinks.academy} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navAcademy}</a>
-          <a href={navLinks.about} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navAbout}</a>
-          <a href={navLinks.intelligence} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navIntelligence}</a>
+          <a href={navLinks.product} class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navArchive}</a>
+          <a href="/me/" class="text-white/70 hover:text-[#FCAD2A] transition-colors">{t.navPrivate}</a>
           <LangToggle currentLang={toggleLang} />
         </div>
       </nav>
@@ -179,6 +187,11 @@ const showIcp = Astro.site?.hostname?.endsWith('synapsehd.com') ?? false;
 
     <!-- Main content area -->
     <main class:list={["flex-1", darkContent ? "bg-[var(--color-dark)]" : "bg-white"]}>
+      {isArchive && (
+        <div class="bg-[#FFF7E6] border-b border-[#FCAD2A]/50 text-[#5c4300] text-sm">
+          <p class="max-w-5xl mx-auto px-6 py-3">{t.archiveNote}</p>
+        </div>
+      )}
       <slot />
     </main>
 
